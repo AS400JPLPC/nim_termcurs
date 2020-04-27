@@ -133,10 +133,14 @@ function main() {
   backbr*: bool
   foregr*: ForegroundColor
   forebr*: bool"><wbr />ZONATRB<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#BTNSPACE"
+    title="BTNSPACE = ref object
+  space*: Natural"><wbr />BTNSPACE<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#BUTTON"
     title="BUTTON = object
   key: Key
-  label: string"><wbr />BUTTON<span class="attachedType"></span></a></li>
+  label: string
+  actif*: bool"><wbr />BUTTON<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#MENU"
     title="MENU = object
   name: string
@@ -211,6 +215,8 @@ function main() {
     title="hlpatr = new(ZONATRB)"><wbr />hlpatr<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#btnatr"
     title="btnatr = new(BOXATRB)"><wbr />btnatr<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#btnspc"
+    title="btnspc = new(BTNSPACE)"><wbr />btnspc<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -263,6 +269,8 @@ function main() {
     title="def_cursor(e_curs: Natural = 0)"><wbr />def_<wbr />cursor<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#setTerminal%2CZONATRB"
     title="setTerminal(termatr: ZONATRB = scratr)"><wbr />set<wbr />Terminal<span class="attachedType">ZONATRB</span></a></li>
+  <li><a class="reference" href="#button%2CKey%2Cstring"
+    title="button(key: Key; label: string; actif = true): BUTTON"><wbr />button<span class="attachedType">BUTTON</span></a></li>
   <li><a class="reference" href="#fldBox%2CBOX%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2CCADRE%2Cstring%2CBOXATRB%2Cbool"
     title="fldBox(box: var BOX; name: string; posx: Natural; posy: Natural; lines: Natural;
        cols: Natural; cadre: CADRE; title: string; box_atr: BOXATRB = boxatr;
@@ -308,33 +316,39 @@ function main() {
     title="hdnSwitch(hdn: var HIDEN; name: string; reftyp: Natural; switch: bool)"><wbr />hdn<wbr />Switch<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#printField%2CPANEL%2CFIELD"
     title="printField(pnl: var PANEL; fld: FIELD)"><wbr />print<wbr />Field<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#printButton%2CPANEL%2CNatural%2CNatural%2CNatural"
-    title="printButton(pnl: var PANEL; x, y, interval: Natural)"><wbr />print<wbr />Button<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#printButton%2CPANEL%2CBTNSPACE"
+    title="printButton(pnl: var PANEL; btn_esp: BTNSPACE = btnspc)"><wbr />print<wbr />Button<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#defPanel%2CPANEL%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2CBackgroundColor%2Cbool%2CForegroundColor%2Cbool%2CCADRE%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2Cseq%5B%5D%2Cbool"
     title="defPanel(pnl: var PANEL; name: string; posx, posy, height, width: Natural;
          backgr: BackgroundColor; backbr: bool; foregr: ForegroundColor; forebr: bool;
          cadre: CADRE; title: string; nbrbox, nbrlabel, nbrfield, nbrhiden: Natural;
          button: seq[(BUTTON)]; actif: bool = true)"><wbr />def<wbr />Panel<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#displayPanel%2CPANEL"
+    title="displayPanel(pnl: PANEL)"><wbr />display<wbr />Panel<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#printPanel%2CPANEL"
+    title="printPanel(pnl: var PANEL)"><wbr />print<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#clearPanel%2CPANEL"
     title="clearPanel(pnl: var PANEL)"><wbr />clear<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#clearPanel%2CMENU"
     title="clearPanel(mnu: var MENU)"><wbr />clear<wbr />Panel<span class="attachedType">MENU</span></a></li>
+  <li><a class="reference" href="#clsLabel%2CPANEL%2CLABEL"
+    title="clsLabel(pnl: var PANEL; lbl: LABEL)"><wbr />cls<wbr />Label<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#clsField%2CPANEL%2CFIELD"
+    title="clsField(pnl: var PANEL; fld: FIELD)"><wbr />cls<wbr />Field<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#clsPanel%2CPANEL"
+    title="clsPanel(pnl: var PANEL)"><wbr />cls<wbr />Panel<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#displayLabel%2CPANEL%2CLABEL"
+    title="displayLabel(pnl: var PANEL; lbl: LABEL)"><wbr />display<wbr />Label<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#displayField%2CPANEL%2CFIELD"
-    title="displayField(pnl: PANEL; fld: FIELD)"><wbr />display<wbr />Field<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#displayPanel%2CPANEL"
-    title="displayPanel(pnl: PANEL)"><wbr />display<wbr />Panel<span class="attachedType">PANEL</span></a></li>
+    title="displayField(pnl: var PANEL; fld: FIELD)"><wbr />display<wbr />Field<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#displayButton%2CPANEL"
+    title="displayButton(pnl: var PANEL)"><wbr />display<wbr />Button<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#restorePanel%2CPANEL%2CPANEL"
     title="restorePanel(dst: PANEL; src: var PANEL)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#restorePanel%2CPANEL%2CMENU"
     title="restorePanel(dst: PANEL; mnu: MENU)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#restorePanel%2CPANEL%2CNatural%2CNatural"
     title="restorePanel(pnl: PANEL; lines, posy: Natural)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#printPanel%2CPANEL"
-    title="printPanel(pnl: var PANEL)"><wbr />print<wbr />Panel<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#isPanelKey%2CPANEL%2CKey"
-    title="isPanelKey(pnl: PANEL; e_key: Key): bool"><wbr />is<wbr />Panel<wbr />Key<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#button%2CKey%2Cstring"
-    title="button(key: Key; label: string): BUTTON"><wbr />button<span class="attachedType">BUTTON</span></a></li>
   <li><a class="reference" href="#setProtect%2CFIELD%2Cbool"
     title="setProtect(fld: var FIELD; protect: bool)"><wbr />set<wbr />Protect<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#setActif%2CFIELD%2Cbool"
@@ -345,10 +359,14 @@ function main() {
     title="setActif(box: var BOX; actif: bool)"><wbr />set<wbr />Actif<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#setActif%2CMENU%2Cbool"
     title="setActif(mnu: var MENU; actif: bool)"><wbr />set<wbr />Actif<span class="attachedType">MENU</span></a></li>
+  <li><a class="reference" href="#setActif%2CBUTTON%2Cbool"
+    title="setActif(btn: var BUTTON; actif: bool)"><wbr />set<wbr />Actif<span class="attachedType">BUTTON</span></a></li>
   <li><a class="reference" href="#setActif%2CPANEL%2Cbool"
     title="setActif(pnl: var PANEL; actif: bool)"><wbr />set<wbr />Actif<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#setMouse%2CPANEL%2Cbool"
     title="setMouse(pnl: var PANEL; actif: bool)"><wbr />set<wbr />Mouse<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#isPanelKey%2CPANEL%2CKey"
+    title="isPanelKey(pnl: PANEL; e_key: Key): bool"><wbr />is<wbr />Panel<wbr />Key<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#ioMenu%2CPANEL%2CMENU%2CNatural"
     title="ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu"><wbr />io<wbr />Menu<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#ioField%2CPANEL%2CFIELD"
@@ -375,6 +393,18 @@ function main() {
     title="fldString(pnl: PANEL; name: string): string"><wbr />fld<wbr />String<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#fldString%2CPANEL%2CNatural"
     title="fldString(pnl: PANEL; index: Natural): string"><wbr />fld<wbr />String<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#fldSwitch%2CPANEL%2CNatural"
+    title="fldSwitch(pnl: PANEL; index: Natural): int"><wbr />fld<wbr />Switch<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#hdnName%2CPANEL%2CNatural"
+    title="hdnName(hdn: PANEL; index: Natural): string"><wbr />hdn<wbr />Name<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#hdnIndex%2CPANEL%2Cstring"
+    title="hdnIndex(hdn: PANEL; name: string): int"><wbr />hdn<wbr />Index<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#hdnString%2CPANEL%2Cstring"
+    title="hdnString(hdn: PANEL; name: string): string"><wbr />hdn<wbr />String<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#hdnString%2CPANEL%2CNatural"
+    title="hdnString(hdn: PANEL; index: Natural): string"><wbr />hdn<wbr />String<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#hdnSwitch%2CPANEL%2CNatural"
+    title="hdnSwitch(hdn: PANEL; index: Natural): int"><wbr />hdn<wbr />Switch<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#isProtect%2CFIELD"
     title="isProtect(fld: var FIELD): bool"><wbr />is<wbr />Protect<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#isActif%2CFIELD"
@@ -385,6 +415,8 @@ function main() {
     title="isActif(box: var BOX): bool"><wbr />is<wbr />Actif<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#isActif%2CMENU"
     title="isActif(mnu: var MENU): bool"><wbr />is<wbr />Actif<span class="attachedType">MENU</span></a></li>
+  <li><a class="reference" href="#isActif%2CBUTTON"
+    title="isActif(btn: var BUTTON): bool"><wbr />is<wbr />Actif<span class="attachedType">BUTTON</span></a></li>
   <li><a class="reference" href="#isActif%2CPANEL"
     title="isActif(pnl: var PANEL): bool"><wbr />is<wbr />Actif<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#isMouse%2CPANEL"
@@ -399,7 +431,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">define type cursorErase and color and style defaultDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine Labelassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field Numericassigne FIELD to matrice for displayassigne LABEL to matrice for displayDefine PANELvide object PANEL / box/label/fld/funcvide object MENUdisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayTest if KEYs must be managed by the programmerget lines/COLS PANELreturn index actived from panel this getFieldreturn name from index actived from panel this getFieldreturn index Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn BUTTONset on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELif on/off  FIELD / LABEL / BOX / MENU / PANEL<h1 id="format-management-including-zones-keyboard-function-keys-are-returned-to-the-calling-procedure-only-the-key-ctrla-eq-aide-slash-help-for-field-f1-is-reserved-for-complex-help-programming-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert"><center>Format management including zones keyboard Function keys are returned to the calling procedure  only the key CtrlA = Aide / Help for field F1 is reserved for complex help programming  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT</center></h1></p>
+  <p class="module-desc">define type cursorErase and color and style defaultreturn BUTTONDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine Labelassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field Numericassigne FIELD to matrice for displayassigne BUTTON matrice for displayDefine PANELdisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayvide object PANEL / box/label/fld/funcvide object MENUget lines/COLS PANELreturn index actived from panel this getFieldreturn name from index actived from panel this getFieldreturn index Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn name from index actived from panel this getFieldreturn index Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldset on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELTest if KEYs must be managed by the programmerif on/off  FIELD / LABEL / BOX / MENU / PANEL<h1 id="format-management-including-zones-keyboard-function-keys-are-returned-to-the-calling-procedure-only-the-key-ctrla-eq-aide-slash-help-for-field-f1-is-reserved-for-complex-help-programming-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert-predefined-and-customizable-regex-control"><center>Format management including zones keyboard Function keys are returned to the calling procedure  only the key CtrlA = Aide / Help for field F1 is reserved for complex help programming  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT predefined and customizable REGEX control</center></h1></p>
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
@@ -464,10 +496,20 @@ function main() {
 
 
 </dd>
+<a id="BTNSPACE"></a>
+<dt><pre><a href="termcurs.html#BTNSPACE"><span class="Identifier">BTNSPACE</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+  <span class="Identifier">space</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+</pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="BUTTON"></a>
 <dt><pre><a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">Key</span>
   <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
 
@@ -609,6 +651,13 @@ function main() {
 </dd>
 <a id="btnatr"></a>
 <dt><pre><a href="termcurs.html#btnatr"><span class="Identifier">btnatr</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#BOXATRB"><span class="Identifier">BOXATRB</span></a><span class="Other">)</span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="btnspc"></a>
+<dt><pre><a href="termcurs.html#btnspc"><span class="Identifier">btnspc</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#BTNSPACE"><span class="Identifier">BTNSPACE</span></a><span class="Other">)</span></pre></dt>
 <dd>
 
 
@@ -765,6 +814,13 @@ function main() {
 
 
 </dd>
+<a id="button,Key,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#button%2CKey%2Cstring"><span class="Identifier">button</span></a><span class="Other">(</span><span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">Key</span><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">actif</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="fldBox,BOX,string,Natural,Natural,Natural,Natural,CADRE,string,BOXATRB,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#fldBox%2CBOX%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2CCADRE%2Cstring%2CBOXATRB%2Cbool"><span class="Identifier">fldBox</span></a><span class="Other">(</span><span class="Identifier">box</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">BOX</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">lines</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span>
            <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">cadre</span><span class="Other">:</span> <a href="termcurs.html#CADRE"><span class="Identifier">CADRE</span></a><span class="Other">;</span> <span class="Identifier">title</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">box_atr</span><span class="Other">:</span> <a href="termcurs.html#BOXATRB"><span class="Identifier">BOXATRB</span></a> <span class="Other">=</span> <span class="Identifier">boxatr</span><span class="Other">;</span>
@@ -888,8 +944,9 @@ function main() {
 
 
 </dd>
-<a id="printButton,PANEL,Natural,Natural,Natural"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#printButton%2CPANEL%2CNatural%2CNatural%2CNatural"><span class="Identifier">printButton</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">x</span><span class="Other">,</span> <span class="Identifier">y</span><span class="Other">,</span> <span class="Identifier">interval</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="printButton,PANEL,BTNSPACE"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#printButton%2CPANEL%2CBTNSPACE"><span class="Identifier">printButton</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">btn_esp</span><span class="Other">:</span> <a href="termcurs.html#BTNSPACE"><span class="Identifier">BTNSPACE</span></a> <span class="Other">=</span> <span class="Identifier">btnspc</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -901,6 +958,21 @@ function main() {
              <span class="Identifier">forebr</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">cadre</span><span class="Other">:</span> <a href="termcurs.html#CADRE"><span class="Identifier">CADRE</span></a><span class="Other">;</span> <span class="Identifier">title</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
              <span class="Identifier">nbrbox</span><span class="Other">,</span> <span class="Identifier">nbrlabel</span><span class="Other">,</span> <span class="Identifier">nbrfield</span><span class="Other">,</span> <span class="Identifier">nbrhiden</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Other">(</span><a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">)</span><span class="Other">]</span><span class="Other">;</span>
              <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="displayPanel,PANEL"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#displayPanel%2CPANEL"><span class="Identifier">displayPanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="printPanel,PANEL"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#printPanel%2CPANEL"><span class="Identifier">printPanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">]</span><span class="Other">,</span>
+                              <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -920,16 +992,46 @@ function main() {
 
 
 </dd>
-<a id="displayField,PANEL,FIELD"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#displayField%2CPANEL%2CFIELD"><span class="Identifier">displayField</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">fld</span><span class="Other">:</span> <span class="Identifier">FIELD</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-                                       <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="clsLabel,PANEL,LABEL"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#clsLabel%2CPANEL%2CLABEL"><span class="Identifier">clsLabel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">lbl</span><span class="Other">:</span> <span class="Identifier">LABEL</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="displayPanel,PANEL"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#displayPanel%2CPANEL"><span class="Identifier">displayPanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="clsField,PANEL,FIELD"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#clsField%2CPANEL%2CFIELD"><span class="Identifier">clsField</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">fld</span><span class="Other">:</span> <span class="Identifier">FIELD</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="clsPanel,PANEL"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#clsPanel%2CPANEL"><span class="Identifier">clsPanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="displayLabel,PANEL,LABEL"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#displayLabel%2CPANEL%2CLABEL"><span class="Identifier">displayLabel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">lbl</span><span class="Other">:</span> <span class="Identifier">LABEL</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="displayField,PANEL,FIELD"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#displayField%2CPANEL%2CFIELD"><span class="Identifier">displayField</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">fld</span><span class="Other">:</span> <span class="Identifier">FIELD</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="displayButton,PANEL"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#displayButton%2CPANEL"><span class="Identifier">displayButton</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+                                 <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -954,28 +1056,6 @@ function main() {
 <a id="restorePanel,PANEL,Natural,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#restorePanel%2CPANEL%2CNatural%2CNatural"><span class="Identifier">restorePanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">lines</span><span class="Other">,</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
-<dd>
-
-
-
-</dd>
-<a id="printPanel,PANEL"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#printPanel%2CPANEL"><span class="Identifier">printPanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">]</span><span class="Other">,</span>
-                              <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
-<dd>
-
-
-
-</dd>
-<a id="isPanelKey,PANEL,Key"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#isPanelKey%2CPANEL%2CKey"><span class="Identifier">isPanelKey</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">e_key</span><span class="Other">:</span> <span class="Identifier">Key</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
-<dd>
-
-
-
-</dd>
-<a id="button,Key,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#button%2CKey%2Cstring"><span class="Identifier">button</span></a><span class="Other">(</span><span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">Key</span><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1016,6 +1096,13 @@ function main() {
 
 
 </dd>
+<a id="setActif,BUTTON,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setActif%2CBUTTON%2Cbool"><span class="Identifier">setActif</span></a><span class="Other">(</span><span class="Identifier">btn</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="setActif,PANEL,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#setActif%2CPANEL%2Cbool"><span class="Identifier">setActif</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -1025,6 +1112,13 @@ function main() {
 </dd>
 <a id="setMouse,PANEL,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#setMouse%2CPANEL%2Cbool"><span class="Identifier">setMouse</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="isPanelKey,PANEL,Key"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#isPanelKey%2CPANEL%2CKey"><span class="Identifier">isPanelKey</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">e_key</span><span class="Other">:</span> <span class="Identifier">Key</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1108,6 +1202,48 @@ tranform letter to *
 
 
 </dd>
+<a id="fldSwitch,PANEL,Natural"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#fldSwitch%2CPANEL%2CNatural"><span class="Identifier">fldSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="hdnName,PANEL,Natural"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#hdnName%2CPANEL%2CNatural"><span class="Identifier">hdnName</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="hdnIndex,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#hdnIndex%2CPANEL%2Cstring"><span class="Identifier">hdnIndex</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="hdnString,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#hdnString%2CPANEL%2Cstring"><span class="Identifier">hdnString</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="hdnString,PANEL,Natural"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#hdnString%2CPANEL%2CNatural"><span class="Identifier">hdnString</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="hdnSwitch,PANEL,Natural"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#hdnSwitch%2CPANEL%2CNatural"><span class="Identifier">hdnSwitch</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="isProtect,FIELD"></a>
 <dt><pre><span class="Keyword">func</span> <a href="#isProtect%2CFIELD"><span class="Identifier">isProtect</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -1143,6 +1279,13 @@ tranform letter to *
 
 
 </dd>
+<a id="isActif,BUTTON"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#isActif%2CBUTTON"><span class="Identifier">isActif</span></a><span class="Other">(</span><span class="Identifier">btn</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="isActif,PANEL"></a>
 <dt><pre><span class="Keyword">func</span> <a href="#isActif%2CPANEL"><span class="Identifier">isActif</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -1167,7 +1310,7 @@ tranform letter to *
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-25 06:01:10 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-27 10:06:54 UTC</small>
       </div>
     </div>
   </div>
