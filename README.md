@@ -3,6 +3,7 @@
 # NIM-LANG for terminal
 # API inspired by 5250/3270
 
+doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/termcurs.html)
 
 **<u>premier test fait</u>**
 
