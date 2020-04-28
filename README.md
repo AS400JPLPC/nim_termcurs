@@ -1,6 +1,6 @@
 # nim_Termcurs
-# NIM-LANG
-# api s'inpirant du 5250/3270  for terminal
+# NIM-LANG for terminal
+# API inspired by 5250/3270
 
 
 **<u>premier test fait</u>**
