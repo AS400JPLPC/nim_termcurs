@@ -188,11 +188,7 @@ proc fldNumeric(fld: var FIELD; name: string; posx: Natural; posy: Natural;
 
 proc hdnString(hdn: var HIDEN; name: string; reftyp: Natural; field: string) {...}
 
-    / ALPHA...SWITCH 
-
 proc hdnSwitch(hdn: var HIDEN; name: string; reftyp: Natural; switch: bool) {...}
-
-    / ALPHA...SWITCH 
 
 proc printField(pnl: var PANEL; fld: FIELD) {...}
 
