@@ -1,6 +1,7 @@
 # nim_Termcurs
 
-#api s'inpirant du 5250/3270 utilisant NIM-LANG exploitation du terminal
+# NIM-LANG for terminal
+# API inspired by 5250/3270
 
 
 **<u>premier test fait</u>**
@@ -11,6 +12,9 @@
 **IMPORT: termkey project**
 
 <u>mise en fonction le 2020-04-15</u>
+  * corrective 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; grammar horizontal
+  * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal
+
 
 **Thank you**
 
@@ -45,7 +49,8 @@ I still have the part allowing to make a sub-file integrating in the screen more
 | scrolling with UP..DOWN            |
 | Mouse                              |
 | scrolling done with the wheel      |
-| validation with right or left click|
+| UP&nbsp; DOWN&nbsp; Left&nbsp; RIGHT |
+
   
 <br>
 <br>

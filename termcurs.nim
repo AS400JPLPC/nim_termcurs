@@ -32,7 +32,7 @@ type
 
   MNUVH* {.pure.} = enum 
     vertical = 0  , 
-    horisontal  
+    horizontal  
 
   MNUATRB* = ref object
     style* : set[Style]
@@ -169,6 +169,7 @@ type
 
     item: seq[string]
     selMenu : Natural
+
 
     actif*: bool
 
@@ -527,31 +528,44 @@ proc printBox*(pnl: var PANEL; box:BOX) =
 proc defMenu*(menu : var MENU ; name:string ; posx:Natural; posy:Natural;
               mnuvh: MNUVH ; item : seq[string] ;cadre :CADRE = CADRE.line0 ; mnu_atr : MNUATRB = mnuatr ;  actif: bool = true) =
 
-    menu.name  = name
-    menu.posx  = posx
-    menu.posy  = posy
-    menu.cadre = cadre
-    var i : Natural = 0
-    while  i <  len(item):
-      if menu.cols < len(item[i]) : menu.cols = runeLen(item[i])
-      inc(i)
+  menu.name  = name
+  menu.posx  = posx
+  menu.posy  = posy
+  menu.cadre = cadre
+  menu.mnuvh = mnuvh
+  var i : Natural = 0
 
+  menu.cols = 0
+  while  i <  len(item):
+    if mnuvh == MNUVH.vertical  :
+      if menu.cols < len(item[i]) : menu.cols = runeLen(item[i])
+    if mnuvh == MNUVH.horizontal  : menu.cols +=  runeLen(item[i])
+    inc(i)
+
+  if mnuvh == MNUVH.vertical:
     if menu.cadre == CADRE.line1 or menu.cadre == CADRE.line2 :
       menu.lines = len(item) + 1
       menu.cols  += 1
     else :
-      menu.lines = len(item) - 1
-      menu.cols  -= 1
+      menu.lines = len(item) + 1
 
-    menu.mnuvh = mnuvh
-    menu.style  = mnu_atr.style
-    menu.styleCell  = mnu_atr.styleCell
-    menu.backgr = mnu_atr.backgr
-    menu.backbr = mnu_atr.backbr
-    menu.foregr = mnu_atr.foregr
-    menu.forebr = mnu_atr.forebr
-    menu.item = item
-    menu.actif = actif
+  if mnuvh == MNUVH.horizontal:
+    if menu.cadre == CADRE.line1 or menu.cadre == CADRE.line2 : 
+      menu.lines = 2
+      menu.cols  += 1
+
+  
+  #gotoXY(39,1) ; echo "ioMenu",menu.cols ; let o = getFunc();
+
+
+  menu.style  = mnu_atr.style
+  menu.styleCell  = mnu_atr.styleCell
+  menu.backgr = mnu_atr.backgr
+  menu.backbr = mnu_atr.backbr
+  menu.foregr = mnu_atr.foregr
+  menu.forebr = mnu_atr.forebr
+  menu.item = item
+  menu.actif = actif
 
 
 
@@ -637,18 +651,30 @@ proc printMenu*(pnl: PANEL; mnu:MENU) =
         inc(col)
       inc(row)
 
-  else :
-    row = 0
-    while row <= mnu.lines:
+  else : # no cadre
+    
+    if mnu.mnuvh == MNUVH.vertical:
+      row = 0
+      while row <= mnu.lines:
+        col = 0
+        while col <= mnu.cols:
+          gotoXY(row + mnu.posx  + pnl.posx - 1,mnu.posy + pnl.posy - 1)
+          setBackgroundColor(mnu.backgr,mnu.backbr)
+          setForegroundColor(mnu.foregr,mnu.forebr)
+          writeStyled(" ",mnu.style)
+          stdout.flushFile()
+          inc(col)
+        inc(row)
+    if mnu.mnuvh == MNUVH.horizontal:
       col = 0
-      while col <= mnu.cols:
-        gotoXY(row + mnu.posx  + pnl.posx - 1, col  + mnu.posy + pnl.posy - 1)
+      while col < mnu.cols:
+        gotoXY(mnu.posx  + pnl.posx - 1, col + mnu.posy + pnl.posy - 1)
         setBackgroundColor(mnu.backgr,mnu.backbr)
         setForegroundColor(mnu.foregr,mnu.forebr)
         writeStyled(" ",mnu.style)
         stdout.flushFile()
         inc(col)
-      inc(row)
+
 
 
 
@@ -1375,6 +1401,7 @@ proc restorePanel*(dst: PANEL; mnu: MENU) =
   if not dst.actif : return
   var npos :int =0
   var n = mnu.posx
+  #if mnu.mnuvh == MNUVH.vertical:
   for x in 0..mnu.lines:
     npos = dst.cols * n + mnu.posy - 1
     for y in 0..mnu.cols:
@@ -1540,52 +1567,69 @@ func isMouse*(pnl : var PANEL): bool=
 ## movement with the wheel and validation with the clik
 ##================================================================
 proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
-    var pos : Natural = npos
-    var n   : Natural 
-    OnMouse()
-    hideCursor()
-    stdout.flushFile()
-    if pos > len(mnu.item) or pos < 0 : pos = 0
-    while true:
-      n = 0
-      for cell in  mnu.item :
+  var pos : Natural = npos
+  var n , h   : Natural 
+  OnMouse()
+  hideCursor()
+  stdout.flushFile()
+  if pos > len(mnu.item) or pos < 0 : pos = 0
+
+  while true:
+    n = 0
+    h = 0
+    for cell in  mnu.item :
+      
+      if mnu.mnuvh == MNUVH.vertical :
         if mnu.cadre == CADRE.line0 :
-          if mnu.mnuvh == MNUVH.vertical :
-            gotoXY(mnu.posx + pnl.posx  + n - 1 , mnu.posy + pnl.posy - 1)
+          gotoXY(mnu.posx + pnl.posx  + n - 1 , mnu.posy + pnl.posy - 1)
         else : 
-          if mnu.mnuvh == MNUVH.vertical :
-            gotoXY(mnu.posx + pnl.posx  + n, mnu.posy + pnl.posy )
+          gotoXY(mnu.posx + pnl.posx  + n, mnu.posy + pnl.posy)
+        
+      if mnu.mnuvh == MNUVH.horizontal :
+        if mnu.cadre == CADRE.line0 :
+          gotoXY(mnu.posx + pnl.posx  - 1 , h  + mnu.posy + pnl.posy - 1)
+        else : 
+          gotoXY(mnu.posx + pnl.posx  , h +  mnu.posy + pnl.posy )
 
-        setBackgroundColor(mnu.backgr,mnu.backbr)
-        setForegroundColor(mnu.foregr,mnu.forebr)
-        if pos == n :
-          writeStyled(cell,mnu.styleCell)  
-        else :
-          writeStyled(cell,mnu.style)
-        inc(n)
-      stdout.flushFile()
-      var key  = getFunc()
+      setBackgroundColor(mnu.backgr,mnu.backbr)
+      setForegroundColor(mnu.foregr,mnu.forebr)
+      if pos == n :
+        writeStyled(cell,mnu.styleCell)  
+      else :
+        writeStyled(cell,mnu.style)
+      inc(n)
+      h += runeLen(cell)
+    stdout.flushFile()
+    var key  = getFunc()
 
-      if key == Key.Mouse :
-        let mnuMouse = getMouse()
-        if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdUp   :  key = Key.Up
-        if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdDown :  key = Key.Down
-        if mnuMouse.action == MouseButtonAction.mbaReleased : key = Key.Enter
-      case key
+    if key == Key.Mouse :
+      let mnuMouse = getMouse()
+      if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdUp   :
+        if mnu.mnuvh == MNUVH.vertical :    key = Key.Up
+        if mnu.mnuvh == MNUVH.horizontal :  key = Key.Left
+      if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdDown :
+        if mnu.mnuvh == MNUVH.vertical :    key = Key.Down
+        if mnu.mnuvh == MNUVH.horizontal :  key = Key.Right
+      if mnuMouse.action == MouseButtonAction.mbaReleased : key = Key.Enter
+    case key
 
-        of Key.Escape:
-          result = 0
-          if not pnl.mouse : OffMouse()
-          break 
-        of Key.Enter:
-          result = pos + 1
-          if not pnl.mouse : OffMouse()
-          break
-        of Key.Down:
-          if pos < (len(mnu.item) - 1) : inc(pos)
-        of Key.Up:
-          if pos > 0 : dec(pos)
-        else: discard
+      of Key.Escape:
+        result = 0
+        if not pnl.mouse : OffMouse()
+        break 
+      of Key.Enter:
+        result = pos + 1
+        if not pnl.mouse : OffMouse()
+        break
+      of Key.Down:
+        if pos < (len(mnu.item) - 1) : inc(pos)
+      of Key.Up:
+        if pos > 0 : dec(pos)
+      of Key.Right:
+        if pos < (len(mnu.item) - 1) : inc(pos)
+      of Key.Left:
+        if pos > 0 : dec(pos)
+      else: discard
 
 
 
