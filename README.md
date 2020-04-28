@@ -11,7 +11,8 @@
 
 **IMPORT: termkey project**
 
-<u>mise en fonction le 2020-04-15</u>
+<u>mise en fonction le 2020-04-15</u>  
+
   * corrective 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; grammar horizontal
   * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal
 

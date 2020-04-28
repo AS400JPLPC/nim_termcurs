@@ -1563,8 +1563,7 @@ func isMouse*(pnl : var PANEL): bool=
 
 ##================================================================
 ## traiement des menus enter = select  1..n 0 = abort (Escape)
-## Turning on the mouse
-## movement with the wheel and validation with the clik
+## UP DOWN LEFT RIGHT MOUSE
 ##================================================================
 proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
   var pos : Natural = npos

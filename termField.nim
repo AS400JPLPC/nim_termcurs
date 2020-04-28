@@ -49,7 +49,7 @@ var pnlF2 = new(PANEL)
 var key : Key = Key.None
 
 var pnlx = new(PANEL)
-var pnl = 2
+
 
 var mField:MENU
 defMenu(mField , "Field" , 3 , 50 ,
@@ -224,9 +224,10 @@ while true:
 
     of Key.F9 :
       var menuF9:MENU
-      pnlx  = pnlF2           #------------ test manuel pnlx  = pnlF1/pnlF2 
+      pnlx  = pnlF1           #------------ test manuel pnlx  = pnlF1/pnlF2   pnl =1/2
+      var pnl = 1
       defMenu(menuF9 , "Test" , 15 , 30,
-              MNUVH.vertical , @["unProtect","Protect","Inactif ","Actif ","Quitter"],line0
+              MNUVH.horizontal , @["unProtect","Protect","Inactif ","Actif ","Quitter"],line0
               )  #,mnuatrx
       printMenu(pnlx,menuF9)
       var sel :Natural = 0
@@ -295,8 +296,8 @@ while true:
         else : discard
 
       if not isActif(pnlF1) or sel == 0 : 
-        key = Key.F2        # Escape = 0 
-
+        if pnl == 2 : key = Key.F2        # Escape = 0 
+        if pnl == 1 : key = Key.F1        # Escape = 0 
 
 
       if pnl == 2 : 
