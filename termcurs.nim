@@ -1,5 +1,5 @@
 import termkey
-import terminal , strformat , strutils , std/[re]
+import terminal , strformat , strutils , std/[re]  , math
 import unicode except strip, align
 
 
@@ -60,6 +60,23 @@ type
     backbr*: bool
     foregr*: ForegroundColor 
     forebr*: bool
+
+  GRIDATRB* = ref object
+    style* : set[Style]
+    backgr*: BackgroundColor
+    backbr*: bool
+    foregr*: ForegroundColor 
+    forebr*: bool
+    title_style* : set[Style]
+    title_backgr*: BackgroundColor
+    title_backbr*: bool
+    title_foregr*: ForegroundColor 
+    title_forebr*: bool
+    cell_style* : set[Style]
+    cell_backgr*: BackgroundColor
+    cell_backbr*: bool
+    cell_foregr*: ForegroundColor 
+    cell_forebr*: bool
 
   BTNSPACE* = ref object
     space* : Natural
@@ -174,7 +191,7 @@ type
     actif*: bool
 
 
-  TerminalChar = object
+  TerminalChar* = object
     ch: Rune                  # char 
     bg: BackgroundColor       # color
     bgb: bool                 # brigth
@@ -220,8 +237,48 @@ type
     actif:    bool
 
 
+  # GRID 
+  Justified* {.pure.} = enum 
+    leftpad ,
+    rightpad,
+    center
 
 
+  TermStyle* = ref object
+    colSeparator*: string 
+
+  Cell* = ref object
+    text : string
+    len  : Natural
+    place : Justified
+    posy  : Natural
+
+  TermGrid* = ref object 
+    name : string 
+    posx: Natural
+    posy: Natural
+    lines: Natural
+    cols : Natural
+    pagerows: Natural
+    rows: seq[seq[string]]
+    nrow: seq[int]
+    headers: seq[Cell]
+    separator: TermStyle
+    separateRows: bool
+    gridatr : GRIDATRB
+    actif*: bool
+    lignes: int
+    pages*: int
+    cursligne:int
+    curspage*:int
+    buf:seq[TerminalChar]
+
+
+
+let unicodeStyle* = TermStyle( colSeparator:"│")
+let noStyle* = TermStyle( colSeparator:"")
+
+# var interne
 
 var scratr* = new(ZONATRB)
 scratr.style  = {styleDim}
@@ -317,8 +374,22 @@ var btnspc* = new(BTNSPACE)
 btnspc.space = 3
 
 
-
-
+var gridatr* = new(GRIDATRB)
+gridatr.style  = {styleDim}
+gridatr.backgr = BackgroundColor.bgblack
+gridatr.backbr = false
+gridatr.foregr = ForegroundColor.fgWhite
+gridatr.forebr = false
+gridatr.title_style = {styleDim,styleUnderscore}
+gridatr.title_backgr = BackgroundColor.bgblack
+gridatr.title_backbr = false
+gridatr.title_foregr = ForegroundColor.fgGreen
+gridatr.title_forebr = false
+gridatr.cell_style = {styleDim,styleItalic}
+gridatr.cell_backgr = BackgroundColor.bgblack
+gridatr.cell_backbr = false
+gridatr.cell_foregr = ForegroundColor.fgCyan
+gridatr.cell_forebr = true
 
 ## define type cursor
 proc def_cursor*(e_curs: Natural = 0) =
@@ -553,10 +624,6 @@ proc defMenu*(menu : var MENU ; name:string ; posx:Natural; posy:Natural;
     if menu.cadre == CADRE.line1 or menu.cadre == CADRE.line2 : 
       menu.lines = 2
       menu.cols  += 1
-
-  
-  #gotoXY(39,1) ; echo "ioMenu",menu.cols ; let o = getFunc();
-
 
   menu.style  = mnu_atr.style
   menu.styleCell  = mnu_atr.styleCell
@@ -1065,48 +1132,49 @@ proc printButton*(pnl: var PANEL; btn_esp : BTNSPACE = btnspc )  =
 
   for i,btn in pnl.button:
     s = $btn.key
-    if btn.actif :
-      for ch in runes(s):
-        pnl.buf[n].ch = ch
-        pnl.buf[n].bg  = btnatr.backgr
-        pnl.buf[n].bgb = btnatr.backbr
-        pnl.buf[n].fg  = btnatr.foregr
-        pnl.buf[n].fgb = btnatr.forebr
-        pnl.buf[n].style = btnatr.style
-        pnl.buf[n].on = true
-        inc(n)
-      n += 1
-      for ch in runes(btn.label):
-        pnl.buf[n].ch = ch
-        pnl.buf[n].bg  = btnatr.title_backgr
-        pnl.buf[n].bgb = btnatr.title_backbr
-        pnl.buf[n].fg  = btnatr.title_foregr
-        pnl.buf[n].fgb = btnatr.title_forebr
-        pnl.buf[n].style = btnatr.title_style
-        pnl.buf[n].on = true
-        inc(n)
-    else :
-      for ch in runes(s):
-        pnl.buf[n].ch = " ".runeAt(0)
-        pnl.buf[n].bg  = pnl.backgr
-        pnl.buf[n].bgb = pnl.backbr
-        pnl.buf[n].fg  = pnl.foregr
-        pnl.buf[n].fgb = pnl.forebr
-        pnl.buf[n].style =  pnl.style
-        pnl.buf[n].on = false
-        inc(n)
-      n += 1
-      for ch in runes(btn.label):
-        pnl.buf[n].ch = " ".runeAt(0)
-        pnl.buf[n].bg  = pnl.backgr
-        pnl.buf[n].bgb = pnl.backbr
-        pnl.buf[n].fg  = pnl.foregr
-        pnl.buf[n].fgb = pnl.forebr
-        pnl.buf[n].style =  pnl.style
-        pnl.buf[n].on = false
-        inc(n)
-      
-    n += btn_esp.space
+    if btn.label > "" :
+      if btn.actif :
+        for ch in runes(s):
+          pnl.buf[n].ch = ch
+          pnl.buf[n].bg  = btnatr.backgr
+          pnl.buf[n].bgb = btnatr.backbr
+          pnl.buf[n].fg  = btnatr.foregr
+          pnl.buf[n].fgb = btnatr.forebr
+          pnl.buf[n].style = btnatr.style
+          pnl.buf[n].on = true
+          inc(n)
+        n += 1
+        for ch in runes(btn.label):
+          pnl.buf[n].ch = ch
+          pnl.buf[n].bg  = btnatr.title_backgr
+          pnl.buf[n].bgb = btnatr.title_backbr
+          pnl.buf[n].fg  = btnatr.title_foregr
+          pnl.buf[n].fgb = btnatr.title_forebr
+          pnl.buf[n].style = btnatr.title_style
+          pnl.buf[n].on = true
+          inc(n)
+      else :
+        for ch in runes(s):
+          pnl.buf[n].ch = " ".runeAt(0)
+          pnl.buf[n].bg  = pnl.backgr
+          pnl.buf[n].bgb = pnl.backbr
+          pnl.buf[n].fg  = pnl.foregr
+          pnl.buf[n].fgb = pnl.forebr
+          pnl.buf[n].style =  pnl.style
+          pnl.buf[n].on = false
+          inc(n)
+        n += 1
+        for ch in runes(btn.label):
+          pnl.buf[n].ch = " ".runeAt(0)
+          pnl.buf[n].bg  = pnl.backgr
+          pnl.buf[n].bgb = pnl.backbr
+          pnl.buf[n].fg  = pnl.foregr
+          pnl.buf[n].fgb = pnl.forebr
+          pnl.buf[n].style =  pnl.style
+          pnl.buf[n].on = false
+          inc(n)
+        
+      n += btn_esp.space
 
 
 
@@ -1208,14 +1276,14 @@ proc clearPanel*(pnl: var PANEL)=
   pnl.nbrbox   = 0
   pnl.nbrlabel = 0
   pnl.nbrfield = 0
-  pnl.box    = newseq[BOX](0)
-  pnl.label  = newseq[LABEL](0)
-  pnl.field  = newseq[FIELD](0)
-  pnl.hiden  = newseq[HIDEN](0)
+  pnl.box    = newseq[BOX]()
+  pnl.label  = newseq[LABEL]()
+  pnl.field  = newseq[FIELD]()
+  pnl.hiden  = newseq[HIDEN]()
   pnl.index  = 0
-  pnl.button= newseq[BUTTON](0)
-  pnl.funckey = newseq[Key](0)
-  pnl.buf = newSeq[TerminalChar](0)
+  pnl.button= newseq[BUTTON]()
+  pnl.funckey = newseq[Key]()
+  pnl.buf = newSeq[TerminalChar]()
   pnl.actif = false
 
 
@@ -1225,7 +1293,7 @@ proc clearPanel*(pnl: var PANEL)=
 ## vide object MENU
 proc clearPanel*(mnu: var MENU)=
   mnu.selMenu  = 0
-  mnu.item = newseq[string](0)
+  mnu.item = newseq[string]()
   mnu.actif = false
 
 
@@ -1401,12 +1469,35 @@ proc restorePanel*(dst: PANEL; mnu: MENU) =
   if not dst.actif : return
   var npos :int =0
   var n = mnu.posx
-  #if mnu.mnuvh == MNUVH.vertical:
   for x in 0..mnu.lines:
     npos = dst.cols * n + mnu.posy - 1
     for y in 0..mnu.cols:
       inc(npos)
       gotoXY(x + mnu.posx + dst.posx - 1 , y + mnu.posy + dst.posy - 1 )
+      if dst.buf[npos].on :
+        setBackgroundColor(dst.buf[npos].bg,dst.buf[npos].bgb)
+        setForegroundColor(dst.buf[npos].fg,dst.buf[npos].fgb)
+        writeStyled($dst.buf[npos].ch,dst.buf[npos].style)
+      else :
+        setBackgroundColor(dst.backgr,dst.backbr)
+        setForegroundColor(dst.foregr,dst.forebr)
+        writeStyled(" ",dst.style)
+    inc(n)
+    stdout.flushFile()
+
+
+
+
+# restore the base occupied by grid
+proc restorePanel*(dst: PANEL; grid: TermGrid) =
+  if not dst.actif : return
+  var npos :int =0
+  var n = grid.posx
+  for x in 0..grid.lines:
+    npos = dst.cols * n + grid.posy - 1
+    for y in 0..grid.cols:
+      inc(npos)
+      gotoXY(x + grid.posx + dst.posx - 1 , y + grid.posy + dst.posy - 1 )
       if dst.buf[npos].on :
         setBackgroundColor(dst.buf[npos].bg,dst.buf[npos].bgb)
         setForegroundColor(dst.buf[npos].fg,dst.buf[npos].fgb)
@@ -1561,9 +1652,238 @@ func isMouse*(pnl : var PANEL): bool=
 
 
 
+func CalculePos*(this: TermGrid) =
+  var n : Natural = 1 # this.posy = separator "|"
+  if this.separateRows == false : n = 0 
+  var pos : Natural = this.posy
+  
+  for i in 0..<len(this.headers):
+    if i == 0 : this.headers[i].posy = this.posy 
+    else : this.headers[i].posy = pos 
+    pos = this.headers[i].posy + this.headers[i].len  + n  
+    this.cols = pos
+
+
+proc nRow*( line : var int ) =
+      line += 1
+
+proc newTermGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
+                  separator: TermStyle = unicodeStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): TermGrid =
+
+  result = new TermGrid
+  result.name  = name
+  result.posx  = posx
+  result.posy  = posy
+  result.lines = pagerows + 1 #  row per page + header +  end line
+  result.cols  = 0
+  result.separator = separator
+  result.pageRows = pagerows
+  result.rows = newSeq[seq[string]]()
+  result.nrow = newSeq[int]()
+  result.headers = newSeq[Cell]()
+  if separator.colSeparator == "" : result.separateRows =false else : result.separateRows =true
+  result.actif = actif
+  result.gridatr = grid_atr
+  result.lignes  = 0
+  result.pages  = 0
+  result.cursligne  = -1
+  result.curspage  = 1
+
+
+
+
+
+proc columnsCount*(this:  TermGrid): int =
+  result = this.headers.len
+
+proc setHeaders*(this: TermGrid, headers: seq[Cell]) =
+  for cell in headers:
+    this.headers.add(cell)
+
+  CalculePos(this)
+
+  this.buf = newSeq[TerminalChar]((this.lines+1)*(this.cols+1))
+
+
+
+proc newCell*(text: string; len : Natural; place :  Justified = leftpad;): Cell =
+  result = new(Cell)
+  result.place  = place
+  result.len    = len
+  result.text   = text
+  result.posy   = 0
+
+
+proc addRows*(this: TermGrid; rows:seq[string]) =
+  this.rows.add(@(rows))
+
+proc setPage*(this :TermGrid)=
+  this.lignes = len(this.rows)
+  
+  if this.lignes <= this.pagerows  : 
+    this.pages = 1
+  else : 
+    this.pages = this.lignes.div(int(this.pagerows))
+    if  this.lignes.floorMod(int(this.pagerows)) > 0 : this.pages += 1 
+
+
+proc reset*(this: TermGrid) =
+  this.name  = ""
+  this.posx  = 0
+  this.posy  = 0
+  this.lines = 0 
+  this.cols  = 0
+  this.separator = noStyle
+  this.pageRows = 0
+  this.rows = newSeq[seq[string]]()
+  this.nrow = newSeq[int]()
+  this.headers = newSeq[Cell]()
+  this.lignes  = 0
+  this.pages  = 0
+  this.cursligne  = 0
+  this.curspage  = 0
+
+proc PrintGridHeader*(this: TermGrid) =
+  var buf : string
+  var n : int
+  let Blan : Rune = " ".runeAt(0)
+  let Sep : Rune = this.separator.colSeparator.runeAt(0)
+  for n in 0..<len(this.headers):
+    buf &= $Sep  & $Blan.repeat(this.headers[n].len ) 
+
+  buf = buf & $Sep
+
+
+  for x in 1..this.lines:
+    n = this.cols * x
+    for ch in runes(buf):
+      this.buf[n].ch = ch
+      this.buf[n].bg  = this.gridatr.backgr
+      this.buf[n].bgb = this.gridatr.backbr
+      this.buf[n].fg  = this.gridatr.foregr
+      this.buf[n].fgb = this.gridatr.forebr
+      this.buf[n].style = this.gridatr.style
+      this.buf[n].on = true
+      inc(n)
+
+  for i in 0..<len(this.headers):
+    n = this.cols
+    n =  n + this.headers[i].posy
+    for ch in runes(this.headers[i].text):
+
+      this.buf[n].ch = ch
+      this.buf[n].bg  = this.gridatr.title_backgr
+      this.buf[n].bgb = this.gridatr.title_backbr
+      this.buf[n].fg  = this.gridatr.title_foregr
+      this.buf[n].fgb = this.gridatr.title_forebr
+      this.buf[n].style = this.gridatr.title_style
+      this.buf[n].on = true
+      inc(n)
+
+  for x in 1..this.lines:
+    n = this.cols * x
+    for y in 1..this.cols:
+      gotoXY(x + this.posx - 1 , y + this.posy - 1)
+      setBackgroundColor(this.buf[n].bg,this.buf[n].bgb)
+      setForegroundColor(this.buf[n].fg,this.buf[n].fgb)
+      writeStyled($this.buf[n].ch,this.buf[n].style)
+      inc(n)
+
+
+
+
+proc PrintGridRows*(this: TermGrid ) =
+  
+  var n : int
+  var start : int = 0
+  setPage(this)
+  this.nrow = newSeq[int]()
+  if this.curspage == 0 : start = 0
+  else: start = this.pagerows * (this.curspage - 1 )
+  PrintGridHeader(this)
+  for r in 0..<this.pagerows:
+    var l = r + start 
+    if l < this.lignes:
+      var buf :seq[string] = this.rows[l]
+      this.nrow.add(l)
+      for h in 0..<len(this.headers):
+        n = this.cols * (2 + r)
+        n =  n + this.headers[h].posy 
+        for ch in runes(buf[h]):
+          this.buf[n].ch = ch
+          this.buf[n].bg  = this.gridatr.cell_backgr
+          this.buf[n].bgb = this.gridatr.cell_backbr
+          this.buf[n].fg  = this.gridatr.cell_foregr
+          this.buf[n].fgb = this.gridatr.cell_forebr
+          
+          if this.cursligne == r :
+            this.buf[n].style = {styleReverse}
+          else :
+            this.buf[n].style = this.gridatr.cell_style
+          this.buf[n].on = true
+          inc(n)
+
+
+    for x in 2..this.lines:
+      n = this.cols * x
+      for y in 1..this.cols:
+        gotoXY(x + this.posx - 1 , y + this.posy - 1)
+        setBackgroundColor(this.buf[n].bg,this.buf[n].bgb)
+        setForegroundColor(this.buf[n].fg,this.buf[n].fgb)
+        writeStyled($this.buf[n].ch,this.buf[n].style)
+        inc(n)
+
+
+
+##================================================================
+## traiement des GRID enter = select  1..n 0 = abort (Escape)
+## Turning on the mouse
+## movement with the wheel and validation with the clik
+##================================================================
+
+proc ioGrid*(this: TermGrid ): (Key , seq[string])=        # IO Format
+  var buf :seq[string]
+  if not this.actif : return (Key.None, buf)
+  
+  var grid_key:Key = Key.Enter
+  var CountLigne = 0
+  this.cursligne = 0
+
+  hideCursor()
+  while true :
+    buf = newseq[string]()
+    PrintGridRows(this)
+    grid_key = getFunc()
+ 
+    case grid_Key
+      of Key.Escape :
+        this.cursligne = -1
+        return (Key.None,buf)
+      of Key.Enter:
+        if this.lignes > 0:
+          this.cursligne = -1
+          buf = this.rows[this.nrow[CountLigne]]
+          return (Key.Enter,buf)
+        else : return (Key.None,buf)
+      of Key.Up :
+        if CountLigne > 0 : 
+          dec(CountLigne)
+          this.cursligne = CountLigne
+      of Key.Down :
+        if CountLigne < len(this.nrow) - 1  :
+          inc(CountLigne)
+          this.cursligne = CountLigne
+
+      else :discard
+
+
+
+
+
 ##================================================================
 ## traiement des menus enter = select  1..n 0 = abort (Escape)
-## UP DOWN LEFT RIGHT MOUSE
+## Turning on the mouse
+## movement with the wheel and validation with the clik
 ##================================================================
 proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
   var pos : Natural = npos
@@ -1810,12 +2130,6 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
   ## field buffer management
   ##--------------------------------------------------
   while true :
-    # debug
-    #gotoXY(40,1)
-    #echo fmt"                                                                                                         "
-    #gotoXY(40,1)
-    #echo fmt"{e_curs}, count {e_count} posx {e_posx}  posy {e_posy} nbrCar {e_nbrcar} {e_str} {e_FIELD} {len(e_FIELD)}    {fld.field.runeLen()}"
-
     setBackgroundColor(fld.backgr,fld.backbr)
     setForegroundColor(fld.foregr,fld.forebr)
 
@@ -1927,7 +2241,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
         case fld.reftyp         ## Standard treatment of FIELD TYPE
 
           of ALPHA, ALPHA_UPPER:
-            if e_count < e_nbrcar and isAlpha(e_str) or
+            if e_count < e_nbrcar and isAlpha(e_str) or (e_str == "-" and e_count > 0)  or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
               if fld.reftyp == ALPHA:
@@ -1970,11 +2284,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
             if e_count < e_nbrcar and e_str != " " or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
-              if fld.reftyp == ALPHA_NUMERIC:
-                e_FIELD[e_count] = e_str.runeAt(0)
-              else:
-                e_str = e_str.toUpper()
-                e_FIELD[e_count] = e_str.runeAt(0)
+              e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -2082,6 +2392,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
 
 
 
+
+
 ##------------------------------------------------------
 ## Format management including zones
 ## keyboard Function keys are returned to the calling procedure
@@ -2134,8 +2446,6 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
     printField(pnl,pnl.field[index])
     displayField(pnl,pnl.field[index])
 
-
-
   while true :
 
     #controls the boundary sequence of the field
@@ -2143,7 +2453,7 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
       CountField = isPriorIO(pnl,len(pnl.field)-1)
     if CountField == 0  and isFieldIO(pnl) > 0 :
       CountField = isFirstIO(pnl,0)
-
+    
     if not pnl.field[CountField].protect and pnl.field[CountField].actif:
 
       fld_key = ioField(pnl,pnl.field[CountField])   # work input/output Field

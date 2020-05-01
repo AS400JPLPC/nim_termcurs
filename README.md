@@ -1,10 +1,14 @@
 # nim_Termcurs
 
-# NIM-LANG for terminal
-# API inspired by 5250/3270
+# curse TERMINAL inspired 5250/3270 done only with nim
 
 doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/termcurs.html)
 
+img : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr01.png)
+
+img : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr06.png)
+
+img : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.png)
 **<u>premier test fait</u>**
 
 **IN PROGRESS**
@@ -16,6 +20,7 @@ doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim
 
   * corrective 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; grammar horizontal
   * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal
+  * corrective 2020 &nbsp;&rarr;&nbsp; field APLHA include "-"
 
 
 **Thank you**
@@ -31,12 +36,7 @@ doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim
 
 
 **Resumes operation of the 5250/3270 or Ncursew (let's keep it modest).**
-
-
-
-
-**<u>It is not all over.&nbsp;&nbsp;&nbsp;
-I still have the part allowing to make a sub-file integrating in the screen more commonly called SFLINE or GRID</u>**  
+ 
 
 
 
@@ -68,7 +68,20 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | Escape         | &nbsp;&rarr;&nbsp; return field                    |
 | Other KEY      | &nbsp;&rarr;&nbsp; returns to the calling procedure|
 
+  
+<br>
+<br>
+&rarr;&nbsp; **ioGRID** Display field type table, with page / line tracking:  
 
+| Func...........                    |
+|------------------------------------|
+| Escape = 0                         |
+| Enter = return (Key seq[string]    |
+| scrolling with UP..DOWN            |
+
+  
+<br>
+<br>
 
 &nbsp;
 &rarr;&nbsp; **USE**:

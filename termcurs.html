@@ -71,7 +71,7 @@ function main() {
 <body onload="main()">
 <div class="document" id="documentId">
   <div class="container">
-    <h1 class="title">traiement des menus enter = select  1..n 0 = abort (Escape) Turning on the MOUSE UP DOWN LEFT RIGHT </h1>
+    <h1 class="title">curse TERMINAL inspired 5250/3270 done only with nim</h1>
     <div class="row">
   <div class="three columns">
   <div class="theme-switch-wrapper">
@@ -133,6 +133,23 @@ function main() {
   backbr*: bool
   foregr*: ForegroundColor
   forebr*: bool"><wbr />ZONATRB<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#GRIDATRB"
+    title="GRIDATRB = ref object
+  style*: set[Style]
+  backgr*: BackgroundColor
+  backbr*: bool
+  foregr*: ForegroundColor
+  forebr*: bool
+  title_style*: set[Style]
+  title_backgr*: BackgroundColor
+  title_backbr*: bool
+  title_foregr*: ForegroundColor
+  title_forebr*: bool
+  cell_style*: set[Style]
+  cell_backgr*: BackgroundColor
+  cell_backbr*: bool
+  cell_foregr*: ForegroundColor
+  cell_forebr*: bool"><wbr />GRIDATRB<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#BTNSPACE"
     title="BTNSPACE = ref object
   space*: Natural"><wbr />BTNSPACE<span class="attachedType"></span></a></li>
@@ -159,6 +176,15 @@ function main() {
   item: seq[string]
   selMenu: Natural
   actif*: bool"><wbr />MENU<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#TerminalChar"
+    title="TerminalChar = object
+  ch: Rune
+  bg: BackgroundColor
+  bgb: bool
+  fg: ForegroundColor
+  fgb: bool
+  style: set[Style]
+  on: bool"><wbr />Terminal<wbr />Char<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#PANEL"
     title="PANEL = ref object
   name: string
@@ -187,6 +213,38 @@ function main() {
   mouse: bool
   buf: seq[TerminalChar]
   actif: bool"><wbr />PANEL<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#Justified"
+    title="Justified {.pure.} = enum
+  leftpad, rightpad, center"><wbr />Justified<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#TermStyle"
+    title="TermStyle = ref object
+  colSeparator*: string"><wbr />Term<wbr />Style<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#Cell"
+    title="Cell = ref object
+  text: string
+  len: Natural
+  place: Justified
+  posy: Natural"><wbr />Cell<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#TermGrid"
+    title="TermGrid = ref object
+  name: string
+  posx: Natural
+  posy: Natural
+  lines: Natural
+  cols: Natural
+  pagerows: Natural
+  rows: seq[seq[string]]
+  nrow: seq[int]
+  headers: seq[Cell]
+  separator: TermStyle
+  separateRows: bool
+  gridatr: GRIDATRB
+  actif*: bool
+  lignes: int
+  pages*: int
+  cursligne: int
+  curspage*: int
+  buf: seq[TerminalChar]"><wbr />Term<wbr />Grid<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -217,6 +275,18 @@ function main() {
     title="btnatr = new(BOXATRB)"><wbr />btnatr<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#btnspc"
     title="btnspc = new(BTNSPACE)"><wbr />btnspc<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#gridatr"
+    title="gridatr = new(GRIDATRB)"><wbr />gridatr<span class="attachedType"></span></a></li>
+
+  </ul>
+</li>
+<li>
+  <a class="reference reference-toplevel" href="#9" id="59">Lets</a>
+  <ul class="simple simple-toc-section">
+      <li><a class="reference" href="#unicodeStyle"
+    title="unicodeStyle = TermStyle(colSeparator: &quot;│&quot;)"><wbr />unicode<wbr />Style<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#noStyle"
+    title="noStyle = TermStyle(colSeparator: &quot;&quot;)"><wbr />no<wbr />Style<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -347,6 +417,8 @@ function main() {
     title="restorePanel(dst: PANEL; src: var PANEL)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#restorePanel%2CPANEL%2CMENU"
     title="restorePanel(dst: PANEL; mnu: MENU)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#restorePanel%2CPANEL%2CTermGrid"
+    title="restorePanel(dst: PANEL; grid: TermGrid)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#restorePanel%2CPANEL%2CNatural%2CNatural"
     title="restorePanel(pnl: PANEL; lines, posy: Natural)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#setProtect%2CFIELD%2Cbool"
@@ -367,6 +439,30 @@ function main() {
     title="setMouse(pnl: var PANEL; actif: bool)"><wbr />set<wbr />Mouse<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#isPanelKey%2CPANEL%2CKey"
     title="isPanelKey(pnl: PANEL; e_key: Key): bool"><wbr />is<wbr />Panel<wbr />Key<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#nRow%2Cint"
+    title="nRow(line: var int)"><wbr />n<wbr />Row<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#newTermGrid%2Cstring%2CNatural%2CNatural%2CNatural%2CTermStyle%2CGRIDATRB%2Cbool"
+    title="newTermGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
+            separator: TermStyle = unicodeStyle; grid_atr: GRIDATRB = gridatr;
+            actif: bool = true): TermGrid"><wbr />new<wbr />Term<wbr />Grid<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#columnsCount%2CTermGrid"
+    title="columnsCount(this: TermGrid): int"><wbr />columns<wbr />Count<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#setHeaders%2CTermGrid%2Cseq%5BCell%5D"
+    title="setHeaders(this: TermGrid; headers: seq[Cell])"><wbr />set<wbr />Headers<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#newCell%2Cstring%2CNatural%2CJustified"
+    title="newCell(text: string; len: Natural; place: Justified = leftpad): Cell"><wbr />new<wbr />Cell<span class="attachedType">Cell</span></a></li>
+  <li><a class="reference" href="#addRows%2CTermGrid%2Cseq%5Bstring%5D"
+    title="addRows(this: TermGrid; rows: seq[string])"><wbr />add<wbr />Rows<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#setPage%2CTermGrid"
+    title="setPage(this: TermGrid)"><wbr />set<wbr />Page<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#reset%2CTermGrid"
+    title="reset(this: TermGrid)"><wbr />reset<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#PrintGridHeader%2CTermGrid"
+    title="PrintGridHeader(this: TermGrid)"><wbr />Print<wbr />Grid<wbr />Header<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#PrintGridRows%2CTermGrid"
+    title="PrintGridRows(this: TermGrid)"><wbr />Print<wbr />Grid<wbr />Rows<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#ioGrid%2CTermGrid"
+    title="ioGrid(this: TermGrid): (Key, seq[string])"><wbr />io<wbr />Grid<span class="attachedType">TermGrid</span></a></li>
   <li><a class="reference" href="#ioMenu%2CPANEL%2CMENU%2CNatural"
     title="ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu"><wbr />io<wbr />Menu<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#ioField%2CPANEL%2CFIELD"
@@ -421,6 +517,8 @@ function main() {
     title="isActif(pnl: var PANEL): bool"><wbr />is<wbr />Actif<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#isMouse%2CPANEL"
     title="isMouse(pnl: var PANEL): bool"><wbr />is<wbr />Mouse<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#CalculePos%2CTermGrid"
+    title="CalculePos(this: TermGrid)"><wbr />Calcule<wbr />Pos<span class="attachedType">TermGrid</span></a></li>
 
   </ul>
 </li>
@@ -431,7 +529,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">define type cursorErase and color and style defaultreturn BUTTONDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine Labelassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field Numericassigne FIELD to matrice for displayassigne BUTTON matrice for displayDefine PANELdisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayvide object PANEL / box/label/fld/funcvide object MENUget lines/COLS PANELreturn index actived from panel this getFieldreturn name from index actived from panel this getFieldreturn index Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn name from index actived from panel this getFieldreturn index Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldset on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELTest if KEYs must be managed by the programmerif on/off  FIELD / LABEL / BOX / MENU / PANEL<h1 id="format-management-including-zones-keyboard-function-keys-are-returned-to-the-calling-procedure-only-the-key-ctrla-eq-aide-slash-help-for-field-f1-is-reserved-for-complex-help-programming-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert-predefined-and-customizable-regex-control"><center>Format management including zones keyboard Function keys are returned to the calling procedure  only the key CtrlA = Aide / Help for field F1 is reserved for complex help programming  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT predefined and customizable REGEX control</center></h1></p>
+  <p class="module-desc">define type cursorErase and color and style defaultreturn BUTTONDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine Labelassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field Numericassigne FIELD to matrice for displayassigne BUTTON matrice for displayDefine PANELdisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayvide object PANEL / box/label/fld/funcvide object MENUget lines/COLS PANELreturn index actived from panel this getFieldreturn name from index actived from panel this getFieldreturn index Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn name from index actived from panel this getFieldreturn index Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldset on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELTest if KEYs must be managed by the programmerif on/off  FIELD / LABEL / BOX / MENU / PANEL<h1 id="input-buffer-management-modeled-on-5250slash3270-inspiration-ncurse-application-hold-principe-and-new-langage-use-termkeydotnim"><center>Input buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim</center></h1><h1 id="format-management-including-zones-keyboard-function-keys-are-returned-to-the-calling-procedure-only-the-key-ctrla-eq-aide-slash-help-for-field-f1-is-reserved-for-complex-help-programming-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert-predefined-and-customizable-regex-control"><center>Format management including zones keyboard Function keys are returned to the calling procedure  only the key CtrlA = Aide / Help for field F1 is reserved for complex help programming  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT predefined and customizable REGEX control</center></h1></p>
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
@@ -496,6 +594,29 @@ function main() {
 
 
 </dd>
+<a id="GRIDATRB"></a>
+<dt><pre><a href="termcurs.html#GRIDATRB"><span class="Identifier">GRIDATRB</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+  <span class="Identifier">style</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
+  <span class="Identifier">backgr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
+  <span class="Identifier">backbr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">foregr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
+  <span class="Identifier">forebr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">title_style</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
+  <span class="Identifier">title_backgr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
+  <span class="Identifier">title_backbr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">title_foregr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
+  <span class="Identifier">title_forebr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">cell_style</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
+  <span class="Identifier">cell_backgr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
+  <span class="Identifier">cell_backbr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">cell_foregr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
+  <span class="Identifier">cell_forebr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+</pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="BTNSPACE"></a>
 <dt><pre><a href="termcurs.html#BTNSPACE"><span class="Identifier">BTNSPACE</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
   <span class="Identifier">space</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
@@ -540,6 +661,21 @@ function main() {
 
 
 </dd>
+<a id="TerminalChar"></a>
+<dt><pre><a href="termcurs.html#TerminalChar"><span class="Identifier">TerminalChar</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
+  <span class="Identifier">ch</span><span class="Other">:</span> <span class="Identifier">Rune</span>
+  <span class="Identifier">bg</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
+  <span class="Identifier">bgb</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">fg</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
+  <span class="Identifier">fgb</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">style</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
+  <span class="Identifier">on</span><span class="Other">:</span> <span class="Identifier">bool</span>
+</pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="PANEL"></a>
 <dt><pre><a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
   <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span>
@@ -566,8 +702,63 @@ function main() {
   <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">funckey</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">Key</span><span class="Other">]</span>
   <span class="Identifier">mouse</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">buf</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">TerminalChar</span><span class="Other">]</span>
+  <span class="Identifier">buf</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#TerminalChar"><span class="Identifier">TerminalChar</span></a><span class="Other">]</span>
   <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span>
+</pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="Justified"></a>
+<dt><pre><a href="termcurs.html#Justified"><span class="Identifier">Justified</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">pure</span></span><span class="Other">.}</span></span> <span class="Other">=</span> <span class="Keyword">enum</span>
+  <span class="Identifier">leftpad</span><span class="Other">,</span> <span class="Identifier">rightpad</span><span class="Other">,</span> <span class="Identifier">center</span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="TermStyle"></a>
+<dt><pre><a href="termcurs.html#TermStyle"><span class="Identifier">TermStyle</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+  <span class="Identifier">colSeparator</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+</pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="Cell"></a>
+<dt><pre><a href="termcurs.html#Cell"><span class="Identifier">Cell</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+  <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">len</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">place</span><span class="Other">:</span> <a href="termcurs.html#Justified"><span class="Identifier">Justified</span></a>
+  <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+</pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="TermGrid"></a>
+<dt><pre><a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+  <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">lines</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">pagerows</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">rows</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">]</span>
+  <span class="Identifier">nrow</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">int</span><span class="Other">]</span>
+  <span class="Identifier">headers</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#Cell"><span class="Identifier">Cell</span></a><span class="Other">]</span>
+  <span class="Identifier">separator</span><span class="Other">:</span> <a href="termcurs.html#TermStyle"><span class="Identifier">TermStyle</span></a>
+  <span class="Identifier">separateRows</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">gridatr</span><span class="Other">:</span> <a href="termcurs.html#GRIDATRB"><span class="Identifier">GRIDATRB</span></a>
+  <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">lignes</span><span class="Other">:</span> <span class="Identifier">int</span>
+  <span class="Identifier">pages</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
+  <span class="Identifier">cursligne</span><span class="Other">:</span> <span class="Identifier">int</span>
+  <span class="Identifier">curspage</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
+  <span class="Identifier">buf</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#TerminalChar"><span class="Identifier">TerminalChar</span></a><span class="Other">]</span>
 </pre></dt>
 <dd>
 
@@ -658,6 +849,32 @@ function main() {
 </dd>
 <a id="btnspc"></a>
 <dt><pre><a href="termcurs.html#btnspc"><span class="Identifier">btnspc</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#BTNSPACE"><span class="Identifier">BTNSPACE</span></a><span class="Other">)</span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="gridatr"></a>
+<dt><pre><a href="termcurs.html#gridatr"><span class="Identifier">gridatr</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#GRIDATRB"><span class="Identifier">GRIDATRB</span></a><span class="Other">)</span></pre></dt>
+<dd>
+
+
+
+</dd>
+
+</dl></div>
+<div class="section" id="9">
+<h1><a class="toc-backref" href="#9">Lets</a></h1>
+<dl class="item">
+<a id="unicodeStyle"></a>
+<dt><pre><a href="termcurs.html#unicodeStyle"><span class="Identifier">unicodeStyle</span></a> <span class="Other">=</span> <a href="termcurs.html#TermStyle"><span class="Identifier">TermStyle</span></a><span class="Other">(</span><span class="Identifier">colSeparator</span><span class="Other">:</span> <span class="StringLit">&quot;│&quot;</span><span class="Other">)</span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="noStyle"></a>
+<dt><pre><a href="termcurs.html#noStyle"><span class="Identifier">noStyle</span></a> <span class="Other">=</span> <a href="termcurs.html#TermStyle"><span class="Identifier">TermStyle</span></a><span class="Other">(</span><span class="Identifier">colSeparator</span><span class="Other">:</span> <span class="StringLit">&quot;&quot;</span><span class="Other">)</span></pre></dt>
 <dd>
 
 
@@ -1053,6 +1270,14 @@ function main() {
 
 
 </dd>
+<a id="restorePanel,PANEL,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#restorePanel%2CPANEL%2CTermGrid"><span class="Identifier">restorePanel</span></a><span class="Other">(</span><span class="Identifier">dst</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">grid</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="restorePanel,PANEL,Natural,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#restorePanel%2CPANEL%2CNatural%2CNatural"><span class="Identifier">restorePanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">lines</span><span class="Other">,</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
@@ -1119,6 +1344,89 @@ function main() {
 </dd>
 <a id="isPanelKey,PANEL,Key"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#isPanelKey%2CPANEL%2CKey"><span class="Identifier">isPanelKey</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">e_key</span><span class="Other">:</span> <span class="Identifier">Key</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="nRow,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#nRow%2Cint"><span class="Identifier">nRow</span></a><span class="Other">(</span><span class="Identifier">line</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">int</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="newTermGrid,string,Natural,Natural,Natural,TermStyle,GRIDATRB,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#newTermGrid%2Cstring%2CNatural%2CNatural%2CNatural%2CTermStyle%2CGRIDATRB%2Cbool"><span class="Identifier">newTermGrid</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">pageRows</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span>
+                <span class="Identifier">separator</span><span class="Other">:</span> <a href="termcurs.html#TermStyle"><span class="Identifier">TermStyle</span></a> <span class="Other">=</span> <span class="Identifier">unicodeStyle</span><span class="Other">;</span> <span class="Identifier">grid_atr</span><span class="Other">:</span> <a href="termcurs.html#GRIDATRB"><span class="Identifier">GRIDATRB</span></a> <span class="Other">=</span> <span class="Identifier">gridatr</span><span class="Other">;</span>
+                <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="columnsCount,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#columnsCount%2CTermGrid"><span class="Identifier">columnsCount</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setHeaders,TermGrid,seq[Cell]"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setHeaders%2CTermGrid%2Cseq%5BCell%5D"><span class="Identifier">setHeaders</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">;</span> <span class="Identifier">headers</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#Cell"><span class="Identifier">Cell</span></a><span class="Other">]</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="newCell,string,Natural,Justified"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#newCell%2Cstring%2CNatural%2CJustified"><span class="Identifier">newCell</span></a><span class="Other">(</span><span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">len</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">place</span><span class="Other">:</span> <a href="termcurs.html#Justified"><span class="Identifier">Justified</span></a> <span class="Other">=</span> <span class="Identifier">leftpad</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#Cell"><span class="Identifier">Cell</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="addRows,TermGrid,seq[string]"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#addRows%2CTermGrid%2Cseq%5Bstring%5D"><span class="Identifier">addRows</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">;</span> <span class="Identifier">rows</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setPage,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setPage%2CTermGrid"><span class="Identifier">setPage</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="reset,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#reset%2CTermGrid"><span class="Identifier">reset</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="PrintGridHeader,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#PrintGridHeader%2CTermGrid"><span class="Identifier">PrintGridHeader</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+                                    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="PrintGridRows,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#PrintGridRows%2CTermGrid"><span class="Identifier">PrintGridRows</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+                                  <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="ioGrid,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#ioGrid%2CTermGrid"><span class="Identifier">ioGrid</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">Key</span><span class="Other">,</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1300,6 +1608,13 @@ tranform letter to *
 
 
 </dd>
+<a id="CalculePos,TermGrid"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#CalculePos%2CTermGrid"><span class="Identifier">CalculePos</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 
 </dl></div>
 
@@ -1310,7 +1625,7 @@ tranform letter to *
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-04-28 20:13:58 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-01 16:16:16 UTC</small>
       </div>
     </div>
   </div>
