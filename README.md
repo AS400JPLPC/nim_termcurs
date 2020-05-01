@@ -292,7 +292,7 @@ proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
 
 proc ioPanel(pnl: var PANEL): Key {...}
 
-Funcs
+#Funcs
 
 func Lines(pnl: PANEL): Natural {...}
 
