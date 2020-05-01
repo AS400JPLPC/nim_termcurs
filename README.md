@@ -31,7 +31,8 @@ img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.pn
   * Thank you to everyone who posted on github their knowledge was precious to me
   * To IBM education and their gifts of various books
   * [NCURSE](https://invisible-island.net/ncurses/announce.html)
-
+  * [illwill](https://github.com/johnnovak/illwill)
+  * [nim-terminaltables](https://github.com/xmonader/nim-terminaltables)
 
 
 
