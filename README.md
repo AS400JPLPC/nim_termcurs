@@ -13,8 +13,7 @@ img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.pn
 
 **<u>premier test fait</u>**
 
-**IN PROGRESS**
-**POSSIBLE BUG**
+**everything is not perfect please report problems Nim forum **
 
 **IMPORT: termkey project**
 
