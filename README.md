@@ -203,7 +203,7 @@ proc fldNumeric(fld: var FIELD; name: string; posx: Natural; posy: Natural;
                prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
 
 proc hdnString(hdn: var HIDEN; name: string; reftyp: Natural; field: string) {...}
-
+ 
 proc hdnSwitch(hdn: var HIDEN; name: string; reftyp: Natural; switch: bool) {...}
 
 proc printField(pnl: var PANEL; fld: FIELD) {...}
@@ -240,6 +240,8 @@ proc restorePanel(dst: PANEL; src: var PANEL) {...}
 
 proc restorePanel(dst: PANEL; mnu: MENU) {...}
 
+proc restorePanel(dst: PANEL; grid: TermGrid) {...}
+
 proc restorePanel(pnl: PANEL; lines, posy: Natural) {...}
 
 proc setProtect(fld: var FIELD; protect: bool) {...}
@@ -260,10 +262,37 @@ proc setMouse(pnl: var PANEL; actif: bool) {...}
 
 proc isPanelKey(pnl: PANEL; e_key: Key): bool {...}
 
-<br>
-<br>
-<br>
-# FUNCS
+proc nRow(line: var int) {...}
+
+proc newTermGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
+                separator: TermStyle = unicodeStyle; grid_atr: GRIDATRB = gridatr;
+                actif: bool = true): TermGrid {...}
+
+proc columnsCount(this: TermGrid): int {...}
+
+proc setHeaders(this: TermGrid; headers: seq[Cell]) {...}
+
+proc newCell(text: string; len: Natural; place: Justified = leftpad): Cell {...}
+
+proc addRows(this: TermGrid; rows: seq[string]) {...}
+
+proc setPage(this: TermGrid) {...}
+
+proc reset(this: TermGrid) {...}
+
+proc PrintGridHeader(this: TermGrid) {...}
+
+proc PrintGridRows(this: TermGrid) {...}
+
+proc ioGrid(this: TermGrid): (Key, seq[string]) {...}
+
+proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
+
+proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
+
+proc ioPanel(pnl: var PANEL): Key {...}
+
+Funcs
 
 func Lines(pnl: PANEL): Natural {...}
 
@@ -306,4 +335,6 @@ func isActif(btn: var BUTTON): bool {...}
 func isActif(pnl: var PANEL): bool {...}
 
 func isMouse(pnl: var PANEL): bool {...}
+
+func CalculePos(this: TermGrid) {...}
 
