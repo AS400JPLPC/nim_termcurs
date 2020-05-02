@@ -10,9 +10,16 @@ img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr06.pn
 
 img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.png)
 
+  
+<br>
+<br>
+# **<u>&nbsp;&rarr;&nbsp; IN PROGRESS It is possible that there are changes</u>**
+I test on a real data-base to validate the whole.
+It works, but I had to harmonize and add PROC or FUNC
 
-**<u>premier test fait</u>**
-
+  
+<br>
+<br>
 **everything is not perfect please report problems Nim forum **
 
 **IMPORT: termkey project**
@@ -21,8 +28,13 @@ img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.pn
 
   * corrective 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; grammar horizontal
   * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal
-  * corrective 2020 &nbsp;&rarr;&nbsp; field APLHA include "-"
+  * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"  
+ 
 
+  * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*  
+  * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u>  
+<brk>  
+    &nbsp;&nbsp;&nbsp;&rarr;&nbsp;***restructuring***&nbsp;&nbsp;&nbsp;&rarr;&nbsp;***automatic alignment support***&nbsp;&nbsp;&nbsp;&rarr;&nbsp;***code cleanup***
 
 **Thank you**
 
@@ -80,6 +92,8 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | Escape = 0                         |
 | Enter = return (Key seq[string]    |
 | scrolling with UP..DOWN            |
+| PageUP/PageDown                    |
+
 
   
 <br>
@@ -180,31 +194,31 @@ proc fldLabel(lbl: var LABEL; name: string; posx: Natural; posy: Natural; label:
 
 proc printLabel(pnl: var PANEL; lbl: LABEL) {...}
 
-proc fldString(fld: var FIELD; name: string; posx: Natural; posy: Natural;
-              reftyp: Natural; with: Natural; field: string; empty: bool;
-              errmsg: string; help: string; regex: string = "";
-              fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
+proc fldString(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+              with: Natural; field: string; empty: bool; errmsg: string; help: string;
+              regex: string = ""; fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr;
+              actif: bool = true) {...}
 
-proc fldMail(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: Natural;
+proc fldMail(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
             with: Natural; field: string; empty: bool; errmsg: string; help: string;
             fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
 
-proc fldSwitch(fld: var FIELD; name: string; posx: Natural; posy: Natural;
-              reftyp: Natural; switch: bool; empty: bool; errmsg: string; help: string;
+proc fldSwitch(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+              switch: bool; empty: bool; errmsg: string; help: string;
               swt_atr: ZONATRB = swtatr; prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
 
-proc fldDate(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: Natural;
+proc fldDate(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
             field: string; empty: bool; errmsg: string; help: string;
             fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
 
 proc fldNumeric(fld: var FIELD; name: string; posx: Natural; posy: Natural;
-               reftyp: Natural; with: Natural; scal: Natural; field: string;
-               empty: bool; errmsg: string; help: string; fld_atr: ZONATRB = fldatr;
+               reftyp: REFTYP; with: Natural; scal: Natural; field: string; empty: bool;
+               errmsg: string; help: string; fld_atr: ZONATRB = fldatr;
                prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
 
-proc hdnString(hdn: var HIDEN; name: string; reftyp: Natural; field: string) {...}
- 
-proc hdnSwitch(hdn: var HIDEN; name: string; reftyp: Natural; switch: bool) {...}
+proc hdnString(hdn: var HIDEN; name: string; reftyp: REFTYP; field: string) {...}
+
+proc hdnSwitch(hdn: var HIDEN; name: string; reftyp: REFTYP; switch: bool) {...}
 
 proc printField(pnl: var PANEL; fld: FIELD) {...}
 
@@ -220,9 +234,9 @@ proc displayPanel(pnl: PANEL) {...}
 
 proc printPanel(pnl: var PANEL) {...}
 
-proc clearPanel(pnl: var PANEL) {...}
+proc resetPanel(pnl: var PANEL) {...}
 
-proc clearPanel(mnu: var MENU) {...}
+proc resetPanel(mnu: var MENU) {...}
 
 proc clsLabel(pnl: var PANEL; lbl: LABEL) {...}
 
@@ -246,6 +260,8 @@ proc restorePanel(pnl: PANEL; lines, posy: Natural) {...}
 
 proc setProtect(fld: var FIELD; protect: bool) {...}
 
+proc setEdtCar(fld: var FIELD; Car: char) {...}
+
 proc setActif(fld: var FIELD; actif: bool) {...}
 
 proc setActif(lbl: var LABEL; actif: bool) {...}
@@ -262,27 +278,25 @@ proc setMouse(pnl: var PANEL; actif: bool) {...}
 
 proc isPanelKey(pnl: PANEL; e_key: Key): bool {...}
 
-proc nRow(line: var int) {...}
-
 proc newTermGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
                 separator: TermStyle = unicodeStyle; grid_atr: GRIDATRB = gridatr;
                 actif: bool = true): TermGrid {...}
+
+proc resetTerm(this: TermGrid) {...}
 
 proc columnsCount(this: TermGrid): int {...}
 
 proc setHeaders(this: TermGrid; headers: seq[Cell]) {...}
 
-proc newCell(text: string; len: Natural; place: Justified = leftpad): Cell {...}
+proc newCell(text: string; len: Natural; reftyp: REFTYP; edtcar: string = ""): Cell {...}
 
 proc addRows(this: TermGrid; rows: seq[string]) {...}
 
-proc setPage(this: TermGrid) {...}
+proc dltRows(this: TermGrid) {...}
 
-proc reset(this: TermGrid) {...}
+proc printGridHeader(this: TermGrid) {...}
 
-proc PrintGridHeader(this: TermGrid) {...}
-
-proc PrintGridRows(this: TermGrid) {...}
+proc printGridRows(this: TermGrid) {...}
 
 proc ioGrid(this: TermGrid): (Key, seq[string]) {...}
 
@@ -292,7 +306,7 @@ proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
 
 proc ioPanel(pnl: var PANEL): Key {...}
 
-#Funcs
+#   Funcs
 
 func Lines(pnl: PANEL): Natural {...}
 
@@ -304,21 +318,29 @@ func fldName(pnl: PANEL): string {...}
 
 func fldIndex(pnl: PANEL; name: string): int {...}
 
-func fldString(pnl: PANEL; name: string): string {...}
+func fldValue(pnl: PANEL; name: string): string {...}
 
-func fldString(pnl: PANEL; index: Natural): string {...}
+func fldValueSwitch(pnl: PANEL; name: string): bool {...}
 
-func fldSwitch(pnl: PANEL; index: Natural): int {...}
+func fldValue(pnl: PANEL; index: Natural): string {...}
+
+func fldValueSwitch(pnl: PANEL; index: Natural): bool {...}
 
 func hdnName(hdn: PANEL; index: Natural): string {...}
 
 func hdnIndex(hdn: PANEL; name: string): int {...}
 
-func hdnString(hdn: PANEL; name: string): string {...}
+func hdnValue(hdn: PANEL; name: string): string {...}
 
-func hdnString(hdn: PANEL; index: Natural): string {...}
+func hdnValueSwitch(hdn: PANEL; name: string): bool {...}
 
-func hdnSwitch(hdn: PANEL; index: Natural): int {...}
+func hdnValue(hdn: PANEL; index: Natural): string {...}
+
+func hdnValueSwitch(hdn: PANEL; index: Natural): bool {...}
+
+func fldNbrcar(pnl: PANEL; name: string): int {...}
+
+func fldReftyp(pnl: PANEL; name: string): REFTYP {...}
 
 func isProtect(fld: var FIELD): bool {...}
 
@@ -335,6 +357,4 @@ func isActif(btn: var BUTTON): bool {...}
 func isActif(pnl: var PANEL): bool {...}
 
 func isMouse(pnl: var PANEL): bool {...}
-
-func CalculePos(this: TermGrid) {...}
 

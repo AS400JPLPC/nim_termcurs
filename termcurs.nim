@@ -1,30 +1,37 @@
+##------------------------------------------------------
+## TERMCURS
+## curse TERMINAL inspired 5250/3270 done only with nim
+##------------------------------------------------------
+
 import termkey
-import terminal , strformat , strutils , std/[re]  , math
+import terminal , strutils , std/[re]  , math
+from strformat import alignString
 import unicode except strip, align
 
 
 const
-  ALPHA* = 1
-  ALPHA_UPPER* = 2
-  ALPHA_NUMERIC* = 3
-  ALPHA_NUMERIC_UPPER* = 4
-  TEXT_NUMERIC* = 5
-  PASSWORD* = 6
-  DIGIT* = 7
-  DIGIT_SIGNED* = 8
-  DECIMAL* = 9
-  DECIMAL_SIGNED* = 10
-  DATE_ISO* = 11
-  DATE_FR* = 12
-  DATE_US* = 13
-  MAIL_ISO* = 14
-  YES_NO* = 15
-  SWITCH* = 16
-
-  EMPTY* = true
-  FILL* = false
+  EMPTY*:bool = true
+  FILL*:bool = false
 
 type
+  REFTYP* {.pure.} = enum
+    ALPHA,
+    ALPHA_UPPER,
+    ALPHA_NUMERIC,
+    ALPHA_NUMERIC_UPPER,
+    TEXT_NUMERIC,
+    PASSWORD,
+    DIGIT,
+    DIGIT_SIGNED,
+    DECIMAL,
+    DECIMAL_SIGNED,
+    DATE_ISO,
+    DATE_FR,
+    DATE_US,
+    MAIL_ISO,
+    YES_NO,
+    SWITCH 
+
   CADRE* {.pure.} = enum 
     line0,  
     line1,    
@@ -92,7 +99,6 @@ type
     foregr: ForegroundColor 
     forebr: bool
 
-    #protect
     pstyle : set[Style]
     pbackgr: BackgroundColor
     pbackbr: bool
@@ -100,24 +106,32 @@ type
     pforebr: bool
 
 
-    reftyp*: Natural           ## / ALPHA...SWITCH
+    reftyp: REFTYP            # / ALPHA...SWITCH
     with: Natural
     scal: Natural
-    nbrcar: Natural           ## / nbrcar DECIMAL = (precision+scale + 1'.' ) + 1 this signed || other nbrcar =  ALPA..DIGIT..
-    empty : bool
-    protect: bool             ## / only display
-    pading: bool              ## / pading blank
-    edtcar: string            ## / edtcar for monnaie		€ $ ¥ ₪ £ or %
-    regex: string             ## / contrôle regex
-    errmsg: string            ## / message this field
-    help: string              ## / help this field
-    field*: string
-    switch* : bool            ## / CTRUE CFALSE
-    actif*: bool              ## / zone active True
+    nbrcar: Natural           # / nbrcar DECIMAL = (precision+scale + 1'.' ) + 1 this signed || other nbrcar =  ALPA..DIGIT..
 
-  HIDEN= object               ## / field block out 
+    empty : bool              # / EMPTY or FULL
+    protect: bool             # / only display
+
+    pading: bool              # / pading blank
+    edtcar: string            # / edtcar for monnaie		€ $ ¥ ₪ £ or %
+
+    regex: string             # / contrôle regex
+    errmsg: string            # / message this field
+
+    help: string              # / help this field
+
+    field*: string
+    switch* : bool            # / CTRUE CFALSE
+    actif*: bool              # / zone active True
+
+
+
+
+  HIDEN= object               # / field block out 
     name: string
-    reftyp: Natural           ## / ALPHA...SWITCH
+    reftyp: REFTYP            # / ALPHA...SWITCH
     field*: string
     switch* : bool
 
@@ -200,7 +214,7 @@ type
     style: set[Style]         # style
     on:bool                   # on = true -> cell active
 
-  PANEL* = ref object #ref object of RootObj
+  PANEL* = ref object         
     name: string
     posx: Natural
     posy: Natural
@@ -238,11 +252,6 @@ type
 
 
   # GRID 
-  Justified* {.pure.} = enum 
-    leftpad ,
-    rightpad,
-    center
-
 
   TermStyle* = ref object
     colSeparator*: string 
@@ -250,8 +259,10 @@ type
   Cell* = ref object
     text : string
     len  : Natural
-    place : Justified
+    reftyp: REFTYP
     posy  : Natural
+    edtcar: string
+
 
   TermGrid* = ref object 
     name : string 
@@ -394,33 +405,33 @@ gridatr.cell_forebr = true
 ## define type cursor
 proc def_cursor*(e_curs: Natural = 0) =
   const CSIcurs = 0x1b.chr & "[?25h"
-  const CSIcurs0 = 0x1b.chr & "[0 q" ##  0 → not blinking block
+  const CSIcurs0 = 0x1b.chr & "[0 q" #  0 → not blinking block
   case e_curs
   of 0:
     stdout.write(CSIcurs0)
     stdout.write(CSIcurs)
   of 1:
-    const CSIcurs1 = 0x1b.chr & "[1 q" ##  1 → blinking block
+    const CSIcurs1 = 0x1b.chr & "[1 q" #  1 → blinking block
     stdout.write(CSIcurs1)
     stdout.write(CSIcurs)
   of 2:
-    const CSIcurs2 = 0x1b.chr & "[2 q" ##  2 → steady block
+    const CSIcurs2 = 0x1b.chr & "[2 q" #  2 → steady block
     stdout.write(CSIcurs2)
     stdout.write(CSIcurs)
   of 3:
-    const CSIcurs3 = 0x1b.chr & "[3 q" ##  3 → blinking underlines
+    const CSIcurs3 = 0x1b.chr & "[3 q" #  3 → blinking underlines
     stdout.write(CSIcurs3)
     stdout.write(CSIcurs)
   of 4:
-    const CSIcurs4 = 0x1b.chr & "[4 q" ##  4 → steady underlines
+    const CSIcurs4 = 0x1b.chr & "[4 q" #  4 → steady underlines
     stdout.write(CSIcurs4)
     stdout.write(CSIcurs)
   of 5:
-    const CSIcurs5 = 0x1b.chr & "[5 q" ##  5 → blinking bar
+    const CSIcurs5 = 0x1b.chr & "[5 q" #  5 → blinking bar
     stdout.write(CSIcurs5)
     stdout.write(CSIcurs)
   of 6:
-    const CSIcurs6 = 0x1b.chr & "[6 q" ##  6 → steady bar
+    const CSIcurs6 = 0x1b.chr & "[6 q" #  6 → steady bar
     stdout.write(CSIcurs6)
     stdout.write(CSIcurs)
   else:
@@ -791,7 +802,7 @@ proc printLabel*(pnl: var PANEL, lbl : LABEL ) =
 
 
 ## Define Field String Standard
-proc fldString*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: Natural;
+proc fldString*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               with: Natural;field: string; empty: bool;
               errmsg: string   ; help: string;
               regex: string = "";
@@ -801,20 +812,20 @@ proc fldString*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reft
   fld.name        = name
   fld.posx        = posx
   fld.posy        = posy
-  fld.reftyp      = reftyp      ## / ALPHA...SWITCH
+  fld.reftyp      = reftyp      # / ALPHA...SWITCH
   fld.with        = with
   fld.scal        = 0
   fld.nbrcar      = with
   fld.field       = field
   fld.empty       = empty
-  fld.protect     = false       ## / only display
-  fld.pading      = true        ## / pading blank
-  fld.edtcar      = ""          ## / edtcar for monnaie		€ $ ¥ ₪ £ or %
-  fld.regex       = regex       ## / contrôle regex
-  fld.errmsg      = errmsg      ## / message this field
-  fld.help        = help        ## / help this field
-  fld.switch      = false       ## / CTRUE CFALSE
-  fld.actif       = actif       ## / zone active True
+  fld.protect     = false       # / only display
+  fld.pading      = true        # / pading blank
+  fld.edtcar      = ""          # / edtcar for monnaie		€ $ ¥ ₪ £ or %
+  fld.regex       = regex       # / contrôle regex
+  fld.errmsg      = errmsg      # / message this field
+  fld.help        = help        # / help this field
+  fld.switch      = false       # / CTRUE CFALSE
+  fld.actif       = actif       # / zone active True
 
 
   fld.style  = fld_atr.style
@@ -834,7 +845,7 @@ proc fldString*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reft
 
 
 ## Define Field Mail
-proc fldMail*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: Natural;
+proc fldMail*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               with: Natural;field: string; empty: bool;
               errmsg: string   ; help: string;
               fld_atr : ZONATRB = fldatr ;prt_atr : ZONATRB = prtatr ;
@@ -843,22 +854,22 @@ proc fldMail*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp
   fld.name        = name
   fld.posx        = posx
   fld.posy        = posy
-  fld.reftyp      = reftyp     ## / ALPHA...SWITCH
+  fld.reftyp      = reftyp     # / ALPHA...SWITCH
   fld.with        = with
   fld.scal        = 0
   fld.nbrcar      = with
   fld.field       = field
   fld.empty       = empty
-  fld.protect     = false       ## / only display
-  fld.pading      = true        ## / pading blank
-  fld.edtcar      = ""          ## / edtcar for monnaie		€ $ ¥ ₪ £ or %
+  fld.protect     = false       # / only display
+  fld.pading      = true        # / pading blank
+  fld.edtcar      = ""          # / edtcar for monnaie		€ $ ¥ ₪ £ or %
 
   fld.regex       ="""(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"""
-  ## / contrôle regex  [ABNF] [RFC 2822]
-  fld.errmsg      = errmsg      ## / message this field
-  fld.help        = help        ## / help this field
-  fld.switch      = false       ## / CTRUE CFALSE
-  fld.actif       = actif       ## / zone active True
+  # / contrôle regex  [ABNF] [RFC 2822]
+  fld.errmsg      = errmsg      # / message this field
+  fld.help        = help        # / help this field
+  fld.switch      = false       # / CTRUE CFALSE
+  fld.actif       = actif       # / zone active True
 
 
   fld.style  = fld_atr.style
@@ -878,7 +889,7 @@ proc fldMail*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp
 
 
 ## Define Field switch
-proc fldSwitch*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: Natural;
+proc fldSwitch*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               switch: bool;  empty: bool;
               errmsg: string ; help: string;
               swt_atr : ZONATRB = swtatr ;prt_atr : ZONATRB = prtatr ;
@@ -886,20 +897,20 @@ proc fldSwitch*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reft
   fld.name        = name
   fld.posx        = posx
   fld.posy        = posy
-  fld.reftyp      = reftyp      ## / ALPHA...SWITCH
+  fld.reftyp      = reftyp      # / ALPHA...SWITCH
   fld.with        = 1
   fld.scal        = 0
   fld.nbrcar      = 1
   fld.field       = ""
   fld.empty       = empty
-  fld.protect     = false       ## / only display
-  fld.pading      = false       ## / pading blank
-  fld.edtcar      = ""          ## / edtcar for monnaie		€ $ ¥ ₪ £ or %
-  fld.regex       = ""          ## / contrôle regex
-  fld.errmsg      = errmsg      ## / message this field
-  fld.help        = help        ## / help this field
-  fld.switch      = switch      ## / CTRUE CFALSE
-  fld.actif       = actif       ## / zone active True
+  fld.protect     = false       # / only display
+  fld.pading      = false       # / pading blank
+  fld.edtcar      = ""          # / edtcar for monnaie		€ $ ¥ ₪ £ or %
+  fld.regex       = ""          # / contrôle regex
+  fld.errmsg      = errmsg      # / message this field
+  fld.help        = help        # / help this field
+  fld.switch      = switch      # / CTRUE CFALSE
+  fld.actif       = actif       # / zone active True
 
 
   fld.style  = swt_atr.style
@@ -919,7 +930,7 @@ proc fldSwitch*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reft
 
 
 ## Define Field date ISO
-proc fldDate*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: Natural;
+proc fldDate*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               field: string; empty: bool;
               errmsg: string   ; help: string;
               fld_atr : ZONATRB = fldatr ; prt_atr : ZONATRB = prtatr ;
@@ -928,17 +939,17 @@ proc fldDate*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp
   fld.name        = name
   fld.posx        = posx
   fld.posy        = posy
-  fld.reftyp      = reftyp      ## / ALPHA...SWITCH
+  fld.reftyp      = reftyp      # / ALPHA...SWITCH
   fld.with        = 10
   fld.scal        = 0
   fld.nbrcar      = 10
   fld.field       = field
   fld.empty       = empty
-  fld.protect     = false       ## / only display
-  fld.pading      = false       ## / pading blank
-  fld.edtcar      = ""          ## / edtcar for monnaie		€ $ ¥ ₪ £ or %
+  fld.protect     = false       # / only display
+  fld.pading      = false       # / pading blank
+  fld.edtcar      = ""          # / edtcar for monnaie		€ $ ¥ ₪ £ or %
   if reftyp == DATE_ISO:
-    fld.regex       = """^(?:(?:(?:(?:(?:[1-9]\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:[2468][048]|[13579][26])00))(|-|)(?:0?2\1(?:29)))|(?:(?:[1-9]\d{3})(|-|)(?:(?:(?:0?[13578]|1[02])\2(?:31))|(?:(?:0?[13-9]|1[0-2])\2(?:29|30))|(?:(?:0?[1-9])|(?:1[0-2]))\2(?:0?[1-9]|1\d|2[0-8])))))$""" ## / contrôle regex  YYYY-MM-DD
+    fld.regex       = """^(?:(?:(?:(?:(?:[1-9]\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:[2468][048]|[13579][26])00))(|-|)(?:0?2\1(?:29)))|(?:(?:[1-9]\d{3})(|-|)(?:(?:(?:0?[13578]|1[02])\2(?:31))|(?:(?:0?[13-9]|1[0-2])\2(?:29|30))|(?:(?:0?[1-9])|(?:1[0-2]))\2(?:0?[1-9]|1\d|2[0-8])))))$"""   # / contrôle regex  YYYY-MM-DD
 
   if reftyp == DATE_US:
     fld.regex       ="""^(((0[13-9]|1[012])[/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[/]?31|02[/]?(0[1-9]|1[0-9]|2[0-8]))[/]?[0-9]{4}|
@@ -949,10 +960,10 @@ proc fldDate*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp
     29[/]?02[/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$"""
 
 
-  fld.errmsg      = errmsg      ## / message this field
-  fld.help        = help        ## / help this field
-  fld.switch      = false      ## / CTRUE CFALSE
-  fld.actif       = actif       ## / zone active True
+  fld.errmsg      = errmsg      # / message this field
+  fld.help        = help        # / help this field
+  fld.switch      = false       # / CTRUE CFALSE
+  fld.actif       = actif       # / zone active True
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -971,7 +982,7 @@ proc fldDate*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp
 
 
 ## Define Field Numeric
-proc fldNumeric*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: Natural;
+proc fldNumeric*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               with: Natural;  scal: Natural;  field: string; empty:bool;
               errmsg: string   ; help: string;
               fld_atr : ZONATRB = fldatr ;prt_atr : ZONATRB = prtatr ;
@@ -980,41 +991,41 @@ proc fldNumeric*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; ref
   fld.name        = name
   fld.posx        = posx
   fld.posy        = posy
-  fld.reftyp      = reftyp      ## / ALPHA...SWITCH
+  fld.reftyp      = reftyp      # / ALPHA...SWITCH
   fld.with        = with
   fld.scal        = scal
   fld.nbrcar      = with + scal 
   if scal > 0 : inc(fld.nbrcar)
   fld.field       = field
   fld.empty       = empty
-  fld.protect     = false       ## / only display
-  fld.pading      = true        ## / pading blank
-  fld.edtcar      = ""          ## / edtcar for monnaie		€ $ ¥ ₪ £ or %
-  fld.regex       = ""          ## / contrôle 
+  fld.protect     = false       # / only display
+  fld.pading      = true        # / pading blank
+  fld.edtcar      = ""          # / edtcar for monnaie		€ $ ¥ ₪ £ or %
+  fld.regex       = ""          # / contrôle 
 
   if fld.reftyp == DIGIT:
-    fld.regex = "^[0-9]{1,$1}$" % [fmt"{with}"]
+    fld.regex = "^[0-9]{1,$1}$" % [$with]
   elif fld.reftyp == DIGIT_SIGNED:
     inc(fld.nbrcar)
-    fld.regex = "^[+-]?[0-9]{1,$1}$" % [fmt"{with}"]
+    fld.regex = "^[+-]?[0-9]{1,$1}$" % [$with]
 
 
   if fld.reftyp == DECIMAL: 
     if (scal == 0 ) :
-        fld.regex = "^[0-9]{1,$1}$" % [fmt"{with}"]
+        fld.regex = "^[0-9]{1,$1}$" % [$with]
     else :
-        fld.regex = "^[0-9]{1,$1}[.]([0-9]{$2,$2})$" % [fmt"{with}",fmt"{scal}",fmt"{scal}"]
+        fld.regex = "^[0-9]{1,$1}[.]([0-9]{$2,$2})$" % [$with,$scal,$scal]
   elif fld.reftyp == DECIMAL_SIGNED:
     inc(fld.nbrcar) 
     if (scal == 0 ) :
-        fld.regex = "^[+-]?[0-9]{1,$1}$" % [fmt"{with}"]
+        fld.regex = "^[+-]?[0-9]{1,$1}$" % [$with]
     else :
-        fld.regex = "^[+-]?[0-9]{1,$1}[.]([0-9]{$2,$2})$" % [fmt"{with}",fmt"{scal}",fmt"{scal}"]
+        fld.regex = "^[+-]?[0-9]{1,$1}[.]([0-9]{$2,$2})$" % [$with,$scal,$scal]
 
-  fld.errmsg      = errmsg      ## / message this field
-  fld.help        = help        ## / help this field
-  fld.switch      = false       ## / CTRUE CFALSE
-  fld.actif       = actif       ## / zone active True
+  fld.errmsg      = errmsg      # / message this field
+  fld.help        = help        # / help this field
+  fld.switch      = false       # / CTRUE CFALSE
+  fld.actif       = actif       # / zone active True
 
 
   fld.style  = fld_atr.style
@@ -1033,18 +1044,18 @@ proc fldNumeric*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; ref
 
 
 
-# Hiden bloc out
-proc hdnString*(hdn : var HIDEN ; name:string ; reftyp: Natural;field: string;) =
+## Hiden bloc out
+proc hdnString*(hdn : var HIDEN ; name:string ; reftyp: REFTYP;field: string;) =
   hdn.name        = name
-  hdn.reftyp      = reftyp      ## / ALPHA...SWITCH
+  hdn.reftyp      = reftyp      # / ALPHA...SWITCH
   hdn.field       = field
-  hdn.switch      = false       ## / CTRUE CFALSE
-#switch
-proc hdnSwitch*(hdn : var HIDEN  ; name:string; reftyp: Natural;  switch: bool;) =
+  hdn.switch      = false       # / CTRUE CFALSE
+##switch
+proc hdnSwitch*(hdn : var HIDEN  ; name:string; reftyp: REFTYP;  switch: bool;) =
   hdn.name        = name
-  hdn.reftyp      = reftyp      ## / ALPHA...SWITCH
+  hdn.reftyp      = reftyp      # / ALPHA...SWITCH
   hdn.field       = ""
-  hdn.switch      = switch       ## / CTRUE CFALSE
+  hdn.switch      = switch      # / CTRUE CFALSE
 
 
 
@@ -1060,12 +1071,12 @@ proc printField*(pnl: var PANEL, fld : Field) =
     i = 0
     e_FIELD = ""
     while i < runeLen(fld.field):
-        e_FIELD = e_FIELD & fmt"*"
+        e_FIELD = e_FIELD & "*"
         inc(i)
 
   if fld.reftyp == DIGIT_SIGNED or fld.reftyp == DECIMAL_SIGNED:
     if isDigit(char(fld.field[0])):
-      e_FIELD = fmt"+{fld.field}"
+      e_FIELD = "+" & fld.field
   
   if  fld.pading and fld.reftyp == DIGIT or
       fld.pading and fld.reftyp == DIGIT_SIGNED or
@@ -1082,7 +1093,7 @@ proc printField*(pnl: var PANEL, fld : Field) =
       e_FIELD = "◎"
 
   if fld.edtcar != "":
-    e_FIELD = fmt"{e_FIELD}{fld.edtcar}"
+    e_FIELD = e_FIELD & fld.edtcar
 
   var npos = pnl.cols * fld.posx
   var n =  npos + fld.posy
@@ -1272,7 +1283,7 @@ proc printPanel*(pnl: var PANEL)=
 
 
 ## vide object PANEL / box/label/fld/func
-proc clearPanel*(pnl: var PANEL)=
+proc resetPanel*(pnl: var PANEL)=
   pnl.nbrbox   = 0
   pnl.nbrlabel = 0
   pnl.nbrfield = 0
@@ -1291,7 +1302,7 @@ proc clearPanel*(pnl: var PANEL)=
 
 
 ## vide object MENU
-proc clearPanel*(mnu: var MENU)=
+proc resetPanel*(mnu: var MENU)=
   mnu.selMenu  = 0
   mnu.item = newseq[string]()
   mnu.actif = false
@@ -1300,7 +1311,7 @@ proc clearPanel*(mnu: var MENU)=
 
 
 
-## 
+## cls Label
 proc clsLabel*(pnl: var PANEL, lbl : Label) =
   var npos = pnl.cols * lbl.posx
   var n =  npos + lbl.posy
@@ -1317,7 +1328,7 @@ proc clsLabel*(pnl: var PANEL, lbl : Label) =
 
 
 
-
+## csl Field
 proc clsField*(pnl: var PANEL, fld : Field) =
   var npos = pnl.cols * fld.posx
   var n =  npos + fld.posy
@@ -1334,7 +1345,7 @@ proc clsField*(pnl: var PANEL, fld : Field) =
 
 
 
-
+## cls Panel
 proc clsPanel*(pnl: var PANEL) =
   for x in 1..pnl.lines:
     for y in 1..pnl.cols:
@@ -1348,7 +1359,7 @@ proc clsPanel*(pnl: var PANEL) =
 
 
 
-# display matrice only FIELD
+## display matrice only LABEL
 proc displayLabel*(pnl: var PANEL; lbl: Label) =
   if not pnl.actif : 
     return
@@ -1374,7 +1385,7 @@ proc displayLabel*(pnl: var PANEL; lbl: Label) =
 
 
 
-# display matrice only FIELD
+## display matrice only FIELD
 proc displayField*(pnl: var  PANEL; fld: FIELD) =
   if not pnl.actif : return
   if not fld.actif : clsField(pnl, fld)
@@ -1399,7 +1410,7 @@ proc displayField*(pnl: var  PANEL; fld: FIELD) =
 
 
 
-# display matrice only FIELD
+## display matrice only BUTTON
 proc displayButton*(pnl: var PANEL;) =
   if not pnl.actif : return
 
@@ -1432,7 +1443,7 @@ proc displayButton*(pnl: var PANEL;) =
 
 
 
-# restore the base occupied by pnl
+## restore the base occupied by pnl
 proc restorePanel*(dst: PANEL; src:var PANEL) =
   if not dst.actif : return
 
@@ -1464,7 +1475,7 @@ proc restorePanel*(dst: PANEL; src:var PANEL) =
 
 
 
-# restore the base occupied by mnu
+## restore the base occupied by mnu
 proc restorePanel*(dst: PANEL; mnu: MENU) =
   if not dst.actif : return
   var npos :int =0
@@ -1488,7 +1499,7 @@ proc restorePanel*(dst: PANEL; mnu: MENU) =
 
 
 
-# restore the base occupied by grid
+## restore the base occupied by grid
 proc restorePanel*(dst: PANEL; grid: TermGrid) =
   if not dst.actif : return
   var npos :int =0
@@ -1513,7 +1524,7 @@ proc restorePanel*(dst: PANEL; grid: TermGrid) =
 
 
 
-# restore the lines occupied by the error message
+## restore the lines occupied by the error message
 proc restorePanel*(pnl: PANEL; lines, posy : Natural) =
   if not pnl.actif : return
   var npos :int =0
@@ -1539,6 +1550,7 @@ proc restorePanel*(pnl: PANEL; lines, posy : Natural) =
 ##  get lines/COLS PANEL
 func Lines*(pnl: PANEL) :Natural =
   result = pnl.lines
+
 func Cols*(pnl: PANEL) :Natural =
   result = pnl.cols
 
@@ -1546,64 +1558,107 @@ func Cols*(pnl: PANEL) :Natural =
 func Index*(pnl: PANEL): Natural =
   result = pnl.index
 
-## return name from index actived from panel this getField
+
+
+
+
+## return name field from panel this getField
 func fldName*(pnl: PANEL): string =
   result = pnl.field[pnl.index].name
 
-## return index Sequence Field
+## return index Sequence Field from name
 func fldIndex*(pnl: PANEL; name: string): int  =
   for i in 0..len(pnl.field)-1:
     if pnl.field[i].name == name : return i
   return - 1
 
-## return value Field Sequence Field
-func fldString*(pnl: PANEL; name: string): string  =
-  for i in 0..len(pnl.field)-1 :
-    if pnl.field[i].name == name : return pnl.field[i].field
-  return "NAN"
-## return value Field Sequence Field
-func fldString*(pnl: PANEL; index: Natural): string  =
-  if index < 0 or index > len(pnl.field)-1 : return "NAN"
-  return pnl.field[index].field                             # use enum Use enum attach array look ex
-## return value Field Sequence Field
-func fldSwitch*(pnl : PANEL ; index: Natural): int  =
-  if index < 0 or index > len(pnl.field)-1 : return -1
-  if pnl.field[index].switch : return 1
-  else : 
-    return 0                                                # Warning possibility out of sequence
 
-## return name from index actived from panel this getField
+
+## return value Field Sequence Field
+func fldValue*(pnl: PANEL; name: string): string  =
+  for i in 0..len(pnl.field)-1 :
+    if pnl.field[i].name == name :
+      return pnl.field[i].field
+  return "NAN"
+## return value Field Sequence Fiel
+func fldValueSwitch*(pnl : PANEL ; name: string): bool  =
+  for i in 0..len(pnl.hiden)-1 :
+    if pnl.field[i].name == name :
+      return pnl.field[i].switch
+  return false
+
+## return value Field Sequence Field
+func fldValue*(pnl: PANEL; index: Natural): string  =
+  if index < 0 or index > len(pnl.field)-1 : return "NAN"
+  return pnl.field[index].field
+## return value Field Sequence Fiel
+func fldValueSwitch*(pnl : PANEL ; index: Natural): bool  =
+  if index < 0 or index > len(pnl.field)-1 : return false
+  return pnl.field[index].switch
+
+
+
+
+
+## return name from index 
 func hdnName*(hdn: PANEL,index: Natural): string =
   result = hdn.hiden[index].name
-
-## return index Sequence Field
+## return index from Name
 func hdnIndex*(hdn : PANEL; name: string): int  =
   for i in 0..len(hdn.hiden)-1:
     if hdn.hiden[i].name == name : return i
   return - 1
 
-## return value Field Sequence Field
-func hdnString*(hdn : PANEL ; name: string): string  =
+
+
+## return value Field from name
+func hdnValue*(hdn : PANEL ; name: string): string  =
   for i in 0..len(hdn.hiden)-1 :
-    if hdn.hiden[i].name == name : return hdn.hiden[i].field
+    if hdn.hiden[i].name == name :
+      return hdn.hiden[i].field
   return "NAN"
-## return value Field Sequence Field
-func hdnString*(hdn : PANEL ; index: Natural): string  =
+## return value Field from name
+func hdnValueSwitch*(hdn : PANEL ; name: string): bool  =
+  for i in 0..len(hdn.hiden)-1 :
+    if hdn.hiden[i].name == name :
+      return hdn.hiden[i].switch
+  return false
+
+## return value Field from index
+func hdnValue*(hdn : PANEL ; index: Natural): string  =
   if index < 0 or index > len(hdn.hiden)-1 : return "NAN"
-  return hdn.hiden[index].field                             # use enum Use enum attach array look ex
-## return value Field Sequence Field
-func hdnSwitch*(hdn : PANEL ; index: Natural): int  =
-  if index < 0 or index > len(hdn.hiden)-1 : return -1
-  if hdn.hiden[index].switch : return 1
-  else : 
-    return 0                                                # Warning possibility out of sequence
+  return hdn.hiden[index].field
+## return value Field from index
+func hdnValueSwitch*(hdn : PANEL ; index: Natural): bool  =
+  if index < 0 or index > len(hdn.field)-1 : return false
+  return hdn.hiden[index].switch
+
+
+
+
+
+
+
+
+## return nbrCar Field 
+func fldNbrcar*(pnl: PANEL; name: string): int  =
+  for i in 0..len(pnl.field)-1 :
+    if pnl.field[i].name == name : return pnl.field[i].nbrcar
+  return -1                                                 # Warning possibility out of sequence
+## return nbrCar Field 
+func fldReftyp*(pnl: PANEL; name: string): REFTYP  =
+  for i in 0..len(pnl.field)-1 :
+    if pnl.field[i].name == name : return pnl.field[i].reftyp
+  return TEXT_NUMERIC                                       # Warning possibility out of sequence
+
 
 
 
 ##  set on  = display ONLY
 proc setProtect*(fld : var FIELD ; protect : bool)=
     fld.protect = protect
-
+proc setEdtCar*(fld : var FIELD ; Car : char)=
+    fld.edtcar = $Car
 ## Enables or disables FIELD / LABEL / BOX / MENU / PANEL
 proc setActif*(fld : var FIELD ; actif : bool)=
     fld.actif = actif
@@ -1631,28 +1686,74 @@ proc isPanelKey*(pnl: PANEL; e_key:Key): bool =
     inc(i)
   return ok
 ##  if on/off  FIELD / LABEL / BOX / MENU / PANEL
-func isProtect*(fld : var FIELD): bool=
-    return fld.protect 
-func isActif*(fld : var FIELD): bool=
-    return fld.actif 
-func isActif*(lbl : var LABEL ): bool=
-    return lbl.actif 
-func isActif*(box : var BOX): bool=
-    return box.actif
-func isActif*(mnu : var MENU): bool=
-    return mnu.actif
-func isActif*(btn : var BUTTON): bool=
-    return btn.actif
-func isActif*(pnl : var PANEL): bool=
-    return pnl.actif
-func isMouse*(pnl : var PANEL): bool=
-    return pnl.mouse
+func isProtect*(fld : var FIELD): bool = return fld.protect 
+func isActif*(fld : var FIELD)  : bool = return fld.actif 
+func isActif*(lbl : var LABEL ) : bool = return lbl.actif 
+func isActif*(box : var BOX)    : bool = return box.actif
+func isActif*(mnu : var MENU)   : bool = return mnu.actif
+func isActif*(btn : var BUTTON) : bool = return btn.actif
+func isActif*(pnl : var PANEL)  : bool = return pnl.actif
+func isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
+
+
+##-------------------------------------------------------
+## management grid
+## ----------------
+## PadingField()
+## calculPosTerm()
+## setPageTerm()
+## resetTerm()
+## columnsCount()
+## 
+## addRows()
+## dltRows()
+## 
+## newTermGrid()
+## newCell()
+## setHeaders()
+## printGridHeader()
+## printGridRows()
+## 
+## ioGrid
+##------------------------------------------------------- 
+
+func padingField(text: string; cell:Cell;) :string =
+  var i: Natural = 0
+
+  var e_FIELD : string = text
+
+  if cell.reftyp == PASSWORD:
+    i = 0
+    e_FIELD = ""
+    while i < runeLen(text):
+        e_FIELD = e_FIELD & "*"
+        inc(i)
+
+  if cell.reftyp == DIGIT_SIGNED or cell.reftyp == DECIMAL_SIGNED:
+    if isDigit(char(text[0])):
+      e_FIELD = "+" & text
+  
+  if  cell.reftyp == DIGIT or
+      cell.reftyp == DIGIT_SIGNED or
+      cell.reftyp == DECIMAL or
+      cell.reftyp == DECIMAL_SIGNED:
+        e_FIELD = align(e_FIELD,cell.len)
+  else: e_FIELD = alignString(e_FIELD,cell.len)
+
+
+  if cell.reftyp == SWITCH:
+    if text == "true":
+      e_FIELD = "◉"
+    else:
+      e_FIELD = "◎"
+
+  if cell.edtcar != "":
+    e_FIELD = e_FIELD & cell.edtcar
+  return e_FIELD
 
 
 
-
-
-func CalculePos*(this: TermGrid) =
+func calculPosTerm(this: TermGrid) =
   var n : Natural = 1 # this.posy = separator "|"
   if this.separateRows == false : n = 0 
   var pos : Natural = this.posy
@@ -1660,12 +1761,23 @@ func CalculePos*(this: TermGrid) =
   for i in 0..<len(this.headers):
     if i == 0 : this.headers[i].posy = this.posy 
     else : this.headers[i].posy = pos 
-    pos = this.headers[i].posy + this.headers[i].len  + n  
+    if this.headers[i].edtcar == "" :pos = this.headers[i].posy + this.headers[i].len  + n  
+    else : pos = this.headers[i].posy + this.headers[i].len  + n  + 1
     this.cols = pos
 
 
-proc nRow*( line : var int ) =
-      line += 1
+
+
+func setPageTerm(this :TermGrid)=
+  this.lignes = len(this.rows)
+  
+  if this.lignes <= this.pagerows  : 
+    this.pages = 1
+  else : 
+    this.pages = this.lignes.div(int(this.pagerows))
+    if  this.lignes.floorMod(int(this.pagerows)) > 0 : this.pages += 1
+
+
 
 proc newTermGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
                   separator: TermStyle = unicodeStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): TermGrid =
@@ -1692,42 +1804,7 @@ proc newTermGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
 
 
 
-
-proc columnsCount*(this:  TermGrid): int =
-  result = this.headers.len
-
-proc setHeaders*(this: TermGrid, headers: seq[Cell]) =
-  for cell in headers:
-    this.headers.add(cell)
-
-  CalculePos(this)
-
-  this.buf = newSeq[TerminalChar]((this.lines+1)*(this.cols+1))
-
-
-
-proc newCell*(text: string; len : Natural; place :  Justified = leftpad;): Cell =
-  result = new(Cell)
-  result.place  = place
-  result.len    = len
-  result.text   = text
-  result.posy   = 0
-
-
-proc addRows*(this: TermGrid; rows:seq[string]) =
-  this.rows.add(@(rows))
-
-proc setPage*(this :TermGrid)=
-  this.lignes = len(this.rows)
-  
-  if this.lignes <= this.pagerows  : 
-    this.pages = 1
-  else : 
-    this.pages = this.lignes.div(int(this.pagerows))
-    if  this.lignes.floorMod(int(this.pagerows)) > 0 : this.pages += 1 
-
-
-proc reset*(this: TermGrid) =
+proc resetTerm*(this: TermGrid) =
   this.name  = ""
   this.posx  = 0
   this.posy  = 0
@@ -1743,14 +1820,56 @@ proc reset*(this: TermGrid) =
   this.cursligne  = 0
   this.curspage  = 0
 
-proc PrintGridHeader*(this: TermGrid) =
+
+
+proc columnsCount*(this:  TermGrid): int =
+  result = this.headers.len
+
+proc setHeaders*(this: TermGrid, headers: seq[Cell]) =
+  for cell in headers:
+    this.headers.add(cell)
+
+  calculPosTerm(this)
+
+  this.buf = newSeq[TerminalChar]((this.lines+1)*(this.cols+1))
+
+
+
+proc newCell*(text: string; len : Natural;reftyp: REFTYP; edtcar : string =""): Cell =
+  result = new(Cell)
+  result.len    = len
+  result.reftyp = reftyp
+  result.text   = text
+  result.edtcar = edtcar
+  result.posy   = 0
+
+
+
+
+
+proc addRows*(this: TermGrid; rows:seq[string]) =
+  this.rows.add(@(rows))
+  setPageTerm(this)
+
+proc dltRows*(this: TermGrid;) =
+  this.rows = newSeq[seq[string]]()
+  this.nrow = newSeq[int]()
+  this.lignes  = 0
+  this.pages  = 0
+  this.cursligne  = -1
+  this.curspage  = 1
+
+
+
+proc printGridHeader*(this: TermGrid) =
+  if not this.actif : return
   var buf : string
   var n : int
   let Blan : Rune = " ".runeAt(0)
   let Sep : Rune = this.separator.colSeparator.runeAt(0)
   for n in 0..<len(this.headers):
-    buf &= $Sep  & $Blan.repeat(this.headers[n].len ) 
-
+    if this.headers[n].edtcar == "" :buf &= $Sep  & $Blan.repeat(this.headers[n].len )
+    else : buf &= $Sep  & $Blan.repeat(this.headers[n].len ) & $Blan
   buf = buf & $Sep
 
 
@@ -1769,7 +1888,16 @@ proc PrintGridHeader*(this: TermGrid) =
   for i in 0..<len(this.headers):
     n = this.cols
     n =  n + this.headers[i].posy
-    for ch in runes(this.headers[i].text):
+
+    if this.headers[i].reftyp  == DIGIT or
+      this.headers[i].reftyp == DIGIT_SIGNED or
+      this.headers[i].reftyp == DECIMAL or
+      this.headers[i].reftyp == DECIMAL_SIGNED:
+        buf = $Blan.repeat(this.headers[i].len - runeLen(this.headers[i].text) ) & this.headers[i].text
+        if this.headers[i].edtcar != "" : buf = buf  & $Blan
+    else : buf = this.headers[i].text & $Blan.repeat(this.headers[i].len - runeLen(this.headers[i].text) )
+    
+    for ch in runes(buf):
 
       this.buf[n].ch = ch
       this.buf[n].bg  = this.gridatr.title_backgr
@@ -1788,28 +1916,28 @@ proc PrintGridHeader*(this: TermGrid) =
       setForegroundColor(this.buf[n].fg,this.buf[n].fgb)
       writeStyled($this.buf[n].ch,this.buf[n].style)
       inc(n)
+  stdout.flushFile()
 
 
 
 
-proc PrintGridRows*(this: TermGrid ) =
-  
+proc printGridRows*(this: TermGrid ) =
+  if not this.actif : return
   var n : int
   var start : int = 0
-  setPage(this)
   this.nrow = newSeq[int]()
   if this.curspage == 0 : start = 0
   else: start = this.pagerows * (this.curspage - 1 )
-  PrintGridHeader(this)
   for r in 0..<this.pagerows:
     var l = r + start 
     if l < this.lignes:
       var buf :seq[string] = this.rows[l]
       this.nrow.add(l)
+
       for h in 0..<len(this.headers):
         n = this.cols * (2 + r)
         n =  n + this.headers[h].posy 
-        for ch in runes(buf[h]):
+        for ch in runes(padingField(buf[h],this.headers[h])):
           this.buf[n].ch = ch
           this.buf[n].bg  = this.gridatr.cell_backgr
           this.buf[n].bgb = this.gridatr.cell_backbr
@@ -1832,13 +1960,15 @@ proc PrintGridRows*(this: TermGrid ) =
         setForegroundColor(this.buf[n].fg,this.buf[n].fgb)
         writeStyled($this.buf[n].ch,this.buf[n].style)
         inc(n)
+    stdout.flushFile()
 
 
 
 ##================================================================
-## traiement des GRID enter = select  1..n 0 = abort (Escape)
+## Management GRID enter = select  1..n 0 = abort (Escape)
 ## Turning on the mouse
-## movement with the wheel and validation with the clik
+## UP DOWn PageUP PageDown
+## Automatic alignment based on the type reference
 ##================================================================
 
 proc ioGrid*(this: TermGrid ): (Key , seq[string])=        # IO Format
@@ -1848,11 +1978,11 @@ proc ioGrid*(this: TermGrid ): (Key , seq[string])=        # IO Format
   var grid_key:Key = Key.Enter
   var CountLigne = 0
   this.cursligne = 0
-
+  printGridHeader(this)
   hideCursor()
   while true :
     buf = newseq[string]()
-    PrintGridRows(this)
+    printGridRows(this)
     grid_key = getFunc()
  
     case grid_Key
@@ -1874,6 +2004,18 @@ proc ioGrid*(this: TermGrid ): (Key , seq[string])=        # IO Format
           inc(CountLigne)
           this.cursligne = CountLigne
 
+      of Key.PageUp :
+        if this.curspage > 0 : 
+          dec(this.curspage)
+          this.cursligne = -1
+          printGridHeader(this)
+      of Key.PageDown :
+        if this.curspage < this.pages : 
+          inc(this.curspage)
+          this.cursligne = -1
+          printGridHeader(this)
+
+
       else :discard
 
 
@@ -1883,6 +2025,7 @@ proc ioGrid*(this: TermGrid ): (Key , seq[string])=        # IO Format
 ##================================================================
 ## traiement des menus enter = select  1..n 0 = abort (Escape)
 ## Turning on the mouse
+## UP DOWN LEFT RIGHT
 ## movement with the wheel and validation with the clik
 ##================================================================
 proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
@@ -1999,7 +2142,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
 
   func isPunct(s: string): bool =
     case s
-      of ".",":",",","!","?","'","-","(",")","<",">":                   # not ";" etc reserved communication commercial ex csv
+      of ".",":",",","!","?","'","-","(",")","<",">":       # not ";" etc reserved communication commercial ex csv
         result = true
       else : result = false
 
@@ -2057,7 +2200,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     var i = 0
     var buf : string = ""
     while i < len(s):
-        if s[i] != " ".runeAt(0): buf = buf & fmt"*"
+        if s[i] != " ".runeAt(0): buf = buf & "*"
         else : buf = buf & " "
         inc(i)
     return buf
@@ -2084,7 +2227,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     button.label  = ""
     defPanel(pnlmsg,"msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,pnl.cols,pnl.backgr,pnl.backbr,pnl.foregr,pnl.forebr,CADRE.line0,"",0,1,0,0,@[button])
 
-    fldLabel(pnlmsg.label[0], "msg", 1, 1,fmt"Info :{info}", msgatr)
+    fldLabel(pnlmsg.label[0], "msg", 1, 1,"Info :" & info, msgatr)
     printLabel(pnlmsg,pnlmsg.label[0])
     displayPanel(pnlmsg)
 
@@ -2113,7 +2256,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     button.label  = ""
     defPanel(pnlmsg,"msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,pnl.cols,pnl.backgr,pnl.backbr,pnl.foregr,pnl.forebr,CADRE.line0,"",0,1,0,0,@[button])
 
-    fldLabel(pnlmsg.label[0], "msg", 1, 1,fmt"Info :{info}", hlpatr)
+    fldLabel(pnlmsg.label[0], "msg", 1, 1,"Info :" & info, hlpatr)
     printLabel(pnlmsg,pnlmsg.label[0])
     displayPanel(pnlmsg)
 
@@ -2238,9 +2381,9 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
 #--------------------------------------------------------------------------------
       of Key.Char:
 
-        case fld.reftyp         ## Standard treatment of FIELD TYPE
+        case ord(fld.reftyp)         ## Standard treatment of FIELD TYPE
 
-          of ALPHA, ALPHA_UPPER:
+          of ord(ALPHA), ord(ALPHA_UPPER):
             if e_count < e_nbrcar and isAlpha(e_str) or (e_str == "-" and e_count > 0)  or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
@@ -2255,7 +2398,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_count)
                 dec(e_curs)
 
-          of PASSWORD:
+          of ord(PASSWORD):
             if e_count < e_nbrcar and (isAlpha(e_str) or isNumber(e_str) or isCarPwd(e_str)) :
               if statusCursInsert: insert()
               e_FIELD[e_count] = e_str.runeAt(0)
@@ -2265,7 +2408,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_count)
                 dec(e_curs)
 
-          of ALPHA_NUMERIC, ALPHA_NUMERIC_UPPER  :
+          of ord(ALPHA_NUMERIC), ord(ALPHA_NUMERIC_UPPER)  :
             if e_count < e_nbrcar and (isAlpha(e_str) or isNumber(e_str) or isPunct(e_str)) or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
@@ -2280,7 +2423,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_count)
                 dec(e_curs)
 
-          of TEXT_NUMERIC:
+          of ord(TEXT_NUMERIC):
             if e_count < e_nbrcar and e_str != " " or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
@@ -2291,7 +2434,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_count)
                 dec(e_curs)
 
-          of DIGIT:
+          of ord(DIGIT):
             if e_count < e_nbrcar and isNumber(e_str):
               if statusCursInsert: insert()
               e_FIELD[e_count] = e_str.runeAt(0)
@@ -2301,7 +2444,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_count)
                 dec(e_curs)
 
-          of DIGIT_SIGNED:
+          of ord(DIGIT_SIGNED):
             if e_count < e_nbrcar and isNumber(e_str) or
               (e_str == "+" and e_count == 0) or (e_str == "-" and e_count == 0):
               if statusCursInsert and e_count > 0 : insert()
@@ -2312,7 +2455,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_count)
                 dec(e_curs)
 
-          of DECIMAL:
+          of ord(DECIMAL):
             if e_count < e_nbrcar and isNumber(e_str) or
               (e_str == "." and e_count > 0 and e_count < e_nbrcar):
                 if statusCursInsert: insert()
@@ -2323,7 +2466,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                   dec(e_count)
                   dec(e_curs)
 
-          of DECIMAL_SIGNED:
+          of ord(DECIMAL_SIGNED):
             if e_count < e_nbrcar and isNumber(e_str) or
               (e_str == "." and e_count > 0 and e_count < e_nbrcar) or
               (e_str == "+" and e_count == 0) or (e_str == "-" and e_count == 0):
@@ -2335,7 +2478,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                   dec(e_count)
                   dec(e_curs)
 
-          of DATE_ISO:
+          of ord(DATE_ISO):
             if (e_count < e_nbrcar and isNumber(e_str)) or e_str == "-":
               if statusCursInsert: insert()
               e_FIELD[e_count] = e_str.runeAt(0)
@@ -2346,7 +2489,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_curs)
 
 
-          of DATE_US, DATE_FR:
+          of ord(DATE_US), ord(DATE_FR):
             if (e_count < e_nbrcar and isNumber(e_str)) or e_str == "/":
               if statusCursInsert: insert()
               e_FIELD[e_count] = e_str.runeAt(0)
@@ -2356,7 +2499,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_count)
                 dec(e_curs)
 
-          of MAIL_ISO:
+          of ord(MAIL_ISO):
             if e_count < e_nbrcar:
               if statusCursInsert: insert()
               e_FIELD[e_count] = e_str.runeAt(0)
@@ -2366,7 +2509,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_count)
                 dec(e_curs)
 
-          of YES_NO:
+          of ord(YES_NO):
             if e_count < e_nbrcar and (e_str == "y" or e_str == "Y" or e_str == "n" or e_str == "N"  ) :
               e_str = e_str.toUpper()
               e_FIELD[e_count] = e_str.runeAt(0)
@@ -2376,7 +2519,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_count)
                 dec(e_curs)
 
-          of SWITCH:
+          of ord(SWITCH):
             if e_count < e_nbrcar and e_str == " ":
               if e_switch == false:
                 e_FIELD[e_count] = "◉".runeAt(0)

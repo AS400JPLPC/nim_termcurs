@@ -151,16 +151,15 @@ while true:
         key = Key.F1
 
     of Key.F2:
-      if not isActif(pnlF2) :
-        defPanel(pnlF2,"nom",10,30,20,70,bgBlack,false,fgWhite,false,CADRE.line1,"test Panel",0,3,3,0,
-                @[button(Key.CtrlV,"get VAL"),button(Key.CtrlH,"get HIDEN"),button(Key.F12,"Abandon"),button(Key.F9,"Menu"),button(Key.F15,"Clear")])
-        fldLabel(pnlF2.label[0], "nom", 5, 2,"ASTRE :")
-        fldLabel(pnlF2.label[1], "fruit", 10, 2,"Fruit :")
-        fldLabel(pnlF2.label[2], "aime", 12, 2,"Aimez-Vous les fruits :")
-        fldString(pnlF2.field[0], "zone0", 5, 3+(len(pnlF2.label[0].label)), ALPHA, 30, "Lune",EMPTY, "Obligatoire", "Nom de la personne ")
-        fldNumeric(pnlF2.field[1], "zone8", 10, 3+(len(pnlF2.label[1].label)), DECIMAL, 3,2, "345.6",EMPTY, "Obligatoire", "Prix  des carottes")
-        fldSwitch(pnlF2.field[2], "zone15", 12, 3+(len(pnlF2.label[2].label)), SWITCH,true,EMPTY,"","Appuyer sur la bare espacement")
-        printPanel(pnlF2)
+      defPanel(pnlF2,"nom",10,30,20,70,bgBlack,false,fgWhite,false,CADRE.line1,"test Panel",0,3,3,0,
+              @[button(Key.CtrlV,"get VAL"),button(Key.CtrlH,"get HIDEN"),button(Key.F12,"Abandon"),button(Key.F9,"Menu"),button(Key.F15,"Clear")])
+      fldLabel(pnlF2.label[0], "nom", 5, 2,"ASTRE :")
+      fldLabel(pnlF2.label[1], "fruit", 10, 2,"Fruit :")
+      fldLabel(pnlF2.label[2], "aime", 12, 2,"Aimez-Vous les fruits :")
+      fldString(pnlF2.field[0], "zone0", 5, 3+(len(pnlF2.label[0].label)), ALPHA, 30, "Lune",EMPTY, "Obligatoire", "Nom de la personne ")
+      fldNumeric(pnlF2.field[1], "zone8", 10, 3+(len(pnlF2.label[1].label)), DECIMAL, 3,2, "345.6",EMPTY, "Obligatoire", "Prix  des carottes")
+      fldSwitch(pnlF2.field[2], "zone15", 12, 3+(len(pnlF2.label[2].label)), SWITCH,true,EMPTY,"","Appuyer sur la bare espacement")
+      printPanel(pnlF2)
 
       key = ioPanel(pnlF2)
       case key
@@ -168,38 +167,30 @@ while true:
           if isActif(pnlF1):
             # Field coherence check exemple
             if fldName(pnlF1) == fldName(pnlF2):
-              pnlF1.field[Index(pnlF1)].switch = pnlF2.field[Index(pnlF2)].switch
-              pnlF1.field[Index(pnlF1)].field = pnlF2.field[Index(pnlF2)].field
+              pnlF1.field[Index(pnlF1)].switch = fldValueSwitch(pnlF2,fldName(pnlF2))
+              pnlF1.field[Index(pnlF1)].field  = fldValue(pnlF2,fldName(pnlF2))
             restorePanel(pnlF1,pnlF2)
-          else : clearPanel(pnlF2)
+          else : resetPanel(pnlF2)
           key = Key.F1
 
         of Key.CtrlH :
           if isActif(pnlF1):
             # Field coherence check exemple retrived hiden field
             if fldName(pnlF1) == hdnName(pnlF1,hdnIndex(pnlF1, fldName(pnlF1))):
-              if pnlF1.field[Index(pnlF1)].reftyp != SWITCH : 
-                pnlF1.field[Index(pnlF1)].field =  hdnString(pnlF1,hdnIndex(pnlF1, fldName(pnlF1)))
-              else :
-                if hdnSwitch(pnlF1,hdnIndex(pnlF1, fldName(pnlF1))) == 1 :
-                  pnlF1.field[Index(pnlF1)].switch =  true
-                elif hdnSwitch(pnlF1,hdnIndex(pnlF1, fldName(pnlF1))) == 0 :
-                  pnlF1.field[Index(pnlF1)].switch =  false
-                # this -1 work erreur .....
-            
-
+              pnlF1.field[Index(pnlF1)].field =  hdnValue(pnlF1,fldName(pnlF1))
+              pnlF1.field[Index(pnlF1)].switch = hdnValueSwitch(pnlF1,fldName(pnlF1))
             restorePanel(pnlF1,pnlF2)
-          else : clearPanel(pnlF2)
+          else : resetPanel(pnlF2)
           key = Key.F1
 
         of Key.F12 :
           if isActif(pnlF1) and isActif(pnlF2) :              # if isActif(pnlF0) and isActif(pnlF2)
             restorePanel(pnlF1,pnlF2)                         # restorePanel(pnlF0,pnlF2)
-            clearPanel(pnlF2)
+            resetPanel(pnlF2)
             #key=getFunc()
             key = Key.F1
           if not isActif(pnlF1) :
-            clearPanel(pnlF2)
+            resetPanel(pnlF2)
             key = Key.F1
 
         of Key.F9:
@@ -215,10 +206,10 @@ while true:
       key = Key.F1
 
     of Key.F15:
-      clearPanel(pnlF1)
+      resetPanel(pnlF1)
       clsPanel(pnlF2)
       key = getFunc()
-      clearPanel(pnlF2)
+      resetPanel(pnlF2)
       setTerminal()
       key = Key.None
 
@@ -226,8 +217,8 @@ while true:
       var menuF9:MENU
       pnlx  = pnlF1           #------------ test manuel pnlx  = pnlF1/pnlF2   pnl =1/2
       var pnl = 1
-      defMenu(menuF9 , "Test" , 15 , 30,
-              MNUVH.horizontal , @["unProtect","Protect","Inactif ","Actif ","Quitter"],line0
+      defMenu(menuF9 , "Test Horizontal" , 7 , 33,
+              MNUVH.horizontal , @["unProtect","Protect","Inactif ","Actif ","Quitter"],line2
               )  #,mnuatrx
       printMenu(pnlx,menuF9)
       var sel :Natural = 0
@@ -302,11 +293,11 @@ while true:
 
       if pnl == 2 : 
         restorePanel(pnlF1,pnlF2)
-        clearPanel(pnlF2)
+        resetPanel(pnlF2)
       else :
         restorePanel(pnlx,menuF9)
         
-      clearPanel(menuF9)
+      resetPanel(menuF9)
     else: discard
   stdout.flushFile
   stdin.flushFile
