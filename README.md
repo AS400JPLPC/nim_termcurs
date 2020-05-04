@@ -161,6 +161,8 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 
 # Main procedure
 
+proc ioGrid(this: TermGrid): (Key, seq[string]) {...}
+
 proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
 
 proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
