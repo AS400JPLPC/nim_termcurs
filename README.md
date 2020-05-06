@@ -13,7 +13,8 @@ img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.pn
   
 <br>
 <br>
-# **<u>&nbsp;&rarr;&nbsp; IN PROGRESS It is possible that there are changes</u>**
+
+# <u>&nbsp;&rarr;&nbsp; IN PROGRESS It is possible that there are changes</u>
 I test on a real data-base to validate the whole.
 It works, but I had to harmonize and add PROC or FUNC
 
