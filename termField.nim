@@ -77,61 +77,61 @@ while true:
     of Key.F1:
       if not isActif(pnlF1) :
 
-        defPanel(pnlF1,"nom",1,1,terminalHeight(),terminalWidth(),bgBlack,false,fgWhite,false,CADRE.line0,"",0,17,len(P_F1),len(P_H1),
+        defPanel(pnlF1,"nom",1,1,terminalHeight(),terminalWidth(),CADRE.line0,"",0,17,len(P_F1),len(P_H1),
         @[button(Key.F3,"Exit"),button(Key.F2,"PANEL F2"),button(Key.F6, "active",false),button(Key.F9, "menu")])
 
         fldLabel(pnlF1.label[0], "zone0", 2, 5,  "ALPHA               zone0  :")
-        fldString(pnlF1.field[P_F1[Zone0]],"zone0", 2, 5+(len(pnlF1.label[0].label)), ALPHA, 30, "Soleil",FILL, "ALPHA Obligatoire", "Type Alpha a-Z")
+        fldString(pnlF1.field[P_F1[Zone0]],"zone0", 2, 5+(len(pnlF1.label[0].text)), ALPHA, 30, "Soleil",FILL, "ALPHA Obligatoire", "Type Alpha a-Z")
 
         fldLabel(pnlF1.label[1], "zone1", 4, 5,  "ALPHA_UPPER         zone1  :")
-        fldString(pnlF1.field[P_F1[Zone1]],"zone1", 4, 5+(len(pnlF1.label[1].label)), ALPHA_UPPER, 30, "BONJOUR",EMPTY, "ALPHA Obligatoire", "Type Alpha A-Z")
+        fldString(pnlF1.field[P_F1[Zone1]],"zone1", 4, 5+(len(pnlF1.label[1].text)), ALPHA_UPPER, 30, "BONJOUR",EMPTY, "ALPHA Obligatoire", "Type Alpha A-Z")
         setProtect(pnlF1.field[1],true)
         
         fldLabel(pnlF1.label[2], "zone2", 6, 5,  "PASSWORD            zone2  :")
-        fldString(pnlF1.field[P_F1[Zone2]],"zone2", 6, 5+(len(pnlF1.label[2].label)), PASSWORD, 10, "flagada",EMPTY, "PASSWORD Obligatoire", "Type Password")
+        fldString(pnlF1.field[P_F1[Zone2]],"zone2", 6, 5+(len(pnlF1.label[2].text)), PASSWORD, 10, "flagada",EMPTY, "PASSWORD Obligatoire", "Type Password")
 
         fldLabel(pnlF1.label[3], "zone3", 10, 5, "ALPHA_NUMERIC       zone3  :")
-        fldString(pnlF1.field[P_F1[Zone3]],"zone3", 10, 5+(len(pnlF1.label[3].label)), ALPHA_NUMERIC, 30, "Soleil 1 étoile",EMPTY, "ALPHA_NUMERIC Obligatoire", "Type 'a-Z 0-9 and Punct'")
+        fldString(pnlF1.field[P_F1[Zone3]],"zone3", 10, 5+(len(pnlF1.label[3].text)), ALPHA_NUMERIC, 30, "Soleil 1 étoile",EMPTY, "ALPHA_NUMERIC Obligatoire", "Type 'a-Z 0-9 and Punct'")
 
         fldLabel(pnlF1.label[4], "zone4", 12, 5, "ALPHA_NUMERIC_UPPER zone4  :")
-        fldString(pnlF1.field[P_F1[Zone4]],"zone4", 12, 5+(len(pnlF1.label[4].label)), ALPHA_NUMERIC_UPPER, 30, "LE SOLEIL EST 1 ÉTOILE",EMPTY, "ALPHA_NUMERIC Obligatoire", "Type  'A-Z 0-9 and Punct'")      
+        fldString(pnlF1.field[P_F1[Zone4]],"zone4", 12, 5+(len(pnlF1.label[4].text)), ALPHA_NUMERIC_UPPER, 30, "LE SOLEIL EST 1 ÉTOILE",EMPTY, "ALPHA_NUMERIC Obligatoire", "Type  'A-Z 0-9 and Punct'")      
 
         fldLabel(pnlF1.label[5], "zone5", 14, 5, "TEXT_NUMERIC        zone5  :")
-        fldString(pnlF1.field[P_F1[Zone5]],"zone5", 14, 5+(len(pnlF1.label[5].label)), TEXT_NUMERIC, 30, "BONJOUR, (3*7) étoiles",FILL, " TEXT_NUMERIC Obligatoire", "Type  FILL")      
+        fldString(pnlF1.field[P_F1[Zone5]],"zone5", 14, 5+(len(pnlF1.label[5].text)), TEXT_FULL, 30, "BONJOUR, (3*7) étoiles",FILL, " TEXT_NUMERIC Obligatoire", "Type  FILL")      
 
         fldLabel(pnlF1.label[6],  "zone6", 16, 5,"DIGIT               zone6  :")
-        fldNumeric(pnlF1.field[P_F1[Zone6]],"zone6", 16, 5+(len(pnlF1.label[6].label)), DIGIT, 5, 0, "67",FILL, "DIGIT Obligatoire", "Type Digit 0-9")
+        fldNumeric(pnlF1.field[P_F1[Zone6]],"zone6", 16, 5+(len(pnlF1.label[6].text)), DIGIT, 5, 0, "67",FILL, "DIGIT Obligatoire", "Type Digit 0-9")
 
         fldLabel(pnlF1.label[7],  "zone7", 18, 5,"DIGIT_SIGNED        zone7  :")
-        fldNumeric(pnlF1.field[P_F1[Zone7]],"zone7", 18, 5+(len(pnlF1.label[7].label)), DIGIT_SIGNED, 5,0, "-67",EMPTY, "DIGIT Obligatoire", "Type Digot '-/+ -9'")
+        fldNumeric(pnlF1.field[P_F1[Zone7]],"zone7", 18, 5+(len(pnlF1.label[7].text)), DIGIT_SIGNED, 5,0, "-67",EMPTY, "DIGIT Obligatoire", "Type Digot '-/+ -9'")
 
         fldLabel(pnlF1.label[8],  "zone8", 20, 5,"DECIMAL             zone8  :")
-        fldNumeric(pnlF1.field[P_F1[Zone8]],"zone8", 20, 5+(len(pnlF1.label[8].label)), DECIMAL, 5,2, "67.58",EMPTY, "DECIMAL Obligatoire", "Type Digot .0-9")
+        fldNumeric(pnlF1.field[P_F1[Zone8]],"zone8", 20, 5+(len(pnlF1.label[8].text)), DECIMAL, 5,2, "67.58",EMPTY, "DECIMAL Obligatoire", "Type Digot .0-9")
 
         fldLabel(pnlF1.label[9],  "zone9", 22, 5,  "DECIMAL_SIGNED      zone9  :")
-        fldNumeric(pnlF1.field[P_F1[Zone9]],"zone9", 22, 5+(len(pnlF1.label[9].label)), DECIMAL_SIGNED, 5,2, "-67.58",EMPTY, "DECIMAL Obligatoire", "Type DECIMAL '-/+.0-9'")
+        fldNumeric(pnlF1.field[P_F1[Zone9]],"zone9", 22, 5+(len(pnlF1.label[9].text)), DECIMAL_SIGNED, 5,2, "-67.58",EMPTY, "DECIMAL Obligatoire", "Type DECIMAL '-/+.0-9'")
 
         fldLabel(pnlF1.label[10],  "zone10", 24, 5,"DATE_ISO            zone10 :")
-        fldDate(pnlF1.field[P_F1[Zone10]], "zone10", 24, 5+(len(pnlF1.label[10].label)), DATE_ISO, "2020-04-18",FILL, "DATE Obligatoire", "Type Date-ISO YYYY-MM-DD")
+        fldDate(pnlF1.field[P_F1[Zone10]], "zone10", 24, 5+(len(pnlF1.label[10].text)), DATE_ISO, "2020-04-18",FILL, "DATE Obligatoire", "Type Date-ISO YYYY-MM-DD")
         
         fldLabel(pnlF1.label[11],  "zone11", 26, 5,"DATE_US             zone11  ")
-        fldDate(pnlF1.field[P_F1[Zone11]], "zone11", 26, 5+(len(pnlF1.label[11].label)), DATE_US, "04/18/2020",EMPTY, "DATE Obligatoire", "Type Date-ISO YYYY-MM-DD")
+        fldDate(pnlF1.field[P_F1[Zone11]], "zone11", 26, 5+(len(pnlF1.label[11].text)), DATE_US, "04/18/2020",EMPTY, "DATE Obligatoire", "Type Date-ISO YYYY-MM-DD")
         
         fldLabel(pnlF1.label[12],  "zone12", 28, 5,"DATE_FR             zone12 :")
-        fldDate(pnlF1.field[P_F1[Zone12]], "zone12", 28, 5+(len(pnlF1.label[12].label)), DATE_FR, "18/04/2020",EMPTY, "DATE Obligatoire", "Type Date-ISO YYYY-MM-DD")
+        fldDate(pnlF1.field[P_F1[Zone12]], "zone12", 28, 5+(len(pnlF1.label[12].text)), DATE_FR, "18/04/2020",EMPTY, "DATE Obligatoire", "Type Date-ISO YYYY-MM-DD")
 
         fldLabel(pnlF1.label[13],  "zone13", 30, 5,"MAIL_ISO            zone13 :")
-        fldMail(pnlF1.field[P_F1[Zone13]],   "zone13", 30, 5+(len(pnlF1.label[13].label)), MAIL_ISO, 50, "newmane@orange.fr",EMPTY, "MAIL Obligatoire", "Type Email")
+        fldMail(pnlF1.field[P_F1[Zone13]],   "zone13", 30, 5+(len(pnlF1.label[13].text)), MAIL_ISO, 50, "newmane@orange.fr",EMPTY, "MAIL Obligatoire", "Type Email")
 
         fldLabel(pnlF1.label[14],  "zone14", 32, 5,"YES_NO              zone14 :")
-        fldString(pnlF1.field[P_F1[Zone14]], "zone14", 32, 5+(len(pnlF1.label[14].label)), YES_NO, 1, "N",EMPTY, "YES_NO Obligatoire", "Type n/y")
+        fldString(pnlF1.field[P_F1[Zone14]], "zone14", 32, 5+(len(pnlF1.label[14].text)), YES_NO, 1, "N",FILL, "YES_NO Obligatoire", "Type n/y")
 
         fldLabel(pnlF1.label[15],  "zone15", 34, 5,"SWITCH              zone15 :")
-        fldSwitch(pnlF1.field[P_F1[Zone15]], "zone15", 34, 5+(len(pnlF1.label[15].label)), SWITCH,false,EMPTY, "SWITCH Obligatoire", "Type ◉/◎")
+        fldSwitch(pnlF1.field[P_F1[Zone15]], "zone15", 34, 5+(len(pnlF1.label[15].text)), SWITCH,false,EMPTY, "SWITCH Obligatoire", "Type ◉/◎")
 
         fldLabel(pnlF1.label[16],  "zone16", 38, 5,"F1 = Help   Escape= return (error/menu)")
 
-        hdnString(pnlF1.hiden[P_H1[Hstring]], "zone3",TEXT_NUMERIC, "BONJOUR, (36) étoiles")   # full String
+        hdnString(pnlF1.hiden[P_H1[Hstring]], "zone3",TEXT_FULL, "BONJOUR, (36) étoiles")   # full String
         hdnString(pnlF1.hiden[P_H1[HDate]], "zone10",DATE_ISO, "2020-04-24")                    # full String
         hdnSwitch(pnlF1.hiden[P_H1[Hswitch]], "zone15", SWITCH,true)                            # specifique switch
         hdnString(pnlF1.hiden[P_H1[Hnumeric]], "zone8",DECIMAL, "256.05")                       # full String
@@ -140,10 +140,10 @@ while true:
       key = ioPanel(pnlF1)
 
       if key == Key.F6:
-        for i in 0..pnlF1.nbrlabel - 1 :
+        for i in 0..len(pnlF1.label) - 1 :
           setActif(pnlF1.label[i],true)         # test actif dynamic
           printLabel(pnlF1, pnlF1.label[i])
-        for i in 0..pnlF1.nbrfield - 1 :
+        for i in 0..len(pnlF1.field) - 1 :
           setProtect(pnlF1.field[i],false)         # test actif dynamic
           setActif(pnlF1.field[i],true)         # test actif dynamic
           printField(pnlF1, pnlF1.field[i])
@@ -151,14 +151,14 @@ while true:
         key = Key.F1
 
     of Key.F2:
-      defPanel(pnlF2,"nom",10,30,20,70,bgBlack,false,fgWhite,false,CADRE.line1,"test Panel",0,3,3,0,
+      defPanel(pnlF2,"nom",10,30,20,70,CADRE.line1,"test Panel",0,3,3,0,
               @[button(Key.CtrlV,"get VAL"),button(Key.CtrlH,"get HIDEN"),button(Key.F12,"Abandon"),button(Key.F9,"Menu"),button(Key.F15,"Clear")])
       fldLabel(pnlF2.label[0], "nom", 5, 2,"ASTRE :")
       fldLabel(pnlF2.label[1], "fruit", 10, 2,"Fruit :")
       fldLabel(pnlF2.label[2], "aime", 12, 2,"Aimez-Vous les fruits :")
-      fldString(pnlF2.field[0], "zone0", 5, 3+(len(pnlF2.label[0].label)), ALPHA, 30, "Lune",EMPTY, "Obligatoire", "Nom de la personne ")
-      fldNumeric(pnlF2.field[1], "zone8", 10, 3+(len(pnlF2.label[1].label)), DECIMAL, 3,2, "345.6",EMPTY, "Obligatoire", "Prix  des carottes")
-      fldSwitch(pnlF2.field[2], "zone15", 12, 3+(len(pnlF2.label[2].label)), SWITCH,true,EMPTY,"","Appuyer sur la bare espacement")
+      fldString(pnlF2.field[0], "zone0", 5, 3+(len(pnlF2.label[0].text)), ALPHA, 30, "Lune",EMPTY, "Obligatoire", "Nom de la personne ")
+      fldNumeric(pnlF2.field[1], "zone8", 10, 3+(len(pnlF2.label[1].text)), DECIMAL, 3,2, "345.6",EMPTY, "Obligatoire", "Prix  des carottes")
+      fldSwitch(pnlF2.field[2], "zone15", 12, 3+(len(pnlF2.label[2].text)), SWITCH,true,EMPTY,"","Appuyer sur la bare espacement")
       printPanel(pnlF2)
 
       key = ioPanel(pnlF2)
@@ -166,9 +166,9 @@ while true:
         of Key.CtrlV :
           if isActif(pnlF1):
             # Field coherence check exemple
-            if fldName(pnlF1) == fldName(pnlF2):
-              pnlF1.field[Index(pnlF1)].switch = fldValueSwitch(pnlF2,fldName(pnlF2))
-              pnlF1.field[Index(pnlF1)].field  = fldValue(pnlF2,fldName(pnlF2))
+            if getName(pnlF1) == getName(pnlF2):
+              pnlF1.field[Index(pnlF1)].switch = getSwitch(pnlF2,getName(pnlF2))
+              pnlF1.field[Index(pnlF1)].text  = getText(pnlF2,getName(pnlF2))
             restorePanel(pnlF1,pnlF2)
           else : resetPanel(pnlF2)
           key = Key.F1
@@ -176,9 +176,9 @@ while true:
         of Key.CtrlH :
           if isActif(pnlF1):
             # Field coherence check exemple retrived hiden field
-            if fldName(pnlF1) == hdnName(pnlF1,hdnIndex(pnlF1, fldName(pnlF1))):
-              pnlF1.field[Index(pnlF1)].field =  hdnValue(pnlF1,fldName(pnlF1))
-              pnlF1.field[Index(pnlF1)].switch = hdnValueSwitch(pnlF1,fldName(pnlF1))
+            if getName(pnlF1) == getNameHiden(pnlF1,getIndexHiden(pnlF1, getName(pnlF1))):
+              pnlF1.field[Index(pnlF1)].text =  getTextHiden(pnlF1,getName(pnlF1))
+              pnlF1.field[Index(pnlF1)].switch = getSwitchHiden(pnlF1,getName(pnlF1))
             restorePanel(pnlF1,pnlF2)
           else : resetPanel(pnlF2)
           key = Key.F1
@@ -218,7 +218,7 @@ while true:
       pnlx  = pnlF1           #------------ test manuel pnlx  = pnlF1/pnlF2   pnl =1/2
       var pnl = 1
       defMenu(menuF9 , "Test Horizontal" , 7 , 33,
-              MNUVH.horizontal , @["unProtect","Protect","Inactif ","Actif ","Quitter"],line2
+              MNUVH.horizontal , @["unProtect ","Protect   ","Inactif   ","Actif     ","Quitter   "],line2
               )  #,mnuatrx
       printMenu(pnlx,menuF9)
       var sel :Natural = 0

@@ -102,15 +102,18 @@ function main() {
   <ul class="simple simple-toc-section">
       <li><a class="reference" href="#REFTYP"
     title="REFTYP {.pure.} = enum
-  ALPHA, ALPHA_UPPER, ALPHA_NUMERIC, ALPHA_NUMERIC_UPPER, TEXT_NUMERIC, PASSWORD,
-  DIGIT, DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED, DATE_ISO, DATE_FR, DATE_US, MAIL_ISO,
-  YES_NO, SWITCH"><wbr />REFTYP<span class="attachedType"></span></a></li>
+  ALPHA, ALPHA_UPPER, ALPHA_NUMERIC, ALPHA_NUMERIC_UPPER, TEXT_FULL, PASSWORD, DIGIT,
+  DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED, DATE_ISO, DATE_FR, DATE_US, MAIL_ISO, YES_NO,
+  SWITCH"><wbr />REFTYP<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#CADRE"
     title="CADRE {.pure.} = enum
   line0, line1, line2"><wbr />CADRE<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#MNUVH"
     title="MNUVH {.pure.} = enum
   vertical = 0, horizontal"><wbr />MNUVH<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#Key_Grid"
+    title="Key_Grid {.pure.} = enum
+  PGUp, PGDown, PGHome, PGEnd"><wbr />Key_<wbr />Grid<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#MNUATRB"
     title="MNUATRB = ref object
   style*: set[Style]
@@ -160,8 +163,8 @@ function main() {
   space*: Natural"><wbr />BTNSPACE<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#BUTTON"
     title="BUTTON = object
-  key: Key
-  label: string
+  key*: Key
+  text*: string
   actif*: bool"><wbr />BUTTON<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#MENU"
     title="MENU = object
@@ -204,13 +207,9 @@ function main() {
   style: set[Style]
   cadre: CADRE
   boxpnl: seq[BOX]
-  nbrbox: Natural
   box*: seq[BOX]
-  nbrlabel*: Natural
   label*: seq[LABEL]
-  nbrfield*: Natural
   field*: seq[FIELD]
-  nbrhiden: Natural
   hiden*: seq[HIDEN]
   button*: seq[BUTTON]
   index: Natural
@@ -254,7 +253,9 @@ function main() {
 <li>
   <a class="reference reference-toplevel" href="#8" id="58">Vars</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#scratr"
+      <li><a class="reference" href="#pnlatr"
+    title="pnlatr = new(ZONATRB)"><wbr />pnlatr<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#scratr"
     title="scratr = new(ZONATRB)"><wbr />scratr<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#mnuatr"
     title="mnuatr = new(MNUATRB)"><wbr />mnuatr<span class="attachedType"></span></a></li>
@@ -311,7 +312,7 @@ function main() {
   <li><a class="reference" href="#setTerminal%2CZONATRB"
     title="setTerminal(termatr: ZONATRB = scratr)"><wbr />set<wbr />Terminal<span class="attachedType">ZONATRB</span></a></li>
   <li><a class="reference" href="#button%2CKey%2Cstring"
-    title="button(key: Key; label: string; actif = true): BUTTON"><wbr />button<span class="attachedType">BUTTON</span></a></li>
+    title="button(key: Key; text: string; actif = true): BUTTON"><wbr />button<span class="attachedType">BUTTON</span></a></li>
   <li><a class="reference" href="#fldBox%2CBOX%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2CCADRE%2Cstring%2CBOXATRB%2Cbool"
     title="fldBox(box: var BOX; name: string; posx: Natural; posy: Natural; lines: Natural;
        cols: Natural; cadre: CADRE; title: string; box_atr: BOXATRB = boxatr;
@@ -325,18 +326,18 @@ function main() {
   <li><a class="reference" href="#printMenu%2CPANEL%2CMENU"
     title="printMenu(pnl: PANEL; mnu: MENU)"><wbr />print<wbr />Menu<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#fldLabel%2CLABEL%2Cstring%2CNatural%2CNatural%2Cstring%2CZONATRB%2Cbool"
-    title="fldLabel(lbl: var LABEL; name: string; posx: Natural; posy: Natural; label: string;
+    title="fldLabel(lbl: var LABEL; name: string; posx: Natural; posy: Natural; text: string;
          lbl_atr: ZONATRB = lblatr; actif: bool = true)"><wbr />fld<wbr />Label<span class="attachedType">ZONATRB</span></a></li>
   <li><a class="reference" href="#printLabel%2CPANEL%2CLABEL"
     title="printLabel(pnl: var PANEL; lbl: LABEL)"><wbr />print<wbr />Label<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#fldString%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
     title="fldString(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-          with: Natural; field: string; empty: bool; errmsg: string; help: string;
+          with: Natural; text: string; empty: bool; errmsg: string; help: string;
           regex: string = &quot;&quot;; fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr;
           actif: bool = true)"><wbr />fld<wbr />String<span class="attachedType">ZONATRB</span></a></li>
   <li><a class="reference" href="#fldMail%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
     title="fldMail(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-        with: Natural; field: string; empty: bool; errmsg: string; help: string;
+        with: Natural; text: string; empty: bool; errmsg: string; help: string;
         fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true)"><wbr />fld<wbr />Mail<span class="attachedType">ZONATRB</span></a></li>
   <li><a class="reference" href="#fldSwitch%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2Cbool%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
     title="fldSwitch(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
@@ -344,30 +345,57 @@ function main() {
           swt_atr: ZONATRB = swtatr; prt_atr: ZONATRB = prtatr; actif: bool = true)"><wbr />fld<wbr />Switch<span class="attachedType">ZONATRB</span></a></li>
   <li><a class="reference" href="#fldDate%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
     title="fldDate(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-        field: string; empty: bool; errmsg: string; help: string;
+        text: string; empty: bool; errmsg: string; help: string;
         fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true)"><wbr />fld<wbr />Date<span class="attachedType">ZONATRB</span></a></li>
   <li><a class="reference" href="#fldNumeric%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
     title="fldNumeric(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-           with: Natural; scal: Natural; field: string; empty: bool; errmsg: string;
+           with: Natural; scal: Natural; text: string; empty: bool; errmsg: string;
            help: string; fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr;
            actif: bool = true)"><wbr />fld<wbr />Numeric<span class="attachedType">ZONATRB</span></a></li>
   <li><a class="reference" href="#hdnString%2CHIDEN%2Cstring%2CREFTYP%2Cstring"
-    title="hdnString(hdn: var HIDEN; name: string; reftyp: REFTYP; field: string)"><wbr />hdn<wbr />String<span class="attachedType"></span></a></li>
+    title="hdnString(hdn: var HIDEN; name: string; reftyp: REFTYP; text: string)"><wbr />hdn<wbr />String<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#hdnSwitch%2CHIDEN%2Cstring%2CREFTYP%2Cbool"
     title="hdnSwitch(hdn: var HIDEN; name: string; reftyp: REFTYP; switch: bool)"><wbr />hdn<wbr />Switch<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#printField%2CPANEL%2CFIELD"
     title="printField(pnl: var PANEL; fld: FIELD)"><wbr />print<wbr />Field<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#printButton%2CPANEL%2CBTNSPACE"
     title="printButton(pnl: var PANEL; btn_esp: BTNSPACE = btnspc)"><wbr />print<wbr />Button<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#defPanel%2CPANEL%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2CBackgroundColor%2Cbool%2CForegroundColor%2Cbool%2CCADRE%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2Cseq%5B%5D%2Cbool"
-    title="defPanel(pnl: var PANEL; name: string; posx, posy, height, width: Natural;
-         backgr: BackgroundColor; backbr: bool; foregr: ForegroundColor; forebr: bool;
-         cadre: CADRE; title: string; nbrbox, nbrlabel, nbrfield, nbrhiden: Natural;
-         button: seq[(BUTTON)]; actif: bool = true)"><wbr />def<wbr />Panel<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#defPanel%2CPANEL%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2CCADRE%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2Cseq%5B%5D%2CZONATRB%2Cbool"
+    title="defPanel(pnl: var PANEL; name: string; posx, posy, height, width: Natural; cadre: CADRE;
+         title: string; nbrbox, nbrlabel, nbrfield, nbrhiden: Natural;
+         button: seq[(BUTTON)]; pnl_atr: ZONATRB = pnlatr; actif: bool = true)"><wbr />def<wbr />Panel<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#add_Label%2Cstring%2CNatural%2CNatural%2Cstring%2CZONATRB%2Cbool"
+    title="add_Label(name: string; posx: Natural; posy: Natural; text: string;
+          lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL"><wbr />add_<wbr />Label<span class="attachedType">ZONATRB</span></a></li>
+  <li><a class="reference" href="#add_String%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
+    title="add_String(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; with: Natural;
+           text: string; empty: bool; errmsg: string; help: string; regex: string = &quot;&quot;;
+           fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true): FIELD"><wbr />add_<wbr />String<span class="attachedType">ZONATRB</span></a></li>
+  <li><a class="reference" href="#add_Mail%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
+    title="add_Mail(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+         with: Natural; text: string; empty: bool; errmsg: string; help: string;
+         fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true): FIELD"><wbr />add_<wbr />Mail<span class="attachedType">ZONATRB</span></a></li>
+  <li><a class="reference" href="#add_Switch%2Cstring%2CNatural%2CNatural%2CREFTYP%2Cbool%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
+    title="add_Switch(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; switch: bool;
+           empty: bool; errmsg: string; help: string; swt_atr: ZONATRB = swtatr;
+           prt_atr: ZONATRB = prtatr; actif: bool = true): FIELD"><wbr />add_<wbr />Switch<span class="attachedType">ZONATRB</span></a></li>
+  <li><a class="reference" href="#add_Date%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
+    title="add_Date(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+         text: string; empty: bool; errmsg: string; help: string;
+         fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true): FIELD"><wbr />add_<wbr />Date<span class="attachedType">ZONATRB</span></a></li>
+  <li><a class="reference" href="#add_Numeric%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
+    title="add_Numeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; with: Natural;
+            scal: Natural; text: string; empty: bool; errmsg: string; help: string;
+            fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true): FIELD"><wbr />add_<wbr />Numeric<span class="attachedType">ZONATRB</span></a></li>
+  <li><a class="reference" href="#add_Panel%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2Cseq%5B%5D%2CCADRE%2Cstring%2CZONATRB"
+    title="add_Panel(name: string; posx, posy, height, width: Natural; button: seq[(BUTTON)];
+          cadre: CADRE = line0; title: string = &quot;&quot;; pnl_atr: ZONATRB = pnlatr): PANEL"><wbr />add_<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#displayPanel%2CPANEL"
     title="displayPanel(pnl: PANEL)"><wbr />display<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#printPanel%2CPANEL"
     title="printPanel(pnl: var PANEL)"><wbr />print<wbr />Panel<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#clearField%2CPANEL"
+    title="clearField(pnl: var PANEL)"><wbr />clear<wbr />Field<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#resetPanel%2CPANEL"
     title="resetPanel(pnl: var PANEL)"><wbr />reset<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#resetPanel%2CMENU"
@@ -392,10 +420,14 @@ function main() {
     title="restorePanel(dst: PANEL; grid: TermGrid)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#restorePanel%2CPANEL%2CNatural%2CNatural"
     title="restorePanel(pnl: PANEL; lines, posy: Natural)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setText%2CPANEL%2Cstring%2Cstring"
+    title="setText(pnl: PANEL; name: string; val: string)"><wbr />set<wbr />Text<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#setProtect%2CFIELD%2Cbool"
     title="setProtect(fld: var FIELD; protect: bool)"><wbr />set<wbr />Protect<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#setEdtCar%2CFIELD%2Cchar"
     title="setEdtCar(fld: var FIELD; Car: char)"><wbr />set<wbr />Edt<wbr />Car<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#setError%2CFIELD"
+    title="setError(fld: var FIELD)"><wbr />set<wbr />Error<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#setActif%2CFIELD%2Cbool"
     title="setActif(fld: var FIELD; actif: bool)"><wbr />set<wbr />Actif<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#setActif%2CLABEL%2Cbool"
@@ -416,8 +448,8 @@ function main() {
     title="newTermGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
             separator: TermStyle = unicodeStyle; grid_atr: GRIDATRB = gridatr;
             actif: bool = true): TermGrid"><wbr />new<wbr />Term<wbr />Grid<span class="attachedType">TermGrid</span></a></li>
-  <li><a class="reference" href="#resetTerm%2CTermGrid"
-    title="resetTerm(this: TermGrid)"><wbr />reset<wbr />Term<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#resetGrid%2CTermGrid"
+    title="resetGrid(this: TermGrid)"><wbr />reset<wbr />Grid<span class="attachedType">TermGrid</span></a></li>
   <li><a class="reference" href="#columnsCount%2CTermGrid"
     title="columnsCount(this: TermGrid): int"><wbr />columns<wbr />Count<span class="attachedType">TermGrid</span></a></li>
   <li><a class="reference" href="#setHeaders%2CTermGrid%2Cseq%5BCell%5D"
@@ -432,6 +464,10 @@ function main() {
     title="printGridHeader(this: TermGrid)"><wbr />print<wbr />Grid<wbr />Header<span class="attachedType">TermGrid</span></a></li>
   <li><a class="reference" href="#printGridRows%2CTermGrid"
     title="printGridRows(this: TermGrid)"><wbr />print<wbr />Grid<wbr />Rows<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#pageUpGrid%2CTermGrid"
+    title="pageUpGrid(this: TermGrid): Key_Grid"><wbr />page<wbr />Up<wbr />Grid<span class="attachedType">TermGrid</span></a></li>
+  <li><a class="reference" href="#pageDownGrid%2CTermGrid"
+    title="pageDownGrid(this: TermGrid): Key_Grid"><wbr />page<wbr />Down<wbr />Grid<span class="attachedType">TermGrid</span></a></li>
   <li><a class="reference" href="#ioGrid%2CTermGrid"
     title="ioGrid(this: TermGrid): (Key, seq[string])"><wbr />io<wbr />Grid<span class="attachedType">TermGrid</span></a></li>
   <li><a class="reference" href="#ioMenu%2CPANEL%2CMENU%2CNatural"
@@ -452,34 +488,40 @@ function main() {
     title="Cols(pnl: PANEL): Natural"><wbr />Cols<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#Index%2CPANEL"
     title="Index(pnl: PANEL): Natural"><wbr />Index<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#fldName%2CPANEL"
-    title="fldName(pnl: PANEL): string"><wbr />fld<wbr />Name<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#fldIndex%2CPANEL%2Cstring"
-    title="fldIndex(pnl: PANEL; name: string): int"><wbr />fld<wbr />Index<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#fldValue%2CPANEL%2Cstring"
-    title="fldValue(pnl: PANEL; name: string): string"><wbr />fld<wbr />Value<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#fldValueSwitch%2CPANEL%2Cstring"
-    title="fldValueSwitch(pnl: PANEL; name: string): bool"><wbr />fld<wbr />Value<wbr />Switch<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#fldValue%2CPANEL%2CNatural"
-    title="fldValue(pnl: PANEL; index: Natural): string"><wbr />fld<wbr />Value<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#fldValueSwitch%2CPANEL%2CNatural"
-    title="fldValueSwitch(pnl: PANEL; index: Natural): bool"><wbr />fld<wbr />Value<wbr />Switch<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#hdnName%2CPANEL%2CNatural"
-    title="hdnName(hdn: PANEL; index: Natural): string"><wbr />hdn<wbr />Name<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#hdnIndex%2CPANEL%2Cstring"
-    title="hdnIndex(hdn: PANEL; name: string): int"><wbr />hdn<wbr />Index<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#hdnValue%2CPANEL%2Cstring"
-    title="hdnValue(hdn: PANEL; name: string): string"><wbr />hdn<wbr />Value<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#hdnValueSwitch%2CPANEL%2Cstring"
-    title="hdnValueSwitch(hdn: PANEL; name: string): bool"><wbr />hdn<wbr />Value<wbr />Switch<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#hdnValue%2CPANEL%2CNatural"
-    title="hdnValue(hdn: PANEL; index: Natural): string"><wbr />hdn<wbr />Value<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#hdnValueSwitch%2CPANEL%2CNatural"
-    title="hdnValueSwitch(hdn: PANEL; index: Natural): bool"><wbr />hdn<wbr />Value<wbr />Switch<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#fldNbrcar%2CPANEL%2Cstring"
-    title="fldNbrcar(pnl: PANEL; name: string): int"><wbr />fld<wbr />Nbrcar<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#fldReftyp%2CPANEL%2Cstring"
-    title="fldReftyp(pnl: PANEL; name: string): REFTYP"><wbr />fld<wbr />Reftyp<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getName%2CPANEL"
+    title="getName(pnl: PANEL): string"><wbr />get<wbr />Name<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getIndex%2CPANEL%2Cstring"
+    title="getIndex(pnl: PANEL; name: string): int"><wbr />get<wbr />Index<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getText%2CPANEL%2Cstring"
+    title="getText(pnl: PANEL; name: string): string"><wbr />get<wbr />Text<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getSwitch%2CPANEL%2Cstring"
+    title="getSwitch(pnl: PANEL; name: string): bool"><wbr />get<wbr />Switch<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getText%2CPANEL%2Cint"
+    title="getText(pnl: PANEL; index: int): string"><wbr />get<wbr />Text<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getSwitch%2CPANEL%2Cint"
+    title="getSwitch(pnl: PANEL; index: int): bool"><wbr />get<wbr />Switch<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getNameHiden%2CPANEL%2Cint"
+    title="getNameHiden(hdn: PANEL; index: int): string"><wbr />get<wbr />Name<wbr />Hiden<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getIndexHiden%2CPANEL%2Cstring"
+    title="getIndexHiden(hdn: PANEL; name: string): int"><wbr />get<wbr />Index<wbr />Hiden<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getTextHiden%2CPANEL%2Cstring"
+    title="getTextHiden(hdn: PANEL; name: string): string"><wbr />get<wbr />Text<wbr />Hiden<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getSwitchHiden%2CPANEL%2Cstring"
+    title="getSwitchHiden(hdn: PANEL; name: string): bool"><wbr />get<wbr />Switch<wbr />Hiden<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getTextHiden%2CPANEL%2Cint"
+    title="getTextHiden(hdn: PANEL; index: int): string"><wbr />get<wbr />Text<wbr />Hiden<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getSwitchHiden%2CPANEL%2Cint"
+    title="getSwitchHiden(hdn: PANEL; index: int): bool"><wbr />get<wbr />Switch<wbr />Hiden<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setSwitch%2CPANEL%2Cstring%2Cbool"
+    title="setSwitch(pnl: PANEL; name: string; val: bool): bool"><wbr />set<wbr />Switch<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setText%2CPANEL%2Cint%2Cstring"
+    title="setText(pnl: PANEL; index: int; val: string)"><wbr />set<wbr />Text<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setSwitch%2CPANEL%2Cint%2Cbool"
+    title="setSwitch(pnl: PANEL; index: int; val: bool)"><wbr />set<wbr />Switch<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getNbrcar%2CPANEL%2Cstring"
+    title="getNbrcar(pnl: PANEL; name: string): int"><wbr />get<wbr />Nbrcar<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getReftyp%2CPANEL%2Cstring"
+    title="getReftyp(pnl: PANEL; name: string): REFTYP"><wbr />get<wbr />Reftyp<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#isProtect%2CFIELD"
     title="isProtect(fld: var FIELD): bool"><wbr />is<wbr />Protect<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#isActif%2CFIELD"
@@ -506,16 +548,16 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">define type cursorErase and color and style defaultreturn BUTTONDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine Labelassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field NumericHiden bloc outswitchassigne FIELD to matrice for displayassigne BUTTON matrice for displayDefine PANELdisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayvide object PANEL / box/label/fld/funcvide object MENUcls Labelcsl Fieldcls Paneldisplay matrice only LABELdisplay matrice only FIELDdisplay matrice only BUTTONrestore the base occupied by pnlrestore the base occupied by mnurestore the base occupied by gridrestore the lines occupied by the error messageget lines/COLS PANELreturn index actived from panel this getFieldreturn name field from panel this getFieldreturn index Sequence Field from namereturn value Field Sequence Fieldreturn value Field Sequence Fielreturn value Field Sequence Fieldreturn value Field Sequence Fielreturn name from index return index from Namereturn value Field from namereturn value Field from namereturn value Field from indexreturn value Field from indexreturn nbrCar Field return nbrCar Field set on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELTest if KEYs must be managed by the programmerif on/off  FIELD / LABEL / BOX / MENU / PANEL<p> </p>
+  <p class="module-desc">define type cursorErase and color and style defaultreturn BUTTONDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine Labelassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field NumericHiden bloc outswitchassigne FIELD to matrice for displayassigne BUTTON matrice for displayDefine PANELDefine LabelDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field NumericDefine PANELdisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayclear value FIELDvide object PANEL / box/label/fld/funcvide object MENUcls Labelcsl Fieldcls Paneldisplay matrice only LABELdisplay matrice only FIELDdisplay matrice only BUTTONrestore the base occupied by pnlrestore the base occupied by mnurestore the base occupied by gridrestore the lines occupied by the error messageget lines/COLS PANELreturn index actived from panel this getFieldreturn name field from panel this getFieldreturn index Sequence Field from namereturn value Field Sequence Fieldreturn value Field Sequence Fielreturn value Field Sequence Fieldreturn value Field Sequence Fielreturn name from index return index from Namereturn value Field from namereturn value Field from namereturn value Field from indexreturn value Field from indexset value Field Sequence Fieldset value Field Sequence Fielset value Field Sequence Fieldsetvalue Field Sequence Fielreturn nbrCar Field return nbrCar Field set on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELTest if KEYs must be managed by the programmerif on/off  FIELD / LABEL / BOX / MENU / PANEL<p> </p>
 <h1 id="management-grid-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-pageup-pagedown-automatic-alignment-based-on-the-type-reference"><center>Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type reference</center></h1><h1 id="traiement-des-menus-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-left-right-movement-with-the-wheel-and-validation-with-the-clik"><center>traiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement with the wheel and validation with the clik</center></h1><h1 id="input-buffer-management-modeled-on-5250slash3270-inspiration-ncurse-application-hold-principe-and-new-langage-use-termkeydotnim"><center>Input buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim</center></h1><h1 id="format-management-including-zones-keyboard-function-keys-are-returned-to-the-calling-procedure-only-the-key-ctrla-eq-aide-slash-help-for-field-f1-is-reserved-for-complex-help-programming-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert-predefined-and-customizable-regex-control"><center>Format management including zones keyboard Function keys are returned to the calling procedure  only the key CtrlA = Aide / Help for field F1 is reserved for complex help programming  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT predefined and customizable REGEX control</center></h1></p>
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
 <a id="REFTYP"></a>
 <dt><pre><a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">pure</span></span><span class="Other">.}</span></span> <span class="Other">=</span> <span class="Keyword">enum</span>
-  <span class="Identifier">ALPHA</span><span class="Other">,</span> <span class="Identifier">ALPHA_UPPER</span><span class="Other">,</span> <span class="Identifier">ALPHA_NUMERIC</span><span class="Other">,</span> <span class="Identifier">ALPHA_NUMERIC_UPPER</span><span class="Other">,</span> <span class="Identifier">TEXT_NUMERIC</span><span class="Other">,</span> <span class="Identifier">PASSWORD</span><span class="Other">,</span>
-  <span class="Identifier">DIGIT</span><span class="Other">,</span> <span class="Identifier">DIGIT_SIGNED</span><span class="Other">,</span> <span class="Identifier">DECIMAL</span><span class="Other">,</span> <span class="Identifier">DECIMAL_SIGNED</span><span class="Other">,</span> <span class="Identifier">DATE_ISO</span><span class="Other">,</span> <span class="Identifier">DATE_FR</span><span class="Other">,</span> <span class="Identifier">DATE_US</span><span class="Other">,</span> <span class="Identifier">MAIL_ISO</span><span class="Other">,</span>
-  <span class="Identifier">YES_NO</span><span class="Other">,</span> <span class="Identifier">SWITCH</span></pre></dt>
+  <span class="Identifier">ALPHA</span><span class="Other">,</span> <span class="Identifier">ALPHA_UPPER</span><span class="Other">,</span> <span class="Identifier">ALPHA_NUMERIC</span><span class="Other">,</span> <span class="Identifier">ALPHA_NUMERIC_UPPER</span><span class="Other">,</span> <span class="Identifier">TEXT_FULL</span><span class="Other">,</span> <span class="Identifier">PASSWORD</span><span class="Other">,</span> <span class="Identifier">DIGIT</span><span class="Other">,</span>
+  <span class="Identifier">DIGIT_SIGNED</span><span class="Other">,</span> <span class="Identifier">DECIMAL</span><span class="Other">,</span> <span class="Identifier">DECIMAL_SIGNED</span><span class="Other">,</span> <span class="Identifier">DATE_ISO</span><span class="Other">,</span> <span class="Identifier">DATE_FR</span><span class="Other">,</span> <span class="Identifier">DATE_US</span><span class="Other">,</span> <span class="Identifier">MAIL_ISO</span><span class="Other">,</span> <span class="Identifier">YES_NO</span><span class="Other">,</span>
+  <span class="Identifier">SWITCH</span></pre></dt>
 <dd>
 
 
@@ -532,6 +574,14 @@ function main() {
 <a id="MNUVH"></a>
 <dt><pre><a href="termcurs.html#MNUVH"><span class="Identifier">MNUVH</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">pure</span></span><span class="Other">.}</span></span> <span class="Other">=</span> <span class="Keyword">enum</span>
   <span class="Identifier">vertical</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">,</span> <span class="Identifier">horizontal</span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="Key_Grid"></a>
+<dt><pre><a href="termcurs.html#Key_Grid"><span class="Identifier">Key_Grid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">pure</span></span><span class="Other">.}</span></span> <span class="Other">=</span> <span class="Keyword">enum</span>
+  <span class="Identifier">PGUp</span><span class="Other">,</span> <span class="Identifier">PGDown</span><span class="Other">,</span> <span class="Identifier">PGHome</span><span class="Other">,</span> <span class="Identifier">PGEnd</span></pre></dt>
 <dd>
 
 
@@ -616,8 +666,8 @@ function main() {
 </dd>
 <a id="BUTTON"></a>
 <dt><pre><a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">Key</span>
-  <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">key</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Key</span>
+  <span class="Identifier">text</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
@@ -678,13 +728,9 @@ function main() {
   <span class="Identifier">style</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
   <span class="Identifier">cadre</span><span class="Other">:</span> <a href="termcurs.html#CADRE"><span class="Identifier">CADRE</span></a>
   <span class="Identifier">boxpnl</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">BOX</span><span class="Other">]</span>
-  <span class="Identifier">nbrbox</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">box</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">BOX</span><span class="Other">]</span>
-  <span class="Identifier">nbrlabel</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">label</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">LABEL</span><span class="Other">]</span>
-  <span class="Identifier">nbrfield</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">field</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">FIELD</span><span class="Other">]</span>
-  <span class="Identifier">nbrhiden</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">hiden</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">HIDEN</span><span class="Other">]</span>
   <span class="Identifier">button</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">]</span>
   <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span>
@@ -751,6 +797,13 @@ function main() {
 <div class="section" id="8">
 <h1><a class="toc-backref" href="#8">Vars</a></h1>
 <dl class="item">
+<a id="pnlatr"></a>
+<dt><pre><a href="termcurs.html#pnlatr"><span class="Identifier">pnlatr</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a><span class="Other">)</span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="scratr"></a>
 <dt><pre><a href="termcurs.html#scratr"><span class="Identifier">scratr</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a><span class="Other">)</span></pre></dt>
 <dd>
@@ -901,7 +954,7 @@ function main() {
 
 </dd>
 <a id="button,Key,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#button%2CKey%2Cstring"><span class="Identifier">button</span></a><span class="Other">(</span><span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">Key</span><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">actif</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#button%2CKey%2Cstring"><span class="Identifier">button</span></a><span class="Other">(</span><span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">Key</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">actif</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -941,7 +994,7 @@ function main() {
 
 </dd>
 <a id="fldLabel,LABEL,string,Natural,Natural,string,ZONATRB,bool"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#fldLabel%2CLABEL%2Cstring%2CNatural%2CNatural%2Cstring%2CZONATRB%2Cbool"><span class="Identifier">fldLabel</span></a><span class="Other">(</span><span class="Identifier">lbl</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">LABEL</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+<dt><pre><span class="Keyword">proc</span> <a href="#fldLabel%2CLABEL%2Cstring%2CNatural%2CNatural%2Cstring%2CZONATRB%2Cbool"><span class="Identifier">fldLabel</span></a><span class="Other">(</span><span class="Identifier">lbl</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">LABEL</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
              <span class="Identifier">lbl_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">lblatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
@@ -957,7 +1010,7 @@ function main() {
 </dd>
 <a id="fldString,FIELD,string,Natural,Natural,REFTYP,Natural,string,bool,string,string,string,ZONATRB,ZONATRB,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#fldString%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">fldString</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
-              <span class="Identifier">with</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">field</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+              <span class="Identifier">with</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
               <span class="Identifier">regex</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">fld_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">fldatr</span><span class="Other">;</span> <span class="Identifier">prt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span>
               <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -967,7 +1020,7 @@ function main() {
 </dd>
 <a id="fldMail,FIELD,string,Natural,Natural,REFTYP,Natural,string,bool,string,string,ZONATRB,ZONATRB,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#fldMail%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">fldMail</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
-            <span class="Identifier">with</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">field</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+            <span class="Identifier">with</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
             <span class="Identifier">fld_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">fldatr</span><span class="Other">;</span> <span class="Identifier">prt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -987,7 +1040,7 @@ function main() {
 </dd>
 <a id="fldDate,FIELD,string,Natural,Natural,REFTYP,string,bool,string,string,ZONATRB,ZONATRB,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#fldDate%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">fldDate</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
-            <span class="Identifier">field</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+            <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
             <span class="Identifier">fld_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">fldatr</span><span class="Other">;</span> <span class="Identifier">prt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -997,7 +1050,7 @@ function main() {
 </dd>
 <a id="fldNumeric,FIELD,string,Natural,Natural,REFTYP,Natural,Natural,string,bool,string,string,ZONATRB,ZONATRB,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#fldNumeric%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">fldNumeric</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span>
-               <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span> <span class="Identifier">with</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">scal</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">field</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span>
+               <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span> <span class="Identifier">with</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">scal</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span>
                <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">fld_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">fldatr</span><span class="Other">;</span>
                <span class="Identifier">prt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
@@ -1007,7 +1060,7 @@ function main() {
 
 </dd>
 <a id="hdnString,HIDEN,string,REFTYP,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#hdnString%2CHIDEN%2Cstring%2CREFTYP%2Cstring"><span class="Identifier">hdnString</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">HIDEN</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span> <span class="Identifier">field</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+<dt><pre><span class="Keyword">proc</span> <a href="#hdnString%2CHIDEN%2Cstring%2CREFTYP%2Cstring"><span class="Identifier">hdnString</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">HIDEN</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
@@ -1037,12 +1090,77 @@ function main() {
 
 
 </dd>
-<a id="defPanel,PANEL,string,Natural,Natural,Natural,Natural,BackgroundColor,bool,ForegroundColor,bool,CADRE,string,Natural,Natural,Natural,Natural,seq[],bool"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#defPanel%2CPANEL%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2CBackgroundColor%2Cbool%2CForegroundColor%2Cbool%2CCADRE%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2Cseq%5B%5D%2Cbool"><span class="Identifier">defPanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">,</span> <span class="Identifier">posy</span><span class="Other">,</span> <span class="Identifier">height</span><span class="Other">,</span> <span class="Identifier">width</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span>
-             <span class="Identifier">backgr</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span><span class="Other">;</span> <span class="Identifier">backbr</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">foregr</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span><span class="Other">;</span>
-             <span class="Identifier">forebr</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">cadre</span><span class="Other">:</span> <a href="termcurs.html#CADRE"><span class="Identifier">CADRE</span></a><span class="Other">;</span> <span class="Identifier">title</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+<a id="defPanel,PANEL,string,Natural,Natural,Natural,Natural,CADRE,string,Natural,Natural,Natural,Natural,seq[],ZONATRB,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#defPanel%2CPANEL%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2CCADRE%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2Cseq%5B%5D%2CZONATRB%2Cbool"><span class="Identifier">defPanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">,</span> <span class="Identifier">posy</span><span class="Other">,</span> <span class="Identifier">height</span><span class="Other">,</span> <span class="Identifier">width</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span>
+             <span class="Identifier">cadre</span><span class="Other">:</span> <a href="termcurs.html#CADRE"><span class="Identifier">CADRE</span></a><span class="Other">;</span> <span class="Identifier">title</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
              <span class="Identifier">nbrbox</span><span class="Other">,</span> <span class="Identifier">nbrlabel</span><span class="Other">,</span> <span class="Identifier">nbrfield</span><span class="Other">,</span> <span class="Identifier">nbrhiden</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Other">(</span><a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">)</span><span class="Other">]</span><span class="Other">;</span>
-             <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+             <span class="Identifier">pnl_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">pnlatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="add_Label,string,Natural,Natural,string,ZONATRB,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#add_Label%2Cstring%2CNatural%2CNatural%2Cstring%2CZONATRB%2Cbool"><span class="Identifier">add_Label</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+              <span class="Identifier">lbl_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">lblatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">LABEL</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="add_String,string,Natural,Natural,REFTYP,Natural,string,bool,string,string,string,ZONATRB,ZONATRB,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#add_String%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">add_String</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
+               <span class="Identifier">with</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+               <span class="Identifier">regex</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">fld_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">fldatr</span><span class="Other">;</span> <span class="Identifier">prt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span>
+               <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">FIELD</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="add_Mail,FIELD,string,Natural,Natural,REFTYP,Natural,string,bool,string,string,ZONATRB,ZONATRB,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#add_Mail%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">add_Mail</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
+             <span class="Identifier">with</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+             <span class="Identifier">fld_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">fldatr</span><span class="Other">;</span> <span class="Identifier">prt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">FIELD</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="add_Switch,string,Natural,Natural,REFTYP,bool,bool,string,string,ZONATRB,ZONATRB,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#add_Switch%2Cstring%2CNatural%2CNatural%2CREFTYP%2Cbool%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">add_Switch</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span> <span class="Identifier">switch</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span>
+               <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">swt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">swtatr</span><span class="Other">;</span>
+               <span class="Identifier">prt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">FIELD</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="add_Date,FIELD,string,Natural,Natural,REFTYP,string,bool,string,string,ZONATRB,ZONATRB,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#add_Date%2CFIELD%2Cstring%2CNatural%2CNatural%2CREFTYP%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">add_Date</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
+             <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+             <span class="Identifier">fld_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">fldatr</span><span class="Other">;</span> <span class="Identifier">prt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">FIELD</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="add_Numeric,string,Natural,Natural,REFTYP,Natural,Natural,string,bool,string,string,ZONATRB,ZONATRB,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#add_Numeric%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">add_Numeric</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
+                <span class="Identifier">with</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">scal</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+                <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">fld_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">fldatr</span><span class="Other">;</span> <span class="Identifier">prt_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span>
+                <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">FIELD</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="add_Panel,string,Natural,Natural,Natural,Natural,seq[],CADRE,string,ZONATRB"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#add_Panel%2Cstring%2CNatural%2CNatural%2CNatural%2CNatural%2Cseq%5B%5D%2CCADRE%2Cstring%2CZONATRB"><span class="Identifier">add_Panel</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">,</span> <span class="Identifier">posy</span><span class="Other">,</span> <span class="Identifier">height</span><span class="Other">,</span> <span class="Identifier">width</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Other">(</span><a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">)</span><span class="Other">]</span><span class="Other">;</span>
+              <span class="Identifier">cadre</span><span class="Other">:</span> <a href="termcurs.html#CADRE"><span class="Identifier">CADRE</span></a> <span class="Other">=</span> <span class="Identifier">line0</span><span class="Other">;</span> <span class="Identifier">title</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">pnl_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">pnlatr</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1058,6 +1176,13 @@ function main() {
 <a id="printPanel,PANEL"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#printPanel%2CPANEL"><span class="Identifier">printPanel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
                               <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="clearField,PANEL"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#clearField%2CPANEL"><span class="Identifier">clearField</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1154,6 +1279,13 @@ function main() {
 
 
 </dd>
+<a id="setText,PANEL,string,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setText%2CPANEL%2Cstring%2Cstring"><span class="Identifier">setText</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="setProtect,FIELD,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#setProtect%2CFIELD%2Cbool"><span class="Identifier">setProtect</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">;</span> <span class="Identifier">protect</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -1163,6 +1295,13 @@ function main() {
 </dd>
 <a id="setEdtCar,FIELD,char"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#setEdtCar%2CFIELD%2Cchar"><span class="Identifier">setEdtCar</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">;</span> <span class="Identifier">Car</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setError,FIELD"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setError%2CFIELD"><span class="Identifier">setError</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">FIELD</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1233,8 +1372,8 @@ function main() {
 
 
 </dd>
-<a id="resetTerm,TermGrid"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#resetTerm%2CTermGrid"><span class="Identifier">resetTerm</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="resetGrid,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#resetGrid%2CTermGrid"><span class="Identifier">resetGrid</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1287,6 +1426,22 @@ function main() {
 <a id="printGridRows,TermGrid"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#printGridRows%2CTermGrid"><span class="Identifier">printGridRows</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
                                   <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="pageUpGrid,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#pageUpGrid%2CTermGrid"><span class="Identifier">pageUpGrid</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#Key_Grid"><span class="Identifier">Key_Grid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+                                        <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="pageDownGrid,TermGrid"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#pageDownGrid%2CTermGrid"><span class="Identifier">pageDownGrid</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#TermGrid"><span class="Identifier">TermGrid</span></a><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#Key_Grid"><span class="Identifier">Key_Grid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1350,99 +1505,120 @@ tranform letter to *
 
 
 </dd>
-<a id="fldName,PANEL"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#fldName%2CPANEL"><span class="Identifier">fldName</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getName,PANEL"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getName%2CPANEL"><span class="Identifier">getName</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="fldIndex,PANEL,string"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#fldIndex%2CPANEL%2Cstring"><span class="Identifier">fldIndex</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getIndex,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getIndex%2CPANEL%2Cstring"><span class="Identifier">getIndex</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="fldValue,PANEL,string"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#fldValue%2CPANEL%2Cstring"><span class="Identifier">fldValue</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getText,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getText%2CPANEL%2Cstring"><span class="Identifier">getText</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="fldValueSwitch,PANEL,string"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#fldValueSwitch%2CPANEL%2Cstring"><span class="Identifier">fldValueSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getSwitch,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getSwitch%2CPANEL%2Cstring"><span class="Identifier">getSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="fldValue,PANEL,Natural"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#fldValue%2CPANEL%2CNatural"><span class="Identifier">fldValue</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getText,PANEL,int"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getText%2CPANEL%2Cint"><span class="Identifier">getText</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="fldValueSwitch,PANEL,Natural"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#fldValueSwitch%2CPANEL%2CNatural"><span class="Identifier">fldValueSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getSwitch,PANEL,int"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getSwitch%2CPANEL%2Cint"><span class="Identifier">getSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="hdnName,PANEL,Natural"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#hdnName%2CPANEL%2CNatural"><span class="Identifier">hdnName</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getNameHiden,PANEL,int"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getNameHiden%2CPANEL%2Cint"><span class="Identifier">getNameHiden</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="hdnIndex,PANEL,string"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#hdnIndex%2CPANEL%2Cstring"><span class="Identifier">hdnIndex</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getIndexHiden,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getIndexHiden%2CPANEL%2Cstring"><span class="Identifier">getIndexHiden</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="hdnValue,PANEL,string"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#hdnValue%2CPANEL%2Cstring"><span class="Identifier">hdnValue</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getTextHiden,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getTextHiden%2CPANEL%2Cstring"><span class="Identifier">getTextHiden</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="hdnValueSwitch,PANEL,string"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#hdnValueSwitch%2CPANEL%2Cstring"><span class="Identifier">hdnValueSwitch</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getSwitchHiden,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getSwitchHiden%2CPANEL%2Cstring"><span class="Identifier">getSwitchHiden</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="hdnValue,PANEL,Natural"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#hdnValue%2CPANEL%2CNatural"><span class="Identifier">hdnValue</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getTextHiden,PANEL,int"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getTextHiden%2CPANEL%2Cint"><span class="Identifier">getTextHiden</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="hdnValueSwitch,PANEL,Natural"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#hdnValueSwitch%2CPANEL%2CNatural"><span class="Identifier">hdnValueSwitch</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getSwitchHiden,PANEL,int"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getSwitchHiden%2CPANEL%2Cint"><span class="Identifier">getSwitchHiden</span></a><span class="Other">(</span><span class="Identifier">hdn</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="fldNbrcar,PANEL,string"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#fldNbrcar%2CPANEL%2Cstring"><span class="Identifier">fldNbrcar</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="setSwitch,PANEL,string,bool"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#setSwitch%2CPANEL%2Cstring%2Cbool"><span class="Identifier">setSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="fldReftyp,PANEL,string"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#fldReftyp%2CPANEL%2Cstring"><span class="Identifier">fldReftyp</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="setText,PANEL,int,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#setText%2CPANEL%2Cint%2Cstring"><span class="Identifier">setText</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setSwitch,PANEL,int,bool"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#setSwitch%2CPANEL%2Cint%2Cbool"><span class="Identifier">setSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getNbrcar,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getNbrcar%2CPANEL%2Cstring"><span class="Identifier">getNbrcar</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getReftyp,PANEL,string"></a>
+<dt><pre><span class="Keyword">func</span> <a href="#getReftyp%2CPANEL%2Cstring"><span class="Identifier">getReftyp</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1514,7 +1690,7 @@ tranform letter to *
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-02 14:36:33 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-09 04:40:32 UTC</small>
       </div>
     </div>
   </div>
