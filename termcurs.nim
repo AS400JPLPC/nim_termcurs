@@ -132,8 +132,12 @@ type
 
     help: string              # / help this field
 
+    min: int                  # / value minimum
+    max: int                  # / value maximum
+
     text*: string
     switch* : bool            # / CTRUE CFALSE
+
     err*: bool                # / force error
     actif*: bool              # / zone active True
 
@@ -147,7 +151,7 @@ type
     switch* : bool
 
 
-  LABEL = object
+  LABEL* = object
     name*: string
     posx*: Natural
     posy*: Natural
@@ -278,7 +282,7 @@ type
     lines: Natural
     cols : Natural
     pagerows: Natural
-    rows: seq[seq[string]]
+    rows*: seq[seq[string]]
     nrow: seq[int]
     headers: seq[Cell]
     separator: TermStyle
@@ -842,6 +846,8 @@ proc fldString*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reft
   fld.switch      = false       # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
+  fld.min         = 0           # / value minimum
+  fld.max         = 0           # / value maximun
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -886,7 +892,8 @@ proc fldMail*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp
   fld.switch      = false       # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
-
+  fld.min         = 0           # / value minimum
+  fld.max         = 0           # / value maximun
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -928,7 +935,8 @@ proc fldSwitch*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reft
   fld.switch      = switch      # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
-
+  fld.min         = 0           # / value minimum
+  fld.max         = 0           # / value maximun
 
   fld.style  = swt_atr.style
   fld.backgr = swt_atr.backgr
@@ -982,6 +990,9 @@ proc fldDate*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp
   fld.switch      = false       # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
+  fld.min         = 0           # / value minimum
+  fld.max         = 0           # / value maximun
+
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -1020,6 +1031,10 @@ proc fldNumeric*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; ref
   fld.pading      = true        # / pading blank
   fld.edtcar      = ""          # / edtcar for monnaie		€ $ ¥ ₪ £ or %
   fld.regex       = ""          # / contrôle 
+
+  fld.min         = 0           # / value minimum
+  fld.max         = 0           # / value maximun
+
 
   if fld.reftyp == DIGIT:
     fld.regex = "^[0-9]{1,$1}$" % [$with]
@@ -1689,7 +1704,21 @@ func Index*(pnl: PANEL): Natural =
 
 
 
+## return index Sequence Label from name
+func getIndexLabel*(pnl: PANEL; name: string): int  =
+  for i in 0..len(pnl.label)-1:
+    if pnl.label[i].name == name : return i
+  return - 1
+## return value Label Sequence from name
+func getTextLabel*(pnl: PANEL; name: string): string  =
+  for i in 0..len(pnl.label)-1 :
+    if pnl.label[i].name == name :
+      return pnl.label[i].text
+  return "NAN"
 
+proc dltLabel*(pnl: PANEL; idx : Natural) =
+  if idx >= 0 or idx <= len(pnl.label)-1 :
+    pnl.label.del(idx)
 
 ## return name field from panel this getField
 func getName*(pnl: PANEL): string =
@@ -1701,6 +1730,10 @@ func getIndex*(pnl: PANEL; name: string): int  =
     if pnl.field[i].name == name : return i
   return - 1
 
+
+proc dltField*(pnl: PANEL; idx : Natural) =
+  if idx >= 0 or idx <= len(pnl.field)-1 :
+    pnl.field.del(idx)
 
 
 ## return value Field Sequence Field
@@ -1827,6 +1860,36 @@ proc setActif*(pnl: var PANEL ; actif : bool)=
 proc setMouse*(pnl: var PANEL ; actif : bool)=
     pnl.actif = actif
 
+proc setMini*(fld : var FIELD ; val : int) =
+  case fld.reftyp
+    of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
+      fld.min = val
+    else : discard
+
+proc setMaxi*(fld : var FIELD ; val : int) =
+  case fld.reftyp
+    of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
+      fld.max = val
+    else : discard
+
+func isMinMax*(fld : var FIELD ) : bool =
+  
+  case fld.reftyp
+    of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
+      var val : int = parseInt($fld.text)
+      if fld.min != 0 :
+        if val < fld.min  :
+          return false
+      if fld.max != 0 :
+        if val > fld.max  :
+          return false
+      return true
+    else : return true
+
+
+
+
+
 ## Test if KEYs must be managed by the programmer
 proc isPanelKey*(pnl: PANEL; e_key:Key): bool =
   var i = 0
@@ -1858,6 +1921,7 @@ func isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## addRows()
 ## dltRows()
 ## 
+## resetRows()
 ## newTermGrid()
 ## newCell()
 ## setHeaders()
@@ -1903,13 +1967,13 @@ func padingField(text: string; cell:Cell;) :string =
 
 
 
-func calculPosTerm(this: TermGrid) =
+func calculPosCell(this: TermGrid) =
   var n : Natural = 1 # this.posy = separator "|"
   if this.separateRows == false : n = 0 
-  var pos : Natural = this.posy
+  var pos : Natural = this.posy - 1
   
   for i in 0..<len(this.headers):
-    if i == 0 : this.headers[i].posy = this.posy 
+    if i == 0 : this.headers[i].posy = 1 
     else : this.headers[i].posy = pos 
     if this.headers[i].edtcar == "" :pos = this.headers[i].posy + this.headers[i].len  + n  
     else : pos = this.headers[i].posy + this.headers[i].len  + n  + 1
@@ -1932,24 +1996,26 @@ func setPageGrid(this :TermGrid)=
 proc newTermGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
                   separator: TermStyle = unicodeStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): TermGrid =
 
-  result = new TermGrid
-  result.name  = name
-  result.posx  = posx
-  result.posy  = posy
-  result.lines = pagerows + 1 #  row per page + header +  end line
-  result.cols  = 0
-  result.separator = separator
-  result.pageRows = pagerows
-  result.rows = newSeq[seq[string]]()
-  result.nrow = newSeq[int]()
-  result.headers = newSeq[Cell]()
-  if separator.colSeparator == "" : result.separateRows =false else : result.separateRows =true
-  result.actif = actif
-  result.gridatr = grid_atr
-  result.lignes  = 0
-  result.pages  = 0
-  result.cursligne  = -1
-  result.curspage  = 1
+  var Ngrid = new TermGrid
+  Ngrid.name  = name
+  Ngrid.posx  = posx
+  Ngrid.posy  = posy
+  Ngrid.lines = pagerows + 1 #  row per page + header +  end line
+  Ngrid.cols  = 0
+  Ngrid.separator = separator
+  Ngrid.pageRows = pagerows
+  Ngrid.rows = newSeq[seq[string]]()
+  Ngrid.nrow = newSeq[int]()
+  Ngrid.headers = newSeq[Cell]()
+  if separator.colSeparator == "" : Ngrid.separateRows =false else : Ngrid.separateRows =true
+  Ngrid.actif = actif
+  Ngrid.gridatr = grid_atr
+  Ngrid.lignes  = 0
+  Ngrid.pages  = 0
+  Ngrid.cursligne  = -1
+  Ngrid.curspage  = 1
+
+  return Ngrid
 
 
 
@@ -1979,7 +2045,7 @@ proc setHeaders*(this: TermGrid, headers: seq[Cell]) =
   for cell in headers:
     this.headers.add(cell)
 
-  calculPosTerm(this)
+  calculPosCell(this)
 
   this.buf = newSeq[TerminalChar]((this.lines+1)*(this.cols+1))
 
@@ -1994,21 +2060,30 @@ proc newCell*(text: string; len : Natural;reftyp: REFTYP; edtcar : string =""): 
   result.posy   = 0
 
 
-
+## return index Sequence Label from name
+func getIndexGrid*(this: TermGrid; name: string): int  =
+  for i in 0..len(this.rows)-1:
+    if this.rows[i][0] == name : return i
+  return - 1
 
 
 proc addRows*(this: TermGrid; rows:seq[string]) =
   this.rows.add(@(rows))
   setPageGrid(this)
 
-proc dltRows*(this: TermGrid;) =
+proc dltRows*(this: TermGrid; idx : Natural) =
+  this.rows.del(idx)
+  setPageGrid(this)
+
+
+
+proc resetRows*(this: TermGrid;) =
   this.rows = newSeq[seq[string]]()
   this.nrow = newSeq[int]()
   this.lignes  = 0
   this.pages  = 0
   this.cursligne  = -1
   this.curspage  = 1
-
 
 
 proc printGridHeader*(this: TermGrid) =
@@ -2036,8 +2111,8 @@ proc printGridHeader*(this: TermGrid) =
       inc(n)
 
   for i in 0..<len(this.headers):
-    n = this.cols
-    n =  n + this.headers[i].posy
+    n = this.cols 
+    n =  n + this.headers[i].posy 
 
     if this.headers[i].reftyp  == DIGIT or
       this.headers[i].reftyp == DIGIT_SIGNED or
@@ -2057,7 +2132,7 @@ proc printGridHeader*(this: TermGrid) =
       this.buf[n].style = this.gridatr.title_style
       this.buf[n].on = true
       inc(n)
-
+  
   for x in 1..this.lines:
     n = this.cols * x
     for y in 1..this.cols:
@@ -2149,7 +2224,7 @@ proc ioGrid*(this: TermGrid ): (Key , seq[string])=        # IO Format
   var buf :seq[string]
   if not this.actif : return (Key.None, buf)
   
-  var grid_key:Key = Key.Enter
+  var grid_key:Key = Key.None
   var CountLigne = 0
   this.cursligne = 0
   printGridHeader(this)
@@ -2162,7 +2237,7 @@ proc ioGrid*(this: TermGrid ): (Key , seq[string])=        # IO Format
     case grid_Key
       of Key.Escape :
         this.cursligne = -1
-        return (Key.None,buf)
+        return (Key.Escape,buf)
       of Key.Enter:
         if this.lignes > 0:
           this.cursligne = -1
@@ -2334,6 +2409,24 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
         inc(i)
     return ok
 
+  func isMinMax(v:seq[Rune]; fld : FIELD) : bool =
+    
+    case fld.reftyp
+      of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
+        var v: string  = $e_FIELD
+        v = v.strip(trailing = true)
+        var val : int = parseInt($v)
+        if fld.min != 0 :
+          if val < fld.min  : 
+            return false
+        if fld.max != 0 :
+          if val > fld.max  : 
+            return false
+        return true
+      
+      else : return true
+
+
   func nbrRune(s:seq[Rune]): Natural =
     var i : Natural = len(s)-1
     while i >= 0:
@@ -2484,7 +2577,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           msgHelp(pnl,fld.help)
 
       of Key.Up , Key.Down:     # next Field
-        if isEmpty(e_Field) and fld.empty == false:
+        if  isEmpty(e_Field) and fld.empty == false or
+            isMinMax(e_Field,fld) == false  :
           msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
@@ -2493,7 +2587,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           result = e_key
           break
       of Key.Stab:              # next Field
-        if isEmpty(e_Field) and fld.empty == false:
+        if isEmpty(e_Field) and fld.empty == false or 
+            isMinMax(e_Field,fld) == false  :
           msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
@@ -2502,7 +2597,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           result = Key.Up
           break
       of Key.Tab:               # next Field
-        if isEmpty(e_Field) and fld.empty == false:
+        if isEmpty(e_Field) and fld.empty == false or 
+            isMinMax(e_Field,fld) == false  :
           msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
@@ -2512,7 +2608,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           break
       of Key.Enter :            # enrg to Field
         if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) or 
-          isEmpty(e_Field) and fld.empty == false:
+          isEmpty(e_Field) and fld.empty == false or 
+            isMinMax(e_Field,fld) == false  :
           msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
@@ -2714,6 +2811,52 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
 
           else : discard
       else : discard
+
+
+
+
+
+
+## Contrôle  Format Panel full Field
+proc isValide*(pnl:var PANEL): bool =
+  if not pnl.actif : return false
+
+  var e_FIELD :seq[Rune]
+
+  proc isEmpty(s:seq[Rune]): bool =
+    var i = 0
+    var ok :bool = true
+    while i < len(s):
+        if s[i] != " ".runeAt(0) : ok = false
+        inc(i)
+    return ok
+
+  # check error
+  for n in 0..len(pnl.field) - 1:
+    if pnl.field[n].actif and not pnl.field[n].protect :
+      e_FIELD = toRunes(pnl.field[n].text)
+
+      #prepare the switch 
+      if pnl.field[n].reftyp == SWITCH:
+        if pnl.field[n].switch == false and pnl.field[n].empty == FILL:
+            pnl.index = n
+            pnl.field[n].err = true
+            return false
+      elif  pnl.field[n].regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(pnl.field[n].regex)) or 
+          isEmpty(e_Field) and pnl.field[n].empty == FILL:
+            pnl.index = n
+            pnl.field[n].err = true
+            return false
+      
+      case pnl.field[n].reftyp
+        of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
+            if isMinMax(pnl.field[n]) == false :
+                pnl.index = n
+                pnl.field[n].err = true
+                return false
+        else : discard
+  
+  return true
 
 
 

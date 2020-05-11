@@ -91,7 +91,14 @@ while true:
   of Key.F23:
     if grid.actif:
       g_numID = -1
-      dltRows(grid)
+      resetGrid(grid)
+      grid = newTermGrid("GRID01",10,5,5)
+      var g_id      = newCell("ID",3,DIGIT)
+      var g_name    = newCell("Name",getNbrcar(pnlF1,$Nom),ALPHA)
+      var g_animal  = newCell("Fav animal",getNbrcar(pnlF1,$Animal),ALPHA)
+      var g_prix    = newCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL,"€") ;
+      g_numID = - 1 
+      setHeaders(grid, @[g_id, g_name, g_animal,g_prix])
       printGridHeader(grid)
 
     key = Key.F1

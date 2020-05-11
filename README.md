@@ -32,13 +32,11 @@ It works, but I had to harmonize and add PROC or FUNC
 <u>mise en fonction le 2020-04-15</u>  
   * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br>
   * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br>
-  * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br>  
- 
-
   * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*  
+  * Full Change 2020-02-11&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br>  
   * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u>  
-<brk>  
-    &nbsp;&nbsp;&nbsp;&rarr;&nbsp;***restructuring***&nbsp;&nbsp;&nbsp;&rarr;&nbsp;***automatic alignment support***&nbsp;&nbsp;&nbsp;&rarr;&nbsp;***code cleanup***
+  * Full Change 2020-02-19&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br>  
+ 
 
 **Thank you**
 
@@ -176,7 +174,8 @@ proc ioPanel(pnl: var PANEL): Key {...}
 <br>
 <br>
 
-#Procs
+# Procs
+
 
 proc def_cursor(e_curs: Natural = 0) {...}
 
@@ -294,6 +293,10 @@ proc restorePanel(dst: PANEL; grid: TermGrid) {...}
 
 proc restorePanel(pnl: PANEL; lines, posy: Natural) {...}
 
+proc dltLabel(pnl: PANEL; idx: Natural) {...}
+
+proc dltField(pnl: PANEL; idx: Natural) {...}
+
 proc setText(pnl: PANEL; name: string; val: string) {...}
 
 proc setProtect(fld: var FIELD; protect: bool) {...}
@@ -316,6 +319,10 @@ proc setActif(pnl: var PANEL; actif: bool) {...}
 
 proc setMouse(pnl: var PANEL; actif: bool) {...}
 
+proc setMini(fld: var FIELD; val: int) {...}
+
+proc setMaxi(fld: var FIELD; val: int) {...}
+
 proc isPanelKey(pnl: PANEL; e_key: Key): bool {...}
 
 proc newTermGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
@@ -332,7 +339,9 @@ proc newCell(text: string; len: Natural; reftyp: REFTYP; edtcar: string = ""): C
 
 proc addRows(this: TermGrid; rows: seq[string]) {...}
 
-proc dltRows(this: TermGrid) {...}
+proc dltRows(this: TermGrid; idx: Natural) {...}
+
+proc resetRows(this: TermGrid) {...}
 
 proc printGridHeader(this: TermGrid) {...}
 
@@ -348,15 +357,23 @@ proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
 
 proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
 
+    tranform letter to * 
+
+proc isValide(pnl: var PANEL): bool {...}
+
 proc ioPanel(pnl: var PANEL): Key {...}
 
-#Funcs
+# Funcs
 
 func Lines(pnl: PANEL): Natural {...}
 
 func Cols(pnl: PANEL): Natural {...}
 
 func Index(pnl: PANEL): Natural {...}
+
+func getIndexLabel(pnl: PANEL; name: string): int {...}
+
+func getTextLabel(pnl: PANEL; name: string): string {...}
 
 func getName(pnl: PANEL): string {...}
 
@@ -392,6 +409,8 @@ func getNbrcar(pnl: PANEL; name: string): int {...}
 
 func getReftyp(pnl: PANEL; name: string): REFTYP {...}
 
+func isMinMax(fld: var FIELD): bool {...}
+
 func isProtect(fld: var FIELD): bool {...}
 
 func isActif(fld: var FIELD): bool {...}
@@ -407,4 +426,6 @@ func isActif(btn: var BUTTON): bool {...}
 func isActif(pnl: var PANEL): bool {...}
 
 func isMouse(pnl: var PANEL): bool {...}
+
+func getIndexGrid(this: TermGrid; name: string): int {...}
 
