@@ -99,7 +99,7 @@ type
     space* : Natural
 
 
-  FIELD = object
+  FIELD* = object
     name: string
     posx: Natural
     posy: Natural
@@ -143,8 +143,7 @@ type
 
 
 
-
-  HIDEN= object               # / field block out 
+  HIDEN* = object             # / field block out 
     name: string
     reftyp: REFTYP            # / ALPHA...SWITCH
     text*: string
@@ -164,7 +163,7 @@ type
     actif*: bool
 
 
-  BOX = object
+  BOX* = object
     name : string
     posx : Natural
     posy : Natural
@@ -195,7 +194,7 @@ type
     actif*: bool
 
 
-  MENU* = object
+  MENU* = ref object
     name : string
     posx : Natural
     posy : Natural
@@ -229,7 +228,7 @@ type
     style: set[Style]         # style
     on:bool                   # on = true -> cell active
 
-  PANEL* = ref object         
+  PANEL* = ref object
     name: string
     posx: Natural
     posy: Natural
@@ -243,7 +242,7 @@ type
     style:    set[Style]
 
     cadre:    CADRE
-    boxpnl:   seq[BOX]
+    boxpnl:   BOX
 
     box*:     seq[BOX]
     label*:   seq[LABEL]
@@ -264,18 +263,18 @@ type
 
   # GRID 
 
-  TermStyle* = ref object
+  GridStyle* = object
     colSeparator*: string 
 
-  Cell* = ref object
+  CELL* = object
     text : string
-    len  : Natural
+    len*  : Natural
     reftyp: REFTYP
     posy  : Natural
     edtcar: string
 
 
-  TermGrid* = ref object 
+  GRIDSFL* = ref object 
     name : string 
     posx: Natural
     posy: Natural
@@ -284,8 +283,8 @@ type
     pagerows: Natural
     rows*: seq[seq[string]]
     nrow: seq[int]
-    headers: seq[Cell]
-    separator: TermStyle
+    headers: seq[CELL]
+    separator: GridStyle
     separateRows: bool
     gridatr : GRIDATRB
     actif*: bool
@@ -297,8 +296,8 @@ type
 
 
 
-let unicodeStyle* = TermStyle( colSeparator:"│")
-let noStyle* = TermStyle( colSeparator:"")
+let unicodeStyle* = GridStyle( colSeparator:"│")
+let noStyle* = GridStyle( colSeparator:"")
 
 # var interne
 
@@ -421,7 +420,7 @@ gridatr.cell_foregr = ForegroundColor.fgCyan
 gridatr.cell_forebr = true
 
 ## define type cursor
-proc def_cursor*(e_curs: Natural = 0) =
+proc defCursor*(e_curs: Natural = 0) =
   const CSIcurs = 0x1b.chr & "[?25h"
   const CSIcurs0 = 0x1b.chr & "[0 q" #  0 → not blinking block
   case e_curs
@@ -470,13 +469,9 @@ proc setTerminal*(termatr : ZONATRB = scratr) =
   eraseScreen()
   hideCursor()
 
-proc restorePanel*(dst: PANEL; mnu : MENU)
-proc clsPanel*(pnl: var PANEL) 
-func Lines*(pnl: PANEL):Natural
-
 
 ## return BUTTON
-proc button*(key: Key; text:string; actif = true): BUTTON =
+proc defButton*(key: Key; text:string; actif = true): BUTTON =
   var bt:BUTTON
   bt.key = key
   bt.text = text
@@ -488,32 +483,33 @@ proc button*(key: Key; text:string; actif = true): BUTTON =
 
 
 ## Define BOX
-proc fldBox*(box : var BOX ; name:string ; posx:Natural; posy:Natural; lines :Natural; cols:Natural;
-              cadre :CADRE; title: string; box_atr: BOXATRB = boxatr ;actif: bool = true) =
+proc defBox*( name:string ; posx:Natural; posy:Natural; lines :Natural; cols:Natural;
+              cadre :CADRE; title: string; box_atr: BOXATRB = boxatr ;actif: bool = true) : BOX =
 
-    box.name  = name
-    box.posx  = posx
-    box.posy  = posy
-    box.lines = lines 
-    box.cols  = cols
-    
-    box.cadre = cadre
+  var box : BOX
+  box.name  = name
+  box.posx  = posx
+  box.posy  = posy
+  box.lines = lines 
+  box.cols  = cols
+  
+  box.cadre = cadre
 
-    box.style  = box_atr.style
-    box.backgr = box_atr.backgr
-    box.backbr = box_atr.backbr
-    box.foregr = box_atr.foregr
-    box.forebr = box_atr.forebr
+  box.style  = box_atr.style
+  box.backgr = box_atr.backgr
+  box.backbr = box_atr.backbr
+  box.foregr = box_atr.foregr
+  box.forebr = box_atr.forebr
 
-    box.title = title
-    box.titlestyle  = box_atr.title_style
-    box.titlebackgr = box_atr.title_backgr
-    box.titlebackbr = box_atr.title_backbr
-    box.titleforegr = box_atr.title_foregr
-    box.titleforebr = box_atr.title_forebr
+  box.title = title
+  box.titlestyle  = box_atr.title_style
+  box.titlebackgr = box_atr.title_backgr
+  box.titlebackbr = box_atr.title_backbr
+  box.titleforegr = box_atr.title_foregr
+  box.titleforebr = box_atr.title_forebr
 
-    box.actif = actif
-
+  box.actif = actif
+  return box
 
 
 
@@ -626,9 +622,10 @@ proc printBox*(pnl: var PANEL; box:BOX) =
 
 
 ## Define Menu
-proc defMenu*(menu : var MENU ; name:string ; posx:Natural; posy:Natural;
-              mnuvh: MNUVH ; item : seq[string] ;cadre :CADRE = CADRE.line0 ; mnu_atr : MNUATRB = mnuatr ;  actif: bool = true) =
+proc newMenu*( name:string ; posx:Natural; posy:Natural;
+              mnuvh: MNUVH ; item : seq[string] ;cadre :CADRE = CADRE.line0 ; mnu_atr : MNUATRB = mnuatr ;  actif: bool = true) :MENU =
 
+  var menu = new(MENU)
   menu.name  = name
   menu.posx  = posx
   menu.posy  = posy
@@ -663,7 +660,7 @@ proc defMenu*(menu : var MENU ; name:string ; posx:Natural; posy:Natural;
   menu.forebr = mnu_atr.forebr
   menu.item = item
   menu.actif = actif
-
+  return menu
 
 
 
@@ -777,9 +774,13 @@ proc printMenu*(pnl: PANEL; mnu:MENU) =
 
 
 
+
+
 ## Define Label
-proc fldLabel*(lbl : var LABEL ; name:string ; posx:Natural; posy:Natural; text: string;
-                lbl_atr : ZONATRB = lblatr ; actif: bool = true) =
+proc defLabel*(name:string ; posx:Natural; posy:Natural; text: string;
+                lbl_atr : ZONATRB = lblatr ; actif: bool = true) :LABEL =
+
+  var lbl : LABEL
 
   lbl.name        = name
   lbl.posx        = posx
@@ -792,6 +793,7 @@ proc fldLabel*(lbl : var LABEL ; name:string ; posx:Natural; posy:Natural; text:
   lbl.backbr = lbl_atr.backbr
   lbl.foregr = lbl_atr.foregr
   lbl.forebr = lbl_atr.forebr
+  return lbl
 
 ## assigne LABEL to matrice for display
 proc printLabel*(pnl: var PANEL, lbl : LABEL ) =
@@ -820,13 +822,16 @@ proc printLabel*(pnl: var PANEL, lbl : LABEL ) =
 
 
 
+
 ## Define Field String Standard
-proc fldString*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
+proc defString*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               with: Natural;text: string; empty: bool;
               errmsg: string   ; help: string;
               regex: string = "";
-              fld_atr : ZONATRB = fldatr ;prt_atr : ZONATRB = prtatr ;
-              actif: bool = true) =
+              fld_atr : ZONATRB = fldatr ;protect_atr : ZONATRB = prtatr ;
+              actif: bool = true) : FIELD =
+
+  var fld : FIELD
 
   fld.name        = name
   fld.posx        = posx
@@ -855,22 +860,25 @@ proc fldString*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reft
   fld.foregr = fld_atr.foregr
   fld.forebr = fld_atr.forebr
 
-  fld.pstyle  = prt_atr.style
-  fld.pbackgr = prt_atr.backgr
-  fld.pbackbr = prt_atr.backbr
-  fld.pforegr = prt_atr.foregr
-  fld.pforebr = prt_atr.forebr
+  fld.pstyle  = protect_atr.style
+  fld.pbackgr = protect_atr.backgr
+  fld.pbackbr = protect_atr.backbr
+  fld.pforegr = protect_atr.foregr
+  fld.pforebr = protect_atr.forebr
+  return fld
 
 
 
 
 
 ## Define Field Mail
-proc fldMail*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
+proc defMail*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               with: Natural;text: string; empty: bool;
               errmsg: string   ; help: string;
-              fld_atr : ZONATRB = fldatr ;prt_atr : ZONATRB = prtatr ;
-              actif: bool = true) =
+              fld_atr : ZONATRB = fldatr ;protect_atr : ZONATRB = prtatr ;
+              actif: bool = true) :FIELD =
+
+  var fld : FIELD
 
   fld.name        = name
   fld.posx        = posx
@@ -901,22 +909,23 @@ proc fldMail*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp
   fld.foregr = fld_atr.foregr
   fld.forebr = fld_atr.forebr
 
-  fld.pstyle  = prt_atr.style
-  fld.pbackgr = prt_atr.backgr
-  fld.pbackbr = prt_atr.backbr
-  fld.pforegr = prt_atr.foregr
-  fld.pforebr = prt_atr.forebr
-
-
+  fld.pstyle  = protect_atr.style
+  fld.pbackgr = protect_atr.backgr
+  fld.pbackbr = protect_atr.backbr
+  fld.pforegr = protect_atr.foregr
+  fld.pforebr = protect_atr.forebr
+  return fld
 
 
 
 ## Define Field switch
-proc fldSwitch*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
+proc defSwitch*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               switch: bool;  empty: bool;
               errmsg: string ; help: string;
-              swt_atr : ZONATRB = swtatr ;prt_atr : ZONATRB = prtatr ;
-              actif: bool = true) =
+              swt_atr : ZONATRB = swtatr ;protect_atr : ZONATRB = prtatr ;
+              actif: bool = true): FIELD =
+
+  var fld : FIELD
   fld.name        = name
   fld.posx        = posx
   fld.posy        = posy
@@ -944,22 +953,24 @@ proc fldSwitch*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reft
   fld.foregr = swt_atr.foregr
   fld.forebr = swt_atr.forebr
 
-  fld.pstyle  = prt_atr.style
-  fld.pbackgr = prt_atr.backgr
-  fld.pbackbr = prt_atr.backbr
-  fld.pforegr = prt_atr.foregr
-  fld.pforebr = prt_atr.forebr
-
+  fld.pstyle  = protect_atr.style
+  fld.pbackgr = protect_atr.backgr
+  fld.pbackbr = protect_atr.backbr
+  fld.pforegr = protect_atr.foregr
+  fld.pforebr = protect_atr.forebr
+  return fld
 
 
 
 
 ## Define Field date ISO
-proc fldDate*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
+proc defDate*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               text: string; empty: bool;
               errmsg: string   ; help: string;
-              fld_atr : ZONATRB = fldatr ; prt_atr : ZONATRB = prtatr ;
-              actif: bool = true) =
+              fld_atr : ZONATRB = fldatr ; protect_atr : ZONATRB = prtatr ;
+              actif: bool = true): FIELD =
+
+  var fld : FIELD
 
   fld.name        = name
   fld.posx        = posx
@@ -1000,23 +1011,25 @@ proc fldDate*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp
   fld.foregr = fld_atr.foregr
   fld.forebr = fld_atr.forebr
 
-  fld.pstyle  = prt_atr.style
-  fld.pbackgr = prt_atr.backgr
-  fld.pbackbr = prt_atr.backbr
-  fld.pforegr = prt_atr.foregr
-  fld.pforebr = prt_atr.forebr
-
+  fld.pstyle  = protect_atr.style
+  fld.pbackgr = protect_atr.backgr
+  fld.pbackbr = protect_atr.backbr
+  fld.pforegr = protect_atr.foregr
+  fld.pforebr = protect_atr.forebr
+  return fld
 
 
 
 
 ## Define Field Numeric
-proc fldNumeric*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
+proc defNumeric*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               with: Natural;  scal: Natural;  text: string; empty:bool;
               errmsg: string   ; help: string;
-              fld_atr : ZONATRB = fldatr ;prt_atr : ZONATRB = prtatr ;
-              actif: bool = true) =
+              fld_atr : ZONATRB = fldatr ;protect_atr : ZONATRB = prtatr ;
+              actif: bool = true) : FIELD =
 
+  var fld : FIELD
+  
   fld.name        = name
   fld.posx        = posx
   fld.posy        = posy
@@ -1068,28 +1081,86 @@ proc fldNumeric*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; ref
   fld.foregr = fld_atr.foregr
   fld.forebr = fld_atr.forebr
 
-  fld.pstyle  = prt_atr.style
-  fld.pbackgr = prt_atr.backgr
-  fld.pbackbr = prt_atr.backbr
-  fld.pforegr = prt_atr.foregr
-  fld.pforebr = prt_atr.forebr
+  fld.pstyle  = protect_atr.style
+  fld.pbackgr = protect_atr.backgr
+  fld.pbackbr = protect_atr.backbr
+  fld.pforegr = protect_atr.foregr
+  fld.pforebr = protect_atr.forebr
+  return fld
 
 
 
 
 
 ## Hiden bloc out
-proc hdnString*(hdn : var HIDEN ; name:string ; reftyp: REFTYP;text: string;) =
+proc defHString*( name:string ; reftyp: REFTYP;text: string;) : HIDEN =
+  var hdn : HIDEN 
   hdn.name        = name
   hdn.reftyp      = reftyp      # / ALPHA...SWITCH
   hdn.text        = text
   hdn.switch      = false       # / CTRUE CFALSE
+  return hdn
 ##switch
-proc hdnSwitch*(hdn : var HIDEN  ; name:string; reftyp: REFTYP;  switch: bool;) =
+proc defHSwitch*( name:string; reftyp: REFTYP;  switch: bool;) : HIDEN =
+  var hdn : HIDEN
   hdn.name        = name
   hdn.reftyp      = reftyp      # / ALPHA...SWITCH
   hdn.text       = ""
   hdn.switch      = switch      # / CTRUE CFALSE
+  return hdn
+
+
+
+##  get lines/COLS PANEL
+func Lines*(pnl: PANEL) :Natural =
+  result = pnl.lines
+
+func Cols*(pnl: PANEL) :Natural =
+  result = pnl.cols
+
+## return index actived from panel this getField
+func Index*(pnl: PANEL): Natural =
+  result = pnl.index
+
+## Define PANEL
+proc newPanel*(name:string;posx,posy,height,width,:Natural;button: seq[(BUTTON)];
+              cadre : CADRE = line0; title : string = "",pnl_atr : ZONATRB = pnlatr) : PANEL =
+  var pnl = new(PANEL)
+  pnl.name  = name
+  pnl.posx  = posx
+  pnl.posy  = posy
+  pnl.lines  = height
+  pnl.cols  = width
+  pnl.backgr  = pnl_atr.backgr
+  pnl.backbr  = pnl_atr.backbr
+  pnl.foregr  = pnl_atr.foregr
+  pnl.forebr  = pnl_atr.forebr
+  pnl.style   = pnl_atr.style
+
+  pnl.cadre   = cadre
+
+  if pnl.cadre == CADRE.line1 or pnl.cadre == CADRE.line2 :
+    pnl.boxpnl  = defBox(name, 1 , 1 ,pnl.lines, pnl.cols, cadre, title)
+
+
+  pnl.box  = newseq[BOX]()
+  pnl.label  = newseq[LABEL]()
+  pnl.field  = newseq[FIELD]()
+  pnl.hiden  = newseq[HIDEN]()
+  pnl.index = 0
+  pnl.button  = newseq[BUTTON](len(button))
+  pnl.button   = button
+  pnl.funckey = newseq[Key](len(button))
+
+  for i,btn in pnl.button :
+    pnl.funckey[i] = btn.key
+
+  pnl.mouse = false
+  pnl.buf = newSeq[TerminalChar]((pnl.lines+1)*(pnl.cols+1))
+
+  pnl.actif = true
+  return pnl
+
 
 
 
@@ -1223,159 +1294,6 @@ proc printButton*(pnl: var PANEL; btn_esp : BTNSPACE = btnspc )  =
 
 
 
-
-
-## Define PANEL
-proc defPanel*(pnl: var PANEL;name:string;posx,posy,height,width,:Natural;
-              cadre:CADRE; title:string; 
-              nbrbox,nbrlabel,nbrfield,nbrhiden:Natural; button: seq[(BUTTON)]; pnl_atr : ZONATRB = pnlatr; actif: bool = true) =
-  
-  pnl.name  = name
-  pnl.posx  = posx
-  pnl.posy  = posy
-  pnl.lines  = height
-  pnl.cols  = width
-  pnl.backgr  = pnl_atr.backgr
-  pnl.backbr  = pnl_atr.backbr
-  pnl.foregr  = pnl_atr.foregr
-  pnl.forebr  = pnl_atr.forebr
-  pnl.style   = pnl_atr.style
-
-  pnl.cadre   = cadre
-  pnl.boxpnl  = newseq[BOX](1)
-  if pnl.cadre == CADRE.line1 or pnl.cadre == CADRE.line2 :
-    fldBox(pnl.boxpnl[0], name, 1 , 1 ,pnl.lines, pnl.cols, cadre, title)
-
-  pnl.box  = newseq[BOX](nbrbox)
-  pnl.label  = newseq[LABEL](nbrlabel)
-  pnl.field  = newseq[FIELD](nbrfield)
-  pnl.hiden  = newseq[HIDEN](nbrhiden)
-  pnl.index = 0
-  pnl.button  = newseq[BUTTON](len(button))
-  pnl.button   = button
-  pnl.funckey = newseq[Key](len(button))
-
-  for i,btn in pnl.button :
-    pnl.funckey[i] = btn.key
-
-  pnl.mouse = false
-  pnl.buf = newSeq[TerminalChar]((pnl.lines+1)*(pnl.cols+1))
-
-  pnl.actif = actif
-
-
-
-## Define Label
-proc add_Label*(name:string ; posx:Natural; posy:Natural; text: string;
-                lbl_atr : ZONATRB = lblatr ; actif: bool = true) :LABEL =
-  var lbl : LABEL
-  fldLabel(lbl, name, posx, posy, text, lbl_atr, actif)
-  return lbl
-
-## Define Field String Standard
-proc add_String*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
-              with: Natural;text: string; empty: bool;
-              errmsg: string   ; help: string;
-              regex: string = "";
-              fld_atr : ZONATRB = fldatr ;prt_atr : ZONATRB = prtatr ;
-              actif: bool = true) : FIELD =
-  var fld : FIELD
-  fldString(fld , name, posx, posy, reftyp,
-                with, text, empty, errmsg, help, regex, fld_atr, prt_atr, actif)
-  return fld
-
-## Define Field Mail
-proc add_Mail*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
-              with: Natural;text: string; empty: bool;
-              errmsg: string   ; help: string;
-              fld_atr : ZONATRB = fldatr ;prt_atr : ZONATRB = prtatr ;
-              actif: bool = true) :FIELD =
-  var fld : FIELD
-  fldMail(fld, name, posx, posy, reftyp,
-              with, text, empty, errmsg, help, fld_atr, prt_atr ,actif)
-  return fld
-
-## Define Field switch
-proc add_Switch*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
-              switch: bool;  empty: bool;
-              errmsg: string ; help: string;
-              swt_atr : ZONATRB = swtatr ;prt_atr : ZONATRB = prtatr ;
-              actif: bool = true): FIELD =
-  var fld : FIELD
-  fldSwitch(fld, name, posx, posy, reftyp,
-              switch,  empty, errmsg, help, swt_atr, prt_atr, actif)
-  return fld
-
-## Define Field date ISO
-proc add_Date*(fld : var FIELD ; name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
-              text: string; empty: bool;
-              errmsg: string   ; help: string;
-              fld_atr : ZONATRB = fldatr ; prt_atr : ZONATRB = prtatr ;
-              actif: bool = true): FIELD =
-  var fld : FIELD
-  fldDate(fld, name, posx, posy, reftyp,
-              text, empty, errmsg, help, fld_atr, prt_atr, actif)
-  return fld
-
-## Define Field Numeric
-proc add_Numeric*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
-              with: Natural;  scal: Natural;  text: string; empty:bool;
-              errmsg: string   ; help: string;
-              fld_atr : ZONATRB = fldatr ;prt_atr : ZONATRB = prtatr ;
-              actif: bool = true) : FIELD =
-
-  var fld : FIELD
-  fldNumeric(fld , name, posx, posy, reftyp,
-              with, scal, text, empty, errmsg, help, fld_atr, prt_atr, actif)
-  return fld
-
-
-
-
-
-## Define PANEL
-proc add_Panel*(name:string;posx,posy,height,width,:Natural;button: seq[(BUTTON)];
-              cadre:CADRE = line0; title:string = "",pnl_atr : ZONATRB = pnlatr) : PANEL =
-  var pnl = new(PANEL)
-  pnl.name  = name
-  pnl.posx  = posx
-  pnl.posy  = posy
-  pnl.lines  = height
-  pnl.cols  = width
-  pnl.backgr  = pnl_atr.backgr
-  pnl.backbr  = pnl_atr.backbr
-  pnl.foregr  = pnl_atr.foregr
-  pnl.forebr  = pnl_atr.forebr
-  pnl.style   = pnl_atr.style
-
-  pnl.cadre   = cadre
-  pnl.boxpnl  = newseq[BOX](1)
-  if pnl.cadre == CADRE.line1 or pnl.cadre == CADRE.line2 :
-    fldBox(pnl.boxpnl[0], name, 1 , 1 ,pnl.lines, pnl.cols, cadre, title)
-
-
-  pnl.box  = newseq[BOX]()
-  pnl.label  = newseq[LABEL]()
-  pnl.field  = newseq[FIELD]()
-  pnl.hiden  = newseq[HIDEN]()
-  pnl.index = 0
-  pnl.button  = newseq[BUTTON](len(button))
-  pnl.button   = button
-  pnl.funckey = newseq[Key](len(button))
-
-  for i,btn in pnl.button :
-    pnl.funckey[i] = btn.key
-
-  pnl.mouse = false
-  pnl.buf = newSeq[TerminalChar]((pnl.lines+1)*(pnl.cols+1))
-
-  pnl.actif = true
-  return pnl
-
-
-
-
-
 ## display matrice PANEL
 proc displayPanel*(pnl: PANEL) =
   if not pnl.actif : return
@@ -1401,9 +1319,8 @@ proc displayPanel*(pnl: PANEL) =
 
 ## assigne PANEL and all OBJECT to matrice for display
 proc printPanel*(pnl: var PANEL)=
-  clsPanel(pnl)
   if pnl.cadre == CADRE.line1 or pnl.cadre == CADRE.line2 :
-    printBox(pnl,pnl.boxpnl[0])
+    printBox(pnl,pnl.boxpnl)
 
   for i in 0..len(pnl.box)-1:
     if pnl.box[i].actif    : printBox(pnl,pnl.box[i])
@@ -1418,11 +1335,6 @@ proc printPanel*(pnl: var PANEL)=
   displayPanel(pnl)
 
 
-
-## clear value FIELD
-proc clearField*(pnl: var PANEL)=
-  for i in 0..len(pnl.field)-1:
-    pnl.field[i].text = ""
 
 ## vide object PANEL / box/label/fld/func
 proc resetPanel*(pnl: var PANEL)=
@@ -1468,7 +1380,6 @@ proc clsLabel*(pnl: var PANEL, lbl : Label) =
     pnl.buf[n].style =  pnl.style
     pnl.buf[n].on = false
     inc(n)
-
 
 
 
@@ -1638,13 +1549,13 @@ proc restorePanel*(dst: PANEL; mnu: MENU) =
         setForegroundColor(dst.foregr,dst.forebr)
         writeStyled(" ",dst.style)
     inc(n)
-    stdout.flushFile()
+  stdout.flushFile()
 
 
 
 
 ## restore the base occupied by grid
-proc restorePanel*(dst: PANEL; grid: TermGrid) =
+proc restorePanel*(dst: PANEL; grid: GRIDSFL) =
   if not dst.actif : return
   var npos :int =0
   var n = grid.posx
@@ -1662,7 +1573,7 @@ proc restorePanel*(dst: PANEL; grid: TermGrid) =
         setForegroundColor(dst.foregr,dst.forebr)
         writeStyled(" ",dst.style)
     inc(n)
-    stdout.flushFile()
+  stdout.flushFile()
 
 
 
@@ -1689,136 +1600,147 @@ proc restorePanel*(pnl: PANEL; lines, posy : Natural) =
 
 
 
-
-
-##  get lines/COLS PANEL
-func Lines*(pnl: PANEL) :Natural =
-  result = pnl.lines
-
-func Cols*(pnl: PANEL) :Natural =
-  result = pnl.cols
-
-## return index actived from panel this getField
-func Index*(pnl: PANEL): Natural =
-  result = pnl.index
-
-
-
+## return name label Sequence Field
+func getNameL*(pnl: PANEL; index: int): string  =
+  if index < 0 or index > len(pnl.label)-1 : return "NAN"
+  return pnl.label[index].name
 ## return index Sequence Label from name
-func getIndexLabel*(pnl: PANEL; name: string): int  =
+func getIndexL*(pnl: PANEL; name: string): int  =
   for i in 0..len(pnl.label)-1:
     if pnl.label[i].name == name : return i
   return - 1
 ## return value Label Sequence from name
-func getTextLabel*(pnl: PANEL; name: string): string  =
+func getTextL*(pnl: PANEL; name: string): string  =
   for i in 0..len(pnl.label)-1 :
     if pnl.label[i].name == name :
       return pnl.label[i].text
   return "NAN"
+## return value label Sequence Label
+func getTextL*(pnl: PANEL; index: int): string  =
+  if index < 0 or index > len(pnl.label)-1 : return "NAN"
+  return pnl.label[index].text
+## set value Label Sequence Label
+func setTextL*(pnl: PANEL; name: string; val : string)=
+  for i in 0..len(pnl.label)-1 :
+    if pnl.label[i].name == name :
+      pnl.label[i].text = val
+      break
+## set value Label Sequence Label
+func setTextL*(pnl: PANEL; index: int; val : string) =
+  if index < 0 or index > len(pnl.label)-1 : return
+  pnl.label[index].text = val
 
-proc dltLabel*(pnl: PANEL; idx : Natural) =
+##  delete Label Sequence Label
+func dltLabel*(pnl: PANEL; idx : Natural) =
   if idx >= 0 or idx <= len(pnl.label)-1 :
     pnl.label.del(idx)
 
-## return name field from panel this getField
-func getName*(pnl: PANEL): string =
-  result = pnl.field[pnl.index].name
 
-## return index Sequence Field from name
-func getIndex*(pnl: PANEL; name: string): int  =
+
+
+
+## clear value ALL FIELD
+func clearTextF*(pnl: var PANEL)=
   for i in 0..len(pnl.field)-1:
-    if pnl.field[i].name == name : return i
-  return - 1
-
-
-proc dltField*(pnl: PANEL; idx : Natural) =
-  if idx >= 0 or idx <= len(pnl.field)-1 :
-    pnl.field.del(idx)
-
-
+    pnl.field[i].text = ""
+## return name field from panel this getField
+func getNameF*(pnl: PANEL): string =
+  result = pnl.field[pnl.index].name
+## return name Field Sequence Field
+func getNameF*(pnl: PANEL; index: int): string  =
+  if index < 0 or index > len(pnl.field)-1 : return "NAN"
+  return pnl.field[index].name
 ## return value Field Sequence Field
-func getText*(pnl: PANEL; name: string): string  =
+func getTextF*(pnl: PANEL; name: string): string  =
   for i in 0..len(pnl.field)-1 :
     if pnl.field[i].name == name :
       return pnl.field[i].text
   return "NAN"
-## return value Field Sequence Fiel
+## return value Field Sequence Field
 func getSwitch*(pnl : PANEL ; name: string): bool  =
   for i in 0..len(pnl.hiden)-1 :
     if pnl.field[i].name == name :
       return pnl.field[i].switch
   return false
-
+## return index Field Sequence Field
+func getIndexF*(pnl: PANEL; name: string): int  =
+  for i in 0..len(pnl.field)-1:
+    if pnl.field[i].name == name : return i
+  return - 1
 ## return value Field Sequence Field
-func getText*(pnl: PANEL; index: int): string  =
+func getTextF*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.field)-1 : return "NAN"
   return pnl.field[index].text
-## return value Field Sequence Fiel
+## return value Field Sequence Field
 func getSwitch*(pnl : PANEL ; index: int): bool  =
   if index < 0 or index > len(pnl.field)-1 : return false
   return pnl.field[index].switch
 
 
-
-
-
-## return name from index 
-func getNameHiden*(hdn: PANEL,index: int): string =
-  result = hdn.hiden[index].name
-## return index from Name
-func getIndexHiden*(hdn : PANEL; name: string): int  =
-  for i in 0..len(hdn.hiden)-1:
-    if hdn.hiden[i].name == name : return i
-  return - 1
-
-
-
-## return value Field from name
-func getTextHiden*(hdn : PANEL ; name: string): string  =
-  for i in 0..len(hdn.hiden)-1 :
-    if hdn.hiden[i].name == name :
-      return hdn.hiden[i].text
-  return "NAN"
-## return value Field from name
-func getSwitchHiden*(hdn : PANEL ; name: string): bool  =
-  for i in 0..len(hdn.hiden)-1 :
-    if hdn.hiden[i].name == name :
-      return hdn.hiden[i].switch
-  return false
-
-## return value Field from index
-func getTextHiden*(hdn : PANEL ; index: int): string  =
-  if index < 0 or index > len(hdn.hiden)-1 : return "NAN"
-  return hdn.hiden[index].text
-## return value Field from index
-func getSwitchHiden*(hdn : PANEL ; index: int): bool  =
-  if index < 0 or index > len(hdn.field)-1 : return false
-  return hdn.hiden[index].switch
-
-
-
 ## set value Field Sequence Field
-proc setText*(pnl: PANEL; name: string; val : string)=
+func setTextF*(pnl: PANEL; name: string; val : string)=
   for i in 0..len(pnl.field)-1 :
     if pnl.field[i].name == name :
       pnl.field[i].text = val
       break
-
 ## set value Field Sequence Fiel
 func setSwitch*(pnl : PANEL ; name: string; val : bool): bool  =
   for i in 0..len(pnl.hiden)-1 :
     if pnl.field[i].name == name :
       pnl.field[i].switch = val
-
-
 ## set value Field Sequence Field
-func setText*(pnl: PANEL; index: int; val : string) =
+func setTextF*(pnl: PANEL; index: int; val : string) =
   if index < 0 or index > len(pnl.field)-1 : return
   pnl.field[index].text = val
 ## setvalue Field Sequence Fiel
 func setSwitch*(pnl : PANEL ; index: int; val : bool)  =
   if index < 0 or index > len(pnl.field)-1 : return
   pnl.field[index].switch = val
+
+## delete Field Sequence Field
+func dltField*(pnl: PANEL; idx : Natural) =
+  if idx >= 0 or idx <= len(pnl.field)-1 :
+    pnl.field.del(idx)
+
+
+
+
+
+
+## return name from index 
+func getNameH*(hdn: PANEL,index: int): string =
+  result = hdn.hiden[index].name
+## return index from Name
+func getIndexH*(hdn : PANEL; name: string): int  =
+  for i in 0..len(hdn.hiden)-1:
+    if hdn.hiden[i].name == name : return i
+  return - 1
+## return value Field from name
+func getTextH*(hdn : PANEL ; name: string): string  =
+  for i in 0..len(hdn.hiden)-1 :
+    if hdn.hiden[i].name == name :
+      return hdn.hiden[i].text
+  return "NAN"
+## return value Field from name
+func getSwitchH*(hdn : PANEL ; name: string): bool  =
+  for i in 0..len(hdn.hiden)-1 :
+    if hdn.hiden[i].name == name :
+      return hdn.hiden[i].switch
+  return false
+## return value Field from index
+func getTextH*(hdn : PANEL ; index: int): string  =
+  if index < 0 or index > len(hdn.hiden)-1 : return "NAN"
+  return hdn.hiden[index].text
+## return value Field from index
+func getSwitchH*(hdn : PANEL ; index: int): bool  =
+  if index < 0 or index > len(hdn.field)-1 : return false
+  return hdn.hiden[index].switch
+
+## delete Field Sequence Field
+func dltFieldH*(hdn : PANEL; idx : Natural) =
+  if idx >= 0 or idx <= len(hdn.hiden)-1 :
+    hdn.hiden.del(idx)
+
 
 
 
@@ -1835,38 +1757,57 @@ func getReftyp*(pnl: PANEL; name: string): REFTYP  =
   return TEXT_FULL                                       # Warning possibility out of sequence
 
 
+##  set attribut display label
+proc setColor*(lbl : var LABEL  ; lbl_atr : ZONATRB)=
+  lbl.style  = lbl_atr.style
+  lbl.backgr = lbl_atr.backgr
+  lbl.backbr = lbl_atr.backbr
+  lbl.foregr = lbl_atr.foregr
+  lbl.forebr = lbl_atr.forebr
 
-
+##  set attribut display field
+func setColor*(fld : var FIELD ; fld_atr : ZONATRB)=
+  fld.style  = fld_atr.style
+  fld.backgr = fld_atr.backgr
+  fld.backbr = fld_atr.backbr
+  fld.foregr = fld_atr.foregr
+  fld.forebr = fld_atr.forebr
+func setColorProtect*(fld : var FIELD ; protect_atr : ZONATRB)=
+  fld.pstyle  = protect_atr.style
+  fld.pbackgr = protect_atr.backgr
+  fld.pbackbr = protect_atr.backbr
+  fld.pforegr = protect_atr.foregr
+  fld.pforebr = protect_atr.forebr
 ##  set on  = display ONLY
-proc setProtect*(fld : var FIELD ; protect : bool)=
+func setProtect*(fld : var FIELD ; protect : bool)=
     fld.protect = protect
-proc setEdtCar*(fld : var FIELD ; Car : char)=
+func setEdtCar*(fld : var FIELD ; Car : char)=
     fld.edtcar = $Car
-proc setError*(fld : var FIELD )=
+func setError*(fld : var FIELD )=
     fld.err = true
 ## Enables or disables FIELD / LABEL / BOX / MENU / PANEL
-proc setActif*(fld : var FIELD ; actif : bool)=
+func setActif*(fld : var FIELD ; actif : bool)=
     fld.actif = actif
-proc setActif*(lbl : var LABEL ; actif : bool)=
+func setActif*(lbl : var LABEL ; actif : bool)=
     lbl.actif = actif
-proc setActif*(box: var BOX ; actif : bool)=
+func setActif*(box: var BOX ; actif : bool)=
     box.actif = actif
-proc setActif*(mnu: var MENU ; actif : bool)=
+func setActif*(mnu: var MENU ; actif : bool)=
     mnu.actif = actif
-proc setActif*(btn: var BUTTON; actif : bool)=
+func setActif*(btn: var BUTTON; actif : bool)=
     btn.actif = actif
-proc setActif*(pnl: var PANEL ; actif : bool)=
+func setActif*(pnl: var PANEL ; actif : bool)=
     pnl.actif = actif
-proc setMouse*(pnl: var PANEL ; actif : bool)=
+func setMouse*(pnl: var PANEL ; actif : bool)=
     pnl.actif = actif
 
-proc setMini*(fld : var FIELD ; val : int) =
+func setMini*(fld : var FIELD ; val : int) =
   case fld.reftyp
     of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
       fld.min = val
     else : discard
 
-proc setMaxi*(fld : var FIELD ; val : int) =
+func setMaxi*(fld : var FIELD ; val : int) =
   case fld.reftyp
     of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
       fld.max = val
@@ -1875,13 +1816,26 @@ proc setMaxi*(fld : var FIELD ; val : int) =
 func isMinMax*(fld : var FIELD ) : bool =
   
   case fld.reftyp
-    of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
-      var val : int = parseInt($fld.text)
+    of DIGIT,DIGIT_SIGNED:
+      var v: string  = fld.text
+      v = v.strip(trailing = true)
+      var val : int = parseInt($v)
       if fld.min != 0 :
-        if val < fld.min  :
+        if val < fld.min  : 
           return false
       if fld.max != 0 :
-        if val > fld.max  :
+        if val > fld.max  : 
+          return false
+      return true
+    of DECIMAL, DECIMAL_SIGNED :
+      var v: string  = fld.text
+      v = v.strip(trailing = true)
+      var val : float = parseFloat($v)
+      if float(fld.min) != 0 :
+        if val < float(fld.min)  : 
+          return false
+      if float(fld.max) != 0 :
+        if val > float(fld.max)  : 
           return false
       return true
     else : return true
@@ -1891,7 +1845,7 @@ func isMinMax*(fld : var FIELD ) : bool =
 
 
 ## Test if KEYs must be managed by the programmer
-proc isPanelKey*(pnl: PANEL; e_key:Key): bool =
+func isPanelKey*(pnl: PANEL; e_key:Key): bool =
   var i = 0
   var ok :bool = false
   while i < len(pnl.funckey):
@@ -1922,7 +1876,7 @@ func isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## dltRows()
 ## 
 ## resetRows()
-## newTermGrid()
+## newGRIDSFL()
 ## newCell()
 ## setHeaders()
 ## printGridHeader()
@@ -1931,7 +1885,7 @@ func isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## ioGrid
 ##------------------------------------------------------- 
 
-func padingField(text: string; cell:Cell;) :string =
+func padingCell(text: string; cell:CELL;) :string =
   var i: Natural = 0
 
   var e_FIELD : string = text
@@ -1967,7 +1921,7 @@ func padingField(text: string; cell:Cell;) :string =
 
 
 
-func calculPosCell(this: TermGrid) =
+func calculPosCell(this: GRIDSFL) =
   var n : Natural = 1 # this.posy = separator "|"
   if this.separateRows == false : n = 0 
   var pos : Natural = this.posy - 1
@@ -1982,7 +1936,7 @@ func calculPosCell(this: TermGrid) =
 
 
 
-func setPageGrid(this :TermGrid)=
+func setPageGrid(this :GRIDSFL)=
   this.lignes = len(this.rows)
   
   if this.lignes <= this.pagerows  : 
@@ -1993,10 +1947,10 @@ func setPageGrid(this :TermGrid)=
 
 
 
-proc newTermGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
-                  separator: TermStyle = unicodeStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): TermGrid =
+proc newGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
+                  separator: GridStyle = unicodeStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): GRIDSFL =
 
-  var Ngrid = new TermGrid
+  var Ngrid = new GRIDSFL
   Ngrid.name  = name
   Ngrid.posx  = posx
   Ngrid.posy  = posy
@@ -2006,7 +1960,7 @@ proc newTermGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
   Ngrid.pageRows = pagerows
   Ngrid.rows = newSeq[seq[string]]()
   Ngrid.nrow = newSeq[int]()
-  Ngrid.headers = newSeq[Cell]()
+  Ngrid.headers = newSeq[CELL]()
   if separator.colSeparator == "" : Ngrid.separateRows =false else : Ngrid.separateRows =true
   Ngrid.actif = actif
   Ngrid.gridatr = grid_atr
@@ -2020,7 +1974,7 @@ proc newTermGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
 
 
 
-proc resetGrid*(this: TermGrid) =
+proc resetGrid*(this: GRIDSFL) =
   this.name  = ""
   this.posx  = 0
   this.posy  = 0
@@ -2030,7 +1984,7 @@ proc resetGrid*(this: TermGrid) =
   this.pageRows = 0
   this.rows = newSeq[seq[string]]()
   this.nrow = newSeq[int]()
-  this.headers = newSeq[Cell]()
+  this.headers = newSeq[CELL]()
   this.lignes  = 0
   this.pages  = 0
   this.cursligne  = 0
@@ -2038,46 +1992,45 @@ proc resetGrid*(this: TermGrid) =
 
 
 
-proc columnsCount*(this:  TermGrid): int =
+func columnsCount*(this:  GRIDSFL): int =
   result = this.headers.len
 
-proc setHeaders*(this: TermGrid, headers: seq[Cell]) =
+func setHeaders*(this: GRIDSFL, headers: seq[CELL]) =
   for cell in headers:
     this.headers.add(cell)
-
   calculPosCell(this)
-
   this.buf = newSeq[TerminalChar]((this.lines+1)*(this.cols+1))
 
 
 
-proc newCell*(text: string; len : Natural;reftyp: REFTYP; edtcar : string =""): Cell =
-  result = new(Cell)
-  result.len    = len
-  result.reftyp = reftyp
-  result.text   = text
-  result.edtcar = edtcar
-  result.posy   = 0
-
+proc defCell*(text: string; len : Natural;reftyp: REFTYP; edtcar : string =""): CELL =
+  var cell : CELL
+  cell.len    = len
+  cell.reftyp = reftyp
+  cell.text   = text
+  cell.edtcar = edtcar
+  cell.posy   = 0
+  return cell
 
 ## return index Sequence Label from name
-func getIndexGrid*(this: TermGrid; name: string): int  =
+func getIndexG*(this: GRIDSFL; name: string): int  =
   for i in 0..len(this.rows)-1:
     if this.rows[i][0] == name : return i
   return - 1
 
 
-proc addRows*(this: TermGrid; rows:seq[string]) =
+func addRows*(this: GRIDSFL; rows:seq[string]) =
   this.rows.add(@(rows))
   setPageGrid(this)
 
-proc dltRows*(this: TermGrid; idx : Natural) =
-  this.rows.del(idx)
+func dltRows*(this: GRIDSFL; idx : Natural) =
+  for n in 0..len(this.rows) - 1 :
+    if n >= idx and n < len(this.rows) - 1 : this.rows[n] = this.rows[n+1]
+  this.rows.del(len(this.rows) - 1 )
   setPageGrid(this)
 
 
-
-proc resetRows*(this: TermGrid;) =
+proc resetRows*(this: GRIDSFL;) =
   this.rows = newSeq[seq[string]]()
   this.nrow = newSeq[int]()
   this.lignes  = 0
@@ -2086,7 +2039,7 @@ proc resetRows*(this: TermGrid;) =
   this.curspage  = 1
 
 
-proc printGridHeader*(this: TermGrid) =
+proc printGridHeader*(this: GRIDSFL) =
   if not this.actif : return
   var buf : string
   var n : int
@@ -2141,12 +2094,12 @@ proc printGridHeader*(this: TermGrid) =
       setForegroundColor(this.buf[n].fg,this.buf[n].fgb)
       writeStyled($this.buf[n].ch,this.buf[n].style)
       inc(n)
-  stdout.flushFile()
+#  stdout.flushFile()
 
 
 
 
-proc printGridRows*(this: TermGrid ) =
+proc printGridRows*(this: GRIDSFL ) =
   if not this.actif : return
   var n : int
   var start : int = 0
@@ -2162,7 +2115,7 @@ proc printGridRows*(this: TermGrid ) =
       for h in 0..<len(this.headers):
         n = this.cols * (2 + r)
         n =  n + this.headers[h].posy 
-        for ch in runes(padingField(buf[h],this.headers[h])):
+        for ch in runes(padingCell(buf[h],this.headers[h])):
           this.buf[n].ch = ch
           this.buf[n].bg  = this.gridatr.cell_backgr
           this.buf[n].bgb = this.gridatr.cell_backbr
@@ -2185,12 +2138,12 @@ proc printGridRows*(this: TermGrid ) =
         setForegroundColor(this.buf[n].fg,this.buf[n].fgb)
         writeStyled($this.buf[n].ch,this.buf[n].style)
         inc(n)
-    stdout.flushFile()
+    #stdout.flushFile()
 
 
 
 
-proc pageUpGrid*(this: TermGrid): Key_Grid =
+proc pageUpGrid*(this: GRIDSFL): Key_Grid =
   if this.curspage > 0 : 
     dec(this.curspage)
     this.cursligne = -1
@@ -2200,7 +2153,7 @@ proc pageUpGrid*(this: TermGrid): Key_Grid =
   if this.curspage == 1: return PGHome
   else : return PGUp
 
-proc pageDownGrid*(this: TermGrid): Key_Grid =
+proc pageDownGrid*(this: GRIDSFL): Key_Grid =
   if this.curspage < this.pages : 
     inc(this.curspage)
     this.cursligne = -1
@@ -2220,7 +2173,7 @@ proc pageDownGrid*(this: TermGrid): Key_Grid =
 ## Automatic alignment based on the type reference
 ##================================================================
 
-proc ioGrid*(this: TermGrid ): (Key , seq[string])=        # IO Format
+proc ioGrid*(this: GRIDSFL ): (Key , seq[string])=        # IO Format
   var buf :seq[string]
   if not this.actif : return (Key.None, buf)
   
@@ -2412,7 +2365,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
   func isMinMax(v:seq[Rune]; fld : FIELD) : bool =
     
     case fld.reftyp
-      of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
+      of DIGIT,DIGIT_SIGNED:
         var v: string  = $e_FIELD
         v = v.strip(trailing = true)
         var val : int = parseInt($v)
@@ -2421,6 +2374,17 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
             return false
         if fld.max != 0 :
           if val > fld.max  : 
+            return false
+        return true
+      of DECIMAL, DECIMAL_SIGNED :
+        var v: string  = $e_FIELD
+        v = v.strip(trailing = true)
+        var val : float = parseFloat($v)
+        if float(fld.min) != 0 :
+          if val < float(fld.min)  : 
+            return false
+        if float(fld.max) != 0 :
+          if val > float(fld.max)  : 
             return false
         return true
       
@@ -2491,9 +2455,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     var button: BUTTON 
     button.key   = Key.None
     button.text  = ""
-    defPanel(pnlmsg,"msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,pnl.cols,CADRE.line0,"",0,1,0,0,@[button])
-
-    fldLabel(pnlmsg.label[0], "msg", 1, 1,"Info :" & info, msgatr)
+    pnlmsg = new_Panel("msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,pnl.cols,@[button],CADRE.line0)
+    pnlmsg.label.add(defLabel( "msg", 1, 1,"Info :" & info, msgatr))
     printLabel(pnlmsg,pnlmsg.label[0])
     displayPanel(pnlmsg)
 
@@ -2520,9 +2483,9 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     var button: BUTTON 
     button.key   = Key.None
     button.text  = ""
-    defPanel(pnlmsg,"msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,pnl.cols,CADRE.line0,"",0,1,0,0,@[button])
+    pnlmsg = new_Panel("msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,pnl.cols,@[button],CADRE.line0)
+    pnlmsg.label.add(defLabel( "msg", 1, 1,"Info :" & info, hlpatr))
 
-    fldLabel(pnlmsg.label[0], "msg", 1, 1,"Info :" & info, hlpatr)
     printLabel(pnlmsg,pnlmsg.label[0])
     displayPanel(pnlmsg)
 
@@ -2552,7 +2515,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
 
     gotoXY(e_posx,e_curs)
 
-    if statusCursInsert: def_cursor(5) else: def_cursor(0) # CHANGE CURSOR FORM BAR/BLOCK
+    if statusCursInsert: defCursor(5) else: defCursor(0) # CHANGE CURSOR FORM BAR/BLOCK
 
     showCursor()
     # read keyboard
@@ -2883,7 +2846,7 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
   var CountField = pnl.index
   var fld_key:Key = Key.Enter
 
-  var index = getIndex(pnl,pnl.field[CountField].name)
+  var index = getIndexF(pnl,pnl.field[CountField].name)
 
   # check error
   for n in 0..len(pnl.field) - 1:
@@ -2941,7 +2904,7 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
 
 
     if isPanelKey(pnl,fld_key) :                      # this key sav index field return main 
-      pnl.index = getIndex(pnl,pnl.field[CountField].name)
+      pnl.index = getIndexF(pnl,pnl.field[CountField].name)
       return fld_key
 
     if isFieldIO(pnl) == 0 :                          # this full protect only work Key active

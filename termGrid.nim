@@ -25,7 +25,7 @@ InitScreen()
 setTerminal() #default color style erase
 
 var pnlF1  = new(PANEL)
-var grid  : TermGrid
+var grid  : GRIDSFL
 var g_numID : int 
 var key : Key = Key.F1
 var keyG : Key_Grid
@@ -36,30 +36,31 @@ while true:
   of Key.F1:
 
     if not isActif(pnlF1) :  # init Panel
+      pnlF1 = newPanel("nom",1,1,terminalHeight(),terminalWidth(),
+      @[defButton(Key.F3,"Exit"),defButton(Key.F2,"Grid"),defButton(Key.F9,"Add Row"),
+      defButton(Key.F23,"Delete Row All"),defButton(Key.CtrlX,"Sel Ligne"),
+      defButton(Key.PageUP,""),defButton(Key.PageDown,"")],CADRE.line0)
 
-      defPanel(pnlF1,"nom",1,1,terminalHeight(),terminalWidth(),CADRE.line0,"",0,len(P_L1),len(P_F1),0,
-      @[button(Key.F3,"Exit"),button(Key.F2,"Grid"),button(Key.F9,"Add Row"),button(Key.F23,"Delete Row All"),button(Key.CtrlX,"Sel Ligne"),
-      button(Key.PageUP,""),button(Key.PageDown,"")])
-      fldLabel(pnlF1.label[P_L1[Lnom]],$Nom, 2, 5,   "Nom.....:")
-      fldString(pnlF1.field[P_F1[Nom]],$Nom, 2, 5+(len(pnlF1.label[P_L1[Lnom]].text)), ALPHA, 20, "Jean-Pierre",FILL, "Nom Obligatoire", "Type Alpha a-Z")
+      pnlF1.label.add(defLabel($Nom, 2, 5,   "Nom.....:"))
+      pnlF1.field.add(defString($Nom, 2, 5+(len(pnlF1.label[P_L1[Lnom]].text)), ALPHA, 20, "Jean-Pierre",FILL, "Nom Obligatoire", "Type Alpha a-Z"))
 
-      fldLabel(pnlF1.label[P_L1[Lanimal]],$Animal, 4, 5,  "Animal..:")
-      fldString(pnlF1.field[P_F1[Animal]],$Animal, 4, 5+(len(pnlF1.label[P_L1[Lanimal]].text)), TEXT_FULL,30, "Chat",FILL, "Animale Obligatoire", "Type Alpha a-Z")
+      pnlF1.label.add(defLabel($Animal, 4, 5,  "Animal..:"))
+      pnlF1.field.add(defString($Animal, 4, 5+(len(pnlF1.label[P_L1[Lanimal]].text)), TEXT_FULL,30, "Chat",FILL, "Animale Obligatoire", "Type Alpha a-Z"))
 
-      fldLabel(pnlF1.label[P_L1[Lprix]],$Prix, 6, 5, "Prix....:")
-      fldNumeric(pnlF1.field[P_F1[Prix]],$Prix, 6, 5+(len(pnlF1.label[P_L1[Lprix]].text)), DECIMAL,5,2,"12.00",FILL, "Animale Obligatoire", "Type Alpha a-Z")
+      pnlF1.label.add(defLabel($Prix, 6, 5, "Prix....:"))
+      pnlF1.field.add(defNumeric($Prix, 6, 5+(len(pnlF1.label[P_L1[Lprix]].text)), DECIMAL,5,2,"12.00",FILL, "Animale Obligatoire", "Type Alpha a-Z"))
 
-      fldLabel(pnlF1.label[P_L1[Lgrid]],$Lgrid, 42, 127, "")
+      pnlF1.label.add(defLabel($Lgrid, 42, 127, ""))
       printPanel(pnlF1)
 
     key = ioPanel(pnlF1)
 
   of Key.F2:
-    grid = newTermGrid("GRID01",10,1,5)
-    var g_id      = newCell("ID",3,DIGIT)
-    var g_name    = newCell("Name",getNbrcar(pnlF1,$Nom),ALPHA)
-    var g_animal  = newCell("Fav animal",getNbrcar(pnlF1,$Animal),ALPHA)
-    var g_prix    = newCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL,"€") ;
+    grid = newGrid("GRID01",10,1,5)
+    var g_id      = defCell("ID",3,DIGIT)
+    var g_name    = defCell("Name",getNbrcar(pnlF1,$Nom),ALPHA)
+    var g_animal  = defCell("Fav animal",getNbrcar(pnlF1,$Animal),ALPHA)
+    var g_prix    = defCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL,"€") ;
     g_numID = - 1 
 
 
@@ -83,7 +84,7 @@ while true:
 
   of Key.F9:
     if grid.actif:
-      addRows(grid,@[setID(g_numID), pnlF1.getText($Nom), pnlF1.getText($Animal),pnlF1.getText($Prix)])
+      addRows(grid,@[setID(g_numID), pnlF1.getTextF($Nom), pnlF1.getTextF($Animal),pnlF1.getTextF($Prix)])
       grid.curspage = grid.pages
       printGridHeader(grid)
       printGridRows(grid)
@@ -91,12 +92,11 @@ while true:
   of Key.F23:
     if grid.actif:
       g_numID = -1
-      resetGrid(grid)
-      grid = newTermGrid("GRID01",10,5,5)
-      var g_id      = newCell("ID",3,DIGIT)
-      var g_name    = newCell("Name",getNbrcar(pnlF1,$Nom),ALPHA)
-      var g_animal  = newCell("Fav animal",getNbrcar(pnlF1,$Animal),ALPHA)
-      var g_prix    = newCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL,"€") ;
+      grid = newGrid("GRID01",10,1,5)
+      var g_id      = defCell("ID",3,DIGIT)
+      var g_name    = defCell("Name",getNbrcar(pnlF1,$Nom),ALPHA)
+      var g_animal  = defCell("Fav animal",getNbrcar(pnlF1,$Animal),ALPHA)
+      var g_prix    = defCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL,"€") ;
       g_numID = - 1 
       setHeaders(grid, @[g_id, g_name, g_animal,g_prix])
       printGridHeader(grid)

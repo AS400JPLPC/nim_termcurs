@@ -33,9 +33,9 @@ It works, but I had to harmonize and add PROC or FUNC
   * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br>
   * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br>
   * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*  
-  * Full Change 2020-02-11&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br>  
+  * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br>  
   * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u>  
-  * Full Change 2020-02-19&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br>  
+  * Full Change 2020-05-13&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br>  
  
 
 **Thank you**
@@ -174,100 +174,66 @@ proc ioPanel(pnl: var PANEL): Key {...}
 <br>
 <br>
 
+
 # Procs
 
-
-proc def_cursor(e_curs: Natural = 0) {...}
+proc defCursor(e_curs: Natural = 0) {...}
 
 proc setTerminal(termatr: ZONATRB = scratr) {...}
 
-proc button(key: Key; text: string; actif = true): BUTTON {...}
+proc defButton(key: Key; text: string; actif = true): BUTTON {...}
 
-proc fldBox(box: var BOX; name: string; posx: Natural; posy: Natural; lines: Natural;
-           cols: Natural; cadre: CADRE; title: string; box_atr: BOXATRB = boxatr;
-           actif: bool = true) {...}
+proc defBox(name: string; posx: Natural; posy: Natural; lines: Natural; cols: Natural;
+           cadre: CADRE; title: string; box_atr: BOXATRB = boxatr; actif: bool = true): BOX {...}
 
 proc printBox(pnl: var PANEL; box: BOX) {...}
 
-proc defMenu(menu: var MENU; name: string; posx: Natural; posy: Natural; mnuvh: MNUVH;
-            item: seq[string]; cadre: CADRE = CADRE.line0; mnu_atr: MNUATRB = mnuatr;
-            actif: bool = true) {...}
+proc newMenu(name: string; posx: Natural; posy: Natural; mnuvh: MNUVH; item: seq[string];
+            cadre: CADRE = CADRE.line0; mnu_atr: MNUATRB = mnuatr; actif: bool = true): MENU {...}
 
 proc printMenu(pnl: PANEL; mnu: MENU) {...}
 
-proc fldLabel(lbl: var LABEL; name: string; posx: Natural; posy: Natural; text: string;
-             lbl_atr: ZONATRB = lblatr; actif: bool = true) {...}
+proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
+             lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
 
 proc printLabel(pnl: var PANEL; lbl: LABEL) {...}
 
-proc fldString(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-              with: Natural; text: string; empty: bool; errmsg: string; help: string;
-              regex: string = ""; fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr;
-              actif: bool = true) {...}
+proc defString(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; with: Natural;
+              text: string; empty: bool; errmsg: string; help: string;
+              regex: string = ""; fld_atr: ZONATRB = fldatr;
+              protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
-proc fldMail(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-            with: Natural; text: string; empty: bool; errmsg: string; help: string;
-            fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
-
-proc fldSwitch(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-              switch: bool; empty: bool; errmsg: string; help: string;
-              swt_atr: ZONATRB = swtatr; prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
-
-proc fldDate(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; with: Natural;
             text: string; empty: bool; errmsg: string; help: string;
-            fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
+            fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
-proc fldNumeric(fld: var FIELD; name: string; posx: Natural; posy: Natural;
-               reftyp: REFTYP; with: Natural; scal: Natural; text: string; empty: bool;
-               errmsg: string; help: string; fld_atr: ZONATRB = fldatr;
-               prt_atr: ZONATRB = prtatr; actif: bool = true) {...}
+proc defSwitch(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; switch: bool;
+              empty: bool; errmsg: string; help: string; swt_atr: ZONATRB = swtatr;
+              protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
-proc hdnString(hdn: var HIDEN; name: string; reftyp: REFTYP; text: string) {...}
+proc defDate(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; text: string;
+            empty: bool; errmsg: string; help: string; fld_atr: ZONATRB = fldatr;
+            protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
-proc hdnSwitch(hdn: var HIDEN; name: string; reftyp: REFTYP; switch: bool) {...}
+proc defNumeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+               with: Natural; scal: Natural; text: string; empty: bool; errmsg: string;
+               help: string; fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr;
+               actif: bool = true): FIELD {...}
+
+proc defHString(name: string; reftyp: REFTYP; text: string): HIDEN {...}
+
+proc defHSwitch(name: string; reftyp: REFTYP; switch: bool): HIDEN {...}
+
+proc newPanel(name: string; posx, posy, height, width: Natural; button: seq[(BUTTON)];
+             cadre: CADRE = line0; title: string = ""; pnl_atr: ZONATRB = pnlatr): PANEL {...}
 
 proc printField(pnl: var PANEL; fld: FIELD) {...}
 
 proc printButton(pnl: var PANEL; btn_esp: BTNSPACE = btnspc) {...}
 
-proc defPanel(pnl: var PANEL; name: string; posx, posy, height, width: Natural;
-             cadre: CADRE; title: string;
-             nbrbox, nbrlabel, nbrfield, nbrhiden: Natural; button: seq[(BUTTON)];
-             pnl_atr: ZONATRB = pnlatr; actif: bool = true) {...}
-
-proc add_Label(name: string; posx: Natural; posy: Natural; text: string;
-              lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
-
-proc add_String(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-               with: Natural; text: string; empty: bool; errmsg: string; help: string;
-               regex: string = ""; fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr;
-               actif: bool = true): FIELD {...}
-
-proc add_Mail(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-             with: Natural; text: string; empty: bool; errmsg: string; help: string;
-             fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
-
-proc add_Switch(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; switch: bool;
-               empty: bool; errmsg: string; help: string; swt_atr: ZONATRB = swtatr;
-               prt_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
-
-proc add_Date(fld: var FIELD; name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-             text: string; empty: bool; errmsg: string; help: string;
-             fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
-
-proc add_Numeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-                with: Natural; scal: Natural; text: string; empty: bool; errmsg: string;
-                help: string; fld_atr: ZONATRB = fldatr; prt_atr: ZONATRB = prtatr;
-                actif: bool = true): FIELD {...}
-
-proc add_Panel(name: string; posx, posy, height, width: Natural; button: seq[(BUTTON)];
-              cadre: CADRE = line0; title: string = ""; pnl_atr: ZONATRB = pnlatr): PANEL {...}
-
 proc displayPanel(pnl: PANEL) {...}
 
 proc printPanel(pnl: var PANEL) {...}
-
-proc clearField(pnl: var PANEL) {...}
 
 proc resetPanel(pnl: var PANEL) {...}
 
@@ -289,69 +255,31 @@ proc restorePanel(dst: PANEL; src: var PANEL) {...}
 
 proc restorePanel(dst: PANEL; mnu: MENU) {...}
 
-proc restorePanel(dst: PANEL; grid: TermGrid) {...}
+proc restorePanel(dst: PANEL; grid: GRIDSFL) {...}
 
 proc restorePanel(pnl: PANEL; lines, posy: Natural) {...}
 
-proc dltLabel(pnl: PANEL; idx: Natural) {...}
+proc setColor(lbl: var LABEL; lbl_atr: ZONATRB) {...}
 
-proc dltField(pnl: PANEL; idx: Natural) {...}
+proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
+            separator: GridStyle = unicodeStyle; grid_atr: GRIDATRB = gridatr;
+            actif: bool = true): GRIDSFL {...}
 
-proc setText(pnl: PANEL; name: string; val: string) {...}
+proc resetGrid(this: GRIDSFL) {...}
 
-proc setProtect(fld: var FIELD; protect: bool) {...}
+proc defCell(text: string; len: Natural; reftyp: REFTYP; edtcar: string = ""): CELL {...}
 
-proc setEdtCar(fld: var FIELD; Car: char) {...}
+proc resetRows(this: GRIDSFL) {...}
 
-proc setError(fld: var FIELD) {...}
+proc printGridHeader(this: GRIDSFL) {...}
 
-proc setActif(fld: var FIELD; actif: bool) {...}
+proc printGridRows(this: GRIDSFL) {...}
 
-proc setActif(lbl: var LABEL; actif: bool) {...}
+proc pageUpGrid(this: GRIDSFL): Key_Grid {...}
 
-proc setActif(box: var BOX; actif: bool) {...}
+proc pageDownGrid(this: GRIDSFL): Key_Grid {...}
 
-proc setActif(mnu: var MENU; actif: bool) {...}
-
-proc setActif(btn: var BUTTON; actif: bool) {...}
-
-proc setActif(pnl: var PANEL; actif: bool) {...}
-
-proc setMouse(pnl: var PANEL; actif: bool) {...}
-
-proc setMini(fld: var FIELD; val: int) {...}
-
-proc setMaxi(fld: var FIELD; val: int) {...}
-
-proc isPanelKey(pnl: PANEL; e_key: Key): bool {...}
-
-proc newTermGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
-                separator: TermStyle = unicodeStyle; grid_atr: GRIDATRB = gridatr;
-                actif: bool = true): TermGrid {...}
-
-proc resetGrid(this: TermGrid) {...}
-
-proc columnsCount(this: TermGrid): int {...}
-
-proc setHeaders(this: TermGrid; headers: seq[Cell]) {...}
-
-proc newCell(text: string; len: Natural; reftyp: REFTYP; edtcar: string = ""): Cell {...}
-
-proc addRows(this: TermGrid; rows: seq[string]) {...}
-
-proc dltRows(this: TermGrid; idx: Natural) {...}
-
-proc resetRows(this: TermGrid) {...}
-
-proc printGridHeader(this: TermGrid) {...}
-
-proc printGridRows(this: TermGrid) {...}
-
-proc pageUpGrid(this: TermGrid): Key_Grid {...}
-
-proc pageDownGrid(this: TermGrid): Key_Grid {...}
-
-proc ioGrid(this: TermGrid): (Key, seq[string]) {...}
+proc ioGrid(this: GRIDSFL): (Key, seq[string]) {...}
 
 proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
 
@@ -371,45 +299,95 @@ func Cols(pnl: PANEL): Natural {...}
 
 func Index(pnl: PANEL): Natural {...}
 
-func getIndexLabel(pnl: PANEL; name: string): int {...}
+func getNameL(pnl: PANEL; index: int): string {...}
 
-func getTextLabel(pnl: PANEL; name: string): string {...}
+func getIndexL(pnl: PANEL; name: string): int {...}
 
-func getName(pnl: PANEL): string {...}
+func getTextL(pnl: PANEL; name: string): string {...}
 
-func getIndex(pnl: PANEL; name: string): int {...}
+func getTextL(pnl: PANEL; index: int): string {...}
 
-func getText(pnl: PANEL; name: string): string {...}
+func setTextL(pnl: PANEL; name: string; val: string) {...}
+
+func setTextL(pnl: PANEL; index: int; val: string) {...}
+
+func dltLabel(pnl: PANEL; idx: Natural) {...}
+
+func clearTextF(pnl: var PANEL) {...}
+
+func getNameF(pnl: PANEL): string {...}
+
+func getNameF(pnl: PANEL; index: int): string {...}
+
+func getTextF(pnl: PANEL; name: string): string {...}
 
 func getSwitch(pnl: PANEL; name: string): bool {...}
 
-func getText(pnl: PANEL; index: int): string {...}
+func getIndexF(pnl: PANEL; name: string): int {...}
+
+func getTextF(pnl: PANEL; index: int): string {...}
 
 func getSwitch(pnl: PANEL; index: int): bool {...}
 
-func getNameHiden(hdn: PANEL; index: int): string {...}
-
-func getIndexHiden(hdn: PANEL; name: string): int {...}
-
-func getTextHiden(hdn: PANEL; name: string): string {...}
-
-func getSwitchHiden(hdn: PANEL; name: string): bool {...}
-
-func getTextHiden(hdn: PANEL; index: int): string {...}
-
-func getSwitchHiden(hdn: PANEL; index: int): bool {...}
+func setTextF(pnl: PANEL; name: string; val: string) {...}
 
 func setSwitch(pnl: PANEL; name: string; val: bool): bool {...}
 
-func setText(pnl: PANEL; index: int; val: string) {...}
+func setTextF(pnl: PANEL; index: int; val: string) {...}
 
 func setSwitch(pnl: PANEL; index: int; val: bool) {...}
+
+func dltField(pnl: PANEL; idx: Natural) {...}
+
+func getNameH(hdn: PANEL; index: int): string {...}
+
+func getIndexH(hdn: PANEL; name: string): int {...}
+
+func getTextH(hdn: PANEL; name: string): string {...}
+
+func getSwitchH(hdn: PANEL; name: string): bool {...}
+
+func getTextH(hdn: PANEL; index: int): string {...}
+
+func getSwitchH(hdn: PANEL; index: int): bool {...}
+
+func dltFieldH(hdn: PANEL; idx: Natural) {...}
 
 func getNbrcar(pnl: PANEL; name: string): int {...}
 
 func getReftyp(pnl: PANEL; name: string): REFTYP {...}
 
+func setColor(fld: var FIELD; fld_atr: ZONATRB) {...}
+
+func setColorProtect(fld: var FIELD; protect_atr: ZONATRB) {...}
+
+func setProtect(fld: var FIELD; protect: bool) {...}
+
+func setEdtCar(fld: var FIELD; Car: char) {...}
+
+func setError(fld: var FIELD) {...}
+
+func setActif(fld: var FIELD; actif: bool) {...}
+
+func setActif(lbl: var LABEL; actif: bool) {...}
+
+func setActif(box: var BOX; actif: bool) {...}
+
+func setActif(mnu: var MENU; actif: bool) {...}
+
+func setActif(btn: var BUTTON; actif: bool) {...}
+
+func setActif(pnl: var PANEL; actif: bool) {...}
+
+func setMouse(pnl: var PANEL; actif: bool) {...}
+
+func setMini(fld: var FIELD; val: int) {...}
+
+func setMaxi(fld: var FIELD; val: int) {...}
+
 func isMinMax(fld: var FIELD): bool {...}
+
+func isPanelKey(pnl: PANEL; e_key: Key): bool {...}
 
 func isProtect(fld: var FIELD): bool {...}
 
@@ -427,5 +405,15 @@ func isActif(pnl: var PANEL): bool {...}
 
 func isMouse(pnl: var PANEL): bool {...}
 
-func getIndexGrid(this: TermGrid; name: string): int {...}
+func columnsCount(this: GRIDSFL): int {...}
+
+func setHeaders(this: GRIDSFL; headers: seq[CELL]) {...}
+
+func getIndexG(this: GRIDSFL; name: string): int {...}
+
+func addRows(this: GRIDSFL; rows: seq[string]) {...}
+
+func dltRows(this: GRIDSFL; idx: Natural) {...}
+
+
 
