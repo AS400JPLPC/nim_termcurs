@@ -105,13 +105,13 @@ while true:
         pnlF1.field.add(defNumeric("zone6", 16, 5+(len(pnlF1.label[6].text)), DIGIT, 5, 0, "67",FILL, "DIGIT Obligatoire", "Type Digit 0-9"))
 
         pnlF1.label.add(defLabel("zone7", 18, 5,"DIGIT_SIGNED        zone7  :"))
-        pnlF1.field.add(defNumeric("zone7", 18, 5+(len(pnlF1.label[7].text)), DIGIT_SIGNED, 5,0, "-67",EMPTY, "DIGIT Obligatoire", "Type Digot '-/+ -9'"))
+        pnlF1.field.add(defNumeric("zone7", 18, 5+(len(pnlF1.label[7].text)), DIGIT_SIGNED, 5,0, "-67",FILL, "DIGIT Obligatoire", "Type Digot '-/+ -9'"))
 
         pnlF1.label.add(defLabel("zone8", 20, 5,"DECIMAL             zone8  :"))
-        pnlF1.field.add(defNumeric("zone8", 20, 5+(len(pnlF1.label[8].text)), DECIMAL, 5,2, "67.58",EMPTY, "DECIMAL Obligatoire", "Type Digot .0-9"))
+        pnlF1.field.add(defNumeric("zone8", 20, 5+(len(pnlF1.label[8].text)), DECIMAL, 5,2, "67.58",FILL, "DECIMAL Obligatoire", "Type Digot .0-9"))
 
         pnlF1.label.add(defLabel("zone9", 22, 5,  "DECIMAL_SIGNED      zone9  :"))
-        pnlF1.field.add(defNumeric("zone9", 22, 5+(len(pnlF1.label[9].text)), DECIMAL_SIGNED, 5,2, "-67.58",EMPTY, "DECIMAL Obligatoire", "Type DECIMAL '-/+.0-9'"))
+        pnlF1.field.add(defNumeric("zone9", 22, 5+(len(pnlF1.label[9].text)), DECIMAL_SIGNED, 5,2, "-67.58",FILL, "DECIMAL Obligatoire", "Type DECIMAL '-/+.0-9'"))
 
         pnlF1.label.add(defLabel("zone10", 24, 5,"DATE_ISO            zone10 :"))
         pnlF1.field.add(defDate("zone10", 24, 5+(len(pnlF1.label[10].text)), DATE_ISO, "2020-04-18",FILL, "DATE Obligatoire", "Type Date-ISO YYYY-MM-DD"))

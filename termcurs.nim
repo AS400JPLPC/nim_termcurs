@@ -132,9 +132,6 @@ type
 
     help: string              # / help this field
 
-    min: int                  # / value minimum
-    max: int                  # / value maximum
-
     text*: string
     switch* : bool            # / CTRUE CFALSE
 
@@ -851,8 +848,6 @@ proc defString*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.switch      = false       # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
-  fld.min         = 0           # / value minimum
-  fld.max         = 0           # / value maximun
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -900,8 +895,6 @@ proc defMail*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.switch      = false       # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
-  fld.min         = 0           # / value minimum
-  fld.max         = 0           # / value maximun
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -944,8 +937,6 @@ proc defSwitch*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.switch      = switch      # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
-  fld.min         = 0           # / value minimum
-  fld.max         = 0           # / value maximun
 
   fld.style  = swt_atr.style
   fld.backgr = swt_atr.backgr
@@ -1001,9 +992,6 @@ proc defDate*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.switch      = false       # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
-  fld.min         = 0           # / value minimum
-  fld.max         = 0           # / value maximun
-
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -1044,9 +1032,6 @@ proc defNumeric*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.pading      = true        # / pading blank
   fld.edtcar      = ""          # / edtcar for monnaie		€ $ ¥ ₪ £ or %
   fld.regex       = ""          # / contrôle 
-
-  fld.min         = 0           # / value minimum
-  fld.max         = 0           # / value maximun
 
 
   if fld.reftyp == DIGIT:
@@ -1801,44 +1786,7 @@ func setActif*(pnl: var PANEL ; actif : bool)=
 func setMouse*(pnl: var PANEL ; actif : bool)=
     pnl.actif = actif
 
-func setMini*(fld : var FIELD ; val : int) =
-  case fld.reftyp
-    of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
-      fld.min = val
-    else : discard
 
-func setMaxi*(fld : var FIELD ; val : int) =
-  case fld.reftyp
-    of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
-      fld.max = val
-    else : discard
-
-func isMinMax*(fld : var FIELD ) : bool =
-  
-  case fld.reftyp
-    of DIGIT,DIGIT_SIGNED:
-      var v: string  = fld.text
-      v = v.strip(trailing = true)
-      var val : int = parseInt($v)
-      if fld.min != 0 :
-        if val < fld.min  : 
-          return false
-      if fld.max != 0 :
-        if val > fld.max  : 
-          return false
-      return true
-    of DECIMAL, DECIMAL_SIGNED :
-      var v: string  = fld.text
-      v = v.strip(trailing = true)
-      var val : float = parseFloat($v)
-      if float(fld.min) != 0 :
-        if val < float(fld.min)  : 
-          return false
-      if float(fld.max) != 0 :
-        if val > float(fld.max)  : 
-          return false
-      return true
-    else : return true
 
 
 
@@ -2354,41 +2302,25 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
         result = true
       else : result = false
 
-  func isEmpty(s:seq[Rune]): bool =
-    var i = 0
-    var ok :bool = true
-    while i < len(s):
-        if s[i] != " ".runeAt(0) : ok = false
-        inc(i)
-    return ok
-
-  func isMinMax(v:seq[Rune]; fld : FIELD) : bool =
-    
+  func isEmpty(v:seq[Rune], fld :FIELD) : bool =
+    var s_field : string = $v
+    s_field = s_field.strip(trailing = true)
+    if s_field  == "" : return true
     case fld.reftyp
-      of DIGIT,DIGIT_SIGNED:
-        var v: string  = $e_FIELD
-        v = v.strip(trailing = true)
-        var val : int = parseInt($v)
-        if fld.min != 0 :
-          if val < fld.min  : 
-            return false
-        if fld.max != 0 :
-          if val > fld.max  : 
-            return false
-        return true
-      of DECIMAL, DECIMAL_SIGNED :
-        var v: string  = $e_FIELD
-        v = v.strip(trailing = true)
-        var val : float = parseFloat($v)
-        if float(fld.min) != 0 :
-          if val < float(fld.min)  : 
-            return false
-        if float(fld.max) != 0 :
-          if val > float(fld.max)  : 
-            return false
-        return true
-      
-      else : return true
+    of DIGIT , DIGIT_SIGNED:
+      if 0 == parseInt(s_field) : return true
+      return false
+    of DECIMAL, DECIMAL_SIGNED:
+      if 0.0 == parseFloat(s_field) : return true
+      return false
+    else : 
+      var i = 0
+      var ok = true
+      while i < len(v):
+        if v[i] != " ".runeAt(0) : ok = false
+        inc(i)
+      return ok
+
 
 
   func nbrRune(s:seq[Rune]): Natural =
@@ -2407,7 +2339,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     return ok
 
 
-  proc insert() =
+  func insert() =
     if e_count < e_nbrcar :
       var i: Natural = e_count
       var s_FIELD = e_FIELD
@@ -2416,7 +2348,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
         inc(i)
 
 
-  proc delete() =
+  func delete() =
     if e_count < e_nbrcar :
       var i: int = e_count
       var s_FIELD = e_FIELD
@@ -2425,8 +2357,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
         inc(i)
       e_FIELD[e_nbrcar - 1] = " ".runeAt(0)
 
-  ## tranform letter to *
-  proc password(s:seq[Rune]): string =
+
+  func password(s:seq[Rune]): string =
     var i = 0
     var buf : string = ""
     while i < len(s):
@@ -2540,8 +2472,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           msgHelp(pnl,fld.help)
 
       of Key.Up , Key.Down:     # next Field
-        if  isEmpty(e_Field) and fld.empty == false or
-            isMinMax(e_Field,fld) == false  :
+        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) or 
+          isEmpty(e_Field,fld) and fld.empty == FILL :
           msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
@@ -2550,8 +2482,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           result = e_key
           break
       of Key.Stab:              # next Field
-        if isEmpty(e_Field) and fld.empty == false or 
-            isMinMax(e_Field,fld) == false  :
+        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) or 
+          isEmpty(e_Field,fld) and fld.empty == FILL :
           msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
@@ -2560,8 +2492,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           result = Key.Up
           break
       of Key.Tab:               # next Field
-        if isEmpty(e_Field) and fld.empty == false or 
-            isMinMax(e_Field,fld) == false  :
+        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) or 
+          isEmpty(e_Field,fld) and fld.empty == FILL :
           msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
@@ -2571,8 +2503,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           break
       of Key.Enter :            # enrg to Field
         if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) or 
-          isEmpty(e_Field) and fld.empty == false or 
-            isMinMax(e_Field,fld) == false  :
+          isEmpty(e_Field,fld) and fld.empty == FILL :
           msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
@@ -2786,13 +2717,24 @@ proc isValide*(pnl:var PANEL): bool =
 
   var e_FIELD :seq[Rune]
 
-  proc isEmpty(s:seq[Rune]): bool =
-    var i = 0
-    var ok :bool = true
-    while i < len(s):
-        if s[i] != " ".runeAt(0) : ok = false
+  func isEmpty(v:seq[Rune], fld :FIELD) : bool =
+    var s_field : string = $v
+    s_field = s_field.strip(trailing = true)
+    if s_field  == "" : return true
+    case fld.reftyp
+    of DIGIT , DIGIT_SIGNED:
+      if 0 == parseInt(s_field) : return true
+      return false
+    of DECIMAL, DECIMAL_SIGNED:
+      if 0.0 == parseFloat(s_field) : return true
+      return false
+    else : 
+      var i = 0
+      var ok = true
+      while i < len(v):
+        if v[i] != " ".runeAt(0) : ok = false
         inc(i)
-    return ok
+      return ok
 
   # check error
   for n in 0..len(pnl.field) - 1:
@@ -2806,19 +2748,10 @@ proc isValide*(pnl:var PANEL): bool =
             pnl.field[n].err = true
             return false
       elif  pnl.field[n].regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(pnl.field[n].regex)) or 
-          isEmpty(e_Field) and pnl.field[n].empty == FILL:
+          isEmpty(e_FIELD ,pnl.field[n]) and pnl.field[n].empty == FILL:
             pnl.index = n
             pnl.field[n].err = true
             return false
-      
-      case pnl.field[n].reftyp
-        of DIGIT,DIGIT_SIGNED, DECIMAL, DECIMAL_SIGNED :
-            if isMinMax(pnl.field[n]) == false :
-                pnl.index = n
-                pnl.field[n].err = true
-                return false
-        else : discard
-  
   return true
 
 

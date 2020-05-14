@@ -187,8 +187,6 @@ function main() {
   regex: string
   errmsg: string
   help: string
-  min: int
-  max: int
   text*: string
   switch*: bool
   err*: bool
@@ -581,12 +579,6 @@ function main() {
     title="setActif(pnl: var PANEL; actif: bool)"><wbr />set<wbr />Actif<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#setMouse%2CPANEL%2Cbool"
     title="setMouse(pnl: var PANEL; actif: bool)"><wbr />set<wbr />Mouse<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#setMini%2CFIELD%2Cint"
-    title="setMini(fld: var FIELD; val: int)"><wbr />set<wbr />Mini<span class="attachedType">FIELD</span></a></li>
-  <li><a class="reference" href="#setMaxi%2CFIELD%2Cint"
-    title="setMaxi(fld: var FIELD; val: int)"><wbr />set<wbr />Maxi<span class="attachedType">FIELD</span></a></li>
-  <li><a class="reference" href="#isMinMax%2CFIELD"
-    title="isMinMax(fld: var FIELD): bool"><wbr />is<wbr />Min<wbr />Max<span class="attachedType">FIELD</span></a></li>
   <li><a class="reference" href="#isPanelKey%2CPANEL%2CKey"
     title="isPanelKey(pnl: PANEL; e_key: Key): bool"><wbr />is<wbr />Panel<wbr />Key<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#isProtect%2CFIELD"
@@ -767,8 +759,6 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
   <span class="Identifier">regex</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">min</span><span class="Other">:</span> <span class="Identifier">int</span>
-  <span class="Identifier">max</span><span class="Other">:</span> <span class="Identifier">int</span>
   <span class="Identifier">text</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">switch</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">err</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
@@ -1463,7 +1453,7 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">RegexError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-tranform letter to *
+<h1 id="definition-of-the-panel-window-on-a-lines-message-display-to-exit-press-the-escape-key-restoration-of-the-original-panel-lines"><center>Definition of the panel (window) on a lines Message display to exit press the Escape key restoration of the original panel lines</center></h1>
 
 </dd>
 <a id="isValide,PANEL"></a>
@@ -1794,27 +1784,6 @@ tranform letter to *
 
 
 </dd>
-<a id="setMini,FIELD,int"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#setMini%2CFIELD%2Cint"><span class="Identifier">setMini</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
-<dd>
-
-
-
-</dd>
-<a id="setMaxi,FIELD,int"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#setMaxi%2CFIELD%2Cint"><span class="Identifier">setMaxi</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
-<dd>
-
-
-
-</dd>
-<a id="isMinMax,FIELD"></a>
-<dt><pre><span class="Keyword">func</span> <a href="#isMinMax%2CFIELD"><span class="Identifier">isMinMax</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
-<dd>
-
-
-
-</dd>
 <a id="isPanelKey,PANEL,Key"></a>
 <dt><pre><span class="Keyword">func</span> <a href="#isPanelKey%2CPANEL%2CKey"><span class="Identifier">isPanelKey</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">e_key</span><span class="Other">:</span> <span class="Identifier">Key</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -1923,7 +1892,7 @@ tranform letter to *
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-13 15:01:54 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-14 02:03:24 UTC</small>
       </div>
     </div>
   </div>

@@ -36,6 +36,7 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br>  
   * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u>  
   * Full Change 2020-05-13&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br>  
+  * Full Change 2020-05-14&nbsp;&rarr;&nbsp;Validity check correction
  
 
 **Thank you**
@@ -285,7 +286,7 @@ proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
 
 proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
 
-    tranform letter to * 
+    Definition of the panel (window) on a lines Message display to exit press the Escape key restoration of the original panel lines
 
 proc isValide(pnl: var PANEL): bool {...}
 
@@ -381,12 +382,6 @@ func setActif(pnl: var PANEL; actif: bool) {...}
 
 func setMouse(pnl: var PANEL; actif: bool) {...}
 
-func setMini(fld: var FIELD; val: int) {...}
-
-func setMaxi(fld: var FIELD; val: int) {...}
-
-func isMinMax(fld: var FIELD): bool {...}
-
 func isPanelKey(pnl: PANEL; e_key: Key): bool {...}
 
 func isProtect(fld: var FIELD): bool {...}
@@ -414,6 +409,4 @@ func getIndexG(this: GRIDSFL; name: string): int {...}
 func addRows(this: GRIDSFL; rows: seq[string]) {...}
 
 func dltRows(this: GRIDSFL; idx: Natural) {...}
-
-
 
