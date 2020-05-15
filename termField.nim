@@ -67,11 +67,8 @@ callQuery["callRefTyp"] = callRefTyp
 
 #===================================================
 
-var pnlF0  = new(PANEL)
-var pnlF1  = new(PANEL)
-var pnlF2 = new(PANEL)
-var mField= new(MENU)
-include ./termFieldEcr.inc
+
+include ./termFieldEcr.nim
 
 var key : Key = Key.None
 var pnlx = new(PANEL)
@@ -87,7 +84,7 @@ printPanel(pnlF0)
 while true:
   key  = getFunc()
   if key == Key.F12 : break
-  
+
 setTerminal() #default color style erase
 
 key =  Key.F1

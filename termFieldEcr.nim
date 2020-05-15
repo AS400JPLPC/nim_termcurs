@@ -1,32 +1,9 @@
-type 
-  FIELD_FMT1 = enum 
-    Zone0,
-    Zone1,
-    Zone2,
-    Zone3,
-    Zone4,
-    Zone5,
-    Zone6,
-    Zone7,
-    Zone8,
-    Zone9,
-    Zone10,
-    Zone11,
-    Zone12,
-    Zone13,
-    Zone14,
-    Zone15,
-    Zone16
-type 
-  HIDEN_FMT1 = enum 
-    Hstring,
-    Hnumeric,
-    Hswitch,
-    Hdate
 
+var pnlF0  = new(PANEL)
+var pnlF1  = new(PANEL)
+var pnlF2 = new(PANEL)
+var mField= new(MENU)
 
-const P_F1: array[FIELD_FMT1, int] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
-const P_H1: array[HIDEN_FMT1, int] = [0,1,2,3]
 
 mField = newMenu( "Field" , 3 , 50 ,
 MNUVH.vertical ,@[
