@@ -4,6 +4,10 @@
 
 doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/termcurs.html)
 
+
+
+img : [TERMCURS PRESENTATION](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr00.png)
+
 img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr01.png)
 
 img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr06.png)
@@ -133,7 +137,7 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | Backspace          |&nbsp;&rarr;&nbsp; Delete                                                                   |
 | Home               |&nbsp;&rarr;&nbsp;                                                                          |
 | End                |&nbsp;&rarr;&nbsp;                                                                          |
-| Ctrl-A             |&nbsp;&rarr;&nbsp; Display a help panel specific to the field                               |
+| Ctrl-H             |&nbsp;&rarr;&nbsp; Display a help panel specific to the field                               |
 | Escape             |&nbsp;&rarr;&nbsp; Returns control to ioPanel then redisplays the field without modification|
 | KEY                |&nbsp;&rarr;&nbsp; Returns control to ioPanel                                               |
 |                    |                                                                                            |
@@ -141,10 +145,10 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 |                    |                                                                                            |
 | ALPHA              |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha                                     |
 | ALPHA_UPPER        |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha automatique UPPER                   |
-| PASSWORD           |&nbsp;&rarr;&nbsp; Managed by function: regex , hide                                        |
-| ALPHA_NUMERIC      |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and isCarPwd(2)     |
-| ALPHA_NUMERIC_UPPER|&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and isCarPwd(2)     |
-| TEXT_NUMERIC       |&nbsp;&rarr;&nbsp; Managed by function: regex , Full                                        |
+| PASSWORD           |&nbsp;&rarr;&nbsp; Managed by function: regex , hide  alpha + (1) + (3)                     |
+| ALPHA_NUMERIC      |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and isCarPwd(3)     |
+| ALPHA_NUMERIC_UPPER|&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and isCarPwd(3)     |
+| TEXT_FULL          |&nbsp;&rarr;&nbsp; Managed by function: regex , Full                                        |
 | DIGIT              |&nbsp;&rarr;&nbsp; Managed by function: regex , isNumber(1)                                 |
 | DIGIT_SIGNED       |&nbsp;&rarr;&nbsp; Managed by function: regex , (+-) and isNumber(1)                        |
 | DECIMAL            |&nbsp;&rarr;&nbsp; Managed by function: regex , isNumber(1) (.)                             |
@@ -154,8 +158,19 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | MAIL_ISO           |&nbsp;&rarr;&nbsp; Managed by function: regex , [ABNF] [RFC 2822]                           |
 | YES_NO             |&nbsp;&rarr;&nbsp; Managed by function: (Y-y-N-n) automatique UPPER                         |
 | SWITCH             |&nbsp;&rarr;&nbsp; Managed by function: space bar ON/OFF ◉ ◎                                |
-| QUERY              |&nbsp;&rarr;&nbsp; Managed by function: Call proc/programme "queryselector"                 |
+| QUERY              |&nbsp;&rarr;&nbsp; Managed by function: Call proc/programme "queryselector" Simul/Ctrl-Q    |
 
+
+(1) numeric
+"1","2","3","4","5","6","7","8","9","0"
+
+(2) password
+"~","!","?","@","#","$","£","€","%","^","&","*","-","+","=","(",")","{","}","[","]","<",">"
+
+(3) punct
+".",":",",","!","?","'","-","(",")","<",">"
+
+not ";" reserved csv
 
 
 <br>
@@ -408,8 +423,6 @@ proc ioGrid(this: GRIDSFL; pos: int = -1): (Key, seq[string]) {...}
 proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
 
 proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
-
-    display message Help 
 
 proc isValide(pnl: var PANEL): bool {...}
 
