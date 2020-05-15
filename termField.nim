@@ -3,13 +3,71 @@ import terminal
 import termkey
 import termcurs
 
-#var mnuatrx = new(MNUATRB)
-#mnuatrx.style  = {styleDim}
-#mnuatrx.backgr = BackgroundColor.bgBlack
-#mnuatrx.backbr = true
-#mnuatrx.foregr = ForegroundColor.fgGreen
-#mnuatrx.forebr = true
-#mnuatrx.styleCell  = {styleReverse,styleItalic}
+import tables
+var callQuery: Table[string, proc(fld : var FIELD)]
+
+var grid  = new(GRIDSFL)
+#===================================================
+proc callRefTyp(fld : var FIELD) =
+  var g_pos : int 
+  grid  = newGrid("GRID01",2,2,17)
+  var g_type  = defCell("Ref.Type",19,ALPHA)
+
+  setHeaders(grid, @[g_type])
+
+  addRows(grid, @["ALPHA"])
+  addRows(grid, @["ALPHA_UPPER"])
+  addRows(grid, @["ALPHA_NUMERIC"])
+  addRows(grid, @["ALPHA_NUMERIC_UPPER"])
+  addRows(grid, @["TEXT_FULL"])
+  addRows(grid, @["PASSWORD"])
+  addRows(grid, @["DIGIT"])
+  addRows(grid, @["DIGIT_SIGNED"])
+  addRows(grid, @["DECIMAL"])
+  addRows(grid, @["DECIMAL_SIGNED"])
+  addRows(grid, @["DATE_ISO"])
+  addRows(grid, @["DATE_FR"])
+  addRows(grid, @["DATE_US"])
+  addRows(grid, @["MAIL_ISO"])
+  addRows(grid, @["YES_NO"])
+  addRows(grid, @["SWITCH"])
+  addRows(grid, @["QUERY"])
+  printGridHeader(grid)
+
+  case fld.text
+    of "ALPHA"                : g_pos = 0
+    of "ALPHA_UPPER"          : g_pos = 1
+    of "ALPHA_NUMERIC"        : g_pos = 2
+    of "ALPHA_NUMERIC_UPPER"  : g_pos = 3
+    of "TEXT_FULL"            : g_pos = 4
+    of "PASSWORD"             : g_pos = 5
+    of "DIGIT"                : g_pos = 6
+    of "DIGIT_SIGNED"         : g_pos = 7
+    of "DECIMAL"              : g_pos = 8
+    of "DECIMAL_SIGNED"       : g_pos = 9
+    of "DATE_ISO"             : g_pos = 10
+    of "DATE_FR"              : g_pos = 11
+    of "DATE_US"              : g_pos = 12
+    of "MAIL_ISO"             : g_pos = 13
+    of "YES_NO"               : g_pos = 14
+    of "SWITCH"               : g_pos = 15
+    of "QUERY"                : g_pos = 16
+    else : discard
+
+  while true :
+    let (keys, val) = ioGrid(grid,g_pos)
+  
+    case keys
+      of Key.Enter :
+        fld.text  = $val[0]
+        break
+      else: discard
+
+callQuery["callRefTyp"] = callRefTyp
+
+#===================================================
+
+
 
 type 
   FIELD_FMT1 = enum 
@@ -28,7 +86,8 @@ type
     Zone12,
     Zone13,
     Zone14,
-    Zone15
+    Zone15,
+    Zone16
 type 
   HIDEN_FMT1 = enum 
     Hstring,
@@ -37,19 +96,13 @@ type
     Hdate
 
 
-const P_F1: array[FIELD_FMT1, int] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+const P_F1: array[FIELD_FMT1, int] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 const P_H1: array[HIDEN_FMT1, int] = [0,1,2,3]
 
-
-InitScreen()
-setTerminal() #default color style erase
-#var pnlF0  = new(PANEL)
 var pnlF1  = new(PANEL)
 var pnlF2 = new(PANEL)
 var key : Key = Key.None
-
 var pnlx = new(PANEL)
-
 var pnl : int = 0
 
 var mField= new(MENU)
@@ -57,9 +110,15 @@ mField = newMenu( "Field" , 3 , 50 ,
 MNUVH.vertical ,@[
   "zone0","zone1","zone2","zone3","zone4","zone5",
   "zone6","zone7","zone8","zone9","zone10","zone11",
-  "zone12","zone13","zone14","zone15"
+  "zone12","zone13","zone14","zone15","Zone16"
 ],line1)  #,mnuatrx
 
+
+
+
+InitScreen()
+setTerminal() #default color style erase
+#var pnlF0  = new(PANEL
 
 #[
 defPanel(pnlF0,"nom",1,1,5,5 ,bgBlack,false,fgWhite,false,CADRE.line0,"",0,1,1,0,
@@ -72,12 +131,12 @@ printPanel(pnlF0)
 
 while true:
   if key == Key.F3 :  CloseScren()
-  if key != Key.F2 and key != Key.F1 and key != Key.F9 and key != Key.F15: key  = getFunc()
-
+  if key != Key.F1 and key != Key.F2 and key != Key.F9 and key != Key.F15 : key  = getFunc()
+ 
   case key
     of Key.F1:
       if not isActif(pnlF1) :
-
+        # use button CtrlQ reserved for return reftyp QUERY 
         pnlF1= new_Panel("nom",1,1,terminalHeight(),terminalWidth(),
         @[defButton(Key.F3,"Exit"),defButton(Key.F2,"PANEL F2"),defButton(Key.F6, "active",false),
         defButton(Key.F9, "menu")],CADRE.line0)
@@ -131,7 +190,11 @@ while true:
         pnlF1.label.add(defLabel("zone15", 34, 5,"SWITCH              zone15 :"))
         pnlF1.field.add(defSwitch("zone15", 34, 5+(len(pnlF1.label[15].text)), SWITCH,false,EMPTY, "SWITCH Obligatoire", "Type ◉/◎"))
 
-        pnlF1.label.add(defLabel("zone16", 38, 5,"F1 = Help   Escape= return (error/menu)"))
+        pnlF1.label.add(defLabel("zone16", 36, 5,"COMBO               zone16 :"))
+        pnlF1.field.add(defString("zone16", 36, 5+(len(pnlF1.label[16].text)), QUERY,19,"?",FILL, "Value Obligatoire", "Type COMBO"))
+        setVoid(pnlF1.field[16],"callRefTyp")
+
+        pnlF1.label.add(defLabel("zone1/", 38, 5,"F1 = Help   Escape= return (error/menu)"))
 
         pnlF1.hiden.add(defHString("zone3",TEXT_FULL, "BONJOUR, (36) étoiles"))     # full String
         pnlF1.hiden.add(defHString("zone10",DATE_ISO, "2020-04-24"))                # full String
@@ -140,6 +203,15 @@ while true:
         printPanel(pnlF1)
       pnl = 1
       key = ioPanel(pnlF1)
+      
+      if key == Key.CtrlQ :
+        if pnlF1.field[Index(pnlF1)].reftyp == QUERY:
+          if isVoidF(pnlF1,Index(pnlF1)):
+            callQuery[pnlF1.field[Index(pnlF1)].cvoid](pnlF1.field[Index(pnlF1)])
+            restorePanel(pnlF1, grid)
+
+        key = Key.F1
+        continue
 
       if key == Key.F6:
         for i in 0..len(pnlF1.label) - 1 :

@@ -37,6 +37,7 @@ It works, but I had to harmonize and add PROC or FUNC
   * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u>  
   * Full Change 2020-05-13&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br>  
   * Full Change 2020-05-14&nbsp;&rarr;&nbsp;Validity check correction
+  * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector" 
  
 
 **Thank you**
@@ -96,6 +97,7 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | Enter = return (Key seq[string]    |
 | scrolling with UP..DOWN            |
 | PageUP/PageDown                    |
+| selector                           |
 
 
   
@@ -152,6 +154,7 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | MAIL_ISO           |&nbsp;&rarr;&nbsp; Managed by function: regex , [ABNF] [RFC 2822]                           |
 | YES_NO             |&nbsp;&rarr;&nbsp; Managed by function: (Y-y-N-n) automatique UPPER                         |
 | SWITCH             |&nbsp;&rarr;&nbsp; Managed by function: space bar ON/OFF ◉ ◎                                |
+| QUERY              |&nbsp;&rarr;&nbsp; Managed by function: Call proc/programme "queryselector"                 |
 
 
 
@@ -225,6 +228,12 @@ proc defHString(name: string; reftyp: REFTYP; text: string): HIDEN {...}
 
 proc defHSwitch(name: string; reftyp: REFTYP; switch: bool): HIDEN {...}
 
+proc Lines(pnl: PANEL): Natural {...}
+
+proc Cols(pnl: PANEL): Natural {...}
+
+proc Index(pnl: PANEL): Natural {...}
+
 proc newPanel(name: string; posx, posy, height, width: Natural; button: seq[(BUTTON)];
              cadre: CADRE = line0; title: string = ""; pnl_atr: ZONATRB = pnlatr): PANEL {...}
 
@@ -260,7 +269,111 @@ proc restorePanel(dst: PANEL; grid: GRIDSFL) {...}
 
 proc restorePanel(pnl: PANEL; lines, posy: Natural) {...}
 
+proc getNameL(pnl: PANEL; index: int): string {...}
+
+proc getIndexL(pnl: PANEL; name: string): int {...}
+
+proc getTextL(pnl: PANEL; name: string): string {...}
+
+proc getTextL(pnl: PANEL; index: int): string {...}
+
+proc setTextL(pnl: PANEL; name: string; val: string) {...}
+
+proc setTextL(pnl: PANEL; index: int; val: string) {...}
+
+proc dltLabel(pnl: PANEL; idx: Natural) {...}
+
+proc clearTextF(pnl: var PANEL) {...}
+
+proc getNameF(pnl: PANEL): string {...}
+
+proc getNameF(pnl: PANEL; index: int): string {...}
+
+proc getTextF(pnl: PANEL; name: string): string {...}
+
+proc getSwitch(pnl: PANEL; name: string): bool {...}
+
+proc getIndexF(pnl: PANEL; name: string): int {...}
+
+proc getTextF(pnl: PANEL; index: int): string {...}
+
+proc getSwitch(pnl: PANEL; index: int): bool {...}
+
+proc setTextF(pnl: PANEL; name: string; val: string) {...}
+
+proc setSwitch(pnl: PANEL; name: string; val: bool): bool {...}
+
+proc setTextF(pnl: PANEL; index: int; val: string) {...}
+
+proc setSwitch(pnl: PANEL; index: int; val: bool) {...}
+
+proc dltField(pnl: PANEL; idx: Natural) {...}
+
+proc isVoidF(pnl: PANEL; index: int): bool {...}
+
+proc getNameH(hdn: PANEL; index: int): string {...}
+
+proc getIndexH(hdn: PANEL; name: string): int {...}
+
+proc getTextH(hdn: PANEL; name: string): string {...}
+
+proc getSwitchH(hdn: PANEL; name: string): bool {...}
+
+proc getTextH(hdn: PANEL; index: int): string {...}
+
+proc getSwitchH(hdn: PANEL; index: int): bool {...}
+
+proc dltFieldH(hdn: PANEL; idx: Natural) {...}
+
+proc getNbrcar(pnl: PANEL; name: string): int {...}
+
+proc getReftyp(pnl: PANEL; name: string): REFTYP {...}
+
 proc setColor(lbl: var LABEL; lbl_atr: ZONATRB) {...}
+
+proc setColor(fld: var FIELD; fld_atr: ZONATRB) {...}
+
+proc setColorProtect(fld: var FIELD; protect_atr: ZONATRB) {...}
+
+proc setProtect(fld: var FIELD; protect: bool) {...}
+
+proc setEdtCar(fld: var FIELD; Car: char) {...}
+
+proc setError(fld: var FIELD) {...}
+
+proc setActif(fld: var FIELD; actif: bool) {...}
+
+proc setActif(lbl: var LABEL; actif: bool) {...}
+
+proc setActif(box: var BOX; actif: bool) {...}
+
+proc setActif(mnu: var MENU; actif: bool) {...}
+
+proc setActif(btn: var BUTTON; actif: bool) {...}
+
+proc setActif(pnl: var PANEL; actif: bool) {...}
+
+proc setMouse(pnl: var PANEL; actif: bool) {...}
+
+proc setVoid(fld: var FIELD; cvoid: string) {...}
+
+proc isPanelKey(pnl: PANEL; e_key: Key): bool {...}
+
+proc isProtect(fld: var FIELD): bool {...}
+
+proc isActif(fld: var FIELD): bool {...}
+
+proc isActif(lbl: var LABEL): bool {...}
+
+proc isActif(box: var BOX): bool {...}
+
+proc isActif(mnu: var MENU): bool {...}
+
+proc isActif(btn: var BUTTON): bool {...}
+
+proc isActif(pnl: var PANEL): bool {...}
+
+proc isMouse(pnl: var PANEL): bool {...}
 
 proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
             separator: GridStyle = unicodeStyle; grid_atr: GRIDATRB = gridatr;
@@ -268,7 +381,17 @@ proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
 
 proc resetGrid(this: GRIDSFL) {...}
 
+proc columnsCount(this: GRIDSFL): int {...}
+
+proc setHeaders(this: GRIDSFL; headers: seq[CELL]) {...}
+
 proc defCell(text: string; len: Natural; reftyp: REFTYP; edtcar: string = ""): CELL {...}
+
+proc getIndexG(this: GRIDSFL; name: string): int {...}
+
+proc addRows(this: GRIDSFL; rows: seq[string]) {...}
+
+proc dltRows(this: GRIDSFL; idx: Natural) {...}
 
 proc resetRows(this: GRIDSFL) {...}
 
@@ -280,133 +403,21 @@ proc pageUpGrid(this: GRIDSFL): Key_Grid {...}
 
 proc pageDownGrid(this: GRIDSFL): Key_Grid {...}
 
-proc ioGrid(this: GRIDSFL): (Key, seq[string]) {...}
+proc ioGrid(this: GRIDSFL; pos: int = -1): (Key, seq[string]) {...}
 
 proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
 
 proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
 
-    Definition of the panel (window) on a lines Message display to exit press the Escape key restoration of the original panel lines
+    display message Help 
 
 proc isValide(pnl: var PANEL): bool {...}
 
 proc ioPanel(pnl: var PANEL): Key {...}
 
-# Funcs
 
-func Lines(pnl: PANEL): Natural {...}
 
-func Cols(pnl: PANEL): Natural {...}
 
-func Index(pnl: PANEL): Natural {...}
 
-func getNameL(pnl: PANEL; index: int): string {...}
 
-func getIndexL(pnl: PANEL; name: string): int {...}
-
-func getTextL(pnl: PANEL; name: string): string {...}
-
-func getTextL(pnl: PANEL; index: int): string {...}
-
-func setTextL(pnl: PANEL; name: string; val: string) {...}
-
-func setTextL(pnl: PANEL; index: int; val: string) {...}
-
-func dltLabel(pnl: PANEL; idx: Natural) {...}
-
-func clearTextF(pnl: var PANEL) {...}
-
-func getNameF(pnl: PANEL): string {...}
-
-func getNameF(pnl: PANEL; index: int): string {...}
-
-func getTextF(pnl: PANEL; name: string): string {...}
-
-func getSwitch(pnl: PANEL; name: string): bool {...}
-
-func getIndexF(pnl: PANEL; name: string): int {...}
-
-func getTextF(pnl: PANEL; index: int): string {...}
-
-func getSwitch(pnl: PANEL; index: int): bool {...}
-
-func setTextF(pnl: PANEL; name: string; val: string) {...}
-
-func setSwitch(pnl: PANEL; name: string; val: bool): bool {...}
-
-func setTextF(pnl: PANEL; index: int; val: string) {...}
-
-func setSwitch(pnl: PANEL; index: int; val: bool) {...}
-
-func dltField(pnl: PANEL; idx: Natural) {...}
-
-func getNameH(hdn: PANEL; index: int): string {...}
-
-func getIndexH(hdn: PANEL; name: string): int {...}
-
-func getTextH(hdn: PANEL; name: string): string {...}
-
-func getSwitchH(hdn: PANEL; name: string): bool {...}
-
-func getTextH(hdn: PANEL; index: int): string {...}
-
-func getSwitchH(hdn: PANEL; index: int): bool {...}
-
-func dltFieldH(hdn: PANEL; idx: Natural) {...}
-
-func getNbrcar(pnl: PANEL; name: string): int {...}
-
-func getReftyp(pnl: PANEL; name: string): REFTYP {...}
-
-func setColor(fld: var FIELD; fld_atr: ZONATRB) {...}
-
-func setColorProtect(fld: var FIELD; protect_atr: ZONATRB) {...}
-
-func setProtect(fld: var FIELD; protect: bool) {...}
-
-func setEdtCar(fld: var FIELD; Car: char) {...}
-
-func setError(fld: var FIELD) {...}
-
-func setActif(fld: var FIELD; actif: bool) {...}
-
-func setActif(lbl: var LABEL; actif: bool) {...}
-
-func setActif(box: var BOX; actif: bool) {...}
-
-func setActif(mnu: var MENU; actif: bool) {...}
-
-func setActif(btn: var BUTTON; actif: bool) {...}
-
-func setActif(pnl: var PANEL; actif: bool) {...}
-
-func setMouse(pnl: var PANEL; actif: bool) {...}
-
-func isPanelKey(pnl: PANEL; e_key: Key): bool {...}
-
-func isProtect(fld: var FIELD): bool {...}
-
-func isActif(fld: var FIELD): bool {...}
-
-func isActif(lbl: var LABEL): bool {...}
-
-func isActif(box: var BOX): bool {...}
-
-func isActif(mnu: var MENU): bool {...}
-
-func isActif(btn: var BUTTON): bool {...}
-
-func isActif(pnl: var PANEL): bool {...}
-
-func isMouse(pnl: var PANEL): bool {...}
-
-func columnsCount(this: GRIDSFL): int {...}
-
-func setHeaders(this: GRIDSFL; headers: seq[CELL]) {...}
-
-func getIndexG(this: GRIDSFL; name: string): int {...}
-
-func addRows(this: GRIDSFL; rows: seq[string]) {...}
-
-func dltRows(this: GRIDSFL; idx: Natural) {...}
 

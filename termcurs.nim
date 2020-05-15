@@ -30,7 +30,11 @@ type
     DATE_US,
     MAIL_ISO,
     YES_NO,
-    SWITCH 
+    SWITCH,
+    QUERY
+
+
+
 
   CADRE* {.pure.} = enum 
     line0,  
@@ -116,7 +120,7 @@ type
     pforebr: bool
 
 
-    reftyp: REFTYP            # / ALPHA...SWITCH
+    reftyp*: REFTYP            # / ALPHA...SWITCH
     with: Natural
     scal: Natural
     nbrcar: Natural           # / nbrcar DECIMAL = (precision+scale + 1'.' ) + 1 this signed || other nbrcar =  ALPA..DIGIT..
@@ -135,6 +139,7 @@ type
     text*: string
     switch* : bool            # / CTRUE CFALSE
 
+    cvoid*:string             # / name proc
     err*: bool                # / force error
     actif*: bool              # / zone active True
 
@@ -199,7 +204,6 @@ type
     cols : Natural
 
     cadre: CADRE
-
     mnuvh : MNUVH
 
     style : set[Style]
@@ -211,10 +215,7 @@ type
 
     item: seq[string]
     selMenu : Natural
-
-
     actif*: bool
-
 
   TerminalChar* = object
     ch: Rune                  # char 
@@ -249,7 +250,7 @@ type
     button*:  seq[BUTTON]
     index:    Natural
 
-    funckey:  seq[Key]
+    funcKey:  seq[Key]
 
     mouse:  bool
 
@@ -849,6 +850,8 @@ proc defString*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
 
+  fld.cvoid       = ""          # / name calls proc or pgm
+
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
   fld.backbr = fld_atr.backbr
@@ -896,6 +899,8 @@ proc defMail*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
 
+  fld.cvoid       = ""          # / name calls proc or pgm
+
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
   fld.backbr = fld_atr.backbr
@@ -937,6 +942,8 @@ proc defSwitch*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.switch      = switch      # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
+
+  fld.cvoid       = ""          # / name calls proc or pgm
 
   fld.style  = swt_atr.style
   fld.backgr = swt_atr.backgr
@@ -992,6 +999,8 @@ proc defDate*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.switch      = false       # / CTRUE CFALSE
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
+
+  fld.cvoid       = ""          # / name calls proc or pgm
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -1059,6 +1068,8 @@ proc defNumeric*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
 
+  fld.cvoid       = ""          # / name calls proc or pgm
+
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -1097,14 +1108,14 @@ proc defHSwitch*( name:string; reftyp: REFTYP;  switch: bool;) : HIDEN =
 
 
 ##  get lines/COLS PANEL
-func Lines*(pnl: PANEL) :Natural =
+proc Lines*(pnl: PANEL) :Natural =
   result = pnl.lines
 
-func Cols*(pnl: PANEL) :Natural =
+proc Cols*(pnl: PANEL) :Natural =
   result = pnl.cols
 
 ## return index actived from panel this getField
-func Index*(pnl: PANEL): Natural =
+proc Index*(pnl: PANEL): Natural =
   result = pnl.index
 
 ## Define PANEL
@@ -1135,10 +1146,10 @@ proc newPanel*(name:string;posx,posy,height,width,:Natural;button: seq[(BUTTON)]
   pnl.index = 0
   pnl.button  = newseq[BUTTON](len(button))
   pnl.button   = button
-  pnl.funckey = newseq[Key](len(button))
+  pnl.funcKey = newseq[Key](len(button))
 
   for i,btn in pnl.button :
-    pnl.funckey[i] = btn.key
+    pnl.funcKey[i] = btn.key
 
   pnl.mouse = false
   pnl.buf = newSeq[TerminalChar]((pnl.lines+1)*(pnl.cols+1))
@@ -1321,7 +1332,7 @@ proc printPanel*(pnl: var PANEL)=
 
 
 
-## vide object PANEL / box/label/fld/func
+## vide object PANEL / box/label/fld/proc
 proc resetPanel*(pnl: var PANEL)=
   pnl.name  = ""
   pnl.posx  = 0
@@ -1334,7 +1345,7 @@ proc resetPanel*(pnl: var PANEL)=
   pnl.hiden  = newseq[HIDEN]()
   pnl.index  = 0
   pnl.button= newseq[BUTTON]()
-  pnl.funckey = newseq[Key]()
+  pnl.funcKey = newseq[Key]()
   pnl.buf = newSeq[TerminalChar]()
   pnl.actif = false
 
@@ -1561,9 +1572,6 @@ proc restorePanel*(dst: PANEL; grid: GRIDSFL) =
   stdout.flushFile()
 
 
-
-
-
 ## restore the lines occupied by the error message
 proc restorePanel*(pnl: PANEL; lines, posy : Natural) =
   if not pnl.actif : return
@@ -1586,37 +1594,37 @@ proc restorePanel*(pnl: PANEL; lines, posy : Natural) =
 
 
 ## return name label Sequence Field
-func getNameL*(pnl: PANEL; index: int): string  =
+proc getNameL*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.label)-1 : return "NAN"
   return pnl.label[index].name
 ## return index Sequence Label from name
-func getIndexL*(pnl: PANEL; name: string): int  =
+proc getIndexL*(pnl: PANEL; name: string): int  =
   for i in 0..len(pnl.label)-1:
     if pnl.label[i].name == name : return i
   return - 1
 ## return value Label Sequence from name
-func getTextL*(pnl: PANEL; name: string): string  =
+proc getTextL*(pnl: PANEL; name: string): string  =
   for i in 0..len(pnl.label)-1 :
     if pnl.label[i].name == name :
       return pnl.label[i].text
   return "NAN"
 ## return value label Sequence Label
-func getTextL*(pnl: PANEL; index: int): string  =
+proc getTextL*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.label)-1 : return "NAN"
   return pnl.label[index].text
 ## set value Label Sequence Label
-func setTextL*(pnl: PANEL; name: string; val : string)=
+proc setTextL*(pnl: PANEL; name: string; val : string)=
   for i in 0..len(pnl.label)-1 :
     if pnl.label[i].name == name :
       pnl.label[i].text = val
       break
 ## set value Label Sequence Label
-func setTextL*(pnl: PANEL; index: int; val : string) =
+proc setTextL*(pnl: PANEL; index: int; val : string) =
   if index < 0 or index > len(pnl.label)-1 : return
   pnl.label[index].text = val
 
 ##  delete Label Sequence Label
-func dltLabel*(pnl: PANEL; idx : Natural) =
+proc dltLabel*(pnl: PANEL; idx : Natural) =
   if idx >= 0 or idx <= len(pnl.label)-1 :
     pnl.label.del(idx)
 
@@ -1625,104 +1633,106 @@ func dltLabel*(pnl: PANEL; idx : Natural) =
 
 
 ## clear value ALL FIELD
-func clearTextF*(pnl: var PANEL)=
+proc clearTextF*(pnl: var PANEL)=
   for i in 0..len(pnl.field)-1:
     pnl.field[i].text = ""
 ## return name field from panel this getField
-func getNameF*(pnl: PANEL): string =
+proc getNameF*(pnl: PANEL): string =
   result = pnl.field[pnl.index].name
 ## return name Field Sequence Field
-func getNameF*(pnl: PANEL; index: int): string  =
+proc getNameF*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.field)-1 : return "NAN"
   return pnl.field[index].name
 ## return value Field Sequence Field
-func getTextF*(pnl: PANEL; name: string): string  =
+proc getTextF*(pnl: PANEL; name: string): string  =
   for i in 0..len(pnl.field)-1 :
     if pnl.field[i].name == name :
       return pnl.field[i].text
   return "NAN"
 ## return value Field Sequence Field
-func getSwitch*(pnl : PANEL ; name: string): bool  =
+proc getSwitch*(pnl : PANEL ; name: string): bool  =
   for i in 0..len(pnl.hiden)-1 :
     if pnl.field[i].name == name :
       return pnl.field[i].switch
   return false
 ## return index Field Sequence Field
-func getIndexF*(pnl: PANEL; name: string): int  =
+proc getIndexF*(pnl: PANEL; name: string): int  =
   for i in 0..len(pnl.field)-1:
     if pnl.field[i].name == name : return i
   return - 1
 ## return value Field Sequence Field
-func getTextF*(pnl: PANEL; index: int): string  =
+proc getTextF*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.field)-1 : return "NAN"
   return pnl.field[index].text
 ## return value Field Sequence Field
-func getSwitch*(pnl : PANEL ; index: int): bool  =
+proc getSwitch*(pnl : PANEL ; index: int): bool  =
   if index < 0 or index > len(pnl.field)-1 : return false
   return pnl.field[index].switch
 
 
 ## set value Field Sequence Field
-func setTextF*(pnl: PANEL; name: string; val : string)=
+proc setTextF*(pnl: PANEL; name: string; val : string)=
   for i in 0..len(pnl.field)-1 :
     if pnl.field[i].name == name :
       pnl.field[i].text = val
       break
 ## set value Field Sequence Fiel
-func setSwitch*(pnl : PANEL ; name: string; val : bool): bool  =
+proc setSwitch*(pnl : PANEL ; name: string; val : bool): bool  =
   for i in 0..len(pnl.hiden)-1 :
     if pnl.field[i].name == name :
       pnl.field[i].switch = val
 ## set value Field Sequence Field
-func setTextF*(pnl: PANEL; index: int; val : string) =
+proc setTextF*(pnl: PANEL; index: int; val : string) =
   if index < 0 or index > len(pnl.field)-1 : return
   pnl.field[index].text = val
 ## setvalue Field Sequence Fiel
-func setSwitch*(pnl : PANEL ; index: int; val : bool)  =
+proc setSwitch*(pnl : PANEL ; index: int; val : bool)  =
   if index < 0 or index > len(pnl.field)-1 : return
   pnl.field[index].switch = val
 
 ## delete Field Sequence Field
-func dltField*(pnl: PANEL; idx : Natural) =
+proc dltField*(pnl: PANEL; idx : Natural) =
   if idx >= 0 or idx <= len(pnl.field)-1 :
     pnl.field.del(idx)
 
-
-
+proc isVoidF*(pnl: PANEL; index: int): bool  =
+  if index < 0 or index > len(pnl.field)-1 : return false
+  if pnl.field[index].cvoid != "" : return true
+  return false
 
 
 
 ## return name from index 
-func getNameH*(hdn: PANEL,index: int): string =
+proc getNameH*(hdn: PANEL,index: int): string =
   result = hdn.hiden[index].name
 ## return index from Name
-func getIndexH*(hdn : PANEL; name: string): int  =
+proc getIndexH*(hdn : PANEL; name: string): int  =
   for i in 0..len(hdn.hiden)-1:
     if hdn.hiden[i].name == name : return i
   return - 1
 ## return value Field from name
-func getTextH*(hdn : PANEL ; name: string): string  =
+proc getTextH*(hdn : PANEL ; name: string): string  =
   for i in 0..len(hdn.hiden)-1 :
     if hdn.hiden[i].name == name :
       return hdn.hiden[i].text
   return "NAN"
 ## return value Field from name
-func getSwitchH*(hdn : PANEL ; name: string): bool  =
+proc getSwitchH*(hdn : PANEL ; name: string): bool  =
   for i in 0..len(hdn.hiden)-1 :
     if hdn.hiden[i].name == name :
       return hdn.hiden[i].switch
   return false
 ## return value Field from index
-func getTextH*(hdn : PANEL ; index: int): string  =
+proc getTextH*(hdn : PANEL ; index: int): string  =
   if index < 0 or index > len(hdn.hiden)-1 : return "NAN"
   return hdn.hiden[index].text
 ## return value Field from index
-func getSwitchH*(hdn : PANEL ; index: int): bool  =
+proc getSwitchH*(hdn : PANEL ; index: int): bool  =
   if index < 0 or index > len(hdn.field)-1 : return false
   return hdn.hiden[index].switch
 
 ## delete Field Sequence Field
-func dltFieldH*(hdn : PANEL; idx : Natural) =
+proc dltFieldH*(hdn : PANEL; idx : Natural) =
   if idx >= 0 or idx <= len(hdn.hiden)-1 :
     hdn.hiden.del(idx)
 
@@ -1731,12 +1741,12 @@ func dltFieldH*(hdn : PANEL; idx : Natural) =
 
 
 ## return nbrCar Field 
-func getNbrcar*(pnl: PANEL; name: string): int  =
+proc getNbrcar*(pnl: PANEL; name: string): int  =
   for i in 0..len(pnl.field)-1 :
     if pnl.field[i].name == name : return pnl.field[i].nbrcar
   return -1                                                 # Warning possibility out of sequence
 ## return nbrCar Field 
-func getReftyp*(pnl: PANEL; name: string): REFTYP  =
+proc getReftyp*(pnl: PANEL; name: string): REFTYP  =
   for i in 0..len(pnl.field)-1 :
     if pnl.field[i].name == name : return pnl.field[i].reftyp
   return TEXT_FULL                                       # Warning possibility out of sequence
@@ -1751,41 +1761,42 @@ proc setColor*(lbl : var LABEL  ; lbl_atr : ZONATRB)=
   lbl.forebr = lbl_atr.forebr
 
 ##  set attribut display field
-func setColor*(fld : var FIELD ; fld_atr : ZONATRB)=
+proc setColor*(fld : var FIELD ; fld_atr : ZONATRB)=
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
   fld.backbr = fld_atr.backbr
   fld.foregr = fld_atr.foregr
   fld.forebr = fld_atr.forebr
-func setColorProtect*(fld : var FIELD ; protect_atr : ZONATRB)=
+proc setColorProtect*(fld : var FIELD ; protect_atr : ZONATRB)=
   fld.pstyle  = protect_atr.style
   fld.pbackgr = protect_atr.backgr
   fld.pbackbr = protect_atr.backbr
   fld.pforegr = protect_atr.foregr
   fld.pforebr = protect_atr.forebr
 ##  set on  = display ONLY
-func setProtect*(fld : var FIELD ; protect : bool)=
+proc setProtect*(fld : var FIELD ; protect : bool)=
     fld.protect = protect
-func setEdtCar*(fld : var FIELD ; Car : char)=
+proc setEdtCar*(fld : var FIELD ; Car : char)=
     fld.edtcar = $Car
-func setError*(fld : var FIELD )=
+proc setError*(fld : var FIELD )=
     fld.err = true
 ## Enables or disables FIELD / LABEL / BOX / MENU / PANEL
-func setActif*(fld : var FIELD ; actif : bool)=
+proc setActif*(fld : var FIELD ; actif : bool)=
     fld.actif = actif
-func setActif*(lbl : var LABEL ; actif : bool)=
+proc setActif*(lbl : var LABEL ; actif : bool)=
     lbl.actif = actif
-func setActif*(box: var BOX ; actif : bool)=
+proc setActif*(box: var BOX ; actif : bool)=
     box.actif = actif
-func setActif*(mnu: var MENU ; actif : bool)=
+proc setActif*(mnu: var MENU ; actif : bool)=
     mnu.actif = actif
-func setActif*(btn: var BUTTON; actif : bool)=
+proc setActif*(btn: var BUTTON; actif : bool)=
     btn.actif = actif
-func setActif*(pnl: var PANEL ; actif : bool)=
+proc setActif*(pnl: var PANEL ; actif : bool)=
     pnl.actif = actif
-func setMouse*(pnl: var PANEL ; actif : bool)=
+proc setMouse*(pnl: var PANEL ; actif : bool)=
     pnl.actif = actif
-
+proc setVoid*(fld : var FIELD ; cvoid : string)=
+    fld.cvoid = cvoid
 
 
 
@@ -1793,22 +1804,22 @@ func setMouse*(pnl: var PANEL ; actif : bool)=
 
 
 ## Test if KEYs must be managed by the programmer
-func isPanelKey*(pnl: PANEL; e_key:Key): bool =
+proc isPanelKey*(pnl: PANEL; e_key:Key): bool =
   var i = 0
   var ok :bool = false
-  while i < len(pnl.funckey):
-    if e_key == pnl.funckey[i] : ok = true
+  while i < len(pnl.funcKey):
+    if e_key == pnl.funcKey[i] : ok = true
     inc(i)
   return ok
 ##  if on/off  FIELD / LABEL / BOX / MENU / PANEL
-func isProtect*(fld : var FIELD): bool = return fld.protect 
-func isActif*(fld : var FIELD)  : bool = return fld.actif 
-func isActif*(lbl : var LABEL ) : bool = return lbl.actif 
-func isActif*(box : var BOX)    : bool = return box.actif
-func isActif*(mnu : var MENU)   : bool = return mnu.actif
-func isActif*(btn : var BUTTON) : bool = return btn.actif
-func isActif*(pnl : var PANEL)  : bool = return pnl.actif
-func isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
+proc isProtect*(fld : var FIELD): bool = return fld.protect 
+proc isActif*(fld : var FIELD)  : bool = return fld.actif 
+proc isActif*(lbl : var LABEL ) : bool = return lbl.actif 
+proc isActif*(box : var BOX)    : bool = return box.actif
+proc isActif*(mnu : var MENU)   : bool = return mnu.actif
+proc isActif*(btn : var BUTTON) : bool = return btn.actif
+proc isActif*(pnl : var PANEL)  : bool = return pnl.actif
+proc isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 
 
 ##-------------------------------------------------------
@@ -1833,7 +1844,7 @@ func isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## ioGrid
 ##------------------------------------------------------- 
 
-func padingCell(text: string; cell:CELL;) :string =
+proc padingCell(text: string; cell:CELL;) :string =
   var i: Natural = 0
 
   var e_FIELD : string = text
@@ -1869,7 +1880,7 @@ func padingCell(text: string; cell:CELL;) :string =
 
 
 
-func calculPosCell(this: GRIDSFL) =
+proc calculPosCell(this: GRIDSFL) =
   var n : Natural = 1 # this.posy = separator "|"
   if this.separateRows == false : n = 0 
   var pos : Natural = this.posy - 1
@@ -1884,7 +1895,7 @@ func calculPosCell(this: GRIDSFL) =
 
 
 
-func setPageGrid(this :GRIDSFL)=
+proc setPageGrid(this :GRIDSFL)=
   this.lignes = len(this.rows)
   
   if this.lignes <= this.pagerows  : 
@@ -1940,10 +1951,10 @@ proc resetGrid*(this: GRIDSFL) =
 
 
 
-func columnsCount*(this:  GRIDSFL): int =
+proc columnsCount*(this:  GRIDSFL): int =
   result = this.headers.len
 
-func setHeaders*(this: GRIDSFL, headers: seq[CELL]) =
+proc setHeaders*(this: GRIDSFL, headers: seq[CELL]) =
   for cell in headers:
     this.headers.add(cell)
   calculPosCell(this)
@@ -1961,17 +1972,17 @@ proc defCell*(text: string; len : Natural;reftyp: REFTYP; edtcar : string =""): 
   return cell
 
 ## return index Sequence Label from name
-func getIndexG*(this: GRIDSFL; name: string): int  =
+proc getIndexG*(this: GRIDSFL; name: string): int  =
   for i in 0..len(this.rows)-1:
     if this.rows[i][0] == name : return i
   return - 1
 
 
-func addRows*(this: GRIDSFL; rows:seq[string]) =
+proc addRows*(this: GRIDSFL; rows:seq[string]) =
   this.rows.add(@(rows))
   setPageGrid(this)
 
-func dltRows*(this: GRIDSFL; idx : Natural) =
+proc dltRows*(this: GRIDSFL; idx : Natural) =
   for n in 0..len(this.rows) - 1 :
     if n >= idx and n < len(this.rows) - 1 : this.rows[n] = this.rows[n+1]
   this.rows.del(len(this.rows) - 1 )
@@ -2070,7 +2081,7 @@ proc printGridRows*(this: GRIDSFL ) =
           this.buf[n].fg  = this.gridatr.cell_foregr
           this.buf[n].fgb = this.gridatr.cell_forebr
           
-          if this.cursligne == r :
+          if this.cursligne == r  :
             this.buf[n].style = {styleReverse}
           else :
             this.buf[n].style = this.gridatr.cell_style
@@ -2088,7 +2099,25 @@ proc printGridRows*(this: GRIDSFL ) =
         inc(n)
     #stdout.flushFile()
 
+proc setPageGrid(this: GRIDSFL; pos : Natural) =
+  var vline = pos
+  var start : int = 0
+  if vline > len(this.rows) - 1 :
+    vline = 0
+  if this.lignes <= this.pagerows  : 
+    this.pages = 1
+  else : 
+    this.curspage = vline.div(int(this.pagerows))
+    if  vline.floorMod(int(this.pagerows)) > 0 : this.curspage += 1
 
+
+  if this.curspage == 0 : start = 0
+  else: start = this.pagerows * (this.curspage - 1 )
+  for r in 0..<this.pagerows:
+    var l = r + start 
+    if l == vline : 
+      this.cursligne = r 
+      break
 
 
 proc pageUpGrid*(this: GRIDSFL): Key_Grid =
@@ -2107,6 +2136,7 @@ proc pageDownGrid*(this: GRIDSFL): Key_Grid =
     this.cursligne = -1
     printGridHeader(this)
     printGridRows(this)
+
   if this.curspage == 1: return PGEnd
   else : return PGDown
 
@@ -2121,14 +2151,18 @@ proc pageDownGrid*(this: GRIDSFL): Key_Grid =
 ## Automatic alignment based on the type reference
 ##================================================================
 
-proc ioGrid*(this: GRIDSFL ): (Key , seq[string])=        # IO Format
+proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Format
   var buf :seq[string]
   if not this.actif : return (Key.None, buf)
   
   var grid_key:Key = Key.None
   var CountLigne = 0
   this.cursligne = 0
+ 
   printGridHeader(this)
+  if pos >= 0 : 
+    setPageGrid(this,pos)
+    CountLigne = this.cursligne
   hideCursor()
   while true :
     buf = newseq[string]()
@@ -2137,10 +2171,11 @@ proc ioGrid*(this: GRIDSFL ): (Key , seq[string])=        # IO Format
 
     case grid_Key
       of Key.Escape :
-        this.cursligne = -1
+
+        this.cursligne = -1 
         return (Key.Escape,buf)
       of Key.Enter:
-        if this.lignes > 0:
+        if this.lignes > 0  :
           this.cursligne = -1
           buf = this.rows[this.nrow[CountLigne]]
           return (Key.Enter,buf)
@@ -2157,12 +2192,12 @@ proc ioGrid*(this: GRIDSFL ): (Key , seq[string])=        # IO Format
       of Key.PageUp :
         if this.curspage > 0 : 
           dec(this.curspage)
-          this.cursligne = -1
+          this.cursligne = 0
           printGridHeader(this)
       of Key.PageDown :
         if this.curspage < this.pages : 
           inc(this.curspage)
-          this.cursligne = -1
+          this.cursligne = 0
           printGridHeader(this)
 
 
@@ -2330,11 +2365,11 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
         dec(i)
     result = 0
 
-  func isFuncKey(e_key:Key): bool =
+  func isfuncKey(e_key:Key): bool =
     var i = 0
     var ok :bool = false
-    while i < len(pnl.funckey):
-      if e_key == pnl.funckey[i] : ok = true
+    while i < len(pnl.funcKey):
+      if e_key == pnl.funcKey[i] : ok = true
       inc(i)
     return ok
 
@@ -2367,12 +2402,12 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
         inc(i)
     return buf
 
-  ##================================================================
-  ## Definition of the panel (window) on a lines
-  ## Message display
-  ## to exit press the Escape key
-  ## restoration of the original panel lines
-  ##================================================================
+  #================================================================
+  # Definition of the panel (window) on a lines
+  # Message display
+  # to exit press the Escape key
+  # restoration of the original panel lines
+  #================================================================
 
   proc msgErr(pnl: PANEL ; info:string) =
     setBackgroundColor(msgatr.backgr,msgatr.backbr)
@@ -2453,10 +2488,8 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     # read keyboard
     (e_key,e_str) = getKey()
 
-  
-
     # control transfert panel
-    if isFuncKey(e_key) : 
+    if isfuncKey(e_key) : 
       result = e_key
       hideCursor()
       break
@@ -2467,7 +2500,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
       of Key.Escape:
         result = e_key          #release  buffer
         break
-      of Key.CtrlA:             # touche .Help for Field
+      of Key.CtrlH:             # touche .Help for Field
         if fld.help > "" :
           msgHelp(pnl,fld.help)
 
@@ -2703,6 +2736,11 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 e_FIELD[e_count] = "◎".runeAt(0)
                 e_switch = false
 
+          of ord(QUERY):
+            result = Key.CtrlQ
+            hideCursor()
+            break
+    
           else : discard
       else : discard
 
@@ -2762,7 +2800,7 @@ proc isValide*(pnl:var PANEL): bool =
 
 ##------------------------------------------------------
 ## Format management including zones
-## keyboard Function keys are returned to the calling procedure
+## keyboard proction keys are returned to the calling procedure
 ##
 ## only the key CtrlA = Aide / Help for field
 ## F1 is reserved for complex help programming
@@ -2805,7 +2843,7 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
       inc(i)
     return i
   #search there last available field
-  proc isPriorIO(pnl: PANEL, idx : Natural):int =
+  func isPriorIO(pnl: PANEL, idx : Natural):int =
     var i : int = idx
     while i >= 0 :
       if pnl.field[i].actif :
@@ -2836,7 +2874,7 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
       displayField(pnl,pnl.field[CountField])
 
 
-    if isPanelKey(pnl,fld_key) :                      # this key sav index field return main 
+    if isPanelKey(pnl,fld_key) or fld_key == Key.CtrlQ :                      # this key sav index field return main 
       pnl.index = getIndexF(pnl,pnl.field[CountField].name)
       return fld_key
 
