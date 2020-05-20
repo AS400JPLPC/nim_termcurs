@@ -105,7 +105,7 @@ proc newApp() =
   let vPATH = "/home/soleil/NimTerminal/"
   envPath.add(vPATH)
 
-  let vPROG = "/home/soleil/NimTerminal/termField"
+  let vPROG = "/home/soleil/NimTerminal/termField"  # or termGrid
   var argv: seq[string]
   argv.add(vPROG)
 

@@ -33,26 +33,28 @@ It works, but I had to harmonize and add PROC or FUNC
 
 **IMPORT: termkey project**
 
-<u>mise en fonction le 2020-04-15</u>  
-  * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br>
-  * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br>
-  * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*  
-  * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br>  
-  * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u>  
+<u>mise en fonction le 2020-04-15</u><br>  
+  * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br>  
+  * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br>  
+  * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*<br>  
+  * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br><br>  
+  * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u><br>  
   * Full Change 2020-05-13&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br>  
-  * Full Change 2020-05-14&nbsp;&rarr;&nbsp;Validity check correction
-  * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector" 
+  * Full Change 2020-05-14&nbsp;&rarr;&nbsp;Validity check correction<br>  
+  * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector"<br>  
+  * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Change Func QUERY --> FPROC FCALL "queryselector"<br>  
+  * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br>  
  
 
 **Thank you**
 
-  * [ Date](https://rgxdb.com/r/2V9BOC58)
-  * [ MAIL](https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression)
-  * Thank you to everyone who posted on github their knowledge was precious to me
-  * To IBM education and their gifts of various books
-  * [NCURSE](https://invisible-island.net/ncurses/announce.html)
-  * [illwill](https://github.com/johnnovak/illwill)
-  * [nim-terminaltables](https://github.com/xmonader/nim-terminaltables)
+  * [ Date](https://rgxdb.com/r/2V9BOC58)  
+  * [ MAIL](https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression)  
+  * Thank you to everyone who posted on github their knowledge was precious to me  
+  * To IBM education and their gifts of various books  
+  * [NCURSE](https://invisible-island.net/ncurses/announce.html)  
+  * [illwill](https://github.com/johnnovak/illwill)  
+  * [nim-terminaltables](https://github.com/xmonader/nim-terminaltables)  
 
 
 
@@ -111,7 +113,7 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 &nbsp;
 &rarr;&nbsp; **USE**:
 
-  * windows: PANEL it is its basic vocation as a frame (html)
+  * windows: PANEL it is its basic vocation as a frame (html)  
   * texte: LABEL
   * buffer: FIELD
   * funckey: BUTTON
@@ -143,12 +145,13 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 |                    |                                                                                            |
 | Field-Type         |                                                                                            |
 |                    |                                                                                            |
+| TEXT_FREE          |&nbsp;&rarr;&nbsp; Managed by function: regex , FULL                                        |
 | ALPHA              |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha                                     |
 | ALPHA_UPPER        |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha automatique UPPER                   |
 | PASSWORD           |&nbsp;&rarr;&nbsp; Managed by function: regex , hide  alpha + (1) + (3)                     |
-| ALPHA_NUMERIC      |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and isCarPwd(3)     |
-| ALPHA_NUMERIC_UPPER|&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and isCarPwd(3)     |
-| TEXT_FULL          |&nbsp;&rarr;&nbsp; Managed by function: regex , Full                                        |
+| ALPHA_NUMERIC      |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1)                     |
+| ALPHA_NUMERIC_UPPER|&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1)                     |
+| TEXT_FULL          |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and isCarPwd(3)     |
 | DIGIT              |&nbsp;&rarr;&nbsp; Managed by function: regex , isNumber(1)                                 |
 | DIGIT_SIGNED       |&nbsp;&rarr;&nbsp; Managed by function: regex , (+-) and isNumber(1)                        |
 | DECIMAL            |&nbsp;&rarr;&nbsp; Managed by function: regex , isNumber(1) (.)                             |
@@ -158,7 +161,8 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | MAIL_ISO           |&nbsp;&rarr;&nbsp; Managed by function: regex , [ABNF] [RFC 2822]                           |
 | YES_NO             |&nbsp;&rarr;&nbsp; Managed by function: (Y-y-N-n) automatique UPPER                         |
 | SWITCH             |&nbsp;&rarr;&nbsp; Managed by function: space bar ON/OFF ◉ ◎                                |
-| QUERY              |&nbsp;&rarr;&nbsp; Managed by function: Call proc/programme "queryselector" Simul/Ctrl-Q    |
+| FPROC              |&nbsp;&rarr;&nbsp; Managed by function: Call proc           "queryselector" Key.PROC        |
+| FCALL              |&nbsp;&rarr;&nbsp; Managed by function: Call programme      "queryselector" Key.CALL        |
 
 
 (1) numeric
@@ -182,11 +186,13 @@ not ";" reserved csv
 
 # Main procedure
 
-proc ioGrid(this: TermGrid): (Key, seq[string]) {...}
+proc ioGrid(this: GRIDSFL; pos: int = -1): (Key, seq[string]) {...}
 
 proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
 
 proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
+
+proc isValide(pnl: var PANEL): bool {...}
 
 proc ioPanel(pnl: var PANEL): Key {...}
 <br>
@@ -195,7 +201,6 @@ proc ioPanel(pnl: var PANEL): Key {...}
 
 
 # Procs
-
 proc defCursor(e_curs: Natural = 0) {...}
 
 proc setTerminal(termatr: ZONATRB = scratr) {...}
@@ -217,12 +222,12 @@ proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
 
 proc printLabel(pnl: var PANEL; lbl: LABEL) {...}
 
-proc defString(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; with: Natural;
-              text: string; empty: bool; errmsg: string; help: string;
+proc defString(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+              width: Natural; text: string; empty: bool; errmsg: string; help: string;
               regex: string = ""; fld_atr: ZONATRB = fldatr;
               protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
-proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; with: Natural;
+proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; width: Natural;
             text: string; empty: bool; errmsg: string; help: string;
             fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
@@ -235,9 +240,14 @@ proc defDate(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; text: s
             protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
 proc defNumeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-               with: Natural; scal: Natural; text: string; empty: bool; errmsg: string;
+               width: Natural; scal: Natural; text: string; empty: bool; errmsg: string;
                help: string; fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr;
                actif: bool = true): FIELD {...}
+
+proc defTelephone(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+                 width: Natural; text: string; empty: bool; errmsg: string;
+                 help: string; fld_atr: ZONATRB = fldatr;
+                 protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
 proc defHString(name: string; reftyp: REFTYP; text: string): HIDEN {...}
 
@@ -302,6 +312,10 @@ proc clearTextF(pnl: var PANEL) {...}
 
 proc getNameF(pnl: PANEL): string {...}
 
+proc getTypeF(pnl: PANEL; index: int): enum
+
+proc getVoidF(pnl: PANEL; index: int): string {...}
+
 proc getNameF(pnl: PANEL; index: int): string {...}
 
 proc getTextF(pnl: PANEL; name: string): string {...}
@@ -312,15 +326,15 @@ proc getIndexF(pnl: PANEL; name: string): int {...}
 
 proc getTextF(pnl: PANEL; index: int): string {...}
 
-proc getSwitch(pnl: PANEL; index: int): bool {...}
+proc getSwitchF(pnl: PANEL; index: int): bool {...}
 
 proc setTextF(pnl: PANEL; name: string; val: string) {...}
 
-proc setSwitch(pnl: PANEL; name: string; val: bool): bool {...}
+proc setSwitchF(pnl: PANEL; name: string; val: bool): bool {...}
 
 proc setTextF(pnl: PANEL; index: int; val: string) {...}
 
-proc setSwitch(pnl: PANEL; index: int; val: bool) {...}
+proc setSwitchF(pnl: PANEL; index: int; val: bool) {...}
 
 proc dltField(pnl: PANEL; idx: Natural) {...}
 
@@ -352,7 +366,7 @@ proc setColorProtect(fld: var FIELD; protect_atr: ZONATRB) {...}
 
 proc setProtect(fld: var FIELD; protect: bool) {...}
 
-proc setEdtCar(fld: var FIELD; Car: char) {...}
+proc setEdtCar(fld: var FIELD; Car: string) {...}
 
 proc setError(fld: var FIELD) {...}
 
@@ -400,7 +414,7 @@ proc columnsCount(this: GRIDSFL): int {...}
 
 proc setHeaders(this: GRIDSFL; headers: seq[CELL]) {...}
 
-proc defCell(text: string; len: Natural; reftyp: REFTYP; edtcar: string = ""): CELL {...}
+proc defCell(text: string; long: Natural; reftyp: REFTYP; edtcar: string = ""): CELL {...}
 
 proc getIndexG(this: GRIDSFL; name: string): int {...}
 
@@ -418,15 +432,7 @@ proc pageUpGrid(this: GRIDSFL): Key_Grid {...}
 
 proc pageDownGrid(this: GRIDSFL): Key_Grid {...}
 
-proc ioGrid(this: GRIDSFL; pos: int = -1): (Key, seq[string]) {...}
 
-proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
-
-proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
-
-proc isValide(pnl: var PANEL): bool {...}
-
-proc ioPanel(pnl: var PANEL): Key {...}
 
 
 

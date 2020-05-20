@@ -5,16 +5,16 @@ import termcurs
 
 import tables
 var callQuery: Table[string, proc(fld : var FIELD)]
-
 var grid  = new(GRIDSFL)
 #===================================================
 proc callRefTyp(fld : var FIELD) =
-  var g_pos : int 
-  grid  = newGrid("GRID01",2,2,17)
+  var g_pos : int = -1
+  grid  = newGRID("grid01",2,2,20)
+
   var g_type  = defCell("Ref.Type",19,ALPHA)
 
   setHeaders(grid, @[g_type])
-
+  addRows(grid, @["TEXT_FREE"])
   addRows(grid, @["ALPHA"])
   addRows(grid, @["ALPHA_UPPER"])
   addRows(grid, @["ALPHA_NUMERIC"])
@@ -28,30 +28,35 @@ proc callRefTyp(fld : var FIELD) =
   addRows(grid, @["DATE_ISO"])
   addRows(grid, @["DATE_FR"])
   addRows(grid, @["DATE_US"])
+  addRows(grid, @["TELEPHONE"])
   addRows(grid, @["MAIL_ISO"])
   addRows(grid, @["YES_NO"])
   addRows(grid, @["SWITCH"])
-  addRows(grid, @["QUERY"])
+  addRows(grid, @["FPROC"])
+  addRows(grid, @["FCALL"])
   printGridHeader(grid)
 
   case fld.text
-    of "ALPHA"                : g_pos = 0
-    of "ALPHA_UPPER"          : g_pos = 1
-    of "ALPHA_NUMERIC"        : g_pos = 2
-    of "ALPHA_NUMERIC_UPPER"  : g_pos = 3
-    of "TEXT_FULL"            : g_pos = 4
-    of "PASSWORD"             : g_pos = 5
-    of "DIGIT"                : g_pos = 6
-    of "DIGIT_SIGNED"         : g_pos = 7
-    of "DECIMAL"              : g_pos = 8
-    of "DECIMAL_SIGNED"       : g_pos = 9
-    of "DATE_ISO"             : g_pos = 10
-    of "DATE_FR"              : g_pos = 11
-    of "DATE_US"              : g_pos = 12
-    of "MAIL_ISO"             : g_pos = 13
-    of "YES_NO"               : g_pos = 14
-    of "SWITCH"               : g_pos = 15
-    of "QUERY"                : g_pos = 16
+    of "TEXT_FREE"            : g_pos = 0
+    of "ALPHA"                : g_pos = 1
+    of "ALPHA_UPPER"          : g_pos = 2
+    of "ALPHA_NUMERIC"        : g_pos = 3
+    of "ALPHA_NUMERIC_UPPER"  : g_pos = 4
+    of "TEXT_FULL"            : g_pos = 5
+    of "PASSWORD"             : g_pos = 6
+    of "DIGIT"                : g_pos = 7
+    of "DIGIT_SIGNED"         : g_pos = 8
+    of "DECIMAL"              : g_pos = 9
+    of "DECIMAL_SIGNED"       : g_pos = 10
+    of "DATE_ISO"             : g_pos = 11
+    of "DATE_FR"              : g_pos = 12
+    of "DATE_US"              : g_pos = 13
+    of "TELEPHONE"            : g_pos = 14
+    of "MAIL_ISO"             : g_pos = 15
+    of "YES_NO"               : g_pos = 16
+    of "SWITCH"               : g_pos = 17
+    of "FPROC"                : g_pos = 18
+    of "FCALL"                : g_pos = 19
     else : discard
 
   while true :
@@ -100,8 +105,8 @@ while true:
       pnl = 1
       key = ioPanel(pnlF1)
       
-      if key == Key.CtrlQ :
-        if pnlF1.field[Index(pnlF1)].reftyp == QUERY:
+      if key == Key.PROC :
+        if pnlF1.field[Index(pnlF1)].reftyp == FPROC:
           if isVoidF(pnlF1,Index(pnlF1)):
             callQuery[pnlF1.field[Index(pnlF1)].cvoid](pnlF1.field[Index(pnlF1)])
             restorePanel(pnlF1, grid)
