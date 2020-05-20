@@ -144,7 +144,7 @@ type
     text*: string
     switch* : bool            # / CTRUE CFALSE
 
-    cvoid*:string             # / name proc
+    process*:string           # / name proc
     err*: bool                # / force error
     actif*: bool              # / zone active True
 
@@ -855,7 +855,7 @@ proc defString*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
 
-  fld.cvoid       = ""          # / name calls proc or pgm
+  fld.process     = ""          # / name calls proc or pgm
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -904,7 +904,7 @@ proc defMail*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
 
-  fld.cvoid       = ""          # / name calls proc or pgm
+  fld.process     = ""          # / name calls proc or pgm
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -948,7 +948,7 @@ proc defSwitch*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
 
-  fld.cvoid       = ""          # / name calls proc or pgm
+  fld.process     = ""          # / name calls proc or pgm
 
   fld.style  = swt_atr.style
   fld.backgr = swt_atr.backgr
@@ -1005,7 +1005,7 @@ proc defDate*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
 
-  fld.cvoid       = ""          # / name calls proc or pgm
+  fld.process     = ""          # / name calls proc or pgm
 
   fld.style  = fld_atr.style
   fld.backgr = fld_atr.backgr
@@ -1073,7 +1073,7 @@ proc defNumeric*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
 
-  fld.cvoid       = ""          # / name calls proc or pgm
+  fld.process     = ""          # / name calls proc or pgm
 
 
   fld.style  = fld_atr.style
@@ -1120,7 +1120,7 @@ proc defTelephone*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.err         = false       # / zone error False
   fld.actif       = actif       # / zone active True
 
-  fld.cvoid       = ""          # / name calls proc or pgm
+  fld.process     = ""          # / name calls proc or pgm
 
 
   fld.style  = fld_atr.style
@@ -1135,8 +1135,6 @@ proc defTelephone*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.pforegr = protect_atr.foregr
   fld.pforebr = protect_atr.forebr
   return fld
-
-
 
 ## Hiden bloc out
 proc defHString*( name:string ; reftyp: REFTYP;text: string;) : HIDEN =
@@ -1688,27 +1686,27 @@ proc dltLabel*(pnl: PANEL; idx : Natural) =
 
 
 ## clear value ALL FIELD
-proc clearTextF*(pnl: var PANEL)=
+proc clearText*(pnl: var PANEL)=
   for i in 0..len(pnl.field)-1:
     pnl.field[i].text = ""
 
 ## return name field from panel this getField
-proc getNameF*(pnl: PANEL): string =
+proc getName*(pnl: PANEL): string =
   result = pnl.field[pnl.index].name
 ## return Type Field Sequence Field
-proc getTypeF*(pnl: PANEL; index: int): enum  =
+proc getType*(pnl: PANEL; index: int): enum  =
   if index < 0 or index > len(pnl.field)-1 : return ALPHA
   return pnl.field[index].reftyp
 ## return cVoid Field Sequence Field
-proc getVoidF*(pnl: PANEL; index: int): string  =
+proc getProcess*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.field)-1 : return ""
-  return pnl.field[index].cvoid
+  return pnl.field[index].process
 ## return name Field Sequence Field
-proc getNameF*(pnl: PANEL; index: int): string  =
+proc getName*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.field)-1 : return "NAN"
   return pnl.field[index].name
 ## return value Field Sequence Field
-proc getTextF*(pnl: PANEL; name: string): string  =
+proc getText*(pnl: PANEL; name: string): string  =
   for i in 0..len(pnl.field)-1 :
     if pnl.field[i].name == name :
       return pnl.field[i].text
@@ -1720,37 +1718,37 @@ proc getSwitch*(pnl : PANEL ; name: string): bool  =
       return pnl.field[i].switch
   return false
 ## return index Field Sequence Field
-proc getIndexF*(pnl: PANEL; name: string): int  =
+proc getIndex*(pnl: PANEL; name: string): int  =
   for i in 0..len(pnl.field)-1:
     if pnl.field[i].name == name : return i
   return - 1
 ## return value Field Sequence Field
-proc getTextF*(pnl: PANEL; index: int): string  =
+proc getText*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.field)-1 : return "NAN"
   return pnl.field[index].text
 ## return value Field Sequence Field
-proc getSwitchF*(pnl : PANEL ; index: int): bool  =
+proc getSwitch*(pnl : PANEL ; index: int): bool  =
   if index < 0 or index > len(pnl.field)-1 : return false
   return pnl.field[index].switch
 
 
 ## set value Field Sequence Field
-proc setTextF*(pnl: PANEL; name: string; val : string)=
+proc setText*(pnl: PANEL; name: string; val : string)=
   for i in 0..len(pnl.field)-1 :
     if pnl.field[i].name == name :
       pnl.field[i].text = val
       break
 ## set value Field Sequence Fiel
-proc setSwitchF*(pnl : PANEL ; name: string; val : bool): bool  =
+proc setSwitch*(pnl : PANEL ; name: string; val : bool): bool  =
   for i in 0..len(pnl.hiden)-1 :
     if pnl.field[i].name == name :
       pnl.field[i].switch = val
 ## set value Field Sequence Field
-proc setTextF*(pnl: PANEL; index: int; val : string) =
+proc setText*(pnl: PANEL; index: int; val : string) =
   if index < 0 or index > len(pnl.field)-1 : return
   pnl.field[index].text = val
 ## setvalue Field Sequence Fiel
-proc setSwitchF*(pnl : PANEL ; index: int; val : bool)  =
+proc setSwitch*(pnl : PANEL ; index: int; val : bool)  =
   if index < 0 or index > len(pnl.field)-1 : return
   pnl.field[index].switch = val
 
@@ -1759,9 +1757,9 @@ proc dltField*(pnl: PANEL; idx : Natural) =
   if idx >= 0 or idx <= len(pnl.field)-1 :
     pnl.field.del(idx)
 
-proc isVoidF*(pnl: PANEL; index: int): bool  =
+proc isProcess*(pnl: PANEL; index: int): bool  =
   if index < 0 or index > len(pnl.field)-1 : return false
-  if pnl.field[index].cvoid != "" : return true
+  if pnl.field[index].process != "" : return true
   return false
 
 
@@ -1859,8 +1857,8 @@ proc setActif*(pnl: var PANEL ; actif : bool)=
     pnl.actif = actif
 proc setMouse*(pnl: var PANEL ; actif : bool)=
     pnl.actif = actif
-proc setVoid*(fld : var FIELD ; cvoid : string)=
-    fld.cvoid = cvoid
+proc setProcess*(fld : var FIELD ; process : string)=
+    fld.process = process
 
 
 
@@ -2911,7 +2909,7 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
   var CountField = pnl.index
   var fld_key:Key = Key.Enter
 
-  var index = getIndexF(pnl,pnl.field[CountField].name)
+  var index = getIndex(pnl,pnl.field[CountField].name)
 
   # check error
   for n in 0..len(pnl.field) - 1:
@@ -2969,7 +2967,7 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
 
 
     if isPanelKey(pnl,fld_key) or fld_key == Key.PROC :                      # this key sav index field return main 
-      pnl.index = getIndexF(pnl,pnl.field[CountField].name)
+      pnl.index = getIndex(pnl,pnl.field[CountField].name)
       return fld_key
 
     if isFieldIO(pnl) == 0 :                          # this full protect only work Key active

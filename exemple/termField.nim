@@ -2,7 +2,7 @@
 import terminal
 import termkey
 import termcurs
-
+import strformat
 import tables
 var callQuery: Table[string, proc(fld : var FIELD)]
 var grid  = new(GRIDSFL)
@@ -79,7 +79,8 @@ var key : Key = Key.None
 var pnlx = new(PANEL)
 var pnl : int = 0
 
-
+proc beug(nline : int ; text :string ) =
+  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
 
 InitScreen()
 setTerminal() #default color style erase
@@ -107,8 +108,8 @@ while true:
       
       if key == Key.PROC :
         if pnlF1.field[Index(pnlF1)].reftyp == FPROC:
-          if isVoidF(pnlF1,Index(pnlF1)):
-            callQuery[pnlF1.field[Index(pnlF1)].cvoid](pnlF1.field[Index(pnlF1)])
+          if isProcess(pnlF1,Index(pnlF1)):
+            callQuery[pnlF1.field[Index(pnlF1)].process](pnlF1.field[Index(pnlF1)])
             restorePanel(pnlF1, grid)
 
         key = Key.F1
@@ -134,9 +135,9 @@ while true:
         of Key.CtrlV :
           if isActif(pnlF1):
             # Field coherence check exemple
-            if getNameF(pnlF1) == getNameF(pnlF2):
-              pnlF1.field[Index(pnlF1)].switch = getSwitch(pnlF2,getNameF(pnlF2))
-              pnlF1.field[Index(pnlF1)].text  = getTextF(pnlF2,getNameF(pnlF2))
+            if getName(pnlF1) == getName(pnlF2):
+              pnlF1.field[Index(pnlF1)].switch = getSwitch(pnlF2,getName(pnlF2))
+              pnlF1.field[Index(pnlF1)].text  = getText(pnlF2,getName(pnlF2))
             restorePanel(pnlF1,pnlF2)
           else : resetPanel(pnlF2)
           key = Key.F1
@@ -144,9 +145,9 @@ while true:
         of Key.CtrlH :
           if isActif(pnlF1):
             # Field coherence check exemple retrived hiden field
-            if getNameF(pnlF1) == getNameH(pnlF1,getIndexH(pnlF1, getNameF(pnlF1))):
-              pnlF1.field[Index(pnlF1)].text =  getTextH(pnlF1,getNameF(pnlF1))
-              pnlF1.field[Index(pnlF1)].switch = getSwitchH(pnlF1,getNameF(pnlF1))
+            if getName(pnlF1) == getNameH(pnlF1,getIndexH(pnlF1, getName(pnlF1))):
+              pnlF1.field[Index(pnlF1)].text =  getTextH(pnlF1,getName(pnlF1))
+              pnlF1.field[Index(pnlF1)].switch = getSwitchH(pnlF1,getName(pnlF1))
             restorePanel(pnlF1,pnlF2)
           else : resetPanel(pnlF2)
           key = Key.F1
@@ -189,15 +190,13 @@ while true:
               )  #,mnuatrx
       printMenu(pnlx,menuF9)
       var sel :Natural = 0
+      var msel :Natural = 0
       sel = ioMenu(pnlx,menuF9 , sel) 
-
       case sel
         of 1 :
           if isActif(pnlF1):
             printMenu(pnlx,mField)
-            var msel :Natural = 0
-            msel = ioMenu(pnlx,mField , msel)                 # test protect dynamic off
-            restorePanel(pnlx,mField)
+            msel = ioMenu(pnlx,mField , msel)              # test protect dynamic off
             if msel > 0 :
               setProtect(pnlF1.field[msel-1],false)
               printField(pnlF1, pnlF1.field[msel-1])
@@ -208,21 +207,26 @@ while true:
           if pnl == 2 : key = Key.F2
         of 2 :
           if isActif(pnlF1):
-            setProtect(pnlF1.field[Index(pnlF1)],true)         # test protect dynamic on
-            printField(pnlF1, pnlF1.field[Index(pnlF1)])
-            setActif(pnlF1.button[2],true)
-            printButton(pnlF1)
-            displayField(pnlF1, pnlF1.field[Index(pnlF1)])
+            printMenu(pnlx,mField)
+            msel = ioMenu(pnlx,mField , msel)             # test protect dynamic on
+            if msel > 0 :
+              setProtect(pnlF1.field[msel-1],true)
+              printField(pnlF1, pnlF1.field[msel-1])
+              setActif(pnlF1.button[2],true)
+              printButton(pnlF1)
+              displayField(pnlF1, pnlF1.field[msel-1])
           if pnl == 1 : key = Key.F1
           if pnl == 2 : key = Key.F2
 
         of 3 :
           if isActif(pnlF1):
-            setActif(pnlF1.label[Index(pnlF1)],false)         # test inactif dynamic off
-            setActif(pnlF1.field[Index(pnlF1)],false)         # test inactif dynamic
-
-            displayLabel(pnlF1, pnlF1.label[Index(pnlF1)])
-            displayField(pnlF1, pnlF1.field[Index(pnlF1)])
+            printMenu(pnlx,mField)
+            msel = ioMenu(pnlx,mField , msel)             # test inactif dynamic off
+            if msel > 0 :
+              setActif(pnlF1.label[msel-1],false)
+              setActif(pnlF1.field[msel-1],false)
+              displayLabel(pnlF1, pnlF1.label[msel-1])
+              displayField(pnlF1, pnlF1.field[msel-1])
           if pnl == 1 : key = Key.F1
           if pnl == 2 : key = Key.F2
 
@@ -230,12 +234,10 @@ while true:
         of 4 :
           if isActif(pnlF1):
             printMenu(pnlx,mField)
-            var msel :Natural = 0
-            msel = ioMenu(pnlx,mField , msel)
-            restorePanel(pnlx,mField)
+            msel = ioMenu(pnlx,mField , msel)              # test actif dynamic on
             if msel > 0 :
-              setActif(pnlF1.field[msel-1],true)               # test actif dynamic on
-              setActif(pnlF1.label[msel-1],true)               # test actif dynamic
+              setActif(pnlF1.field[msel-1],true)
+              setActif(pnlF1.label[msel-1],true)
               displayLabel(pnlF1, pnlF1.label[msel-1])
               displayField(pnlF1, pnlF1.field[msel-1])
 
@@ -254,11 +256,9 @@ while true:
           printPanel(pnlF1)
         else :
           setTerminal()
-
       if pnl == 1 :
         if isActif(menuF9) : restorePanel(pnlx,menuF9)
-      if pnl == 0 :
-        key = Key.None
+      if pnl == 0 : key = Key.None
       resetPanel(menuF9)
     else: discard
   stdout.flushFile

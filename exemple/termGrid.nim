@@ -84,7 +84,7 @@ while true:
 
   of Key.F9:
     if grid.actif:
-      addRows(grid,@[setID(g_numID), pnlF1.getTextF($Nom), pnlF1.getTextF($Animal),pnlF1.getTextF($Prix)])
+      addRows(grid,@[setID(g_numID), pnlF1.getText($Nom), pnlF1.getText($Animal),pnlF1.getText($Prix)])
       grid.curspage = grid.pages
       printGridHeader(grid)
       printGridRows(grid)

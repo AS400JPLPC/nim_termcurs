@@ -90,7 +90,7 @@ proc ecr01() =
 
   pnlF1.label.add(defLabel("zone16", 36, 5,"COMBO               zone16 :"))
   pnlF1.field.add(defString("zone16", 36, 5+(len(pnlF1.label[16].text)), FPROC,19,"",FILL, "Value Obligatoire", "Type COMBO"))
-  setVoid(pnlF1.field[16],"callRefTyp")
+  setProcess(pnlF1.field[16],"callRefTyp")
 
   pnlF1.label.add(defLabel("zone1/", 38, 5,"F1 = Help   Escape= return (error/menu)"))
 
