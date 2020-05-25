@@ -14,6 +14,9 @@ img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr06.pn
 
 img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.png)
 
+
+img : [EXEMPLE](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
+img : [SOURCE GENERATED](https://github.com/AS400JPLPC/nim_termcurs/blob/master/source_generated.png)
   
 <br>
 <br>
@@ -44,6 +47,7 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector"<br>  
   * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Change Func QUERY --> FPROC FCALL "queryselector"<br>  
   * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br>  
+  * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product  futur create Menu and COMBO **<br>  
  
 
 **Thank you**
@@ -158,6 +162,7 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | DECIMAL_SIGNED     |&nbsp;&rarr;&nbsp; Managed by function: regex , (+-) and isNumber(1) (.)                    |
 | DATE_ISO           |&nbsp;&rarr;&nbsp; Managed by function: regex , isNumber(1) (-)&nbsp;                       |
 | DATE_US..DATE_FR   |&nbsp;&rarr;&nbsp; Managed by function: regex , isNumber(1) (/)&nbsp;                       |
+| TELEPHONE          |&nbsp;&rarr;&nbsp; Managed by function: regex , International                               |
 | MAIL_ISO           |&nbsp;&rarr;&nbsp; Managed by function: regex , [ABNF] [RFC 2822]                           |
 | YES_NO             |&nbsp;&rarr;&nbsp; Managed by function: (Y-y-N-n) automatique UPPER                         |
 | SWITCH             |&nbsp;&rarr;&nbsp; Managed by function: space bar ON/OFF ◉ ◎                                |
@@ -219,6 +224,9 @@ proc printMenu(pnl: PANEL; mnu: MENU) {...}
 
 proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
              lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
+
+proc defTitle(name: string; posx: Natural; posy: Natural; text: string;
+             ttl_atr: ZONATRB = ttlatr; actif: bool = true): LABEL {...}
 
 proc printLabel(pnl: var PANEL; lbl: LABEL) {...}
 
@@ -308,37 +316,37 @@ proc setTextL(pnl: PANEL; index: int; val: string) {...}
 
 proc dltLabel(pnl: PANEL; idx: Natural) {...}
 
-proc clearTextF(pnl: var PANEL) {...}
+proc clearText(pnl: var PANEL) {...}
 
-proc getNameF(pnl: PANEL): string {...}
+proc getName(pnl: PANEL): string {...}
 
-proc getTypeF(pnl: PANEL; index: int): enum
+proc getType(pnl: PANEL; index: int): enum
 
-proc getVoidF(pnl: PANEL; index: int): string {...}
+proc getProcess(pnl: PANEL; index: int): string {...}
 
-proc getNameF(pnl: PANEL; index: int): string {...}
+proc getName(pnl: PANEL; index: int): string {...}
 
-proc getTextF(pnl: PANEL; name: string): string {...}
+proc getText(pnl: PANEL; name: string): string {...}
 
 proc getSwitch(pnl: PANEL; name: string): bool {...}
 
-proc getIndexF(pnl: PANEL; name: string): int {...}
+proc getIndex(pnl: PANEL; name: string): int {...}
 
-proc getTextF(pnl: PANEL; index: int): string {...}
+proc getText(pnl: PANEL; index: int): string {...}
 
-proc getSwitchF(pnl: PANEL; index: int): bool {...}
+proc getSwitch(pnl: PANEL; index: int): bool {...}
 
-proc setTextF(pnl: PANEL; name: string; val: string) {...}
+proc setText(pnl: PANEL; name: string; val: string) {...}
 
-proc setSwitchF(pnl: PANEL; name: string; val: bool): bool {...}
+proc setSwitch(pnl: PANEL; name: string; val: bool): bool {...}
 
-proc setTextF(pnl: PANEL; index: int; val: string) {...}
+proc setText(pnl: PANEL; index: int; val: string) {...}
 
-proc setSwitchF(pnl: PANEL; index: int; val: bool) {...}
+proc setSwitch(pnl: PANEL; index: int; val: bool) {...}
 
 proc dltField(pnl: PANEL; idx: Natural) {...}
 
-proc isVoidF(pnl: PANEL; index: int): bool {...}
+proc isProcess(pnl: PANEL; index: int): bool {...}
 
 proc getNameH(hdn: PANEL; index: int): string {...}
 
@@ -384,7 +392,7 @@ proc setActif(pnl: var PANEL; actif: bool) {...}
 
 proc setMouse(pnl: var PANEL; actif: bool) {...}
 
-proc setVoid(fld: var FIELD; cvoid: string) {...}
+proc setProcess(fld: var FIELD; process: string) {...}
 
 proc isPanelKey(pnl: PANEL; e_key: Key): bool {...}
 
@@ -405,7 +413,7 @@ proc isActif(pnl: var PANEL): bool {...}
 proc isMouse(pnl: var PANEL): bool {...}
 
 proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
-            separator: GridStyle = unicodeStyle; grid_atr: GRIDATRB = gridatr;
+            separator: GridStyle = noStyle; grid_atr: GRIDATRB = gridatr;
             actif: bool = true): GRIDSFL {...}
 
 proc resetGrid(this: GRIDSFL) {...}
@@ -432,11 +440,12 @@ proc pageUpGrid(this: GRIDSFL): Key_Grid {...}
 
 proc pageDownGrid(this: GRIDSFL): Key_Grid {...}
 
+proc ioGrid(this: GRIDSFL; pos: int = -1): (Key, seq[string]) {...}
 
+proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
 
+proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
 
+proc isValide(pnl: var PANEL): bool {...}
 
-
-
-
-
+proc ioPanel(pnl: var PANEL): Key {...}

@@ -209,6 +209,7 @@ function main() {
   foregr: ForegroundColor
   forebr: bool
   text*: string
+  title*: bool
   actif*: bool"><wbr />LABEL<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#BOX"
     title="BOX = object
@@ -308,7 +309,6 @@ function main() {
   nrow: seq[int]
   headers: seq[CELL]
   separator: GridStyle
-  separateRows: bool
   gridatr: GRIDATRB
   actif*: bool
   lignes: int
@@ -334,6 +334,8 @@ function main() {
     title="boxatr = new(BOXATRB)"><wbr />boxatr<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#lblatr"
     title="lblatr = new(ZONATRB)"><wbr />lblatr<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#ttlatr"
+    title="ttlatr = new(ZONATRB)"><wbr />ttlatr<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#fldatr"
     title="fldatr = new(ZONATRB)"><wbr />fldatr<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#prtatr"
@@ -356,10 +358,10 @@ function main() {
 <li>
   <a class="reference reference-toplevel" href="#9" id="59">Lets</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#unicodeStyle"
-    title="unicodeStyle = GridStyle(colSeparator: &quot;│&quot;)"><wbr />unicode<wbr />Style<span class="attachedType"></span></a></li>
+      <li><a class="reference" href="#sepStyle"
+    title="sepStyle = GridStyle(colSeparator: &quot;│&quot;)"><wbr />sep<wbr />Style<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#noStyle"
-    title="noStyle = GridStyle(colSeparator: &quot;&quot;)"><wbr />no<wbr />Style<span class="attachedType"></span></a></li>
+    title="noStyle = GridStyle(colSeparator: &quot; &quot;)"><wbr />no<wbr />Style<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -395,6 +397,9 @@ function main() {
   <li><a class="reference" href="#defLabel%2Cstring%2CNatural%2CNatural%2Cstring%2CZONATRB%2Cbool"
     title="defLabel(name: string; posx: Natural; posy: Natural; text: string;
          lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL"><wbr />def<wbr />Label<span class="attachedType">LABEL</span></a></li>
+  <li><a class="reference" href="#defTitle%2Cstring%2CNatural%2CNatural%2Cstring%2CZONATRB%2Cbool"
+    title="defTitle(name: string; posx: Natural; posy: Natural; text: string;
+         ttl_atr: ZONATRB = ttlatr; actif: bool = true): LABEL"><wbr />def<wbr />Title<span class="attachedType">LABEL</span></a></li>
   <li><a class="reference" href="#printLabel%2CPANEL%2CLABEL"
     title="printLabel(pnl: var PANEL; lbl: LABEL)"><wbr />print<wbr />Label<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#defString%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"
@@ -579,8 +584,7 @@ function main() {
     title="isMouse(pnl: var PANEL): bool"><wbr />is<wbr />Mouse<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#newGrid%2Cstring%2CNatural%2CNatural%2CNatural%2CGridStyle%2CGRIDATRB%2Cbool"
     title="newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
-        separator: GridStyle = unicodeStyle; grid_atr: GRIDATRB = gridatr;
-        actif: bool = true): GRIDSFL"><wbr />new<wbr />Grid<span class="attachedType">GRIDSFL</span></a></li>
+        separator: GridStyle = noStyle; grid_atr: GRIDATRB = gridatr; actif: bool = true): GRIDSFL"><wbr />new<wbr />Grid<span class="attachedType">GRIDSFL</span></a></li>
   <li><a class="reference" href="#resetGrid%2CGRIDSFL"
     title="resetGrid(this: GRIDSFL)"><wbr />reset<wbr />Grid<span class="attachedType">GRIDSFL</span></a></li>
   <li><a class="reference" href="#columnsCount%2CGRIDSFL"
@@ -625,7 +629,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">define type cursorErase and color and style defaultreturn BUTTONDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine Labelassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field NumericDefine Field NumericHiden bloc outswitchget lines/COLS PANELreturn index actived from panel this getFieldDefine PANELassigne FIELD to matrice for displayassigne BUTTON matrice for displaydisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayvide object PANEL / box/label/fld/procvide object MENUcls Labelcsl Fieldcls Paneldisplay matrice only LABELdisplay matrice only FIELDdisplay matrice only BUTTONrestore the base occupied by pnlrestore the base occupied by mnurestore the base occupied by gridrestore the lines occupied by the error messagereturn name label Sequence Fieldreturn index Sequence Label from namereturn value Label Sequence from namereturn value label Sequence Labelset value Label Sequence Labelset value Label Sequence Labeldelete Label Sequence Labelclear value ALL FIELDreturn name field from panel this getFieldreturn Type Field Sequence Fieldreturn cVoid Field Sequence Fieldreturn name Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn index Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldset value Field Sequence Fieldset value Field Sequence Fielset value Field Sequence Fieldsetvalue Field Sequence Fieldelete Field Sequence Fieldreturn name from index return index from Namereturn value Field from namereturn value Field from namereturn value Field from indexreturn value Field from indexdelete Field Sequence Fieldreturn nbrCar Field return nbrCar Field set attribut display labelset attribut display fieldset on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELTest if KEYs must be managed by the programmerif on/off  FIELD / LABEL / BOX / MENU / PANEL<p> </p>
+  <p class="module-desc">define type cursorErase and color and style defaultreturn BUTTONDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine LabelDefine Titleassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field NumericDefine Field NumericHiden bloc outswitchget lines/COLS PANELreturn index actived from panel this getFieldDefine PANELassigne FIELD to matrice for displayassigne BUTTON matrice for displaydisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayvide object PANEL / box/label/fld/procvide object MENUcls Labelcsl Fieldcls Paneldisplay matrice only LABELdisplay matrice only FIELDdisplay matrice only BUTTONrestore the base occupied by pnlrestore the base occupied by mnurestore the base occupied by gridrestore the lines occupied by the error messagereturn name label Sequence Fieldreturn index Sequence Label from namereturn value Label Sequence from namereturn value label Sequence Labelset value Label Sequence Labelset value Label Sequence Labeldelete Label Sequence Labelclear value ALL FIELDreturn name field from panel this getFieldreturn Type Field Sequence Fieldreturn cVoid Field Sequence Fieldreturn name Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn index Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldset value Field Sequence Fieldset value Field Sequence Fielset value Field Sequence Fieldsetvalue Field Sequence Fieldelete Field Sequence Fieldreturn name from index return index from Namereturn value Field from namereturn value Field from namereturn value Field from indexreturn value Field from indexdelete Field Sequence Fieldreturn nbrCar Field return nbrCar Field set attribut display labelset attribut display fieldset on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELTest if KEYs must be managed by the programmerif on/off  FIELD / LABEL / BOX / MENU / PANEL<p> </p>
 return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-pageup-pagedown-automatic-alignment-based-on-the-type-reference"><center>Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type reference</center></h1><h1 id="traiement-des-menus-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-left-right-movement-width-the-wheel-and-validation-width-the-clik"><center>traiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement width the wheel and validation width the clik</center></h1><h1 id="input-buffer-management-modeled-on-5250slash3270-inspiration-ncurse-application-hold-principe-and-new-langage-use-termkeydotnim"><center>Input buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim</center></h1>Contrôle  Format Panel full Field<h1 id="format-management-including-zones-keyboard-proction-keys-are-returned-to-the-calling-procedure-only-the-key-ctrla-eq-aide-slash-help-for-field-f1-is-reserved-for-complex-help-programming-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert-predefined-and-customizable-regex-control"><center>Format management including zones keyboard proction keys are returned to the calling procedure  only the key CtrlA = Aide / Help for field F1 is reserved for complex help programming  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT predefined and customizable REGEX control</center></h1></p>
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
@@ -801,6 +805,7 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
   <span class="Identifier">foregr</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
   <span class="Identifier">forebr</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">text</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">title</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
@@ -948,7 +953,6 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
   <span class="Identifier">nrow</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">int</span><span class="Other">]</span>
   <span class="Identifier">headers</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#CELL"><span class="Identifier">CELL</span></a><span class="Other">]</span>
   <span class="Identifier">separator</span><span class="Other">:</span> <a href="termcurs.html#GridStyle"><span class="Identifier">GridStyle</span></a>
-  <span class="Identifier">separateRows</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">gridatr</span><span class="Other">:</span> <a href="termcurs.html#GRIDATRB"><span class="Identifier">GRIDATRB</span></a>
   <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">lignes</span><span class="Other">:</span> <span class="Identifier">int</span>
@@ -1004,6 +1008,13 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="lblatr"></a>
 <dt><pre><a href="termcurs.html#lblatr"><span class="Identifier">lblatr</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a><span class="Other">)</span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="ttlatr"></a>
+<dt><pre><a href="termcurs.html#ttlatr"><span class="Identifier">ttlatr</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a><span class="Other">)</span></pre></dt>
 <dd>
 
 
@@ -1070,15 +1081,15 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 <div class="section" id="9">
 <h1><a class="toc-backref" href="#9">Lets</a></h1>
 <dl class="item">
-<a id="unicodeStyle"></a>
-<dt><pre><a href="termcurs.html#unicodeStyle"><span class="Identifier">unicodeStyle</span></a> <span class="Other">=</span> <a href="termcurs.html#GridStyle"><span class="Identifier">GridStyle</span></a><span class="Other">(</span><span class="Identifier">colSeparator</span><span class="Other">:</span> <span class="StringLit">&quot;│&quot;</span><span class="Other">)</span></pre></dt>
+<a id="sepStyle"></a>
+<dt><pre><a href="termcurs.html#sepStyle"><span class="Identifier">sepStyle</span></a> <span class="Other">=</span> <a href="termcurs.html#GridStyle"><span class="Identifier">GridStyle</span></a><span class="Other">(</span><span class="Identifier">colSeparator</span><span class="Other">:</span> <span class="StringLit">&quot;│&quot;</span><span class="Other">)</span></pre></dt>
 <dd>
 
 
 
 </dd>
 <a id="noStyle"></a>
-<dt><pre><a href="termcurs.html#noStyle"><span class="Identifier">noStyle</span></a> <span class="Other">=</span> <a href="termcurs.html#GridStyle"><span class="Identifier">GridStyle</span></a><span class="Other">(</span><span class="Identifier">colSeparator</span><span class="Other">:</span> <span class="StringLit">&quot;&quot;</span><span class="Other">)</span></pre></dt>
+<dt><pre><a href="termcurs.html#noStyle"><span class="Identifier">noStyle</span></a> <span class="Other">=</span> <a href="termcurs.html#GridStyle"><span class="Identifier">GridStyle</span></a><span class="Other">(</span><span class="Identifier">colSeparator</span><span class="Other">:</span> <span class="StringLit">&quot; &quot;</span><span class="Other">)</span></pre></dt>
 <dd>
 
 
@@ -1171,6 +1182,14 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 
 
 </dd>
+<a id="defTitle,string,Natural,Natural,string,ZONATRB,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#defTitle%2Cstring%2CNatural%2CNatural%2Cstring%2CZONATRB%2Cbool"><span class="Identifier">defTitle</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+             <span class="Identifier">ttl_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">ttlatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#LABEL"><span class="Identifier">LABEL</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="printLabel,PANEL,LABEL"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#printLabel%2CPANEL%2CLABEL"><span class="Identifier">printLabel</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">lbl</span><span class="Other">:</span> <a href="termcurs.html#LABEL"><span class="Identifier">LABEL</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -1233,8 +1252,8 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 <dt><pre><span class="Keyword">proc</span> <a href="#defTelephone%2Cstring%2CNatural%2CNatural%2CREFTYP%2CNatural%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">defTelephone</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
                  <span class="Identifier">width</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
                  <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">fld_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">fldatr</span><span class="Other">;</span>
-                 <span class="Identifier">protect_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
-    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+                 <span class="Identifier">protect_atr</span><span class="Other">:</span> <a href="termcurs.html#ZONATRB"><span class="Identifier">ZONATRB</span></a> <span class="Other">=</span> <span class="Identifier">prtatr</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1790,7 +1809,7 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="newGrid,string,Natural,Natural,Natural,GridStyle,GRIDATRB,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#newGrid%2Cstring%2CNatural%2CNatural%2CNatural%2CGridStyle%2CGRIDATRB%2Cbool"><span class="Identifier">newGrid</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">pageRows</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span>
-            <span class="Identifier">separator</span><span class="Other">:</span> <a href="termcurs.html#GridStyle"><span class="Identifier">GridStyle</span></a> <span class="Other">=</span> <span class="Identifier">unicodeStyle</span><span class="Other">;</span> <span class="Identifier">grid_atr</span><span class="Other">:</span> <a href="termcurs.html#GRIDATRB"><span class="Identifier">GRIDATRB</span></a> <span class="Other">=</span> <span class="Identifier">gridatr</span><span class="Other">;</span>
+            <span class="Identifier">separator</span><span class="Other">:</span> <a href="termcurs.html#GridStyle"><span class="Identifier">GridStyle</span></a> <span class="Other">=</span> <span class="Identifier">noStyle</span><span class="Other">;</span> <span class="Identifier">grid_atr</span><span class="Other">:</span> <a href="termcurs.html#GRIDATRB"><span class="Identifier">GRIDATRB</span></a> <span class="Other">=</span> <span class="Identifier">gridatr</span><span class="Other">;</span>
             <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
@@ -1935,7 +1954,7 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-20 12:39:35 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-25 20:18:31 UTC</small>
       </div>
     </div>
   </div>

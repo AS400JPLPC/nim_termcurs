@@ -167,6 +167,7 @@ type
     foregr: ForegroundColor
     forebr: bool
     text*: string
+    title*: bool
     actif*: bool
 
 
@@ -269,6 +270,7 @@ type
   GridStyle* = object
     colSeparator*: string 
 
+
   CELL* = object
     text : string
     long*  : Natural
@@ -288,7 +290,6 @@ type
     nrow: seq[int]
     headers: seq[CELL]
     separator: GridStyle
-    separateRows: bool
     gridatr : GRIDATRB
     actif*: bool
     lignes: int
@@ -297,12 +298,10 @@ type
     curspage*:int
     buf:seq[TerminalChar]
 
-
-
-let unicodeStyle* = GridStyle( colSeparator:"│")
-let noStyle* = GridStyle( colSeparator:"")
-
 # var interne
+let sepStyle* = GridStyle( colSeparator:"│")  
+let noStyle* = GridStyle( colSeparator:" ")
+
 
 var pnlatr* = new(ZONATRB)
 pnlatr.style  = {styleDim}
@@ -353,6 +352,14 @@ lblatr.backgr = BackgroundColor.bgBlack
 lblatr.backbr = false
 lblatr.foregr = ForegroundColor.fgGreen
 lblatr.forebr = true
+
+var ttlatr* = new(ZONATRB)
+ttlatr.style  = {styleBright}
+ttlatr.backgr = BackgroundColor.bgBlack
+ttlatr.backbr = false
+ttlatr.foregr = ForegroundColor.fgCyan
+ttlatr.forebr = true
+
 
 var fldatr* = new(ZONATRB)
 fldatr.style  = {styleDim}
@@ -420,7 +427,7 @@ gridatr.cell_style = {styleDim,styleItalic}
 gridatr.cell_backgr = BackgroundColor.bgblack
 gridatr.cell_backbr = false
 gridatr.cell_foregr = ForegroundColor.fgCyan
-gridatr.cell_forebr = true
+gridatr.cell_forebr = false
 
 ## define type cursor
 proc defCursor*(e_curs: Natural = 0) =
@@ -789,6 +796,7 @@ proc defLabel*(name:string ; posx:Natural; posy:Natural; text: string;
   lbl.posx        = posx
   lbl.posy        = posy
   lbl.text        = text
+  lbl.title       = false
   lbl.actif       = actif
 
   lbl.style  = lbl_atr.style
@@ -797,6 +805,27 @@ proc defLabel*(name:string ; posx:Natural; posy:Natural; text: string;
   lbl.foregr = lbl_atr.foregr
   lbl.forebr = lbl_atr.forebr
   return lbl
+
+## Define Title
+proc defTitle*(name:string ; posx:Natural; posy:Natural; text: string;
+                ttl_atr : ZONATRB = ttlatr ; actif: bool = true) :LABEL =
+
+  var lbl : LABEL
+
+  lbl.name        = name
+  lbl.posx        = posx
+  lbl.posy        = posy
+  lbl.text        = text
+  lbl.title       = true
+  lbl.actif       = actif
+
+  lbl.style  = ttl_atr.style
+  lbl.backgr = ttl_atr.backgr
+  lbl.backbr = ttl_atr.backbr
+  lbl.foregr = ttl_atr.foregr
+  lbl.forebr = ttl_atr.forebr
+  return lbl
+
 
 ## assigne LABEL to matrice for display
 proc printLabel*(pnl: var PANEL, lbl : LABEL ) =
@@ -1110,9 +1139,7 @@ proc defTelephone*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   fld.protect     = false       # / only display
   fld.pading      = true        # / pading blank
   fld.edtcar      = ""          # / edtcar for monnaie		€ $ ¥ ₪ £ or %
-  fld.regex       = ""          # / contrôle 
-  fld.regex = "^[(][0-9]{3,$1}[)]([A-Z0-9]{$2,$2})$" % ["3",$width]
-
+  fld.regex = "^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\\s\\./0-9]*$"
   if errmsg == "" : fld.errmsg = "format (033)1234567890"
   else : fld.errmsg      = errmsg      # / message this field
   fld.help        = help        # / help this field
@@ -1931,7 +1958,7 @@ proc padingCell(text: string; cell:CELL;) :string =
 
 
   if cell.reftyp == SWITCH:
-    if text == "true":
+    if text == "true" or text == "1":
       e_FIELD = "◉"
     else:
       e_FIELD = "◎"
@@ -1943,8 +1970,7 @@ proc padingCell(text: string; cell:CELL;) :string =
 
 
 proc calculPosCell(this: GRIDSFL) =
-  var n : Natural = 1 # this.posy = separator "|"
-  if this.separateRows == false : n = 0 
+  var n : Natural = 1 # this.posy = separator "|" 
   var pos : Natural = this.posy - 1
   
   for i in 0..<len(this.headers):
@@ -1969,7 +1995,7 @@ proc setPageGrid(this :GRIDSFL)=
 
 
 proc newGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
-                  separator: GridStyle = unicodeStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): GRIDSFL =
+                  separator: GridStyle = noStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): GRIDSFL =
 
   var Ngrid = new GRIDSFL
   Ngrid.name  = name
@@ -1982,7 +2008,6 @@ proc newGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
   Ngrid.rows = newSeq[seq[string]]()
   Ngrid.nrow = newSeq[int]()
   Ngrid.headers = newSeq[CELL]()
-  if separator.colSeparator == "" : Ngrid.separateRows =false else : Ngrid.separateRows =true
   Ngrid.actif = actif
   Ngrid.gridatr = grid_atr
   Ngrid.lignes  = 0
@@ -2216,11 +2241,10 @@ proc pageDownGrid*(this: GRIDSFL): Key_Grid =
 proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Format
   var buf :seq[string]
   if not this.actif : return (Key.None, buf)
-  
   var grid_key:Key = Key.None
   var CountLigne = 0
   this.cursligne = 0
- 
+  OffMouse()
   printGridHeader(this)
   if pos >= 0 : 
     setPageGrid(this,pos)
@@ -2313,12 +2337,13 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
 
     if key == Key.Mouse :
       let mnuMouse = getMouse()
-      if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdUp   :
-        if mnu.mnuvh == MNUVH.vertical :    key = Key.Up
-        if mnu.mnuvh == MNUVH.horizontal :  key = Key.Left
-      if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdDown :
-        if mnu.mnuvh == MNUVH.vertical :    key = Key.Down
-        if mnu.mnuvh == MNUVH.horizontal :  key = Key.Right
+      if mnuMouse.action == MouseButtonAction.mbaPressed:
+        if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdUp   :
+          if mnu.mnuvh == MNUVH.vertical :    key = Key.Up
+          if mnu.mnuvh == MNUVH.horizontal :  key = Key.Left
+        if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdDown :
+          if mnu.mnuvh == MNUVH.vertical :    key = Key.Down
+          if mnu.mnuvh == MNUVH.horizontal :  key = Key.Right
       if mnuMouse.action == MouseButtonAction.mbaReleased : key = Key.Enter
     case key
 
@@ -2762,7 +2787,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                   dec(e_curs)
 
           of ord(TELEPHONE)  :
-            if e_count < e_nbrcar and (isAlpha(e_str) or isNumber(e_str) or e_str == "(" or e_str == ")"):
+            if e_count < e_nbrcar :
               if statusCursInsert: insert()
               e_str = e_str.toUpper()
               e_FIELD[e_count] = e_str.runeAt(0)
