@@ -53,7 +53,8 @@ It works, but I had to harmonize and add PROC or FUNC
 **Thank you**
 
   * [ Date](https://rgxdb.com/r/2V9BOC58)  
-  * [ MAIL](https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression)  
+  * [ MAIL](https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression) 
+  * [TELEPHONE](https://regexr.com/3c53v)
   * Thank you to everyone who posted on github their knowledge was precious to me  
   * To IBM education and their gifts of various books  
   * [NCURSE](https://invisible-island.net/ncurses/announce.html)  
