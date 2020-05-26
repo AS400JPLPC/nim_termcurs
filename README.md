@@ -47,8 +47,8 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector"<br>  
   * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Change Func QUERY --> FPROC FCALL "queryselector"<br>  
   * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br>  
-  * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product  futur create Menu and COMBO **<br>  
- 
+  * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
+  * Full Change 2020-05-26&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
 
 **Thank you**
 

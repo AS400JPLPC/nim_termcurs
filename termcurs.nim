@@ -1249,11 +1249,11 @@ proc printField*(pnl: var PANEL, fld : Field) =
     while i < runeLen(fld.text):
         e_FIELD = e_FIELD & "*"
         inc(i)
-
-  if fld.reftyp == DIGIT_SIGNED or fld.reftyp == DECIMAL_SIGNED:
-    if isDigit(char(fld.text[0])):
-      e_FIELD = "+" & fld.text
-  
+  if fld.text != "":
+    if fld.reftyp == DIGIT_SIGNED or fld.reftyp == DECIMAL_SIGNED:
+      if isDigit(char(fld.text[0])):
+        e_FIELD = "+" & fld.text
+    
   if  fld.pading and fld.reftyp == DIGIT or
       fld.pading and fld.reftyp == DIGIT_SIGNED or
       fld.pading and fld.reftyp == DECIMAL or
