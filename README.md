@@ -2,6 +2,11 @@
 
 # curse TERMINAL inspired 5250/3270 done only with nim
 
+#  I am not yet posting designer and source generator.it is not operational but written at the base of termcurs
+
+
+
+
 doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/termcurs.html)
 
 
@@ -29,9 +34,9 @@ It works, but I had to harmonize and add PROC or FUNC
 <br>
 <br>
 
-#**everything is not perfect please report problems Nim forum **
+**everything is not perfect please report problems Nim forum **
 
-#**in PROGRESS  I prepare to test -> creat simple designer**
+**in PROGRESS  I prepare to test -> creat simple designer**
 
 
 **IMPORT: termkey project**
