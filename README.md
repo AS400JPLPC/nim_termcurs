@@ -54,6 +54,7 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br>  
   * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
   * Full Change 2020-05-26&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
+  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br>  
 
 **Thank you**
 
@@ -276,6 +277,10 @@ proc Index(pnl: PANEL): Natural {...}
 proc newPanel(name: string; posx, posy, height, width: Natural; button: seq[(BUTTON)];
              cadre: CADRE = line0; title: string = ""; pnl_atr: ZONATRB = pnlatr): PANEL {...}
 
+proc updPanel(pnl: var PANEL; name: string; posx, posy, height, width: Natural;
+             button: seq[(BUTTON)]; cadre: CADRE = line0; title: string = "";
+             pnl_atr: ZONATRB = pnlatr) {...}
+
 proc printField(pnl: var PANEL; fld: FIELD) {...}
 
 proc printButton(pnl: var PANEL; btn_esp: BTNSPACE = btnspc) {...}
@@ -419,7 +424,7 @@ proc isActif(pnl: var PANEL): bool {...}
 proc isMouse(pnl: var PANEL): bool {...}
 
 proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
-            separator: GridStyle = noStyle; grid_atr: GRIDATRB = gridatr;
+            separator: GridStyle = sepStyle; grid_atr: GRIDATRB = gridatr;
             actif: bool = true): GRIDSFL {...}
 
 proc resetGrid(this: GRIDSFL) {...}
@@ -455,3 +460,4 @@ proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
 proc isValide(pnl: var PANEL): bool {...}
 
 proc ioPanel(pnl: var PANEL): Key {...}
+

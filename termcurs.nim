@@ -390,10 +390,10 @@ msgatr.foregr = ForegroundColor.fgRed
 msgatr.forebr = true
 
 var hlpatr* = new(ZONATRB)
-hlpatr.style  = {styleDim}
+hlpatr.style  = {styleDim,styleItalic}
 hlpatr.backgr = BackgroundColor.bgBlack
 hlpatr.backbr = false
-hlpatr.foregr = ForegroundColor.fgBlue
+hlpatr.foregr = ForegroundColor.fgYellow
 hlpatr.forebr = true
 
 var btnatr* = new(BOXATRB)
@@ -1232,6 +1232,39 @@ proc newPanel*(name:string;posx,posy,height,width,:Natural;button: seq[(BUTTON)]
   pnl.actif = true
   return pnl
 
+proc updPanel*(pnl :var PANEL; name:string;posx,posy,height,width,:Natural;button: seq[(BUTTON)];
+              cadre : CADRE = line0; title : string = "",pnl_atr : ZONATRB = pnlatr) =
+  pnl.name  = name
+  pnl.posx  = posx
+  pnl.posy  = posy
+  pnl.lines  = height
+  pnl.cols  = width
+  pnl.backgr  = pnl_atr.backgr
+  pnl.backbr  = pnl_atr.backbr
+  pnl.foregr  = pnl_atr.foregr
+  pnl.forebr  = pnl_atr.forebr
+  pnl.style   = pnl_atr.style
+
+  pnl.cadre   = cadre
+
+  if pnl.cadre == CADRE.line1 or pnl.cadre == CADRE.line2 :
+    pnl.boxpnl  = defBox(name, 1 , 1 ,pnl.lines, pnl.cols, cadre, title)
+  
+  pnl.index = 0
+
+  pnl.button  = newseq[BUTTON](len(button))
+  pnl.button   = button
+  pnl.funcKey = newseq[Key](len(button))
+  for i,btn in pnl.button :
+    pnl.funcKey[i] = btn.key
+
+  pnl.mouse = false
+
+  pnl.buf = newSeq[TerminalChar]((pnl.lines+1)*(pnl.cols+1))
+  
+  pnl.actif = true
+
+
 
 
 
@@ -1995,7 +2028,7 @@ proc setPageGrid(this :GRIDSFL)=
 
 
 proc newGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
-                  separator: GridStyle = noStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): GRIDSFL =
+                  separator: GridStyle = sepStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): GRIDSFL =
 
   var Ngrid = new GRIDSFL
   Ngrid.name  = name
@@ -2026,7 +2059,7 @@ proc resetGrid*(this: GRIDSFL) =
   this.posy  = 0
   this.lines = 0 
   this.cols  = 0
-  this.separator = noStyle
+  this.separator = sepStyle
   this.pageRows = 0
   this.rows = newSeq[seq[string]]()
   this.nrow = newSeq[int]()
@@ -2509,13 +2542,18 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     var button: BUTTON 
     button.key   = Key.None
     button.text  = ""
-    pnlmsg = new_Panel("msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,pnl.cols,@[button],CADRE.line0)
-    pnlmsg.label.add(defLabel( "msg", 1, 1,"Info :" & info, msgatr))
+
+    var lcols = pnl.cols
+    var msg : string   = info
+    if lcols < (len(info) + 6) :  msg = info.substr(0, pnl.cols - 6)
+    if lcols > (len(msg) + 6) : lcols = len(msg) + 6
+
+    pnlmsg = new_Panel("msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,lcols,@[button],CADRE.line0)
+    pnlmsg.label.add(defLabel( "msg", 1, 1,"Info :" & msg, msgatr))
     printLabel(pnlmsg,pnlmsg.label[0])
     displayPanel(pnlmsg)
     stdout.flushFile()
     while true:
-      hideCursor()
       e_key = getFunc()
       case e_key
         of Key.Escape:
@@ -2539,8 +2577,14 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     var button: BUTTON 
     button.key   = Key.None
     button.text  = ""
-    pnlmsg = new_Panel("msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,pnl.cols,@[button],CADRE.line0)
-    pnlmsg.label.add(defLabel( "msg", 1, 1,"Info :" & info, hlpatr))
+
+    var lcols = pnl.cols
+    var msg : string   = info
+    if lcols < (len(info) + 6) :  msg = info.substr(0, pnl.cols - 6)
+    if lcols > (len(msg) + 6) : lcols = len(msg) + 6
+
+    pnlmsg = new_Panel("msg",pnl.lines + pnl.posx - 1 ,pnl.posy,1,lcols,@[button],CADRE.line0)
+    pnlmsg.label.add(defLabel( "msg", 1, 1,"Info :" & msg, hlpatr))
 
     printLabel(pnlmsg,pnlmsg.label[0])
     displayPanel(pnlmsg)
@@ -2933,7 +2977,6 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
 
   var CountField = pnl.index
   var fld_key:Key = Key.Enter
-
   var index = getIndex(pnl,pnl.field[CountField].name)
 
   # check error
@@ -2969,6 +3012,14 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
     if i < 0 : return 0
     return i
 
+  func fieldNbr(pnl :var PANEL) :int =
+    var nbr = -1
+    for n in 0..len(pnl.field) - 1:
+      if  isActif(pnl.field[n]) :
+        if not  isProtect(pnl.field[n]) :  nbr = n
+    return nbr
+
+
 
   #displays width framing the field
   if not pnl.field[CountField].protect and pnl.field[index].actif :
@@ -2990,7 +3041,6 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
       printField(pnl,pnl.field[CountField])
       displayField(pnl,pnl.field[CountField])
 
-
     if isPanelKey(pnl,fld_key) or fld_key == Key.PROC :                      # this key sav index field return main 
       pnl.index = getIndex(pnl,pnl.field[CountField].name)
       return fld_key
@@ -3002,8 +3052,8 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
         of Key.Escape :                               # we replay & resume the basic value
           continue
         of Key.Enter:
-          if CountField < len(pnl.field)-1 : inc(CountField)
-          elif CountField == len(pnl.field)-1 : CountField = 1
+          inc(CountField)
+          if CountField > fieldNbr(pnl) : CountField = 0
           if pnl.field[CountField].protect :
             CountField = isFirstIO(pnl,CountField) 
 
@@ -3013,9 +3063,9 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
           if pnl.field[CountField].protect  :
             CountField = isPriorIO(pnl,CountField )
 
-        of Key.Down :
-          if CountField < len(pnl.field)-1 : inc(CountField)
-          elif CountField == len(pnl.field)-1 : CountField = 0
-          if pnl.field[CountField].protect  :
+        of Key.Down:
+          inc(CountField)
+          if CountField > fieldNbr(pnl) : CountField = 0
+          if pnl.field[CountField].protect :
             CountField = isFirstIO(pnl,CountField)
         else :discard
