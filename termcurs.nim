@@ -98,11 +98,17 @@ type
     title_backbr*: bool
     title_foregr*: ForegroundColor 
     title_forebr*: bool
+
+
+  CELLATRB* = ref object
     cell_style* : set[Style]
     cell_backgr*: BackgroundColor
     cell_backbr*: bool
     cell_foregr*: ForegroundColor 
     cell_forebr*: bool
+
+
+
 
   BTNSPACE* = ref object
     space* : Natural
@@ -277,7 +283,7 @@ type
     reftyp: REFTYP
     posy  : Natural
     edtcar: string
-
+    cellatr : CELLATRB
 
   GRIDSFL* = ref object 
     name : string 
@@ -423,11 +429,16 @@ gridatr.title_backgr = BackgroundColor.bgblack
 gridatr.title_backbr = false
 gridatr.title_foregr = ForegroundColor.fgGreen
 gridatr.title_forebr = false
-gridatr.cell_style = {styleDim,styleItalic}
-gridatr.cell_backgr = BackgroundColor.bgblack
-gridatr.cell_backbr = false
-gridatr.cell_foregr = ForegroundColor.fgCyan
-gridatr.cell_forebr = false
+
+
+
+var cellatr* = new(CELLATRB)
+cellatr.cell_style = {styleDim,styleItalic}
+cellatr.cell_backgr = BackgroundColor.bgblack
+cellatr.cell_backbr = false
+cellatr.cell_foregr = ForegroundColor.fgCyan
+cellatr.cell_forebr = false
+
 
 ## define type cursor
 proc defCursor*(e_curs: Natural = 0) =
@@ -743,6 +754,7 @@ proc printMenu*(pnl: PANEL; mnu:MENU) =
     
         if edt:
           gotoXY(row + mnu.posx + pnl.posx - 1  , col + mnu.posy + pnl.posy - 1)
+
           setBackgroundColor(mnu.backgr,mnu.backbr)
           setForegroundColor(mnu.foregr,mnu.forebr)
           writeStyled(trait,mnu.style)
@@ -1412,6 +1424,7 @@ proc displayPanel*(pnl: PANEL) =
         setForegroundColor(pnl.buf[npos].fg,pnl.buf[npos].fgb)
         writeStyled($pnl.buf[npos].ch,pnl.buf[npos].style)
       else :
+        setStyle(pnl.style)
         setBackgroundColor(pnl.backgr,pnl.backbr)
         setForegroundColor(pnl.foregr,pnl.forebr)
         writeStyled(" ",pnl.style)
@@ -1535,9 +1548,9 @@ proc displayLabel*(pnl: var PANEL; lbl: Label) =
   for y in 0..<runeLen(lbl.text):
     gotoXY(lbl.posx + pnl.posx - 1 , y + pnl.posy + lbl.posy - 1)
     if pnl.buf[n].on :
-      setBackgroundColor(pnl.buf[n].bg,pnl.buf[npos].bgb)
-      setForegroundColor(pnl.buf[n].fg,pnl.buf[npos].fgb)
-      writeStyled($pnl.buf[n].ch,pnl.buf[npos].style)
+      setBackgroundColor(pnl.buf[n].bg,pnl.buf[n].bgb)
+      setForegroundColor(pnl.buf[n].fg,pnl.buf[n].fgb)
+      writeStyled($pnl.buf[n].ch,pnl.buf[n].style)
     else :
       setBackgroundColor(pnl.backgr,pnl.backbr)
       setForegroundColor(pnl.foregr,pnl.forebr)
@@ -1560,10 +1573,11 @@ proc displayField*(pnl: var  PANEL; fld: FIELD) =
   for y in 0..<fld.nbrcar:
     gotoXY(fld.posx + pnl.posx - 1 , y + pnl.posy + fld.posy - 1)
     if pnl.buf[n].on :
-        setBackgroundColor(pnl.buf[n].bg,pnl.buf[npos].bgb)
-        setForegroundColor(pnl.buf[n].fg,pnl.buf[npos].fgb)
-        writeStyled($pnl.buf[n].ch,pnl.buf[npos].style)
+      setBackgroundColor(pnl.buf[n].bg,pnl.buf[n].bgb)
+      setForegroundColor(pnl.buf[n].fg,pnl.buf[n].fgb)
+      writeStyled($pnl.buf[n].ch,pnl.buf[n].style)
     else :
+      setStyle(pnl.style)
       setBackgroundColor(pnl.backgr,pnl.backbr)
       setForegroundColor(pnl.foregr,pnl.forebr)
       writeStyled(" ",pnl.style)
@@ -1593,10 +1607,11 @@ proc displayButton*(pnl: var PANEL;) =
   for y in 0..<pnl.cols:
     gotoXY(x + pnl.posx - 1 , y + pnl.posy  - 1)
     if pnl.buf[n].on :
-      setBackgroundColor(pnl.buf[n].bg,pnl.buf[npos].bgb)
-      setForegroundColor(pnl.buf[n].fg,pnl.buf[npos].fgb)
-      writeStyled($pnl.buf[n].ch,pnl.buf[npos].style)
+      setBackgroundColor(pnl.buf[n].bg,pnl.buf[n].bgb)
+      setForegroundColor(pnl.buf[n].fg,pnl.buf[n].fgb)
+      writeStyled($pnl.buf[n].ch,pnl.buf[n].style)
     else :
+      setStyle(pnl.style)
       setBackgroundColor(pnl.backgr,pnl.backbr)
       setForegroundColor(pnl.foregr,pnl.forebr)
       writeStyled(" ",pnl.style)
@@ -1625,10 +1640,12 @@ proc restorePanel*(dst: PANEL; src:var PANEL) =
       inc(npos)
       gotoXY(x + src.posx - 1, y  + src.posy )
       if dst.buf[npos].on :
+        setStyle(dst.buf[npos].style)
         setBackgroundColor(dst.buf[npos].bg,dst.buf[npos].bgb)
         setForegroundColor(dst.buf[npos].fg,dst.buf[npos].fgb)
         writeStyled($dst.buf[npos].ch,dst.buf[npos].style)
       else :
+        setStyle(dst.style)
         setBackgroundColor(dst.backgr,dst.backbr)
         setForegroundColor(dst.foregr,dst.forebr)
         writeStyled(" ",dst.style)
@@ -2082,14 +2099,20 @@ proc setHeaders*(this: GRIDSFL, headers: seq[CELL]) =
 
 
 
-proc defCell*(text: string; long : Natural;reftyp: REFTYP; edtcar : string =""): CELL =
+proc defCell*(text: string; long : Natural;reftyp: REFTYP; cell_atr : CELLATRB = cellatr): CELL =
   var cell : CELL
   cell.long    = long
   cell.reftyp = reftyp
   cell.text   = text
-  cell.edtcar = edtcar
+  cell.edtcar = ""
   cell.posy   = 0
+  cell.cellatr = cell_atr
   return cell
+
+proc setCellEditCar*(cell : var CELL; edtcar :string =""; )=
+  cell.edtcar = edtcar
+
+
 
 ## return index Sequence Label from name
 proc getIndexG*(this: GRIDSFL; name: string): int  =
@@ -2196,15 +2219,15 @@ proc printGridRows*(this: GRIDSFL ) =
         n =  n + this.headers[h].posy 
         for ch in runes(padingCell(buf[h],this.headers[h])):
           this.buf[n].ch = ch
-          this.buf[n].bg  = this.gridatr.cell_backgr
-          this.buf[n].bgb = this.gridatr.cell_backbr
-          this.buf[n].fg  = this.gridatr.cell_foregr
-          this.buf[n].fgb = this.gridatr.cell_forebr
+          this.buf[n].bg  = this.headers[h].cellatr.cell_backgr
+          this.buf[n].bgb = this.headers[h].cellatr.cell_backbr
+          this.buf[n].fg  = this.headers[h].cellatr.cell_foregr
+          this.buf[n].fgb = this.headers[h].cellatr.cell_forebr
           
           if this.cursligne == r  :
             this.buf[n].style = {styleReverse}
           else :
-            this.buf[n].style = this.gridatr.cell_style
+            this.buf[n].style = this.headers[h].cellatr.cell_style
           this.buf[n].on = true
           inc(n)
 
@@ -2530,6 +2553,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
   #================================================================
 
   proc msgErr(pnl: PANEL ; info:string) =
+
     setBackgroundColor(msgatr.backgr,msgatr.backbr)
     setForegroundColor(msgatr.foregr,msgatr.forebr)
     gotoXY(e_posx,e_posy)

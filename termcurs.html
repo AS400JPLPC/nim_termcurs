@@ -152,12 +152,14 @@ function main() {
   title_backgr*: BackgroundColor
   title_backbr*: bool
   title_foregr*: ForegroundColor
-  title_forebr*: bool
+  title_forebr*: bool"><wbr />GRIDATRB<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#CELLATRB"
+    title="CELLATRB = ref object
   cell_style*: set[Style]
   cell_backgr*: BackgroundColor
   cell_backbr*: bool
   cell_foregr*: ForegroundColor
-  cell_forebr*: bool"><wbr />GRIDATRB<span class="attachedType"></span></a></li>
+  cell_forebr*: bool"><wbr />CELLATRB<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#BTNSPACE"
     title="BTNSPACE = ref object
   space*: Natural"><wbr />BTNSPACE<span class="attachedType"></span></a></li>
@@ -296,7 +298,8 @@ function main() {
   long*: Natural
   reftyp: REFTYP
   posy: Natural
-  edtcar: string"><wbr />CELL<span class="attachedType"></span></a></li>
+  edtcar: string
+  cellatr: CELLATRB"><wbr />CELL<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#GRIDSFL"
     title="GRIDSFL = ref object
   name: string
@@ -352,6 +355,8 @@ function main() {
     title="btnspc = new(BTNSPACE)"><wbr />btnspc<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#gridatr"
     title="gridatr = new(GRIDATRB)"><wbr />gridatr<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#cellatr"
+    title="cellatr = new(CELLATRB)"><wbr />cellatr<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -596,8 +601,10 @@ function main() {
     title="columnsCount(this: GRIDSFL): int"><wbr />columns<wbr />Count<span class="attachedType">GRIDSFL</span></a></li>
   <li><a class="reference" href="#setHeaders%2CGRIDSFL%2Cseq%5BCELL%5D"
     title="setHeaders(this: GRIDSFL; headers: seq[CELL])"><wbr />set<wbr />Headers<span class="attachedType">GRIDSFL</span></a></li>
-  <li><a class="reference" href="#defCell%2Cstring%2CNatural%2CREFTYP%2Cstring"
-    title="defCell(text: string; long: Natural; reftyp: REFTYP; edtcar: string = &quot;&quot;): CELL"><wbr />def<wbr />Cell<span class="attachedType">CELL</span></a></li>
+  <li><a class="reference" href="#defCell%2Cstring%2CNatural%2CREFTYP%2CCELLATRB"
+    title="defCell(text: string; long: Natural; reftyp: REFTYP; cell_atr: CELLATRB = cellatr): CELL"><wbr />def<wbr />Cell<span class="attachedType">CELL</span></a></li>
+  <li><a class="reference" href="#setCellEditCar%2CCELL%2Cstring"
+    title="setCellEditCar(cell: var CELL; edtcar: string = &quot;&quot;)"><wbr />set<wbr />Cell<wbr />Edit<wbr />Car<span class="attachedType">CELL</span></a></li>
   <li><a class="reference" href="#getIndexG%2CGRIDSFL%2Cstring"
     title="getIndexG(this: GRIDSFL; name: string): int"><wbr />get<wbr />Index<wbr />G<span class="attachedType">GRIDSFL</span></a></li>
   <li><a class="reference" href="#addRows%2CGRIDSFL%2Cseq%5Bstring%5D"
@@ -730,6 +737,14 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
   <span class="Identifier">title_backbr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">title_foregr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
   <span class="Identifier">title_forebr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+</pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="CELLATRB"></a>
+<dt><pre><a href="termcurs.html#CELLATRB"><span class="Identifier">CELLATRB</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
   <span class="Identifier">cell_style</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
   <span class="Identifier">cell_backgr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
   <span class="Identifier">cell_backbr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
@@ -940,6 +955,7 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
   <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a>
   <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">edtcar</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">cellatr</span><span class="Other">:</span> <a href="termcurs.html#CELLATRB"><span class="Identifier">CELLATRB</span></a>
 </pre></dt>
 <dd>
 
@@ -1076,6 +1092,13 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="gridatr"></a>
 <dt><pre><a href="termcurs.html#gridatr"><span class="Identifier">gridatr</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#GRIDATRB"><span class="Identifier">GRIDATRB</span></a><span class="Other">)</span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="cellatr"></a>
+<dt><pre><a href="termcurs.html#cellatr"><span class="Identifier">cellatr</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#CELLATRB"><span class="Identifier">CELLATRB</span></a><span class="Other">)</span></pre></dt>
 <dd>
 
 
@@ -1851,9 +1874,16 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 
 
 </dd>
-<a id="defCell,string,Natural,REFTYP,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#defCell%2Cstring%2CNatural%2CREFTYP%2Cstring"><span class="Identifier">defCell</span></a><span class="Other">(</span><span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">long</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span> <span class="Identifier">edtcar</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#CELL"><span class="Identifier">CELL</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+<a id="defCell,string,Natural,REFTYP,CELLATRB"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#defCell%2Cstring%2CNatural%2CREFTYP%2CCELLATRB"><span class="Identifier">defCell</span></a><span class="Other">(</span><span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">long</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span> <span class="Identifier">cell_atr</span><span class="Other">:</span> <a href="termcurs.html#CELLATRB"><span class="Identifier">CELLATRB</span></a> <span class="Other">=</span> <span class="Identifier">cellatr</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#CELL"><span class="Identifier">CELL</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setCellEditCar,CELL,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setCellEditCar%2CCELL%2Cstring"><span class="Identifier">setCellEditCar</span></a><span class="Other">(</span><span class="Identifier">cell</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#CELL"><span class="Identifier">CELL</span></a><span class="Other">;</span> <span class="Identifier">edtcar</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1968,7 +1998,7 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-06-02 10:39:08 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-06-02 14:03:34 UTC</small>
       </div>
     </div>
   </div>

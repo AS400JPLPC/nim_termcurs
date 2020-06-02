@@ -55,6 +55,8 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
   * Full Change 2020-05-26&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
   * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br>  
+  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br>
+
 
 **Thank you**
 
@@ -433,7 +435,9 @@ proc columnsCount(this: GRIDSFL): int {...}
 
 proc setHeaders(this: GRIDSFL; headers: seq[CELL]) {...}
 
-proc defCell(text: string; long: Natural; reftyp: REFTYP; edtcar: string = ""): CELL {...}
+proc defCell(text: string; long: Natural; reftyp: REFTYP; cell_atr: CELLATRB = cellatr): CELL {...}
+
+proc setCellEditCar(cell: var CELL; edtcar: string = "") {...}
 
 proc getIndexG(this: GRIDSFL; name: string): int {...}
 
@@ -461,3 +465,5 @@ proc isValide(pnl: var PANEL): bool {...}
 
 proc ioPanel(pnl: var PANEL): Key {...}
 
+
+Made with Nim. Generated: 2020-06-02 14:03:34 UTC
