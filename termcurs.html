@@ -165,9 +165,9 @@ function main() {
   space*: Natural"><wbr />BTNSPACE<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#FIELD"
     title="FIELD = object
-  name*: string
-  posx*: Natural
-  posy*: Natural
+  name: string
+  posx: Natural
+  posy: Natural
   style: set[Style]
   backgr: BackgroundColor
   backbr: bool
@@ -178,21 +178,21 @@ function main() {
   pbackbr: bool
   pforegr: ForegroundColor
   pforebr: bool
-  reftyp*: REFTYP
-  width*: Natural
-  scal*: Natural
-  nbrcar*: Natural
-  empty*: bool
-  protect*: bool
-  pading*: bool
-  edtcar*: string
-  regex*: string
-  errmsg*: string
-  help*: string
+  reftyp: REFTYP
+  width: Natural
+  scal: Natural
+  nbrcar: Natural
+  empty: bool
+  protect: bool
+  pading: bool
+  edtcar: string
+  regex: string
+  errmsg: string
+  help: string
   text*: string
   switch*: bool
-  process*: string
-  err*: bool
+  process: string
+  err: bool
   actif*: bool"><wbr />FIELD<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#HIDEN"
     title="HIDEN = object
@@ -202,16 +202,16 @@ function main() {
   switch*: bool"><wbr />HIDEN<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#LABEL"
     title="LABEL = object
-  name*: string
-  posx*: Natural
-  posy*: Natural
+  name: string
+  posx: Natural
+  posy: Natural
   style: set[Style]
   backgr: BackgroundColor
   backbr: bool
   foregr: ForegroundColor
   forebr: bool
   text*: string
-  title*: bool
+  title: bool
   actif*: bool"><wbr />LABEL<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#BOX"
     title="BOX = object
@@ -226,7 +226,7 @@ function main() {
   backbr: bool
   foregr: ForegroundColor
   forebr: bool
-  title: string
+  title*: string
   titlebackgr: BackgroundColor
   titlebackbr: bool
   titleforegr: ForegroundColor
@@ -267,35 +267,35 @@ function main() {
   on: bool"><wbr />Terminal<wbr />Char<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#PANEL"
     title="PANEL = ref object
-  name: string
-  posx: Natural
-  posy: Natural
-  lines: Natural
-  cols: Natural
-  backgr: BackgroundColor
-  backbr: bool
-  foregr: ForegroundColor
-  forebr: bool
-  style: set[Style]
-  cadre: CADRE
-  boxpnl: BOX
+  name*: string
+  posx*: Natural
+  posy*: Natural
+  lines*: Natural
+  cols*: Natural
+  backgr*: BackgroundColor
+  backbr*: bool
+  foregr*: ForegroundColor
+  forebr*: bool
+  style*: set[Style]
+  cadre*: CADRE
+  boxpnl*: BOX
   box*: seq[BOX]
   label*: seq[LABEL]
   field*: seq[FIELD]
   hiden*: seq[HIDEN]
   button*: seq[BUTTON]
   index*: Natural
-  funcKey: seq[Key]
-  mouse: bool
+  funcKey*: seq[Key]
+  mouse*: bool
   buf: seq[TerminalChar]
-  actif: bool"><wbr />PANEL<span class="attachedType"></span></a></li>
+  actif*: bool"><wbr />PANEL<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#GridStyle"
     title="GridStyle = object
   colSeparator*: string"><wbr />Grid<wbr />Style<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#CELL"
     title="CELL = object
   text: string
-  long*: Natural
+  long: Natural
   reftyp: REFTYP
   posy: Natural
   edtcar: string
@@ -481,40 +481,88 @@ function main() {
     title="restorePanel(dst: PANEL; grid: GRIDSFL)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#restorePanel%2CPANEL%2CNatural%2CNatural"
     title="restorePanel(pnl: PANEL; lines, posy: Natural)"><wbr />restore<wbr />Panel<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#getNameL%2CPANEL%2Cint"
-    title="getNameL(pnl: PANEL; index: int): string"><wbr />get<wbr />Name<wbr />L<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#getIndexL%2CPANEL%2Cstring"
     title="getIndexL(pnl: PANEL; name: string): int"><wbr />get<wbr />Index<wbr />L<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#getTextL%2CPANEL%2Cstring"
-    title="getTextL(pnl: PANEL; name: string): string"><wbr />get<wbr />Text<wbr />L<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getNameL%2CPANEL%2Cint"
+    title="getNameL(pnl: PANEL; index: int): string"><wbr />get<wbr />Name<wbr />L<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getPosxL%2CPANEL%2Cint"
+    title="getPosxL(pnl: PANEL; index: int): int"><wbr />get<wbr />Posx<wbr />L<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getPosyL%2CPANEL%2Cint"
+    title="getPosyL(pnl: PANEL; index: int): int"><wbr />get<wbr />Posy<wbr />L<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#getTextL%2CPANEL%2Cint"
     title="getTextL(pnl: PANEL; index: int): string"><wbr />get<wbr />Text<wbr />L<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#isTitle%2CPANEL%2Cint"
+    title="isTitle(pnl: PANEL; index: int): bool"><wbr />is<wbr />Title<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getTextL%2CPANEL%2Cstring"
+    title="getTextL(pnl: PANEL; name: string): string"><wbr />get<wbr />Text<wbr />L<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#setTextL%2CPANEL%2Cstring%2Cstring"
     title="setTextL(pnl: PANEL; name: string; val: string)"><wbr />set<wbr />Text<wbr />L<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#setTextL%2CPANEL%2Cint%2Cstring"
     title="setTextL(pnl: PANEL; index: int; val: string)"><wbr />set<wbr />Text<wbr />L<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setTitle%2CPANEL%2Cint%2Cbool"
+    title="setTitle(pnl: PANEL; index: int; val: bool)"><wbr />set<wbr />Title<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#dltLabel%2CPANEL%2CNatural"
     title="dltLabel(pnl: PANEL; idx: Natural)"><wbr />dlt<wbr />Label<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#clearText%2CPANEL"
     title="clearText(pnl: var PANEL)"><wbr />clear<wbr />Text<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#getName%2CPANEL"
     title="getName(pnl: PANEL): string"><wbr />get<wbr />Name<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#getType%2CPANEL%2Cint"
-    title="getType(pnl: PANEL; index: int): enum"><wbr />get<wbr />Type<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#getProcess%2CPANEL%2Cint"
     title="getProcess(pnl: PANEL; index: int): string"><wbr />get<wbr />Process<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#getName%2CPANEL%2Cint"
     title="getName(pnl: PANEL; index: int): string"><wbr />get<wbr />Name<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getPosx%2CPANEL%2Cint"
+    title="getPosx(pnl: PANEL; index: int): int"><wbr />get<wbr />Posx<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getPosy%2CPANEL%2Cint"
+    title="getPosy(pnl: PANEL; index: int): int"><wbr />get<wbr />Posy<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getRefType%2CPANEL%2Cint"
+    title="getRefType(pnl: PANEL; index: int): REFTYP"><wbr />get<wbr />Ref<wbr />Type<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getWidth%2CPANEL%2Cint"
+    title="getWidth(pnl: PANEL; index: int): int"><wbr />get<wbr />Width<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getScal%2CPANEL%2Cint"
+    title="getScal(pnl: PANEL; index: int): int"><wbr />get<wbr />Scal<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getEmpty%2CPANEL%2Cint"
+    title="getEmpty(pnl: PANEL; index: int): bool"><wbr />get<wbr />Empty<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getErrmsg%2CPANEL%2Cint"
+    title="getErrmsg(pnl: PANEL; index: int): string"><wbr />get<wbr />Errmsg<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getHelp%2CPANEL%2Cint"
+    title="getHelp(pnl: PANEL; index: int): string"><wbr />get<wbr />Help<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getEdtcar%2CPANEL%2Cint"
+    title="getEdtcar(pnl: PANEL; index: int): string"><wbr />get<wbr />Edtcar<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getProtect%2CPANEL%2Cint"
+    title="getProtect(pnl: PANEL; index: int): bool"><wbr />get<wbr />Protect<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getText%2CPANEL%2Cint"
+    title="getText(pnl: PANEL; index: int): string"><wbr />get<wbr />Text<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#getSwitch%2CPANEL%2Cint"
+    title="getSwitch(pnl: PANEL; index: int): bool"><wbr />get<wbr />Switch<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#getText%2CPANEL%2Cstring"
     title="getText(pnl: PANEL; name: string): string"><wbr />get<wbr />Text<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#getSwitch%2CPANEL%2Cstring"
     title="getSwitch(pnl: PANEL; name: string): bool"><wbr />get<wbr />Switch<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#getIndex%2CPANEL%2Cstring"
     title="getIndex(pnl: PANEL; name: string): int"><wbr />get<wbr />Index<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#getText%2CPANEL%2Cint"
-    title="getText(pnl: PANEL; index: int): string"><wbr />get<wbr />Text<span class="attachedType">PANEL</span></a></li>
-  <li><a class="reference" href="#getSwitch%2CPANEL%2Cint"
-    title="getSwitch(pnl: PANEL; index: int): bool"><wbr />get<wbr />Switch<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setName%2CPANEL%2Cint%2Cstring"
+    title="setName(pnl: PANEL; index: int; val: string)"><wbr />set<wbr />Name<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setName%2CPANEL%2Cint%2CNatural"
+    title="setName(pnl: PANEL; index: int; val: Natural)"><wbr />set<wbr />Name<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setPosy%2CPANEL%2Cint%2CNatural"
+    title="setPosy(pnl: PANEL; index: int; val: Natural)"><wbr />set<wbr />Posy<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setType%2CPANEL%2Cint%2CREFTYP"
+    title="setType(pnl: PANEL; index: int; val: REFTYP)"><wbr />set<wbr />Type<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setWidth%2CPANEL%2Cint%2CNatural"
+    title="setWidth(pnl: PANEL; index: int; val: Natural)"><wbr />set<wbr />Width<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setScal%2CPANEL%2Cint%2CNatural"
+    title="setScal(pnl: PANEL; index: int; val: Natural)"><wbr />set<wbr />Scal<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setEmpty%2CPANEL%2Cint%2Cbool"
+    title="setEmpty(pnl: PANEL; index: int; val: bool)"><wbr />set<wbr />Empty<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setErrmsg%2CPANEL%2Cint%2Cstring"
+    title="setErrmsg(pnl: PANEL; index: int; val: string)"><wbr />set<wbr />Errmsg<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setHelp%2CPANEL%2Cint%2Cstring"
+    title="setHelp(pnl: PANEL; index: int; val: string)"><wbr />set<wbr />Help<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setEdtcar%2CPANEL%2Cint%2Cstring"
+    title="setEdtcar(pnl: PANEL; index: int; val: string)"><wbr />set<wbr />Edtcar<span class="attachedType">PANEL</span></a></li>
+  <li><a class="reference" href="#setProtect%2CPANEL%2Cint%2Cbool"
+    title="setProtect(pnl: PANEL; index: int; val: bool)"><wbr />set<wbr />Protect<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#setText%2CPANEL%2Cstring%2Cstring"
     title="setText(pnl: PANEL; name: string; val: string)"><wbr />set<wbr />Text<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#setSwitch%2CPANEL%2Cstring%2Cbool"
@@ -555,8 +603,8 @@ function main() {
     title="setProtect(fld: var FIELD; protect: bool)"><wbr />set<wbr />Protect<span class="attachedType">FIELD</span></a></li>
   <li><a class="reference" href="#setEdtCar%2CFIELD%2Cstring"
     title="setEdtCar(fld: var FIELD; Car: string)"><wbr />set<wbr />Edt<wbr />Car<span class="attachedType">FIELD</span></a></li>
-  <li><a class="reference" href="#setError%2CFIELD"
-    title="setError(fld: var FIELD)"><wbr />set<wbr />Error<span class="attachedType">FIELD</span></a></li>
+  <li><a class="reference" href="#setError%2CFIELD%2Cbool"
+    title="setError(fld: var FIELD; val: bool)"><wbr />set<wbr />Error<span class="attachedType">FIELD</span></a></li>
   <li><a class="reference" href="#setActif%2CFIELD%2Cbool"
     title="setActif(fld: var FIELD; actif: bool)"><wbr />set<wbr />Actif<span class="attachedType">FIELD</span></a></li>
   <li><a class="reference" href="#setActif%2CLABEL%2Cbool"
@@ -577,6 +625,8 @@ function main() {
     title="isPanelKey(pnl: PANEL; e_key: Key): bool"><wbr />is<wbr />Panel<wbr />Key<span class="attachedType">PANEL</span></a></li>
   <li><a class="reference" href="#isProtect%2CFIELD"
     title="isProtect(fld: var FIELD): bool"><wbr />is<wbr />Protect<span class="attachedType">FIELD</span></a></li>
+  <li><a class="reference" href="#isError%2CFIELD"
+    title="isError(fld: var FIELD): bool"><wbr />is<wbr />Error<span class="attachedType">FIELD</span></a></li>
   <li><a class="reference" href="#isActif%2CFIELD"
     title="isActif(fld: var FIELD): bool"><wbr />is<wbr />Actif<span class="attachedType">FIELD</span></a></li>
   <li><a class="reference" href="#isActif%2CLABEL"
@@ -605,6 +655,8 @@ function main() {
     title="defCell(text: string; long: Natural; reftyp: REFTYP; cell_atr: CELLATRB = cellatr): CELL"><wbr />def<wbr />Cell<span class="attachedType">CELL</span></a></li>
   <li><a class="reference" href="#setCellEditCar%2CCELL%2Cstring"
     title="setCellEditCar(cell: var CELL; edtcar: string = &quot;&quot;)"><wbr />set<wbr />Cell<wbr />Edit<wbr />Car<span class="attachedType">CELL</span></a></li>
+  <li><a class="reference" href="#getcellLen%2CCELL"
+    title="getcellLen(cell: var CELL): int"><wbr />getcell<wbr />Len<span class="attachedType">CELL</span></a></li>
   <li><a class="reference" href="#getIndexG%2CGRIDSFL%2Cstring"
     title="getIndexG(this: GRIDSFL; name: string): int"><wbr />get<wbr />Index<wbr />G<span class="attachedType">GRIDSFL</span></a></li>
   <li><a class="reference" href="#addRows%2CGRIDSFL%2Cseq%5Bstring%5D"
@@ -641,8 +693,8 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">define type cursorErase and color and style defaultreturn BUTTONDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine LabelDefine Titleassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field NumericDefine Field NumericHiden bloc outswitchget lines/COLS PANELreturn index actived from panel this getFieldDefine PANELassigne FIELD to matrice for displayassigne BUTTON matrice for displaydisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayvide object PANEL / box/label/fld/procvide object MENUcls Labelcsl Fieldcls Paneldisplay matrice only LABELdisplay matrice only FIELDdisplay matrice only BUTTONrestore the base occupied by pnlrestore the base occupied by mnurestore the base occupied by gridrestore the lines occupied by the error messagereturn name label Sequence Fieldreturn index Sequence Label from namereturn value Label Sequence from namereturn value label Sequence Labelset value Label Sequence Labelset value Label Sequence Labeldelete Label Sequence Labelclear value ALL FIELDreturn name field from panel this getFieldreturn Type Field Sequence Fieldreturn cVoid Field Sequence Fieldreturn name Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn index Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldset value Field Sequence Fieldset value Field Sequence Fielset value Field Sequence Fieldsetvalue Field Sequence Fieldelete Field Sequence Fieldreturn name from index return index from Namereturn value Field from namereturn value Field from namereturn value Field from indexreturn value Field from indexdelete Field Sequence Fieldreturn nbrCar Field return nbrCar Field set attribut display labelset attribut display fieldset on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELTest if KEYs must be managed by the programmerif on/off  FIELD / LABEL / BOX / MENU / PANEL<p> </p>
-return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-pageup-pagedown-automatic-alignment-based-on-the-type-reference"><center>Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type reference</center></h1><h1 id="traiement-des-menus-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-left-right-movement-width-the-wheel-and-validation-width-the-clik"><center>traiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement width the wheel and validation width the clik</center></h1><h1 id="input-buffer-management-modeled-on-5250slash3270-inspiration-ncurse-application-hold-principe-and-new-langage-use-termkeydotnim"><center>Input buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim</center></h1>Contrôle  Format Panel full Field<h1 id="format-management-including-zones-keyboard-proction-keys-are-returned-to-the-calling-procedure-only-the-key-ctrla-eq-aide-slash-help-for-field-f1-is-reserved-for-complex-help-programming-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert-predefined-and-customizable-regex-control"><center>Format management including zones keyboard proction keys are returned to the calling procedure  only the key CtrlA = Aide / Help for field F1 is reserved for complex help programming  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT predefined and customizable REGEX control</center></h1></p>
+  <p class="module-desc">define type cursorErase and color and style defaultreturn BUTTONDefine BOXassigne BOX to matrice for displayDefine Menuassigne MENU to matrice for displayDefine LabelDefine Titleassigne LABEL to matrice for displayDefine Field String StandardDefine Field MailDefine Field switchDefine Field date ISODefine Field NumericDefine Field NumericHiden bloc outswitchget lines/COLS PANELreturn index actived from panel this getFieldDefine PANELassigne FIELD to matrice for displayassigne BUTTON matrice for displaydisplay matrice PANELassigne PANEL and all OBJECT to matrice for displayvide object PANEL / box/label/fld/procvide object MENUcls Labelcsl Fieldcls Paneldisplay matrice only LABELdisplay matrice only FIELDdisplay matrice only BUTTONrestore the base occupied by pnlrestore the base occupied by mnurestore the base occupied by gridrestore the lines occupied by the error messagereturn index Sequence Label from namereturn name label Sequence Fieldreturn Posx label Sequence Fieldreturn Posy label Sequence Fieldreturn value label Sequence Labeltest Title label Sequence Labelreturn value Label Sequence from nameset value Label Sequence Labelset value Label Sequence Labelset value Label Sequence Labeldelete Label Sequence Labelclear value ALL FIELDreturn name field from panel this getFieldreturn cVoid Field Sequence Fieldreturn name Field Sequence Fieldreturn Posx Field Sequence Fieldreturn Posy Field Sequence Fieldreturn Type Field Sequence Fieldreturn width Field Sequence Fieldreturn Scal Field Sequence Fieldreturn Empty Field Sequence Fieldreturn errmsg Field Sequence Fieldreturn help Field Sequence Fieldreturn Edtcar Field Sequence Fieldreturn Protect Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn value Field Sequence Fieldreturn index Field Sequence Fieldset name Field Sequence Fieldset posx Field Sequence Fieldset posy Field Sequence Fieldset Type Field Sequence Fieldset width Field Sequence Fieldset Scal Field Sequence Fieldset Empty Field Sequence Fieldset errmsg Field Sequence Fieldset help Field Sequence Fieldset Edtcar Field Sequence Fieldset value Field Sequence Fieldset value Field Sequence Fielset value Field Sequence Fieldsetvalue Field Sequence Fieldelete Field Sequence Fieldreturn name from index return index from Namereturn value Field from namereturn value Field from namereturn value Field from indexreturn value Field from indexdelete Field Sequence Fieldreturn nbrCar Field return nbrCar Field set attribut display labelset attribut display fieldset on  = display ONLYEnables or disables FIELD / LABEL / BOX / MENU / PANELTest if KEYs must be managed by the programmerif on/off  FIELD / LABEL / BOX / MENU / PANEL<p> </p>
+return index Sequence Label from namereturn index Sequence Label from name<h1 id="management-grid-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-pageup-pagedown-automatic-alignment-based-on-the-type-reference"><center>Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type reference</center></h1><h1 id="traiement-des-menus-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-left-right-movement-width-the-wheel-and-validation-width-the-clik"><center>traiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement width the wheel and validation width the clik</center></h1><h1 id="input-buffer-management-modeled-on-5250slash3270-inspiration-ncurse-application-hold-principe-and-new-langage-use-termkeydotnim"><center>Input buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim</center></h1>Contrôle  Format Panel full Field<h1 id="format-management-including-zones-keyboard-proction-keys-are-returned-to-the-calling-procedure-only-the-key-ctrla-eq-aide-slash-help-for-field-f1-is-reserved-for-complex-help-programming-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert-predefined-and-customizable-regex-control"><center>Format management including zones keyboard proction keys are returned to the calling procedure  only the key CtrlA = Aide / Help for field F1 is reserved for complex help programming  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT predefined and customizable REGEX control</center></h1></p>
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
@@ -767,9 +819,9 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="FIELD"></a>
 <dt><pre><a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">posx</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">posy</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">style</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
   <span class="Identifier">backgr</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
   <span class="Identifier">backbr</span><span class="Other">:</span> <span class="Identifier">bool</span>
@@ -780,21 +832,21 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
   <span class="Identifier">pbackbr</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">pforegr</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
   <span class="Identifier">pforebr</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">reftyp</span><span class="Operator">*</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a>
-  <span class="Identifier">width</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">scal</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">nbrcar</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">empty</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">protect</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">pading</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">edtcar</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">regex</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">errmsg</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">help</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a>
+  <span class="Identifier">width</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">scal</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">nbrcar</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">protect</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">pading</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">edtcar</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">regex</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">text</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">switch</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">process</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">err</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">process</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">err</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
@@ -816,16 +868,16 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="LABEL"></a>
 <dt><pre><a href="termcurs.html#LABEL"><span class="Identifier">LABEL</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">posx</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">posy</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">style</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
   <span class="Identifier">backgr</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
   <span class="Identifier">backbr</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">foregr</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
   <span class="Identifier">forebr</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">text</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">title</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">title</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
@@ -846,7 +898,7 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
   <span class="Identifier">backbr</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">foregr</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
   <span class="Identifier">forebr</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">title</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">title</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">titlebackgr</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
   <span class="Identifier">titlebackbr</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">titleforegr</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
@@ -911,28 +963,28 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="PANEL"></a>
 <dt><pre><a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
-  <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">lines</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">backgr</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
-  <span class="Identifier">backbr</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">foregr</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
-  <span class="Identifier">forebr</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">style</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
-  <span class="Identifier">cadre</span><span class="Other">:</span> <a href="termcurs.html#CADRE"><span class="Identifier">CADRE</span></a>
-  <span class="Identifier">boxpnl</span><span class="Other">:</span> <a href="termcurs.html#BOX"><span class="Identifier">BOX</span></a>
+  <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">posx</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">posy</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">lines</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">cols</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">backgr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
+  <span class="Identifier">backbr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">foregr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
+  <span class="Identifier">forebr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">style</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
+  <span class="Identifier">cadre</span><span class="Operator">*</span><span class="Other">:</span> <a href="termcurs.html#CADRE"><span class="Identifier">CADRE</span></a>
+  <span class="Identifier">boxpnl</span><span class="Operator">*</span><span class="Other">:</span> <a href="termcurs.html#BOX"><span class="Identifier">BOX</span></a>
   <span class="Identifier">box</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#BOX"><span class="Identifier">BOX</span></a><span class="Other">]</span>
   <span class="Identifier">label</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#LABEL"><span class="Identifier">LABEL</span></a><span class="Other">]</span>
   <span class="Identifier">field</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a><span class="Other">]</span>
   <span class="Identifier">hiden</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#HIDEN"><span class="Identifier">HIDEN</span></a><span class="Other">]</span>
   <span class="Identifier">button</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">]</span>
   <span class="Identifier">index</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">funcKey</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">Key</span><span class="Other">]</span>
-  <span class="Identifier">mouse</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">funcKey</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">Key</span><span class="Other">]</span>
+  <span class="Identifier">mouse</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">buf</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#TerminalChar"><span class="Identifier">TerminalChar</span></a><span class="Other">]</span>
-  <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
 
@@ -951,7 +1003,7 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 <a id="CELL"></a>
 <dt><pre><a href="termcurs.html#CELL"><span class="Identifier">CELL</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">long</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">long</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a>
   <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span>
   <span class="Identifier">edtcar</span><span class="Other">:</span> <span class="Identifier">string</span>
@@ -1459,13 +1511,6 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 
 
 </dd>
-<a id="getNameL,PANEL,int"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#getNameL%2CPANEL%2Cint"><span class="Identifier">getNameL</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
-<dd>
-
-
-
-</dd>
 <a id="getIndexL,PANEL,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#getIndexL%2CPANEL%2Cstring"><span class="Identifier">getIndexL</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -1473,8 +1518,22 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 
 
 </dd>
-<a id="getTextL,PANEL,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#getTextL%2CPANEL%2Cstring"><span class="Identifier">getTextL</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getNameL,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getNameL%2CPANEL%2Cint"><span class="Identifier">getNameL</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getPosxL,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getPosxL%2CPANEL%2Cint"><span class="Identifier">getPosxL</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getPosyL,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getPosyL%2CPANEL%2Cint"><span class="Identifier">getPosyL</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1482,6 +1541,20 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="getTextL,PANEL,int"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#getTextL%2CPANEL%2Cint"><span class="Identifier">getTextL</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="isTitle,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#isTitle%2CPANEL%2Cint"><span class="Identifier">isTitle</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getTextL,PANEL,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getTextL%2CPANEL%2Cstring"><span class="Identifier">getTextL</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1496,6 +1569,13 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="setTextL,PANEL,int,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#setTextL%2CPANEL%2Cint%2Cstring"><span class="Identifier">setTextL</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setTitle,PANEL,int,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setTitle%2CPANEL%2Cint%2Cbool"><span class="Identifier">setTitle</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1522,13 +1602,6 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 
 
 </dd>
-<a id="getType,PANEL,int"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#getType%2CPANEL%2Cint"><span class="Identifier">getType</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">enum</span></pre></dt>
-<dd>
-
-
-
-</dd>
 <a id="getProcess,PANEL,int"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#getProcess%2CPANEL%2Cint"><span class="Identifier">getProcess</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -1538,6 +1611,90 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="getName,PANEL,int"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#getName%2CPANEL%2Cint"><span class="Identifier">getName</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getPosx,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getPosx%2CPANEL%2Cint"><span class="Identifier">getPosx</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getPosy,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getPosy%2CPANEL%2Cint"><span class="Identifier">getPosy</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getRefType,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getRefType%2CPANEL%2Cint"><span class="Identifier">getRefType</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getWidth,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getWidth%2CPANEL%2Cint"><span class="Identifier">getWidth</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getScal,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getScal%2CPANEL%2Cint"><span class="Identifier">getScal</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getEmpty,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getEmpty%2CPANEL%2Cint"><span class="Identifier">getEmpty</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getErrmsg,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getErrmsg%2CPANEL%2Cint"><span class="Identifier">getErrmsg</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getHelp,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getHelp%2CPANEL%2Cint"><span class="Identifier">getHelp</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getEdtcar,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getEdtcar%2CPANEL%2Cint"><span class="Identifier">getEdtcar</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getProtect,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getProtect%2CPANEL%2Cint"><span class="Identifier">getProtect</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getText,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getText%2CPANEL%2Cint"><span class="Identifier">getText</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getSwitch,PANEL,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getSwitch%2CPANEL%2Cint"><span class="Identifier">getSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1564,15 +1721,78 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 
 
 </dd>
-<a id="getText,PANEL,int"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#getText%2CPANEL%2Cint"><span class="Identifier">getText</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="setName,PANEL,int,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setName%2CPANEL%2Cint%2Cstring"><span class="Identifier">setName</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="getSwitch,PANEL,int"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#getSwitch%2CPANEL%2Cint"><span class="Identifier">getSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="setName,PANEL,int,Natural"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setName%2CPANEL%2Cint%2CNatural"><span class="Identifier">setName</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setPosy,PANEL,int,Natural"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setPosy%2CPANEL%2Cint%2CNatural"><span class="Identifier">setPosy</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setType,PANEL,int,REFTYP"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setType%2CPANEL%2Cint%2CREFTYP"><span class="Identifier">setType</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setWidth,PANEL,int,Natural"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setWidth%2CPANEL%2Cint%2CNatural"><span class="Identifier">setWidth</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setScal,PANEL,int,Natural"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setScal%2CPANEL%2Cint%2CNatural"><span class="Identifier">setScal</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setEmpty,PANEL,int,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setEmpty%2CPANEL%2Cint%2Cbool"><span class="Identifier">setEmpty</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setErrmsg,PANEL,int,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setErrmsg%2CPANEL%2Cint%2Cstring"><span class="Identifier">setErrmsg</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setHelp,PANEL,int,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setHelp%2CPANEL%2Cint%2Cstring"><span class="Identifier">setHelp</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setEdtcar,PANEL,int,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setEdtcar%2CPANEL%2Cint%2Cstring"><span class="Identifier">setEdtcar</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setProtect,PANEL,int,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setProtect%2CPANEL%2Cint%2Cbool"><span class="Identifier">setProtect</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1718,8 +1938,8 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 
 
 </dd>
-<a id="setError,FIELD"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#setError%2CFIELD"><span class="Identifier">setError</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="setError,FIELD,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setError%2CFIELD%2Cbool"><span class="Identifier">setError</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1790,6 +2010,13 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="isProtect,FIELD"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#isProtect%2CFIELD"><span class="Identifier">isProtect</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="isError,FIELD"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#isError%2CFIELD"><span class="Identifier">isError</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1884,6 +2111,13 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
 </dd>
 <a id="setCellEditCar,CELL,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#setCellEditCar%2CCELL%2Cstring"><span class="Identifier">setCellEditCar</span></a><span class="Other">(</span><span class="Identifier">cell</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#CELL"><span class="Identifier">CELL</span></a><span class="Other">;</span> <span class="Identifier">edtcar</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getcellLen,CELL"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getcellLen%2CCELL"><span class="Identifier">getcellLen</span></a><span class="Other">(</span><span class="Identifier">cell</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#CELL"><span class="Identifier">CELL</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1998,7 +2232,7 @@ return index Sequence Label from name<h1 id="management-grid-enter-eq-select-1do
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-06-02 14:03:34 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-06-10 15:00:52 UTC</small>
       </div>
     </div>
   </div>

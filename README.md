@@ -55,8 +55,8 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
   * Full Change 2020-05-26&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
   * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br>  
-  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br>
-
+  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br>  
+  * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br>
 
 **Thank you**
 
@@ -89,6 +89,7 @@ It works, but I had to harmonize and add PROC or FUNC
 | Mouse                              |
 | scrolling done with the wheel      |
 | UP&nbsp; DOWN&nbsp; Left&nbsp; RIGHT |
+| selector mouse                     |
 
   
 <br>
@@ -117,6 +118,7 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | scrolling with UP..DOWN            |
 | PageUP/PageDown                    |
 | selector                           |
+| Mouse on service                   |
 
 
   
@@ -315,17 +317,25 @@ proc restorePanel(dst: PANEL; grid: GRIDSFL) {...}
 
 proc restorePanel(pnl: PANEL; lines, posy: Natural) {...}
 
-proc getNameL(pnl: PANEL; index: int): string {...}
-
 proc getIndexL(pnl: PANEL; name: string): int {...}
 
-proc getTextL(pnl: PANEL; name: string): string {...}
+proc getNameL(pnl: PANEL; index: int): string {...}
+
+proc getPosxL(pnl: PANEL; index: int): int {...}
+
+proc getPosyL(pnl: PANEL; index: int): int {...}
 
 proc getTextL(pnl: PANEL; index: int): string {...}
+
+proc isTitle(pnl: PANEL; index: int): bool {...}
+
+proc getTextL(pnl: PANEL; name: string): string {...}
 
 proc setTextL(pnl: PANEL; name: string; val: string) {...}
 
 proc setTextL(pnl: PANEL; index: int; val: string) {...}
+
+proc setTitle(pnl: PANEL; index: int; val: bool) {...}
 
 proc dltLabel(pnl: PANEL; idx: Natural) {...}
 
@@ -333,11 +343,33 @@ proc clearText(pnl: var PANEL) {...}
 
 proc getName(pnl: PANEL): string {...}
 
-proc getType(pnl: PANEL; index: int): enum
-
 proc getProcess(pnl: PANEL; index: int): string {...}
 
 proc getName(pnl: PANEL; index: int): string {...}
+
+proc getPosx(pnl: PANEL; index: int): int {...}
+
+proc getPosy(pnl: PANEL; index: int): int {...}
+
+proc getRefType(pnl: PANEL; index: int): REFTYP {...}
+
+proc getWidth(pnl: PANEL; index: int): int {...}
+
+proc getScal(pnl: PANEL; index: int): int {...}
+
+proc getEmpty(pnl: PANEL; index: int): bool {...}
+
+proc getErrmsg(pnl: PANEL; index: int): string {...}
+
+proc getHelp(pnl: PANEL; index: int): string {...}
+
+proc getEdtcar(pnl: PANEL; index: int): string {...}
+
+proc getProtect(pnl: PANEL; index: int): bool {...}
+
+proc getText(pnl: PANEL; index: int): string {...}
+
+proc getSwitch(pnl: PANEL; index: int): bool {...}
 
 proc getText(pnl: PANEL; name: string): string {...}
 
@@ -345,9 +377,27 @@ proc getSwitch(pnl: PANEL; name: string): bool {...}
 
 proc getIndex(pnl: PANEL; name: string): int {...}
 
-proc getText(pnl: PANEL; index: int): string {...}
+proc setName(pnl: PANEL; index: int; val: string) {...}
 
-proc getSwitch(pnl: PANEL; index: int): bool {...}
+proc setName(pnl: PANEL; index: int; val: Natural) {...}
+
+proc setPosy(pnl: PANEL; index: int; val: Natural) {...}
+
+proc setType(pnl: PANEL; index: int; val: REFTYP) {...}
+
+proc setWidth(pnl: PANEL; index: int; val: Natural) {...}
+
+proc setScal(pnl: PANEL; index: int; val: Natural) {...}
+
+proc setEmpty(pnl: PANEL; index: int; val: bool) {...}
+
+proc setErrmsg(pnl: PANEL; index: int; val: string) {...}
+
+proc setHelp(pnl: PANEL; index: int; val: string) {...}
+
+proc setEdtcar(pnl: PANEL; index: int; val: string) {...}
+
+proc setProtect(pnl: PANEL; index: int; val: bool) {...}
 
 proc setText(pnl: PANEL; name: string; val: string) {...}
 
@@ -389,7 +439,7 @@ proc setProtect(fld: var FIELD; protect: bool) {...}
 
 proc setEdtCar(fld: var FIELD; Car: string) {...}
 
-proc setError(fld: var FIELD) {...}
+proc setError(fld: var FIELD; val: bool) {...}
 
 proc setActif(fld: var FIELD; actif: bool) {...}
 
@@ -410,6 +460,8 @@ proc setProcess(fld: var FIELD; process: string) {...}
 proc isPanelKey(pnl: PANEL; e_key: Key): bool {...}
 
 proc isProtect(fld: var FIELD): bool {...}
+
+proc isError(fld: var FIELD): bool {...}
 
 proc isActif(fld: var FIELD): bool {...}
 
@@ -439,6 +491,8 @@ proc defCell(text: string; long: Natural; reftyp: REFTYP; cell_atr: CELLATRB = c
 
 proc setCellEditCar(cell: var CELL; edtcar: string = "") {...}
 
+proc getcellLen(cell: var CELL): int {...}
+
 proc getIndexG(this: GRIDSFL; name: string): int {...}
 
 proc addRows(this: GRIDSFL; rows: seq[string]) {...}
@@ -466,4 +520,7 @@ proc isValide(pnl: var PANEL): bool {...}
 proc ioPanel(pnl: var PANEL): Key {...}
 
 
-Made with Nim. Generated: 2020-06-02 14:03:34 UTC
+
+Made with Nim. Generated: 2020-06-10 15:00:52 UTC
+
+

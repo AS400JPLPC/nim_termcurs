@@ -115,9 +115,9 @@ type
 
 
   FIELD* = object
-    name*: string
-    posx*: Natural
-    posy*: Natural
+    name: string
+    posx: Natural
+    posy: Natural
     style : set[Style]
     backgr: BackgroundColor
     backbr: bool
@@ -131,27 +131,27 @@ type
     pforebr: bool
 
 
-    reftyp*: REFTYP            # / ALPHA...SWITCH
-    width*: Natural
-    scal*: Natural
-    nbrcar*: Natural           # / nbrcar DECIMAL = (precision+scale + 1'.' ) + 1 this signed || other nbrcar =  ALPA..DIGIT..
+    reftyp: REFTYP            # / ALPHA...SWITCH
+    width: Natural
+    scal: Natural
+    nbrcar: Natural           # / nbrcar DECIMAL = (precision+scale + 1'.' ) + 1 this signed || other nbrcar =  ALPA..DIGIT..
 
-    empty* : bool              # / EMPTY or FULL
-    protect*: bool             # / only display
+    empty : bool              # / EMPTY or FULL
+    protect: bool             # / only display
 
-    pading*: bool              # / pading blank
-    edtcar*: string            # / edtcar for monnaie		€ $ ¥ ₪ £ or %
+    pading: bool              # / pading blank
+    edtcar: string            # / edtcar for monnaie		€ $ ¥ ₪ £ or %
 
-    regex*: string             # / contrôle regex
-    errmsg*: string            # / message this field
+    regex: string             # / contrôle regex
+    errmsg: string            # / message this field
 
-    help*: string              # / help this field
+    help: string              # / help this field
 
     text*: string
     switch* : bool            # / CTRUE CFALSE
 
-    process*:string           # / name proc
-    err*: bool                # / force error
+    process:string           # / name proc
+    err: bool                # / force error
     actif*: bool              # / zone active True
 
 
@@ -164,16 +164,16 @@ type
 
 
   LABEL* = object
-    name*: string
-    posx*: Natural
-    posy*: Natural
+    name: string
+    posx: Natural
+    posy: Natural
     style : set[Style]
     backgr: BackgroundColor
     backbr: bool
     foregr: ForegroundColor
     forebr: bool
     text*: string
-    title*: bool
+    title: bool
     actif*: bool
 
 
@@ -192,7 +192,7 @@ type
     foregr: ForegroundColor
     forebr: bool
 
-    title: string
+    title*: string
     titlebackgr: BackgroundColor
     titlebackbr: bool
     titleforegr: ForegroundColor
@@ -239,20 +239,20 @@ type
     on:bool                   # on = true -> cell active
 
   PANEL* = ref object
-    name: string
-    posx: Natural
-    posy: Natural
-    lines: Natural
-    cols:  Natural
+    name*: string
+    posx*: Natural
+    posy*: Natural
+    lines*: Natural
+    cols*:  Natural
 
-    backgr:   BackgroundColor
-    backbr:   bool
-    foregr:   ForegroundColor
-    forebr:   bool
-    style:    set[Style]
+    backgr*:   BackgroundColor
+    backbr*:   bool
+    foregr*:   ForegroundColor
+    forebr*:   bool
+    style*:    set[Style]
 
-    cadre:    CADRE
-    boxpnl:   BOX
+    cadre*:    CADRE
+    boxpnl*:   BOX
 
     box*:     seq[BOX]
     label*:   seq[LABEL]
@@ -262,13 +262,13 @@ type
     button*:  seq[BUTTON]
     index*:    Natural
 
-    funcKey:  seq[Key]
+    funcKey*:  seq[Key]
 
-    mouse:  bool
+    mouse*:  bool
 
     buf:seq[TerminalChar]
 
-    actif:    bool
+    actif*:    bool
 
 
   # GRID 
@@ -279,7 +279,7 @@ type
 
   CELL* = object
     text : string
-    long*  : Natural
+    long  : Natural
     reftyp: REFTYP
     posy  : Natural
     edtcar: string
@@ -1723,25 +1723,40 @@ proc restorePanel*(pnl: PANEL; lines, posy : Natural) =
 
 
 
-## return name label Sequence Field
-proc getNameL*(pnl: PANEL; index: int): string  =
-  if index < 0 or index > len(pnl.label)-1 : return "NAN"
-  return pnl.label[index].name
+
+
 ## return index Sequence Label from name
 proc getIndexL*(pnl: PANEL; name: string): int  =
   for i in 0..len(pnl.label)-1:
     if pnl.label[i].name == name : return i
   return - 1
+## return name label Sequence Field
+proc getNameL*(pnl: PANEL; index: int): string  =
+  if index < 0 or index > len(pnl.label)-1 : return "NAN"
+  return pnl.label[index].name
+## return Posx label Sequence Field
+proc getPosxL*(pnl: PANEL; index: int): int  =
+  if index < 0 or index > len(pnl.label)-1 : return -1
+  return pnl.label[index].posx
+## return Posy label Sequence Field
+proc getPosyL*(pnl: PANEL; index: int): int  =
+  if index < 0 or index > len(pnl.label)-1 : return -1
+  return pnl.label[index].posy
+## return value label Sequence Label
+proc getTextL*(pnl: PANEL; index: int): string  =
+  if index < 0 or index > len(pnl.label)-1 : return "NAN"
+  return pnl.label[index].text
+## test Title label Sequence Label
+proc isTitle*(pnl: PANEL; index: int): bool  =
+  if index < 0 or index > len(pnl.label)-1 : return false
+  return pnl.label[index].title
+
 ## return value Label Sequence from name
 proc getTextL*(pnl: PANEL; name: string): string  =
   for i in 0..len(pnl.label)-1 :
     if pnl.label[i].name == name :
       return pnl.label[i].text
   return "NAN"
-## return value label Sequence Label
-proc getTextL*(pnl: PANEL; index: int): string  =
-  if index < 0 or index > len(pnl.label)-1 : return "NAN"
-  return pnl.label[index].text
 ## set value Label Sequence Label
 proc setTextL*(pnl: PANEL; name: string; val : string)=
   for i in 0..len(pnl.label)-1 :
@@ -1752,7 +1767,10 @@ proc setTextL*(pnl: PANEL; name: string; val : string)=
 proc setTextL*(pnl: PANEL; index: int; val : string) =
   if index < 0 or index > len(pnl.label)-1 : return
   pnl.label[index].text = val
-
+## set value Label Sequence Label
+proc setTitle*(pnl: PANEL; index: int; val : bool) =
+  if index < 0 or index > len(pnl.label)-1 : return
+  pnl.label[index].title = val
 ##  delete Label Sequence Label
 proc dltLabel*(pnl: PANEL; idx : Natural) =
   if idx >= 0 or idx <= len(pnl.label)-1 :
@@ -1770,10 +1788,9 @@ proc clearText*(pnl: var PANEL)=
 ## return name field from panel this getField
 proc getName*(pnl: PANEL): string =
   result = pnl.field[pnl.index].name
-## return Type Field Sequence Field
-proc getType*(pnl: PANEL; index: int): enum  =
-  if index < 0 or index > len(pnl.field)-1 : return ALPHA
-  return pnl.field[index].reftyp
+
+
+
 ## return cVoid Field Sequence Field
 proc getProcess*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.field)-1 : return ""
@@ -1782,6 +1799,58 @@ proc getProcess*(pnl: PANEL; index: int): string  =
 proc getName*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.field)-1 : return "NAN"
   return pnl.field[index].name
+## return Posx Field Sequence Field
+proc getPosx*(pnl: PANEL; index: int): int  =
+  if index < 0 or index > len(pnl.field)-1 : return 0
+  return pnl.field[index].posx
+## return Posy Field Sequence Field
+proc getPosy*(pnl: PANEL; index: int): int  =
+  if index < 0 or index > len(pnl.field)-1 : return 0
+  return pnl.field[index].posy
+## return Type Field Sequence Field
+proc getRefType*(pnl: PANEL; index: int): REFTYP  =
+  if index < 0 or index > len(pnl.field)-1 : return ALPHA
+  return pnl.field[index].reftyp
+## return width Field Sequence Field
+proc getWidth*(pnl: PANEL; index: int): int  =
+  if index < 0 or index > len(pnl.field)-1 : return 0
+  return pnl.field[index].width
+## return Scal Field Sequence Field
+proc getScal*(pnl: PANEL; index: int): int  =
+  if index < 0 or index > len(pnl.field)-1 : return 0
+  return pnl.field[index].scal
+## return Empty Field Sequence Field
+proc getEmpty*(pnl: PANEL; index: int): bool  =
+  if index < 0 or index > len(pnl.field)-1 : return true
+  return pnl.field[index].empty
+## return errmsg Field Sequence Field
+proc getErrmsg*(pnl: PANEL; index: int): string  =
+  if index < 0 or index > len(pnl.field)-1 : return "NAN"
+  return pnl.field[index].errmsg
+## return help Field Sequence Field
+proc getHelp*(pnl: PANEL; index: int): string  =
+  if index < 0 or index > len(pnl.field)-1 : return "NAN"
+  return pnl.field[index].help
+## return Edtcar Field Sequence Field
+proc getEdtcar*(pnl: PANEL; index: int): string  =
+  if index < 0 or index > len(pnl.field)-1 : return "NAN"
+  return pnl.field[index].edtcar
+## return Protect Field Sequence Field
+proc getProtect*(pnl: PANEL; index: int): bool =
+  if index < 0 or index > len(pnl.field)-1 : return false
+  return pnl.field[index].protect
+## return value Field Sequence Field
+proc getText*(pnl: PANEL; index: int): string  =
+  if index < 0 or index > len(pnl.field)-1 : return "NAN"
+  return pnl.field[index].text
+## return value Field Sequence Field
+proc getSwitch*(pnl : PANEL ; index: int): bool  =
+  if index < 0 or index > len(pnl.field)-1 : return false
+  return pnl.field[index].switch
+
+
+
+
 ## return value Field Sequence Field
 proc getText*(pnl: PANEL; name: string): string  =
   for i in 0..len(pnl.field)-1 :
@@ -1799,15 +1868,55 @@ proc getIndex*(pnl: PANEL; name: string): int  =
   for i in 0..len(pnl.field)-1:
     if pnl.field[i].name == name : return i
   return - 1
-## return value Field Sequence Field
-proc getText*(pnl: PANEL; index: int): string  =
-  if index < 0 or index > len(pnl.field)-1 : return "NAN"
-  return pnl.field[index].text
-## return value Field Sequence Field
-proc getSwitch*(pnl : PANEL ; index: int): bool  =
-  if index < 0 or index > len(pnl.field)-1 : return false
-  return pnl.field[index].switch
 
+
+
+
+
+
+## set name Field Sequence Field
+proc setName*(pnl: PANEL; index: int; val : string) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].name = val
+## set posx Field Sequence Field
+proc setName*(pnl: PANEL; index: int; val : Natural) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].posx = val
+## set posy Field Sequence Field
+proc setPosy*(pnl: PANEL; index: int; val : Natural) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].posy = val
+## set Type Field Sequence Field
+proc setType*(pnl: PANEL; index: int ; val : REFTYP) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].reftyp = val
+## set width Field Sequence Field
+proc setWidth*(pnl: PANEL; index: int; val : Natural) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].width = val
+## set Scal Field Sequence Field
+proc setScal*(pnl: PANEL; index: int; val : Natural) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].scal = val
+## set Empty Field Sequence Field
+proc setEmpty*(pnl: PANEL; index: int; val: bool ) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].empty = val
+## set errmsg Field Sequence Field
+proc setErrmsg*(pnl: PANEL; index: int; val : string) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].errmsg = val
+## set help Field Sequence Field
+proc setHelp*(pnl: PANEL; index: int; val : string) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].help = val
+## set Edtcar Field Sequence Field
+proc setEdtcar*(pnl: PANEL; index: int; val : string) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].edtcar = val
+proc setProtect*(pnl: PANEL; index: int; val: bool )=
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].protect = val
 
 ## set value Field Sequence Field
 proc setText*(pnl: PANEL; name: string; val : string)=
@@ -1917,8 +2026,8 @@ proc setProtect*(fld : var FIELD ; protect : bool)=
     fld.protect = protect
 proc setEdtCar*(fld : var FIELD ; Car : string)=
     fld.edtcar = Car
-proc setError*(fld : var FIELD )=
-    fld.err = true
+proc setError*(fld : var FIELD; val :bool )=
+    fld.err = val
 ## Enables or disables FIELD / LABEL / BOX / MENU / PANEL
 proc setActif*(fld : var FIELD ; actif : bool)=
     fld.actif = actif
@@ -1951,7 +2060,8 @@ proc isPanelKey*(pnl: PANEL; e_key:Key): bool =
     inc(i)
   return ok
 ##  if on/off  FIELD / LABEL / BOX / MENU / PANEL
-proc isProtect*(fld : var FIELD): bool = return fld.protect 
+proc isProtect*(fld : var FIELD): bool = return fld.protect
+proc isError*(fld : var FIELD): bool = return fld.err
 proc isActif*(fld : var FIELD)  : bool = return fld.actif 
 proc isActif*(lbl : var LABEL ) : bool = return lbl.actif 
 proc isActif*(box : var BOX)    : bool = return box.actif
@@ -2113,6 +2223,9 @@ proc setCellEditCar*(cell : var CELL; edtcar :string =""; )=
   cell.edtcar = edtcar
 
 
+
+## return index Sequence Label from name
+proc getcellLen*(cell : var CELL): int  = return cell.long
 
 ## return index Sequence Label from name
 proc getIndexG*(this: GRIDSFL; name: string): int  =
@@ -2300,17 +2413,30 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Fo
   var grid_key:Key = Key.None
   var CountLigne = 0
   this.cursligne = 0
-  OffMouse()
   printGridHeader(this)
   if pos >= 0 : 
     setPageGrid(this,pos)
     CountLigne = this.cursligne
   hideCursor()
+  OnMouse()
   while true :
     buf = newseq[string]()
     printGridRows(this)
     grid_key = getFunc()
-    stdout.flushFile()
+    if grid_key == Key.Mouse :
+      let gridMouse = getMouse()
+      grid_key = Key.None
+      if gridMouse.action == MouseButtonAction.mbaPressed:
+        if gridMouse.scroll and gridMouse.scrollDir == ScrollDirection.sdUp   :
+          grid_key = Key.Up
+        if gridMouse.scroll and gridMouse.scrollDir == ScrollDirection.sdDown :
+          grid_key = Key.Down
+
+        if  gridMouse.button ==  MouseButton.mbLeft : grid_key = Key.Enter
+        if  gridMouse.button ==  MouseButton.mbRight : grid_key = Key.Enter
+
+      if grid_key == Key.None : continue
+
     case grid_Key
       of Key.Escape :
 
@@ -2320,6 +2446,7 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Fo
         if this.lignes > 0  :
           this.cursligne = -1
           buf = this.rows[this.nrow[CountLigne]]
+          OffMouse()
           return (Key.Enter,buf)
         else : return (Key.None,buf)
       of Key.Up :
@@ -2393,6 +2520,7 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
 
     if key == Key.Mouse :
       let mnuMouse = getMouse()
+      key = Key.None
       if mnuMouse.action == MouseButtonAction.mbaPressed:
         if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdUp   :
           if mnu.mnuvh == MNUVH.vertical :    key = Key.Up
@@ -2400,7 +2528,9 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
         if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdDown :
           if mnu.mnuvh == MNUVH.vertical :    key = Key.Down
           if mnu.mnuvh == MNUVH.horizontal :  key = Key.Right
-      if mnuMouse.action == MouseButtonAction.mbaReleased : key = Key.Enter
+        if  mnuMouse.button ==  MouseButton.mbLeft : key = Key.Enter
+        if  mnuMouse.button ==  MouseButton.mbRight : key = Key.Enter
+      #if mnuMouse.action == MouseButtonAction.mbaReleased : key = Key.Enter
     case key
 
       of Key.Escape:

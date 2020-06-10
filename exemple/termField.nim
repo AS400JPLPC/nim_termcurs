@@ -4,6 +4,8 @@ import termkey
 import termcurs
 import strformat
 import tables
+
+
 var callQuery: Table[string, proc(fld : var FIELD)]
 var grid  = new(GRIDSFL)
 #===================================================
@@ -64,6 +66,7 @@ proc callRefTyp(fld : var FIELD) =
   
     case keys
       of Key.Enter :
+
         fld.text  = $val[0]
         break
       else: discard
@@ -107,9 +110,9 @@ while true:
       key = ioPanel(pnlF1)
       
       if key == Key.PROC :
-        if pnlF1.field[Index(pnlF1)].reftyp == FPROC:
+        if getRefType(pnlF1,Index(pnlF1)) == FPROC:
           if isProcess(pnlF1,Index(pnlF1)):
-            callQuery[pnlF1.field[Index(pnlF1)].process](pnlF1.field[Index(pnlF1)])
+            callQuery[getProcess(pnlF1,Index(pnlF1))](pnlF1.field[Index(pnlF1)])
             restorePanel(pnlF1, grid)
 
         key = Key.F1

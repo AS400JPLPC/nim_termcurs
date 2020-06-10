@@ -60,7 +60,8 @@ while true:
     var g_id      = defCell("ID",3,DIGIT)
     var g_name    = defCell("Name",getNbrcar(pnlF1,$Nom),ALPHA)
     var g_animal  = defCell("Fav animal",getNbrcar(pnlF1,$Animal),ALPHA)
-    var g_prix    = defCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL,"€") ;
+    var g_prix    = defCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL)
+    setCellEditCar(g_prix,"€")
     g_numID = - 1 
 
 
@@ -96,7 +97,8 @@ while true:
       var g_id      = defCell("ID",3,DIGIT)
       var g_name    = defCell("Name",getNbrcar(pnlF1,$Nom),ALPHA)
       var g_animal  = defCell("Fav animal",getNbrcar(pnlF1,$Animal),ALPHA)
-      var g_prix    = defCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL,"€") ;
+      var g_prix    = defCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL)
+      setCellEditCar(g_prix,"€")
       g_numID = - 1 
       setHeaders(grid, @[g_id, g_name, g_animal,g_prix])
       printGridHeader(grid)
