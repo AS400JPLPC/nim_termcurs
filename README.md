@@ -22,6 +22,22 @@ img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.pn
 
 img : [EXEMPLE](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
 img : [SOURCE GENERATED](https://github.com/AS400JPLPC/nim_termcurs/blob/master/source_generated.png)
+
+
+img : [GENERATOR-00](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_00.png)
+img : [GENERATOR-01](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_01.png)
+img : [GENERATOR-02](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_02.png)
+img : [GENERATOR-03](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_03.png)
+img : [GENERATOR-04](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_04.png)
+img : [GENERATOR-05](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_05.png)
+img : [GENERATOR-06](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_06.png)
+img : [GENERATOR-10](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_10.png)
+img : [GENERATOR-11](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_11.png)
+img : [GENERATOR-12](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_12.png)
+img : [GENERATOR-20](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_20.png)
+img : [GENERATOR-30](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_30.png)
+
+
   
 <br>
 <br>
@@ -57,7 +73,9 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br>  
   * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br>  
   * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br>
-
+  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   patience and persistence**<br>
+  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu... Combo SFLGRID<br>
+  
 **Thank you**
 
   * [ Date](https://rgxdb.com/r/2V9BOC58)  
@@ -68,6 +86,7 @@ It works, but I had to harmonize and add PROC or FUNC
   * [NCURSE](https://invisible-island.net/ncurses/announce.html)  
   * [illwill](https://github.com/johnnovak/illwill)  
   * [nim-terminaltables](https://github.com/xmonader/nim-terminaltables)  
+
 
 
 
@@ -216,7 +235,10 @@ proc ioPanel(pnl: var PANEL): Key {...}
 <br>
 
 
-# Procs
+
+#Procs
+
+
 proc defCursor(e_curs: Natural = 0) {...}
 
 proc setTerminal(termatr: ZONATRB = scratr) {...}
@@ -520,7 +542,7 @@ proc isValide(pnl: var PANEL): bool {...}
 proc ioPanel(pnl: var PANEL): Key {...}
 
 
+#Made with Nim. Generated: 2020-06-22 14:08:42 UTC
 
-Made with Nim. Generated: 2020-06-10 15:00:52 UTC
 
 

@@ -5,7 +5,7 @@
 
 import termkey
 import terminal , strutils , std/[re]  , math
-from strformat import alignString
+from strformat import alignString, fmt
 import unicode except strip, align
 
 
@@ -98,7 +98,6 @@ type
     title_backbr*: bool
     title_foregr*: ForegroundColor 
     title_forebr*: bool
-
 
   CELLATRB* = ref object
     cell_style* : set[Style]
@@ -601,7 +600,7 @@ proc printBox*(pnl: var PANEL; box:BOX) =
           else : trait = ACS_Hline2
           edt = true
   
-      elif row > Natural(1) and row < box. lines:
+      elif row > Natural(1) and row < box.lines:
         if col == Natural(1) or col == box.cols:
           if CADRE.line1 == box.cadre : trait = ACS_Vlines
           else : trait = ACS_Vline2
@@ -1685,7 +1684,7 @@ proc restorePanel*(dst: PANEL; grid: GRIDSFL) =
   if not dst.actif : return
   var npos :int =0
   var n = grid.posx
-  for x in 0..grid.lines:
+  for x in 0..grid.lines + 1:
     npos = dst.cols * n + grid.posy - 1
     for y in 0..grid.cols:
       inc(npos)
@@ -2145,7 +2144,6 @@ proc calculPosCell(this: GRIDSFL) =
 
 proc setPageGrid(this :GRIDSFL)=
   this.lignes = len(this.rows)
-  
   if this.lignes <= this.pagerows  : 
     this.pages = 1
   else : 
@@ -2161,8 +2159,7 @@ proc newGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
   Ngrid.name  = name
   Ngrid.posx  = posx
   Ngrid.posy  = posy
-  Ngrid.lines = pagerows + 1 #  row per page + header +  end line
-  Ngrid.cols  = 0
+  Ngrid.lines = pagerows + 1 #  row per page line  + header
   Ngrid.separator = separator
   Ngrid.pageRows = pagerows
   Ngrid.rows = newSeq[seq[string]]()
@@ -2174,6 +2171,7 @@ proc newGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
   Ngrid.pages  = 0
   Ngrid.cursligne  = -1
   Ngrid.curspage  = 1
+
 
   return Ngrid
 
@@ -2205,7 +2203,9 @@ proc setHeaders*(this: GRIDSFL, headers: seq[CELL]) =
   for cell in headers:
     this.headers.add(cell)
   calculPosCell(this)
-  this.buf = newSeq[TerminalChar]((this.lines+1)*(this.cols+1))
+
+  # this.lines + 2 = cadre + header    cols + separator  pensez interval 
+  this.buf = newSeq[TerminalChar]((this.lines + 2 )*(this.cols + 1))
 
 
 
@@ -2254,19 +2254,109 @@ proc resetRows*(this: GRIDSFL;) =
   this.curspage  = 1
 
 
+
+# assigne BOX to matrice for display
+proc GridBox(this:GRIDSFL ;lines , cols : int ;cadre : CADRE) =
+  if CADRE.line0 == cadre : return
+  let ACS_Hlines     = "─"
+  let ACS_Vlines     = "│"
+  let ACS_UCLEFT    = "┌"
+  let ACS_UCRIGHT   = "┐"
+  let ACS_LCLEFT    = "└"
+  let ACS_LCRIGHT   = "┘"
+
+  let ACS_Hline2    = "═"
+  let ACS_Vline2    = "║"
+  let ACS_UCLEFT2   = "╔"
+  let ACS_UCRIGHT2  = "╗"
+  let ACS_LCLEFT2   = "╚"
+  let ACS_LCRIGHT2  = "╝"
+
+  var trait:string = ""
+  var edt :bool
+  var
+
+    row: Natural = 1
+    ncols: Natural
+    col: Natural
+    n: Natural
+  while row <= lines :
+    col = 1
+    while col <= cols:
+      edt = false
+  
+      if row == 1:
+        if col == 1:
+          if CADRE.line1 == cadre : trait = ACS_UCLEFT
+          else: trait = ACS_UCLEFT2
+          edt = true
+  
+        if col == cols:
+          if CADRE.line1 == cadre : trait = ACS_UCRIGHT
+          else : trait = ACS_UCRIGHT2
+          edt = true
+  
+        if col > Natural(1) and col < cols:
+          if CADRE.line1 == cadre : trait = ACS_Hlines
+          else : trait = ACS_Hline2
+          edt = true
+  
+      elif row == lines:
+        if col == Natural(1) :
+          if CADRE.line1 == cadre : trait = ACS_LCLEFT
+          else : trait = ACS_LCLEFT2 
+          edt = true
+  
+        if col == cols:
+          if CADRE.line1 == cadre : trait = ACS_LCRIGHT
+          else : trait = ACS_LCRIGHT2 
+          edt = true
+  
+        if col > Natural(1) and col < cols:
+          if CADRE.line1 == cadre : trait = ACS_Hlines
+          else : trait = ACS_Hline2
+          edt = true
+  
+      elif row > Natural(1) and row < lines:
+        if col == Natural(1) or col == cols:
+          if CADRE.line1 == cadre : trait = ACS_Vlines
+          else : trait = ACS_Vline2
+          edt = true
+  
+      if edt:
+        if row == 1: 
+          n = col - 1 
+        if row > 1 :
+          n =  ncols + col - 1
+
+        this.buf[n].ch = trait.runeAt(0)
+        this.buf[n].bg  =  this.gridatr.backgr
+        this.buf[n].bgb =  this.gridatr.backbr
+        this.buf[n].fg  =  this.gridatr.foregr
+        this.buf[n].fgb =  this.gridatr.forebr
+        this.buf[n].style = this.gridatr.style
+        this.buf[n].on = true
+      inc(col)
+    ncols = ncols  +  ( cols )
+    inc(row)
+  stdout.flushFile()
+
+
 proc printGridHeader*(this: GRIDSFL) =
   if not this.actif : return
   var buf : string
   var n : int
   let Blan : Rune = " ".runeAt(0)
   let Sep : Rune = this.separator.colSeparator.runeAt(0)
+
   for n in 0..<len(this.headers):
     if this.headers[n].edtcar == "" :buf &= $Sep  & $Blan.repeat(this.headers[n].long )
     else : buf &= $Sep  & $Blan.repeat(this.headers[n].long ) & $Blan
   buf = buf & $Sep
 
+  var gridlen: int = runeLen(buf)
 
-  for x in 1..this.lines:
+  for x in 1..this.lines :
     n = this.cols * x
     for ch in runes(buf):
       this.buf[n].ch = ch
@@ -2279,7 +2369,7 @@ proc printGridHeader*(this: GRIDSFL) =
       inc(n)
 
   for i in 0..<len(this.headers):
-    n = this.cols 
+    n = this.cols
     n =  n + this.headers[i].posy 
 
     if this.headers[i].reftyp  == DIGIT or
@@ -2300,11 +2390,13 @@ proc printGridHeader*(this: GRIDSFL) =
       this.buf[n].style = this.gridatr.title_style
       this.buf[n].on = true
       inc(n)
-  
-  for x in 1..this.lines:
+
+  # this.lines + 2 = cadre + header 
+  GridBox(this, this.lines + 2 ,gridlen, line1 )
+  for x in 0..this.lines + 1:
     n = this.cols * x
     for y in 1..this.cols:
-      gotoXY(x + this.posx - 1 , y + this.posy - 1)
+      gotoXY(x + this.posx  , y + this.posy - 1)
       setBackgroundColor(this.buf[n].bg,this.buf[n].bgb)
       setForegroundColor(this.buf[n].fg,this.buf[n].fgb)
       writeStyled($this.buf[n].ch,this.buf[n].style)
@@ -2321,9 +2413,10 @@ proc printGridRows*(this: GRIDSFL ) =
   this.nrow = newSeq[int]()
   if this.curspage == 0 : start = 0
   else: start = this.pagerows * (this.curspage - 1 )
+
   for r in 0..<this.pagerows:
     var l = r + start 
-    if l < this.lignes:
+    if l < this.lignes  :
       var buf :seq[string] = this.rows[l]
       this.nrow.add(l)
 
@@ -2348,7 +2441,7 @@ proc printGridRows*(this: GRIDSFL ) =
     for x in 2..this.lines:
       n = this.cols * x
       for y in 1..this.cols:
-        gotoXY(x + this.posx - 1 , y + this.posy - 1)
+        gotoXY(x + this.posx  , y + this.posy - 1)
         setBackgroundColor(this.buf[n].bg,this.buf[n].bgb)
         setForegroundColor(this.buf[n].fg,this.buf[n].fgb)
         writeStyled($this.buf[n].ch,this.buf[n].style)
@@ -2400,6 +2493,7 @@ proc pageDownGrid*(this: GRIDSFL): Key_Grid =
 
 
 
+
 ##================================================================
 ## Management GRID enter = select  1..n 0 = abort (Escape)
 ## Turning on the mouse
@@ -2418,11 +2512,15 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Fo
     setPageGrid(this,pos)
     CountLigne = this.cursligne
   hideCursor()
-  OnMouse()
+  onMouse()
   while true :
     buf = newseq[string]()
     printGridRows(this)
+
+
+    stdin.flushFile()
     grid_key = getFunc()
+
     if grid_key == Key.Mouse :
       let gridMouse = getMouse()
       grid_key = Key.None
@@ -2446,7 +2544,7 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Fo
         if this.lignes > 0  :
           this.cursligne = -1
           buf = this.rows[this.nrow[CountLigne]]
-          OffMouse()
+          offMouse()
           return (Key.Enter,buf)
         else : return (Key.None,buf)
       of Key.Up :
@@ -2462,12 +2560,14 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Fo
         if this.curspage > 0 : 
           dec(this.curspage)
           this.cursligne = 0
-          printGridHeader(this)
+          CountLigne = 0
+          #printGridHeader(this)
       of Key.PageDown :
         if this.curspage < this.pages : 
           inc(this.curspage)
           this.cursligne = 0
-          printGridHeader(this)
+          CountLigne = 0
+          #printGridHeader(this)
 
 
       else :discard
@@ -2485,7 +2585,7 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Fo
 proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
   var pos : Natural = npos
   var n , h   : Natural 
-  OnMouse()
+  onMouse()
   hideCursor()
   stdout.flushFile()
   if pos > len(mnu.item) or pos < 0 : pos = 0
@@ -2535,11 +2635,11 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
 
       of Key.Escape:
         result = 0
-        if not pnl.mouse : OffMouse()
+        if not pnl.mouse : offMouse()
         break 
       of Key.Enter:
         result = pos + 1
-        if not pnl.mouse : OffMouse()
+        if not pnl.mouse : offMouse()
         break
       of Key.Down:
         if pos < (len(mnu.item) - 1) : inc(pos)
