@@ -236,7 +236,7 @@ proc ioPanel(pnl: var PANEL): Key {...}
 
 
 
-#Procs
+# Procs
 
 
 proc defCursor(e_curs: Natural = 0) {...}
@@ -542,7 +542,7 @@ proc isValide(pnl: var PANEL): bool {...}
 proc ioPanel(pnl: var PANEL): Key {...}
 
 
-#Made with Nim. Generated: 2020-06-22 14:08:42 UTC
+# Made with Nim. Generated: 2020-06-22 14:08:42 UTC
 
 
 
