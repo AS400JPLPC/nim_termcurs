@@ -2932,7 +2932,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           result = Key.Down
           break
       of Key.Enter :            # enrg to Field
-        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or 
+        if ( fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) ) or 
             isEmpty(e_Field,fld) and fld.empty == FILL :
             msgErr(pnl,fld.errmsg)
         else :
@@ -3210,7 +3210,7 @@ proc isValide*(pnl:var PANEL): bool =
             pnl.index = n
             pnl.field[n].err = true
             return false
-      elif  pnl.field[n].regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(pnl.field[n].regex)) and not isEmpty(e_Field,pnl.field[n]) or
+      elif  ( pnl.field[n].regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(pnl.field[n].regex)) and not isEmpty(e_Field,pnl.field[n]) ) or
           isEmpty(e_FIELD ,pnl.field[n]) and pnl.field[n].empty == FILL:
             pnl.index = n
             pnl.field[n].err = true
