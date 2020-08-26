@@ -72,9 +72,10 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-05-26&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
   * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br>  
   * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br>  
-  * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br>
-  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   patience and persistence**<br>
-  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu... Combo SFLGRID<br>
+  * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br>  
+  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   patience and persistence**<br>  
+  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu... Combo SFLGRID<br>  
+  * Full Change 2020-08-26&nbsp;&rarr;&nbsp;Validity check correction and Multiple window definition introduction <br>  
   
 **Thank you**
 
@@ -164,27 +165,27 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 
 | Func...........    | help.                                                                                      |
 |--------------------|--------------------------------------------------------------------------------------------|
-| Enter              |&nbsp;&rarr;&nbsp; valid, next field                                                        |
-| UP..DOWN           |&nbsp;&rarr;&nbsp; valid, next field                                                        |
-| TAB..STAB          |&nbsp;&rarr;&nbsp; valid, next field                                                        |
+| Enter              |&nbsp;&rarr;&nbsp; valid, next field                                                         |
+| UP..DOWN           |&nbsp;&rarr;&nbsp; valid, next field                                                         |
+| TAB..STAB          |&nbsp;&rarr;&nbsp; valid, next field                                                         |
 | Insert             |&nbsp;&rarr;&nbsp;                                                                          |
 | Delete             |&nbsp;&rarr;&nbsp;                                                                          |
 | Left..Rigth        |&nbsp;&rarr;&nbsp;                                                                          |
 | Backspace          |&nbsp;&rarr;&nbsp; Delete                                                                   |
 | Home               |&nbsp;&rarr;&nbsp;                                                                          |
 | End                |&nbsp;&rarr;&nbsp;                                                                          |
-| Ctrl-H             |&nbsp;&rarr;&nbsp; Display a help panel specific to the field                               |
-| Escape             |&nbsp;&rarr;&nbsp; Returns control to ioPanel then redisplays the field without modification|
+| Ctrl-H             |&nbsp;&rarr;&nbsp; Display a help panel specific to the field                                 |
+| Escape             |&nbsp;&rarr;&nbsp; Returns control to ioPanel then redisplays the field without modification  |
 | KEY                |&nbsp;&rarr;&nbsp; Returns control to ioPanel                                               |
 |                    |                                                                                            |
 | Field-Type         |                                                                                            |
 |                    |                                                                                            |
 | TEXT_FREE          |&nbsp;&rarr;&nbsp; Managed by function: regex , FULL                                        |
-| ALPHA              |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha                                     |
-| ALPHA_UPPER        |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha automatique UPPER                   |
+| ALPHA              |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and "-"                             |
+| ALPHA_UPPER        |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha automatique UPPER and "-"           |
 | PASSWORD           |&nbsp;&rarr;&nbsp; Managed by function: regex , hide  alpha + (1) + (3)                     |
-| ALPHA_NUMERIC      |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1)                     |
-| ALPHA_NUMERIC_UPPER|&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1)                     |
+| ALPHA_NUMERIC      |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and "-"             |
+| ALPHA_NUMERIC_UPPER|&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and "-"             |
 | TEXT_FULL          |&nbsp;&rarr;&nbsp; Managed by function: regex , isAlpha and isNumber(1) and isCarPwd(3)     |
 | DIGIT              |&nbsp;&rarr;&nbsp; Managed by function: regex , isNumber(1)                                 |
 | DIGIT_SIGNED       |&nbsp;&rarr;&nbsp; Managed by function: regex , (+-) and isNumber(1)                        |

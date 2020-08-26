@@ -8,6 +8,8 @@ import terminal , strutils , std/[re]  , math
 from strformat import alignString, fmt
 import unicode except strip, align
 
+proc beug(nline : int ; text :string ) =
+  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
 
 const
   EMPTY*:bool = true
@@ -1286,6 +1288,14 @@ proc printField*(pnl: var PANEL, fld : Field) =
   var i: Natural = 0
 
   var e_FIELD : string = fld.text
+
+  if fld.reftyp == DATE_ISO or fld.reftyp == DATE_US or fld.reftyp == DATE_FR :
+    i = 0
+    if e_FIELD == "" :
+      while i < 10:
+        e_FIELD = e_FIELD & " "
+        inc(i)
+
 
   if fld.reftyp == PASSWORD:
     i = 0
@@ -2892,9 +2902,9 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           msgHelp(pnl,fld.help)
 
       of Key.Up , Key.Down:     # next Field
-        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) or 
-          isEmpty(e_Field,fld) and fld.empty == FILL :
-          msgErr(pnl,fld.errmsg)
+        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or
+            isEmpty(e_Field,fld) and fld.empty == FILL :
+            msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
           fld.text = fld.text.strip(trailing = true)
@@ -2902,9 +2912,9 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           result = e_key
           break
       of Key.Stab:              # next Field
-        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) or 
-          isEmpty(e_Field,fld) and fld.empty == FILL :
-          msgErr(pnl,fld.errmsg)
+        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or
+            isEmpty(e_Field,fld) and fld.empty == FILL :
+            msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
           fld.text = fld.text.strip(trailing = true)
@@ -2912,9 +2922,9 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           result = Key.Up
           break
       of Key.Tab:               # next Field
-        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) or 
-          isEmpty(e_Field,fld) and fld.empty == FILL :
-          msgErr(pnl,fld.errmsg)
+        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or 
+            isEmpty(e_Field,fld) and fld.empty == FILL :
+            msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
           fld.text = fld.text.strip(trailing = true)
@@ -2922,9 +2932,9 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           result = Key.Down
           break
       of Key.Enter :            # enrg to Field
-        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) or 
-          isEmpty(e_Field,fld) and fld.empty == FILL :
-          msgErr(pnl,fld.errmsg)
+        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or 
+            isEmpty(e_Field,fld) and fld.empty == FILL :
+            msgErr(pnl,fld.errmsg)
         else :
           fld.text  = $e_FIELD
           fld.text = fld.text.strip(trailing = true)
@@ -3004,7 +3014,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 dec(e_curs)
 
           of ord(ALPHA_NUMERIC), ord(ALPHA_NUMERIC_UPPER)  :
-            if e_count < e_nbrcar and (isAlpha(e_str) or isNumber(e_str)) or
+            if e_count < e_nbrcar and (isAlpha(e_str) or isNumber(e_str) or e_str == "-") or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
               if fld.reftyp == ALPHA_NUMERIC:
@@ -3200,7 +3210,7 @@ proc isValide*(pnl:var PANEL): bool =
             pnl.index = n
             pnl.field[n].err = true
             return false
-      elif  pnl.field[n].regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(pnl.field[n].regex)) or 
+      elif  pnl.field[n].regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(pnl.field[n].regex)) and not isEmpty(e_Field,pnl.field[n]) or
           isEmpty(e_FIELD ,pnl.field[n]) and pnl.field[n].empty == FILL:
             pnl.index = n
             pnl.field[n].err = true
