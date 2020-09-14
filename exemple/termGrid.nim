@@ -21,7 +21,7 @@ func setID*( line : var int ) : string =
   line += 1
   return $line
 
-InitScreen()
+initScreen()
 setTerminal() #default color style erase
 
 var pnlF1  = new(PANEL)
@@ -30,7 +30,7 @@ var g_numID : int
 var key : Key = Key.F1
 var keyG : Key_Grid
 while true:
-  if key == Key.F3 :  CloseScren()
+  if key == Key.F3 :  closeScren()
 
   case key
   of Key.F1:
@@ -86,7 +86,7 @@ while true:
   of Key.F9:
     if grid.actif:
       addRows(grid,@[setID(g_numID), pnlF1.getText($Nom), pnlF1.getText($Animal),pnlF1.getText($Prix)])
-      grid.curspage = grid.pages
+      setLastPage(grid)
       printGridHeader(grid)
       printGridRows(grid)
     key = Key.F1
@@ -134,7 +134,10 @@ while true:
       pnlF1.field[P_F1[Prix]].text = val[3]
       displayField(pnlF1, pnlF1.field[P_F1[Nom]])
       displayField(pnlF1, pnlF1.field[P_F1[Animal]])
-      displayField(pnlF1, pnlF1.field[P_F1[Prix]])
-    key = Key.F1 
+      displayField(pnlF1, pnlF1.field[P_F1[Prix]]) 
+    elif keys == Key.Escape:
+      printGridHeader(grid)
+      printGridRows(grid)
+    key = Key.F1
 
   else : discard

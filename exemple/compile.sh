@@ -34,32 +34,21 @@ fi
 #-------------------------------------------------------------------
 # compile
 #-------------------------------------------------------------------
-# force full option gtk
-# debug
-# nim  c --threads --passC:-flto --deadCodeElim:on -d:danger   -d:forceGtk   -o:$projet_bin   $projet_src
-# prod
-# nim  c  --verbosity:0 --hints:off --opt:size --threads --passc:-flto  --passL:-flto --deadCodeElim:on -d:danger  -d:forceGtk -d:release  -o:$projet_bin   $projet_src
-
-#--passL:-no-pie
 
 if [ "$mode" == "DEBUG" ] ; then
-  if [ "$projet_bin" == "TermVte" ] ; then
-    nim  c  -f -d:forceGtk -d:useMalloc --gc:arc --panics:on --deadCodeElim:on --app:GUI --passL:-no-pie -o:$projet_bin   $projet_src
+  if [ "$projet_bin" == "TermVte" ] || [ "$projet_bin" == "contactVte" ] || [ "$projet_bin" == "TermVteGrid" ] || [ "$projet_bin" == "testVte" ] ; then
+    nim  c  -f --gc:arc -d:forceGtk  -d:useMalloc --panics:on --threads:on --deadCodeElim:on --hint[Performance]:off  --app:GUI --passL:-no-pie -o:$projet_bin   $projet_src
   else
-    nim  c  -f --hint[Performance]:off -d:useMalloc  --gc:arc --deadCodeElim:on --panics:on -d:useMalloc	 -o:$projet_bin   $projet_src
+    nim  c  -f --gc:arc -d:useMalloc --deadCodeElim:on --panics:on  --threads:on	 --hint[Performance]:off   -o:$projet_bin   $projet_src
   fi
 fi
 
 if [ "$mode" == "PROD" ] ; then
-  if [ "$projet_bin" == "contactVte" ] ; then
-    nim  c --verbosity:0 --hints:off -d:forceGtk -d:useMalloc	 --warning[UnusedImport]:off  --deadCodeElim:on  --gc:arc --panics:on --opt:size --app:GUI  --passL:-no-pie --opt:size -d:release --passc:-flto  --passL:-flto  -f -o:$projet_bin   $projet_src
+  if [ "$projet_bin" == "TermVte" ] || [ "$projet_bin" == "contactVte" ]  || [ "$projet_bin" == "TermVteGrid" ] || [ "$projet_bin" == "testVte" ] ; then
+    nim  c -f --verbosity:0 --gc:arc --hints:off -d:forceGtk -d:useMalloc	 --warning[UnusedImport]:off  --deadCodeElim:on  --hint[Performance]:off   --panics:on  --threads:on --opt:size --app:GUI  --passL:-no-pie --passc:-flto -d:release  -o:$projet_bin   $projet_src
   else
-    nim  c --verbosity:0 --hints:off -d:forceGtk -d:useMalloc	 --deadCodeElim:on  --gc:arc --panics:on --opt:size  --opt:size -d:release --passc:-flto  --passL:-flto -f -o:$projet_bin   $projet_src
+    nim  c -f --gc:arc --verbosity:0 --hints:off 	-d:useMalloc --deadCodeElim:on --hint[Performance]:off   --app:CONSOLE  --panics:on  --threads:on --opt:size  -d:release  -o:$projet_bin   $projet_src
   fi
-fi
-
-if [ "$mode" == "TEST" ] ; then  
-	nim  c -r -f -d:useMalloc --gc:arc --panics:on --passL:-no-pie  -o:$projet_bin   $projet_src
 fi
 #-------------------------------------------------------------------
 # resultat

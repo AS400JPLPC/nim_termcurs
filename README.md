@@ -74,8 +74,10 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br>  
   * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br>  
   * Full Change 2020-06-22&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   patience and persistence**<br>  
-  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu... Combo SFLGRID<br>  
+  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu...<br>  
   * Full Change 2020-08-26&nbsp;&rarr;&nbsp;Validity check correction and Multiple window definition introduction <br>  
+  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Structuring code & adding different proc for grid<br>  
+  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Update exemple<br>  
   
 **Thank you**
 
@@ -211,15 +213,87 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 ".",":",",","!","?","'","-","(",")","<",">"
 
 not ";" reserved csv
+<br>
+<br>
+#Usage
+<br>
+<br>
+```
+import termkey
+import termcurs
+import std/[re]
+type
+  FIELD_panel01 {.pure.}= enum
+    vnom,
+    vprenom,
+    vnele,
+    vdom,
+    vmobil,
+    vbur
+const P1: array[FIELD_panel01, int] = [0,1,2,3,4,5]
+
+# Panel panel01
+
+var panel01= new(PANEL)
+
+# description
+proc dscPanel01() = 
+  panel01 = newPanel("panel01",1,1,42,132,@[defButton(Key.F3,"Exit",true), defButton(Key.F12,"Return",true)],line1)
+
+  # LABEL  -> panel01
+
+  panel01.label.add(defTitle("T02002", 2, 2, "CONTACT"))
+  panel01.label.add(deflabel("L04002", 4, 2, "Nom.......:"))
+  panel01.label.add(deflabel("L06002", 6, 2, "Prénom....:"))
+  panel01.label.add(deflabel("L09002", 9, 2, "Né le.....:"))
+  panel01.label.add(deflabel("L11002", 11, 2, "Téléphone.."))
+  panel01.label.add(deflabel("L12006", 12, 6, "Dom...:"))
+  panel01.label.add(deflabel("L13006", 13, 6, "Mobil.:"))
+  panel01.label.add(deflabel("L14006", 14, 6, "Bur...:"))
+
+  # FIELD -> panel01
+
+  panel01.field.add(defString("vnom", 4, 13, ALPHA_UPPER,30,"", FILL, "Obligatoire", "Nom du contact"))
+  panel01.field.add(defString("vprenom", 6, 13, ALPHA_NUMERIC_UPPER,30,"", EMPTY, "Obligatoire", "Prénom du contact"))
+  panel01.field.add(defDate("vnele", 9, 13, DATE_ISO,"", EMPTY, "", "Date de naissance"))
+  panel01.field.add(defTelephone("vdom", 12, 13, TELEPHONE,15,"", EMPTY, "valeur incorrecte", "Téléphone domicile"))
+  panel01.field.add(defTelephone("vmobil", 13, 13, TELEPHONE,15,"", FILL, "valeur incorrect", "Téléphone Mobile"))
+  panel01.field.add(defTelephone("vbur", 14, 13, TELEPHONE,15,"", EMPTY, "Valeur incorrecte", "Téléphone bureau"))
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
+dscPanel01()
+
+offCursor()
+initScreen(Lines(panel01),Cols(panel01),"CONTACT")
+
+
+printPanel(panel01)
+displayPanel(panel01)
+
+proc main()=
+  while true:
+    let  key = ioPanel(panel01)
+    case key
+      of Key.F3:
+        break
+      of Key.F12:
+	# only test 	  
+        setText(panel01,P1[vnom],"JPL")
+      else : discard
+
+
+main()
+closeScren()
+```
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 # Main procedure
 
 proc ioGrid(this: GRIDSFL; pos: int = -1): (Key, seq[string]) {...}
@@ -238,8 +312,6 @@ proc ioPanel(pnl: var PANEL): Key {...}
 
 
 # Procs
-
-
 proc defCursor(e_curs: Natural = 0) {...}
 
 proc setTerminal(termatr: ZONATRB = scratr) {...}
@@ -255,6 +327,8 @@ proc newMenu(name: string; posx: Natural; posy: Natural; mnuvh: MNUVH; item: seq
             cadre: CADRE = CADRE.line0; mnu_atr: MNUATRB = mnuatr; actif: bool = true): MENU {...}
 
 proc printMenu(pnl: PANEL; mnu: MENU) {...}
+
+proc dspMenuItem(pnl: PANEL; mnu: MENU) {...}
 
 proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
              lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
@@ -291,9 +365,9 @@ proc defTelephone(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                  help: string; fld_atr: ZONATRB = fldatr;
                  protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
-proc defHString(name: string; reftyp: REFTYP; text: string): HIDEN {...}
+proc defStringH(name: string; reftyp: REFTYP; text: string): HIDEN {...}
 
-proc defHSwitch(name: string; reftyp: REFTYP; switch: bool): HIDEN {...}
+proc defSwitchH(name: string; reftyp: REFTYP; switch: bool): HIDEN {...}
 
 proc Lines(pnl: PANEL): Natural {...}
 
@@ -318,7 +392,7 @@ proc printPanel(pnl: var PANEL) {...}
 
 proc resetPanel(pnl: var PANEL) {...}
 
-proc resetPanel(mnu: var MENU) {...}
+proc resetMenu(mnu: var MENU) {...}
 
 proc clsLabel(pnl: var PANEL; lbl: LABEL) {...}
 
@@ -339,6 +413,10 @@ proc restorePanel(dst: PANEL; mnu: MENU) {...}
 proc restorePanel(dst: PANEL; grid: GRIDSFL) {...}
 
 proc restorePanel(pnl: PANEL; lines, posy: Natural) {...}
+
+proc getPnlName(pnl: PANEL): string {...}
+
+proc getPnlTitle(pnl: PANEL): string {...}
 
 proc getIndexL(pnl: PANEL; name: string): int {...}
 
@@ -500,13 +578,19 @@ proc isActif(pnl: var PANEL): bool {...}
 
 proc isMouse(pnl: var PANEL): bool {...}
 
+proc setPageGrid(this: GRIDSFL) {...}
+
+proc setLastPage(this: GRIDSFL) {...}
+
 proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
             separator: GridStyle = sepStyle; grid_atr: GRIDATRB = gridatr;
             actif: bool = true): GRIDSFL {...}
 
 proc resetGrid(this: GRIDSFL) {...}
 
-proc columnsCount(this: GRIDSFL): int {...}
+proc counColumns(this: GRIDSFL): Natural {...}
+
+proc countRows(this: GRIDSFL): Natural {...}
 
 proc setHeaders(this: GRIDSFL; headers: seq[CELL]) {...}
 
@@ -517,6 +601,34 @@ proc setCellEditCar(cell: var CELL; edtcar: string = "") {...}
 proc getcellLen(cell: var CELL): int {...}
 
 proc getIndexG(this: GRIDSFL; name: string): int {...}
+
+proc getrowName(this: GRIDSFL; r: int): string {...}
+
+proc getrowPosx(this: GRIDSFL; r: int): int {...}
+
+proc getrowPosy(this: GRIDSFL; r: int): int {...}
+
+proc getrowType(this: GRIDSFL; r: int): REFTYP {...}
+
+proc isrowTitle(this: GRIDSFL; r: int): bool {...}
+
+proc getrowText(this: GRIDSFL; r: int): string {...}
+
+proc getrowWidth(this: GRIDSFL; r: int): int {...}
+
+proc getrowScal(this: GRIDSFL; r: int): int {...}
+
+proc getrowEmpty(this: GRIDSFL; r: int): bool {...}
+
+proc getrowErrmsg(this: GRIDSFL; r: int): string {...}
+
+proc getrowHelp(this: GRIDSFL; r: int): string {...}
+
+proc getrowCar(this: GRIDSFL; r: int): string {...}
+
+proc isrowProtect(this: GRIDSFL; r: int): bool {...}
+
+proc getrowProcess(this: GRIDSFL; r: int): string {...}
 
 proc addRows(this: GRIDSFL; rows: seq[string]) {...}
 
@@ -543,7 +655,4 @@ proc isValide(pnl: var PANEL): bool {...}
 proc ioPanel(pnl: var PANEL): Key {...}
 
 
-# Made with Nim. Generated: 2020-06-22 14:08:42 UTC
-
-
-
+Made with Nim. Generated: 2020-09-14 12:54:23 UTC

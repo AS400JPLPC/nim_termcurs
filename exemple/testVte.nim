@@ -11,9 +11,8 @@ var window* : Window
 
 let ALTF4 : bool  = true # ALT_F4 ATVIVE  
 
-let ROW : Natural  = 132 # the desired number of columns
-let NROW : Natural = 42  # the desired number of rows
-
+var ROW : Natural  # the desired number of columns
+var NROW : Natural # the desired number of lines
 let VTENAME : string = "VTE-TERM3270"
 
 let VTEFONT : string = "DejaVu Sans Mono"
@@ -62,9 +61,24 @@ proc key_press_ALTF4(win: Window;event :Event ): bool =
 
 proc  init_Terminal() =
   var font_terminal : string                            #  resize  title  font
-  if width() <= int32(1600) and height()  >= int32(1024) :  font_terminal = fmt"{VTEFONT} 13" #  généralement 13"... 15"
-  if width() <= int32(1920) and height()  >= int32(1080) :  font_terminal = fmt"{VTEFONT} 15" #  généralement 17"... 22"
-  if width() > int32(1920)  :  font_terminal = fmt"{VTEFONT} 20"  # ex: 2560 x1600
+  if width() <= int32(1600) and height()  >= int32(1024) :  
+    font_terminal = fmt"{VTEFONT} 13" #  généralement 13"... 15"
+    ROW  = 132
+    NROW = 32
+  if width() <= int32(1920) and height()  >= int32(1080) :  
+    font_terminal = fmt"{VTEFONT} 15" #  généralement 17"... 22"
+    ROW  = 152
+    NROW = 42
+  if width() > int32(1920)  :  
+    font_terminal = fmt"{VTEFONT} 18" #  ex: 2560 x1600 => 27"
+    ROW  = 172
+    NROW = 52
+
+
+  # application 
+  ROW  = 132
+  NROW = 42
+
 
   terminal.setSize( ROW, NROW)                          #  size du terminal
 
@@ -91,8 +105,6 @@ proc  init_Terminal() =
   terminal.setCursorShape(CursorShape.`block`)          # `block` = 0 ibeam =1  underline= 2
 
 
-
-
 proc newApp() =
 
 
@@ -101,11 +113,12 @@ proc newApp() =
   window.setResizable(false)
   window.setDeletable(false)
 
+
   var envPath:    seq[string]
-  let vPATH = "/home/home.../exemple/"
+  let vPATH = "/home/soleil/NimScreen/"
   envPath.add(vPATH)
 
-  let vPROG = "/home/home???/exemple/termField"  # or termGrid
+  let vPROG = "/home/soleil/NimScreen/test"
   var argv: seq[string]
   argv.add(vPROG)
 
@@ -141,6 +154,7 @@ proc newApp() =
   terminal.connect("child-exited", exit_terminal)
   terminal.connect("window-title-changed", on_title_changed)
   terminal.connect("resize-window", on_resize_window)
+
 
   window.add(terminal)
   showAll(window)

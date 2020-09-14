@@ -8,8 +8,8 @@ import terminal , strutils , std/[re]  , math
 from strformat import alignString, fmt
 import unicode except strip, align
 
-proc beug(nline : int ; text :string ) =
-  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
+#proc beug(nline : int ; text :string ) =
+#  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
 
 const
   EMPTY*:bool = true
@@ -240,11 +240,11 @@ type
     on:bool                   # on = true -> cell active
 
   PANEL* = ref object
-    name*: string
-    posx*: Natural
-    posy*: Natural
-    lines*: Natural
-    cols*:  Natural
+    name: string
+    posx: Natural
+    posy: Natural
+    lines: Natural
+    cols:  Natural
 
     backgr*:   BackgroundColor
     backbr*:   bool
@@ -252,8 +252,8 @@ type
     forebr*:   bool
     style*:    set[Style]
 
-    cadre*:    CADRE
-    boxpnl*:   BOX
+    cadre:    CADRE
+    boxpnl:   BOX
 
     box*:     seq[BOX]
     label*:   seq[LABEL]
@@ -261,11 +261,11 @@ type
     hiden*:   seq[HIDEN]
 
     button*:  seq[BUTTON]
-    index*:    Natural
+    index:    Natural
 
-    funcKey*:  seq[Key]
+    funcKey:  seq[Key]
 
-    mouse*:  bool
+    mouse:  bool
 
     buf:seq[TerminalChar]
 
@@ -293,16 +293,16 @@ type
     lines: Natural
     cols : Natural
     pagerows: Natural
-    rows*: seq[seq[string]]
+    rows: seq[seq[string]]
     nrow: seq[int]
     headers: seq[CELL]
     separator: GridStyle
     gridatr : GRIDATRB
     actif*: bool
     lignes: int
-    pages*: int
+    pages: int
     cursligne:int
-    curspage*:int
+    curspage:int
     buf:seq[TerminalChar]
 
 # var interne
@@ -792,6 +792,42 @@ proc printMenu*(pnl: PANEL; mnu:MENU) =
         stdout.flushFile()
         inc(col)
 
+proc dspMenuItem*(pnl: PANEL; mnu:MENU)  =
+  var pos : Natural = 0
+  var n , h   : Natural
+
+  printMenu(pnl, mnu)
+  
+  onMouse()
+  hideCursor()
+  stdout.flushFile()
+  if pos > len(mnu.item) or pos < 0 : pos = 0
+
+  n = 0
+  h = 0
+  for cell in  mnu.item :
+    
+    if mnu.mnuvh == MNUVH.vertical :
+      if mnu.cadre == CADRE.line0 :
+        gotoXY(mnu.posx + pnl.posx  + n - 1 , mnu.posy + pnl.posy - 1)
+      else : 
+        gotoXY(mnu.posx + pnl.posx  + n, mnu.posy + pnl.posy)
+      
+    if mnu.mnuvh == MNUVH.horizontal :
+      if mnu.cadre == CADRE.line0 :
+        gotoXY(mnu.posx + pnl.posx  - 1 , h  + mnu.posy + pnl.posy - 1)
+      else : 
+        gotoXY(mnu.posx + pnl.posx  , h +  mnu.posy + pnl.posy )
+
+    setBackgroundColor(mnu.backgr,mnu.backbr)
+    setForegroundColor(mnu.foregr,mnu.forebr)
+    if pos == n :
+      writeStyled(cell,mnu.styleCell)  
+    else :
+      writeStyled(cell,mnu.style)
+    inc(n)
+    h += runeLen(cell)
+  stdout.flushFile()
 
 
 
@@ -1177,7 +1213,7 @@ proc defTelephone*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
   return fld
 
 ## Hiden bloc out
-proc defHString*( name:string ; reftyp: REFTYP;text: string;) : HIDEN =
+proc defStringH*( name:string ; reftyp: REFTYP;text: string;) : HIDEN =
   var hdn : HIDEN 
   hdn.name        = name
   hdn.reftyp      = reftyp      # / ALPHA...SWITCH
@@ -1185,7 +1221,7 @@ proc defHString*( name:string ; reftyp: REFTYP;text: string;) : HIDEN =
   hdn.switch      = false       # / CTRUE CFALSE
   return hdn
 ##switch
-proc defHSwitch*( name:string; reftyp: REFTYP;  switch: bool;) : HIDEN =
+proc defSwitchH*( name:string; reftyp: REFTYP;  switch: bool;) : HIDEN =
   var hdn : HIDEN
   hdn.name        = name
   hdn.reftyp      = reftyp      # / ALPHA...SWITCH
@@ -1484,7 +1520,7 @@ proc resetPanel*(pnl: var PANEL)=
 
 
 ## vide object MENU
-proc resetPanel*(mnu: var MENU)=
+proc resetMenu*(mnu: var MENU)=
   mnu.selMenu  = 0
   mnu.item = newseq[string]()
   mnu.actif = false
@@ -1731,6 +1767,12 @@ proc restorePanel*(pnl: PANEL; lines, posy : Natural) =
   stdout.flushFile()
 
 
+## return name From Panel 
+proc getPnlName*(pnl: PANEL): string  =
+  result = pnl.name
+## return Title From Panel
+proc getPnlTitle*(pnl: PANEL): string  =
+  return pnl.boxpnl.title
 
 
 
@@ -1800,7 +1842,7 @@ proc getName*(pnl: PANEL): string =
 
 
 
-## return cVoid Field Sequence Field
+## return callVoid Field Sequence Field
 proc getProcess*(pnl: PANEL; index: int): string  =
   if index < 0 or index > len(pnl.field)-1 : return ""
   return pnl.field[index].process
@@ -2031,29 +2073,18 @@ proc setColorProtect*(fld : var FIELD ; protect_atr : ZONATRB)=
   fld.pforegr = protect_atr.foregr
   fld.pforebr = protect_atr.forebr
 ##  set on  = display ONLY
-proc setProtect*(fld : var FIELD ; protect : bool)=
-    fld.protect = protect
-proc setEdtCar*(fld : var FIELD ; Car : string)=
-    fld.edtcar = Car
-proc setError*(fld : var FIELD; val :bool )=
-    fld.err = val
+proc setProtect*(fld : var FIELD ; protect : bool)= fld.protect = protect
+proc setEdtCar*(fld : var FIELD ; Car : string)=    fld.edtcar = Car
+proc setError*(fld : var FIELD; val :bool )=        fld.err = val
 ## Enables or disables FIELD / LABEL / BOX / MENU / PANEL
-proc setActif*(fld : var FIELD ; actif : bool)=
-    fld.actif = actif
-proc setActif*(lbl : var LABEL ; actif : bool)=
-    lbl.actif = actif
-proc setActif*(box: var BOX ; actif : bool)=
-    box.actif = actif
-proc setActif*(mnu: var MENU ; actif : bool)=
-    mnu.actif = actif
-proc setActif*(btn: var BUTTON; actif : bool)=
-    btn.actif = actif
-proc setActif*(pnl: var PANEL ; actif : bool)=
-    pnl.actif = actif
-proc setMouse*(pnl: var PANEL ; actif : bool)=
-    pnl.actif = actif
-proc setProcess*(fld : var FIELD ; process : string)=
-    fld.process = process
+proc setActif*(fld : var FIELD ; actif : bool)= fld.actif = actif
+proc setActif*(lbl : var LABEL ; actif : bool)= lbl.actif = actif
+proc setActif*(box : var BOX ; actif : bool)=   box.actif = actif
+proc setActif*(mnu : var MENU ; actif : bool)=  mnu.actif = actif
+proc setActif*(btn : var BUTTON; actif : bool)= btn.actif = actif
+proc setActif*(pnl : var PANEL ; actif : bool)= pnl.actif = actif
+proc setMouse*(pnl : var PANEL ; actif : bool)= pnl.actif = actif
+proc setProcess*(fld : var FIELD ; process : string)=  fld.process = process
 
 
 
@@ -2084,22 +2115,36 @@ proc isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## management grid
 ## ----------------
 ## PadingField()
-## calculPosTerm()
-## setPageTerm()
-## resetTerm()
-## columnsCount()
-## 
+## calculPosCell()
+## setPageGrid()
+## setLastPage()
+## newGrid()
+## resetGrid()
+## countColumns()
+## setHeaders()
+## defCell()
+## setCellEditCar()
+## getcellLen()
+## getcellName()
+## getIndexG()
 ## addRows()
 ## dltRows()
-## 
+## countRows()
 ## resetRows()
-## newGRIDSFL()
-## newCell()
-## setHeaders()
+## 
+## getrowName()
+## getrowPosx()
+## getrowPosy()
+## isrowlTitle()
+## getrowText()
+## 
+## GridBox()
 ## printGridHeader()
 ## printGridRows()
-## 
-## ioGrid
+## setPageGrid()
+## pageUpGrid()
+## pageDownGrid()
+## ioGrid()
 ##------------------------------------------------------- 
 
 proc padingCell(text: string; cell:CELL;) :string =
@@ -2152,7 +2197,7 @@ proc calculPosCell(this: GRIDSFL) =
 
 
 
-proc setPageGrid(this :GRIDSFL)=
+proc setPageGrid*(this :GRIDSFL)=
   this.lignes = len(this.rows)
   if this.lignes <= this.pagerows  : 
     this.pages = 1
@@ -2161,6 +2206,8 @@ proc setPageGrid(this :GRIDSFL)=
     if  this.lignes.floorMod(int(this.pagerows)) > 0 : this.pages += 1
 
 
+proc setLastPage*(this :GRIDSFL)=
+  this.curspage = this.pages
 
 proc newGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
                   separator: GridStyle = sepStyle ; grid_atr : GRIDATRB = gridatr , actif : bool = true): GRIDSFL =
@@ -2206,8 +2253,11 @@ proc resetGrid*(this: GRIDSFL) =
 
 
 
-proc columnsCount*(this:  GRIDSFL): int =
+proc counColumns*(this:  GRIDSFL): Natural =
   result = this.headers.len
+
+proc countRows*(this : GRIDSFL) : Natural =
+  result = len(this.rows) 
 
 proc setHeaders*(this: GRIDSFL, headers: seq[CELL]) =
   for cell in headers:
@@ -2234,15 +2284,60 @@ proc setCellEditCar*(cell : var CELL; edtcar :string =""; )=
 
 
 
-## return index Sequence Label from name
+## return len from cell
 proc getcellLen*(cell : var CELL): int  = return cell.long
 
-## return index Sequence Label from name
+## return index from grid,name
 proc getIndexG*(this: GRIDSFL; name: string): int  =
   for i in 0..len(this.rows)-1:
     if this.rows[i][0] == name : return i
   return - 1
 
+## return name from grid,rows
+proc getrowName*(this : GRIDSFL,r :int) : string =
+  result = this.rows[r][1]
+## return posx from grid,rows
+proc getrowPosx*(this : GRIDSFL,r :int) : int=
+  result = parseInt(this.rows[r][2])
+## return posy from grid,rows
+proc getrowPosy*(this : GRIDSFL,r :int) : int =
+  result = parseInt(this.rows[r][3])
+## return type from grid,rows
+proc getrowType*(this : GRIDSFL,r :int) : REFTYP =
+  result = parseEnum[REFTYP](this.rows[r][4])
+## return isTitle from grid,rows
+proc isrowTitle*(this : GRIDSFL; r :int) : bool =
+  result = parseBool(this.rows[r][5])
+## return text from grid,rows
+proc getrowText*(this : GRIDSFL;r :int) : string =
+  result = this.rows[r][6]
+
+## generator ternScr
+## field
+## return Width from grid,rows
+proc getrowWidth*(this : GRIDSFL,r :int) : int =
+  result = parseInt(this.rows[r][5])
+## return scal from grid,rows
+proc getrowScal*(this : GRIDSFL,r :int) : int =
+  result = parseInt(this.rows[r][6])
+## return scal from grid,rows
+proc getrowEmpty*(this : GRIDSFL,r :int) : bool =
+  result = parseBool(this.rows[r][7])
+## return errmsg from grid,rows
+proc getrowErrmsg*(this : GRIDSFL,r :int) : string =
+  result = this.rows[r][8]
+## return help from grid,rows
+proc getrowHelp*(this : GRIDSFL,r :int) : string =
+  result = this.rows[r][9]
+## return Car from grid,rows
+proc getrowCar*(this : GRIDSFL,r :int) : string =
+  result = this.rows[r][10]
+## return isProtect from grid,rows
+proc isrowProtect*(this : GRIDSFL; r :int) : bool =
+  result = parseBool(this.rows[r][11])
+## return Process from grid,rows
+proc getrowProcess*(this : GRIDSFL,r :int) : string =
+  result = this.rows[r][12]
 
 proc addRows*(this: GRIDSFL; rows:seq[string]) =
   this.rows.add(@(rows))
@@ -2571,13 +2666,13 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Fo
           dec(this.curspage)
           this.cursligne = 0
           CountLigne = 0
-          #printGridHeader(this)
+          printGridHeader(this)
       of Key.PageDown :
         if this.curspage < this.pages : 
           inc(this.curspage)
           this.cursligne = 0
           CountLigne = 0
-          #printGridHeader(this)
+          printGridHeader(this)
 
 
       else :discard

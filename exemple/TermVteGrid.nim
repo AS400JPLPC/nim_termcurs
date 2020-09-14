@@ -102,10 +102,10 @@ proc newApp() =
   window.setDeletable(false)
 
   var envPath:    seq[string]
-  let vPATH = "/home/home.../exemple/"
+  let vPATH = "/home/soleil/NimScreen/"
   envPath.add(vPATH)
 
-  let vPROG = "/home/home???/exemple/termField"  # or termGrid
+  let vPROG = "/home/soleil/NimScreen/termGrid"
   var argv: seq[string]
   argv.add(vPROG)
 
