@@ -792,42 +792,6 @@ proc printMenu*(pnl: PANEL; mnu:MENU) =
         stdout.flushFile()
         inc(col)
 
-proc dspMenuItem*(pnl: PANEL; mnu:MENU)  =
-  var pos : Natural = 0
-  var n , h   : Natural
-
-  printMenu(pnl, mnu)
-  
-  onMouse()
-  hideCursor()
-  stdout.flushFile()
-  if pos > len(mnu.item) or pos < 0 : pos = 0
-
-  n = 0
-  h = 0
-  for cell in  mnu.item :
-    
-    if mnu.mnuvh == MNUVH.vertical :
-      if mnu.cadre == CADRE.line0 :
-        gotoXY(mnu.posx + pnl.posx  + n - 1 , mnu.posy + pnl.posy - 1)
-      else : 
-        gotoXY(mnu.posx + pnl.posx  + n, mnu.posy + pnl.posy)
-      
-    if mnu.mnuvh == MNUVH.horizontal :
-      if mnu.cadre == CADRE.line0 :
-        gotoXY(mnu.posx + pnl.posx  - 1 , h  + mnu.posy + pnl.posy - 1)
-      else : 
-        gotoXY(mnu.posx + pnl.posx  , h +  mnu.posy + pnl.posy )
-
-    setBackgroundColor(mnu.backgr,mnu.backbr)
-    setForegroundColor(mnu.foregr,mnu.forebr)
-    if pos == n :
-      writeStyled(cell,mnu.styleCell)  
-    else :
-      writeStyled(cell,mnu.style)
-    inc(n)
-    h += runeLen(cell)
-  stdout.flushFile()
 
 
 

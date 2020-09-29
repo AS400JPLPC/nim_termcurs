@@ -328,8 +328,6 @@ proc newMenu(name: string; posx: Natural; posy: Natural; mnuvh: MNUVH; item: seq
 
 proc printMenu(pnl: PANEL; mnu: MENU) {...}
 
-proc dspMenuItem(pnl: PANEL; mnu: MENU) {...}
-
 proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
              lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
 
