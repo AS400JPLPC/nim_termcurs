@@ -69,7 +69,6 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Change Func QUERY --> FPROC FCALL "queryselector"<br>  
   * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br>  
   * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
-  * Full Change 2020-05-26&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
   * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br>  
   * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br>  
   * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br>  
@@ -78,6 +77,8 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-08-26&nbsp;&rarr;&nbsp;Validity check correction and Multiple window definition introduction <br>  
   * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Structuring code & adding different proc for grid<br>  
   * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Update exemple<br>  
+  * Testing.... 2020-09-30&nbsp;&rarr;&nbsp;**panel Label Field Menu Combo Grid this OK**<br>  
+  * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo <br>  
   
 **Thank you**
 
@@ -263,15 +264,15 @@ proc dscPanel01() =
 
 
 dscPanel01()
-
-offCursor()
-initScreen(Lines(panel01),Cols(panel01),"CONTACT")
-
-
-printPanel(panel01)
-displayPanel(panel01)
-
 proc main()=
+  offCursor()
+  initScreen(Lines(panel01),Cols(panel01),"CONTACT")
+
+
+  printPanel(panel01)
+  displayPanel(panel01)
+
+
   while true:
     let  key = ioPanel(panel01)
     case key
