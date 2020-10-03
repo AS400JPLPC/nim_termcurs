@@ -101,11 +101,9 @@ proc newApp() =
   window.setResizable(false)
   window.setDeletable(false)
 
-  var envPath:    seq[string]
-  let vPATH = "/home/soleil/NimScreen/"
-  envPath.add(vPATH)
+  let envPath = "/home/soleil/NimTerminal/"
 
-  let vPROG = "/home/soleil/NimScreen/termGrid"
+  let vPROG = "/home/soleil/NimTerminal/termGrid"
   var argv: seq[string]
   argv.add(vPROG)
 
@@ -121,11 +119,11 @@ proc newApp() =
   
  # recuperation du PID ex si altf4 kill du programme child 
   if not terminal.spawnSync(
-      cast[PtyFlags](0),
-      "",
-      argv,
+      {},
       envPath,
-      {SpawnFlag.leaveDescriptorsOpen},
+      argv,
+      [],
+      {},
       nil,
       nil,
       pid,

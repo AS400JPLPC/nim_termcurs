@@ -1,65 +1,68 @@
 import termkey
 import termcurs
-import std/[re]
+
 type
-  FIELD_panel01 {.pure.}= enum
-    vnom,
-    vprenom,
-    vnele,
-    vdom,
-    vmobil,
-    vbur
-const P1: array[FIELD_panel01, int] = [0,1,2,3,4,5]
+  FIELD_Form {.pure.}= enum
+    vNom,
+    vPrenom
+const P1: array[FIELD_Form, int] = [0,1]
 
-# Panel panel01
+var Traitement = new(MENU)
+Traitement = newMenu("Traitement",2,2,horizontal,@["File ", "New  ", "Save ", "Exit "],line1)
 
-var panel01= new(PANEL)
+var Sexe = new(MENU)
+Sexe = newMenu("Sexe",12,96,vertical,@["Male", "Femele"],line1)
+
+# Panel Form
+
+var Form= new(PANEL)
 
 # description
-proc dscPanel01() = 
-  panel01 = newPanel("panel01",1,1,42,132,@[defButton(Key.F3,"Exit",true), defButton(Key.F12,"Return",true)],line1)
+proc dscForm() = 
+  Form = newPanel("Form",1,1,42,132,@[defButton(Key.F3,"F3",true), defButton(Key.F12,"F12",true),defButton(Key.altM,"Menu",true)],line1)
 
-  # LABEL  -> panel01
+  # LABEL  -> Form
 
-  panel01.label.add(defTitle("T02002", 2, 2, "CONTACT"))
-  panel01.label.add(deflabel("L04002", 4, 2, "Nom.......:"))
-  panel01.label.add(deflabel("L06002", 6, 2, "Prénom....:"))
-  panel01.label.add(deflabel("L09002", 9, 2, "Né le.....:"))
-  panel01.label.add(deflabel("L11002", 11, 2, "Téléphone.."))
-  panel01.label.add(deflabel("L12006", 12, 6, "Dom...:"))
-  panel01.label.add(deflabel("L13006", 13, 6, "Mobil.:"))
-  panel01.label.add(deflabel("L14006", 14, 6, "Bur...:"))
+  Form.label.add(defTitle("T04002", 4, 2, "Contact"))
+  Form.label.add(deflabel("L07002", 7, 2, "Nom.......:"))
+  Form.label.add(deflabel("L09002", 9, 2, "Prénom....:"))
 
-  # FIELD -> panel01
+  # FIELD -> Form
 
-  panel01.field.add(defString("vnom", 4, 13, ALPHA_UPPER,30,"", FILL, "Obligatoire", "Nom du contact"))
-  panel01.field.add(defString("vprenom", 6, 13, ALPHA_NUMERIC_UPPER,30,"", EMPTY, "Obligatoire", "Prénom du contact"))
-  panel01.field.add(defDate("vnele", 9, 13, DATE_ISO,"", EMPTY, "", "Date de naissance"))
-  panel01.field.add(defTelephone("vdom", 12, 13, TELEPHONE,15,"", EMPTY, "valeur incorrecte", "Téléphone domicile"))
-  panel01.field.add(defTelephone("vmobil", 13, 13, TELEPHONE,15,"", FILL, "valeur incorrect", "Téléphone Mobile"))
-  panel01.field.add(defTelephone("vbur", 14, 13, TELEPHONE,15,"", EMPTY, "Valeur incorrecte", "Téléphone bureau"))
+  Form.field.add(defString("vNom", 7, 13, ALPHA_UPPER,30,"", FILL, "Obligatoire", "Nom du contact"))
+  Form.field.add(defString("vPrenom", 9, 13, ALPHA_NUMERIC_UPPER,30,"", FILL, "Obligatoire", "Prénom du contact"))
 
-
-
-dscPanel01()
-
-offCursor()
-initScreen(Lines(panel01),Cols(panel01),"CONTACT")
-
-
-printPanel(panel01)
-displayPanel(panel01)
 
 proc main()=
+  offCursor()
+  initScreen()
+
+  dscForm()
+  printPanel(Form)
+  displayPanel(Form)
+
   while true:
-    let  key = ioPanel(panel01)
+    let  key = ioPanel(Form)
     case key
       of Key.F3:
         break
       of Key.F12:
-	# only test 	  
-        setText(panel01,P1[vnom],"JPL")
+        # only test 	  
+        setText(Form,P1[vNom],"JPL")
+
+      of Key.altM:
+        # exemple  test
+        printMenu(Form,Traitement)
+        discard ioMenu(Form,Traitement,0)
+        restorePanel(Form,Traitement)
+
+        printMenu(Form,Sexe)
+        discard ioMenu(Form,Sexe,0)
+        restorePanel(Form,Sexe)
+
       else : discard
+
+
 
 
 main()

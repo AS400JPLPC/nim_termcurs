@@ -34,12 +34,19 @@ fi
 #-------------------------------------------------------------------
 # compile
 #-------------------------------------------------------------------
+# force full option gtk
+# debug
+# nim  c --threads:on --passC:-flto --deadCodeElim:on -d:danger   -d:forceGtk   -o:$projet_bin   $projet_src
+# prod
+# nim  c  --verbosity:0 --hints:off --opt:size --threads:on --passc:-flto  --passL:-flto --deadCodeElim:on -d:danger  -d:forceGtk -d:release  -o:$projet_bin   $projet_src
+# --hint[Performance]:off --gc:arc 
+#--passL:-no-pie
 
 if [ "$mode" == "DEBUG" ] ; then
   if [ "$projet_bin" == "TermVte" ] || [ "$projet_bin" == "contactVte" ] || [ "$projet_bin" == "TermVteGrid" ] || [ "$projet_bin" == "testVte" ] ; then
     nim  c  -f --gc:arc -d:forceGtk  -d:useMalloc --panics:on --threads:on --deadCodeElim:on --hint[Performance]:off  --app:GUI --passL:-no-pie -o:$projet_bin   $projet_src
   else
-    nim  c  -f --gc:arc -d:useMalloc --deadCodeElim:on --panics:on  --threads:on	 --hint[Performance]:off   -o:$projet_bin   $projet_src
+    nim  c  -f --gc:arc -d:useMalloc --deadCodeElim:on --panics:on  --threads:on 	 --hint[Performance]:off   -o:$projet_bin   $projet_src
   fi
 fi
 
@@ -49,6 +56,10 @@ if [ "$mode" == "PROD" ] ; then
   else
     nim  c -f --gc:arc --verbosity:0 --hints:off 	-d:useMalloc --deadCodeElim:on --hint[Performance]:off   --app:CONSOLE  --panics:on  --threads:on --opt:size  -d:release  -o:$projet_bin   $projet_src
   fi
+fi
+
+if [ "$mode" == "TEST" ] ; then  
+	nim  c -r -f --gc:arc -d:useMalloc --panics:on --threads:on --passL:-no-pie --hint[Performance]:off   -o:$projet_bin   $projet_src
 fi
 #-------------------------------------------------------------------
 # resultat
