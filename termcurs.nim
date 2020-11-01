@@ -204,7 +204,7 @@ type
 
 
   BUTTON* = object
-    key* : Key
+    key* : TKey
     text*: string
     actif*: bool
 
@@ -255,7 +255,7 @@ type
     cadre:    CADRE
     boxpnl:   BOX
 
-    box*:     seq[BOX]
+    cbox*:    seq[BOX]
     label*:   seq[LABEL]
     field*:   seq[FIELD]
     hiden*:   seq[HIDEN]
@@ -263,7 +263,7 @@ type
     button*:  seq[BUTTON]
     index:    Natural
 
-    funcKey:  seq[Key]
+    funcKey:  seq[TKey]
 
     mouse:  bool
 
@@ -493,7 +493,7 @@ proc setTerminal*(termatr : ZONATRB = scratr) =
 
 
 ## return BUTTON
-proc defButton*(key: Key; text:string; actif = true): BUTTON =
+proc defButton*(key: TKey; text:string; actif = true): BUTTON =
   var bt:BUTTON
   bt.key = key
   bt.text = text
@@ -1227,14 +1227,14 @@ proc newPanel*(name:string;posx,posy,height,width,:Natural;button: seq[(BUTTON)]
     pnl.boxpnl  = defBox(name, 1 , 1 ,pnl.lines, pnl.cols, cadre, title)
 
 
-  pnl.box  = newseq[BOX]()
+  pnl.cbox  = newseq[BOX]()
   pnl.label  = newseq[LABEL]()
   pnl.field  = newseq[FIELD]()
   pnl.hiden  = newseq[HIDEN]()
   pnl.index = 0
   pnl.button  = newseq[BUTTON](len(button))
   pnl.button   = button
-  pnl.funcKey = newseq[Key](len(button))
+  pnl.funcKey = newseq[TKey](len(button))
 
   for i,btn in pnl.button :
     pnl.funcKey[i] = btn.key
@@ -1244,42 +1244,6 @@ proc newPanel*(name:string;posx,posy,height,width,:Natural;button: seq[(BUTTON)]
 
   pnl.actif = true
   return pnl
-
-proc updPanel*(pnl :var PANEL; name:string;posx,posy,height,width,:Natural;button: seq[(BUTTON)];
-              cadre : CADRE = line0; title : string = "",pnl_atr : ZONATRB = pnlatr) =
-  pnl.name  = name
-  pnl.posx  = posx
-  pnl.posy  = posy
-  pnl.lines  = height
-  pnl.cols  = width
-  pnl.backgr  = pnl_atr.backgr
-  pnl.backbr  = pnl_atr.backbr
-  pnl.foregr  = pnl_atr.foregr
-  pnl.forebr  = pnl_atr.forebr
-  pnl.style   = pnl_atr.style
-
-  pnl.cadre   = cadre
-
-  if pnl.cadre == CADRE.line1 or pnl.cadre == CADRE.line2 :
-    pnl.boxpnl  = defBox(name, 1 , 1 ,pnl.lines, pnl.cols, cadre, title)
-  
-  pnl.index = 0
-
-  pnl.button  = newseq[BUTTON](len(button))
-  pnl.button   = button
-  pnl.funcKey = newseq[Key](len(button))
-  for i,btn in pnl.button :
-    pnl.funcKey[i] = btn.key
-
-  pnl.mouse = false
-
-  pnl.buf = newSeq[TerminalChar]((pnl.lines+1)*(pnl.cols+1))
-  
-  pnl.actif = true
-
-
-
-
 
 
 
@@ -1448,8 +1412,8 @@ proc printPanel*(pnl: var PANEL)=
   if pnl.cadre == CADRE.line1 or pnl.cadre == CADRE.line2 :
     printBox(pnl,pnl.boxpnl)
 
-  for i in 0..len(pnl.box)-1:
-    if pnl.box[i].actif    : printBox(pnl,pnl.box[i])
+  for i in 0..len(pnl.cbox)-1:
+    if pnl.cbox[i].actif    : printBox(pnl,pnl.cbox[i])
 
   for i in 0..len(pnl.label)-1:
     if pnl.label[i].actif : printLabel(pnl,pnl.label[i])
@@ -1469,13 +1433,13 @@ proc resetPanel*(pnl: var PANEL)=
   pnl.posy  = 0
   pnl.lines = 0
   pnl.cols  = 0
-  pnl.box    = newseq[BOX]()
+  pnl.cbox    = newseq[BOX]()
   pnl.label  = newseq[LABEL]()
   pnl.field  = newseq[FIELD]()
   pnl.hiden  = newseq[HIDEN]()
   pnl.index  = 0
   pnl.button= newseq[BUTTON]()
-  pnl.funcKey = newseq[Key]()
+  pnl.funcKey = newseq[TKey]()
   pnl.buf = newSeq[TerminalChar]()
   pnl.actif = false
 
@@ -2056,7 +2020,7 @@ proc setProcess*(fld : var FIELD ; process : string)=  fld.process = process
 
 
 ## Test if KEYs must be managed by the programmer
-proc isPanelKey*(pnl: PANEL; e_key:Key): bool =
+proc isPanelKey*(pnl: PANEL; e_key:TKey): bool =
   var i = 0
   var ok :bool = false
   while i < len(pnl.funcKey):
@@ -2570,10 +2534,10 @@ proc pageDownGrid*(this: GRIDSFL): Key_Grid =
 ## Automatic alignment based on the type reference
 ##================================================================
 
-proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Format
+proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO Format
   var buf :seq[string]
-  if not this.actif : return (Key.None, buf)
-  var grid_key:Key = Key.None
+  if not this.actif : return (TKey.None, buf)
+  var grid_key:TKey = TKey.None
   var CountLigne = 0
   this.cursligne = 0
   printGridHeader(this)
@@ -2590,48 +2554,48 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (Key , seq[string])=        # IO Fo
     stdin.flushFile()
     grid_key = getFunc()
 
-    if grid_key == Key.Mouse :
+    if grid_key == TKey.Mouse :
       let gridMouse = getMouse()
-      grid_key = Key.None
+      grid_key = TKey.None
       if gridMouse.action == MouseButtonAction.mbaPressed:
         if gridMouse.scroll and gridMouse.scrollDir == ScrollDirection.sdUp   :
-          grid_key = Key.Up
+          grid_key = TKey.Up
         if gridMouse.scroll and gridMouse.scrollDir == ScrollDirection.sdDown :
-          grid_key = Key.Down
+          grid_key = TKey.Down
 
-        if  gridMouse.button ==  MouseButton.mbLeft : grid_key = Key.Enter
-        if  gridMouse.button ==  MouseButton.mbRight : grid_key = Key.Enter
+        if  gridMouse.button ==  MouseButton.mbLeft : grid_key = TKey.Enter
+        if  gridMouse.button ==  MouseButton.mbRight : grid_key = TKey.Enter
 
-      if grid_key == Key.None : continue
+      if grid_key == TKey.None : continue
 
     case grid_Key
-      of Key.Escape :
+      of TKey.Escape :
 
         this.cursligne = -1 
-        return (Key.Escape,buf)
-      of Key.Enter:
+        return (TKey.Escape,buf)
+      of TKey.Enter:
         if this.lignes > 0  :
           this.cursligne = -1
           buf = this.rows[this.nrow[CountLigne]]
           offMouse()
-          return (Key.Enter,buf)
-        else : return (Key.None,buf)
-      of Key.Up :
+          return (TKey.Enter,buf)
+        else : return (TKey.None,buf)
+      of TKey.Up :
         if CountLigne > 0 : 
           dec(CountLigne)
           this.cursligne = CountLigne
-      of Key.Down :
+      of TKey.Down :
         if CountLigne < len(this.nrow) - 1  :
           inc(CountLigne)
           this.cursligne = CountLigne
 
-      of Key.PageUp :
+      of TKey.PageUp :
         if this.curspage > 0 : 
           dec(this.curspage)
           this.cursligne = 0
           CountLigne = 0
           printGridHeader(this)
-      of Key.PageDown :
+      of TKey.PageDown :
         if this.curspage < this.pages : 
           inc(this.curspage)
           this.cursligne = 0
@@ -2687,36 +2651,36 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
     stdout.flushFile()
     var key  = getFunc()
 
-    if key == Key.Mouse :
+    if key == TKey.Mouse :
       let mnuMouse = getMouse()
-      key = Key.None
+      key = TKey.None
       if mnuMouse.action == MouseButtonAction.mbaPressed:
         if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdUp   :
-          if mnu.mnuvh == MNUVH.vertical :    key = Key.Up
-          if mnu.mnuvh == MNUVH.horizontal :  key = Key.Left
+          if mnu.mnuvh == MNUVH.vertical :    key = TKey.Up
+          if mnu.mnuvh == MNUVH.horizontal :  key = TKey.Left
         if mnuMouse.scroll and mnuMouse.scrollDir == ScrollDirection.sdDown :
-          if mnu.mnuvh == MNUVH.vertical :    key = Key.Down
-          if mnu.mnuvh == MNUVH.horizontal :  key = Key.Right
-        if  mnuMouse.button ==  MouseButton.mbLeft : key = Key.Enter
-        if  mnuMouse.button ==  MouseButton.mbRight : key = Key.Enter
-      #if mnuMouse.action == MouseButtonAction.mbaReleased : key = Key.Enter
+          if mnu.mnuvh == MNUVH.vertical :    key = TKey.Down
+          if mnu.mnuvh == MNUVH.horizontal :  key = TKey.Right
+        if  mnuMouse.button ==  MouseButton.mbLeft : key = TKey.Enter
+        if  mnuMouse.button ==  MouseButton.mbRight : key = TKey.Enter
+      #if mnuMouse.action == MouseButtonAction.mbaReleased : key = TKey.Enter
     case key
 
-      of Key.Escape:
+      of TKey.Escape:
         result = 0
         if not pnl.mouse : offMouse()
         break 
-      of Key.Enter:
+      of TKey.Enter:
         result = pos + 1
         if not pnl.mouse : offMouse()
         break
-      of Key.Down:
+      of TKey.Down:
         if pos < (len(mnu.item) - 1) : inc(pos)
-      of Key.Up:
+      of TKey.Up:
         if pos > 0 : dec(pos)
-      of Key.Right:
+      of TKey.Right:
         if pos < (len(mnu.item) - 1) : inc(pos)
-      of Key.Left:
+      of TKey.Left:
         if pos > 0 : dec(pos)
       else: discard
 
@@ -2730,10 +2694,10 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
 ## application hold principe and new langage
 ## use termkey.nim
 ##======================================================
-proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
+proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
 
-  if fld.protect : return Key.Enter
-  var e_key:Key
+  if fld.protect : return TKey.Enter
+  var e_key:TKey
 
   var e_posx :Natural = pnl.posx + fld.posx - 1
   var e_posy :Natural = pnl.posy + fld.posy - 1
@@ -2807,7 +2771,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
         dec(i)
     result = 0
 
-  func isfuncKey(e_key:Key): bool =
+  func isfuncKey(e_key:TKey): bool =
     var i = 0
     var ok :bool = false
     while i < len(pnl.funcKey):
@@ -2863,7 +2827,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
 
     var pnlmsg  = new(PANEL)
     var button: BUTTON 
-    button.key   = Key.None
+    button.key   = TKey.None
     button.text  = ""
 
     var lcols = pnl.cols
@@ -2879,7 +2843,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     while true:
       e_key = getFunc()
       case e_key
-        of Key.Escape:
+        of TKey.Escape:
           break
         else :discard
     restorePanel(pnl,pnl.lines,pnl.posy)
@@ -2898,7 +2862,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
 
     var pnlmsg  = new(PANEL)
     var button: BUTTON 
-    button.key   = Key.None
+    button.key   = TKey.None
     button.text  = ""
 
     var lcols = pnl.cols
@@ -2915,7 +2879,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     while true:
       e_key = getFunc()
       case e_key
-        of Key.Escape:
+        of TKey.Escape:
           break
         else :discard
     restorePanel(pnl,pnl.lines,pnl.posy)
@@ -2942,7 +2906,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
 
     showCursor()
     # read keyboard
-    (e_key,e_str) = getKey()
+    (e_key,e_str) = getTKey()
 
     # control transfert panel
     if isfuncKey(e_key) : 
@@ -2953,14 +2917,14 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
     # work key based 5250/3270
     case e_key 
 
-      of Key.Escape:
+      of TKey.Escape:
         result = e_key          #release  buffer
         break
-      of Key.CtrlH:             # touche .Help for Field
+      of TKey.CtrlH:             # touche .Help for Field
         if fld.help > "" :
           msgHelp(pnl,fld.help)
 
-      of Key.Up , Key.Down:     # next Field
+      of TKey.Up , TKey.Down:     # next Field
         if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or
             isEmpty(e_Field,fld) and fld.empty == FILL :
             msgErr(pnl,fld.errmsg)
@@ -2970,7 +2934,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           fld.switch = e_switch
           result = e_key
           break
-      of Key.Stab:              # next Field
+      of TKey.Stab:              # next Field
         if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or
             isEmpty(e_Field,fld) and fld.empty == FILL :
             msgErr(pnl,fld.errmsg)
@@ -2978,9 +2942,9 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           fld.text  = $e_FIELD
           fld.text = fld.text.strip(trailing = true)
           fld.switch = e_switch
-          result = Key.Up
+          result = TKey.Up
           break
-      of Key.Tab:               # next Field
+      of TKey.Tab:               # next Field
         if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or 
             isEmpty(e_Field,fld) and fld.empty == FILL :
             msgErr(pnl,fld.errmsg)
@@ -2988,9 +2952,9 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
           fld.text  = $e_FIELD
           fld.text = fld.text.strip(trailing = true)
           fld.switch = e_switch
-          result = Key.Down
+          result = TKey.Down
           break
-      of Key.Enter :            # enrg to Field
+      of TKey.Enter :            # enrg to Field
         if ( fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) ) or 
             isEmpty(e_Field,fld) and fld.empty == FILL :
             msgErr(pnl,fld.errmsg)
@@ -3003,26 +2967,26 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
 
 
 
-      of Key.Home:              # pos cursor home/field
+      of TKey.Home:              # pos cursor home/field
         e_count = 0
         e_curs = e_posy
 
-      of Key.End:               # pos cursor End/field last not blank
+      of TKey.End:               # pos cursor End/field last not blank
         e_count = nbrRune(e_FIELD)
         e_curs = e_posy + nbrRune(e_FIELD)
 
 
-      of Key.Right:             # move cursor
+      of TKey.Right:             # move cursor
         if e_count < e_nbrcar - 1:
           inc(e_count)
           inc(e_curs)
 
-      of Key.Left:              # move cursor
+      of TKey.Left:              # move cursor
         if e_curs > e_posy:
           dec(e_curs)
           dec(e_count)
 
-      of Key.Backspace:         # delete char
+      of TKey.Backspace:         # delete char
         if e_curs > e_posy:
           dec(e_curs)
           dec(e_count)
@@ -3031,19 +2995,19 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
             dec(e_count)
             e_curs = e_posy + e_count
 
-      of Key.Delete:            # delete char
+      of TKey.Delete:            # delete char
         delete()
         if e_curs > e_posy + e_count:
           dec(e_count)
           e_curs = e_posy + e_count
 
-      of Key.Insert:            # insert char
+      of TKey.Insert:            # insert char
         if statusCursInsert : statusCursInsert = false else : statusCursInsert = true
 
 #--------------------------------------------------------------------------------
 # work buffer
 #--------------------------------------------------------------------------------
-      of Key.Char:
+      of TKey.Char:
 
         case ord(fld.reftyp)         ## Standard treatment of FIELD TYPE
 
@@ -3215,12 +3179,12 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (Key )=
                 e_switch = false
 
           of ord(FPROC):
-            result = Key.PROC
+            result = TKey.PROC
             hideCursor()
             break
 
           of ord(FCALL):
-            result = Key.CALL
+            result = TKey.CALL
             hideCursor()
             break
 
@@ -3295,11 +3259,11 @@ proc isValide*(pnl:var PANEL): bool =
 ## predefined and customizable REGEX control
 ##------------------------------------------------------
 
-proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
-  if not pnl.actif : return Key.None
+proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
+  if not pnl.actif : return TKey.None
 
   var CountField = pnl.index
-  var fld_key:Key = Key.Enter
+  var fld_key:TKey = TKey.Enter
   var index = getIndex(pnl,pnl.field[CountField].name)
 
   # check error
@@ -3364,7 +3328,7 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
       printField(pnl,pnl.field[CountField])
       displayField(pnl,pnl.field[CountField])
 
-    if isPanelKey(pnl,fld_key) or fld_key == Key.PROC :                      # this key sav index field return main 
+    if isPanelKey(pnl,fld_key) or fld_key == TKey.PROC :                      # this key sav index field return main 
       pnl.index = getIndex(pnl,pnl.field[CountField].name)
       return fld_key
 
@@ -3372,21 +3336,21 @@ proc ioPanel*(pnl:var PANEL): Key =                       # IO Format
       fld_key = getFunc()
     else :
       case fld_Key
-        of Key.Escape :                               # we replay & resume the basic value
+        of TKey.Escape :                               # we replay & resume the basic value
           continue
-        of Key.Enter:
+        of TKey.Enter:
           inc(CountField)
           if CountField > fieldNbr(pnl) : CountField = 0
           if pnl.field[CountField].protect :
             CountField = isFirstIO(pnl,CountField) 
 
-        of Key.Up :
+        of TKey.Up :
           if CountField > 0 : dec(CountField)
           elif CountField == 0 :  CountField = len(pnl.field)-1
           if pnl.field[CountField].protect  :
             CountField = isPriorIO(pnl,CountField )
 
-        of Key.Down:
+        of TKey.Down:
           inc(CountField)
           if CountField > fieldNbr(pnl) : CountField = 0
           if pnl.field[CountField].protect :
