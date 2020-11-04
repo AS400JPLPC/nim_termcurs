@@ -14,7 +14,7 @@ MNUVH.vertical ,@[
 
 proc ecr00() =
   # use button CtrlQ reserved for return reftyp QUERY 
-  pnlF0= new_Panel("Help00",1,1,terminalHeight(),terminalWidth(), @[defButton(Key.F12,"Next")],CADRE.line0)
+  pnlF0= new_Panel("Help00",1,1,terminalHeight(),terminalWidth(), @[defButton(TKey.F12,"Next")],CADRE.line0)
   pnlF0.label.add(defLabel("L02005", 2, 5,   "Présentation"))
   pnlF0.label.add(defLabel("L04005", 4, 5,   "manipulation des affichages"))
   pnlF0.label.add(defLabel("L06005", 6, 5,   "manipulation des fenêtres"))
@@ -36,8 +36,8 @@ proc ecr00() =
 proc ecr01() =
   # use button CtrlQ reserved for return reftyp QUERY 
   pnlF1= new_Panel("nom",1,1,terminalHeight(),terminalWidth(),
-  @[defButton(Key.F3,"Exit"),defButton(Key.F2,"PANEL F2"),defButton(Key.F6, "active",false),
-  defButton(Key.F9, "menu")],CADRE.line0)
+  @[defButton(TKey.F3,"Exit"),defButton(TKey.F2,"PANEL F2"),defButton(TKey.F6, "active",false),
+  defButton(TKey.F9, "menu")],CADRE.line0)
 
   pnlF1.label.add(defLabel("zone0", 2, 5,  "ALPHA               zone0  :"))
   pnlF1.field.add(defString("zone0", 2, 5+(len(pnlF1.label[0].text)), ALPHA, 30, "Soleil",FILL, "ALPHA Obligatoire", "Type Alpha a-Z"))
@@ -94,16 +94,16 @@ proc ecr01() =
 
   pnlF1.label.add(defLabel("zone1/", 38, 5,"F1 = Help   Escape= return (error/menu)"))
 
-  pnlF1.hiden.add(defHString("zone3",TEXT_FULL, "BONJOUR, (36) étoiles"))     # full String
-  pnlF1.hiden.add(defHString("zone10",DATE_ISO, "2020-04-24"))                # full String
-  pnlF1.hiden.add(defHSwitch("zone15", SWITCH,true))                          # specifique switch
-  pnlF1.hiden.add(defHString("zone8",DECIMAL, "256.05"))                      # full String
+  pnlF1.hiden.add(defStringH("zone3",TEXT_FULL, "BONJOUR, (36) étoiles"))     # full String
+  pnlF1.hiden.add(defStringH("zone10",DATE_ISO, "2020-04-24"))                # full String
+  pnlF1.hiden.add(defSwitchH("zone15", SWITCH,true))                          # specifique switch
+  pnlF1.hiden.add(defStringH("zone8",DECIMAL, "256.05"))                      # full String
 
 
 proc ecr02() =
   pnlF2 = new_Panel("nom",10,30,20,70,
-    @[defButton(Key.CtrlV,"get VAL"),defButton(Key.CtrlH,"get HIDEN"),defButton(Key.F12,"Abandon"),
-    defButton(Key.F9,"Menu"),defButton(Key.F15,"Clear")],CADRE.line1,"test Panel")
+    @[defButton(TKey.CtrlV,"get VAL"),defButton(TKey.CtrlH,"get HIDEN"),defButton(TKey.F12,"Abandon"),
+    defButton(TKey.F9,"Menu"),defButton(TKey.F15,"Clear")],CADRE.line1,"test Panel")
   pnlF2.label.add(defLabel("nom", 5, 2,"ASTRE :"))
   pnlF2.label.add(defLabel("fruit", 10, 2,"Fruit :"))
   pnlF2.label.add(defLabel("aime", 12, 2,"Aimez-Vous les fruits :"))

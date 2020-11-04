@@ -52,7 +52,7 @@ type
     vertical = 0  , 
     horizontal 
 
-  Key_Grid* {.pure.} = enum
+  TKey_Grid* {.pure.} = enum
     PGUp,
     PGDown,
     PGHome,
@@ -2502,7 +2502,7 @@ proc setPageGrid(this: GRIDSFL; pos : Natural) =
       break
 
 
-proc pageUpGrid*(this: GRIDSFL): Key_Grid =
+proc pageUpGrid*(this: GRIDSFL): TKey_Grid =
   if this.curspage > 0 : 
     dec(this.curspage)
     this.cursligne = -1
@@ -2512,7 +2512,7 @@ proc pageUpGrid*(this: GRIDSFL): Key_Grid =
   if this.curspage == 1: return PGHome
   else : return PGUp
 
-proc pageDownGrid*(this: GRIDSFL): Key_Grid =
+proc pageDownGrid*(this: GRIDSFL): TKey_Grid =
   if this.curspage < this.pages : 
     inc(this.curspage)
     this.cursligne = -1

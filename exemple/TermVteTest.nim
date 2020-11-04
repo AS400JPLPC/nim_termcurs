@@ -11,16 +11,17 @@ var window* : Window
 
 let ALTF4 : bool  = true # ALT_F4 ATVIVE  
 
-var ROW : Natural  # the desired number of columns
-var NROW : Natural # the desired number of rows
+var ROW : Natural   # the desired number of columns
+var NROW : Natural  # the desired number of rows
 
 let VTENAME : string = "VTE-TERM3270"
 
 let VTEFONT : string = "DejaVu Sans Mono"
 
-proc app_exit(win: Window) = mainQuit()
 
+proc app_exit(win: Window) = mainQuit()
 proc exit_terminal(widget: Terminal, status: int) = quit(0)
+
 
 proc on_title_changed*(widget: vte.Terminal) =
   window.setTitle( widget.getWindowTitle())
@@ -52,7 +53,8 @@ proc key_press_ALTF4(win: Window;event :Event ): bool =
 
     case reponse
       of  1:
-          app_exit(win)
+          #app_exit(win)
+          mainQuit()
           return false
       else :discard
   
@@ -107,6 +109,8 @@ proc  init_Terminal() =
   terminal.setCursorShape(CursorShape.`block`)          # `block` = 0 ibeam =1  underline= 2
 
 
+
+
 proc newApp() =
 
 
@@ -116,10 +120,10 @@ proc newApp() =
   window.setDeletable(false)
 
 
+  let envPath = "/home/soleil/NimTerminal/"
 
-  let envPath= "/home/soleil/NimScreen/"
 
-  let vPROG = "/home/soleil/NimScreen/Contact"
+  let vPROG = "/home/soleil/NimTerminal/test"
   var argv: seq[string]
   argv.add(vPROG)
 
@@ -133,23 +137,7 @@ proc newApp() =
   init_Terminal()
 
   
-  # recuperation du PID ex si altf4 kill du programme child 
-  #[ if not terminal.spawnSync(
-      cast[PtyFlags](0),
-      "",
-      argv,
-      envPath,
-      {SpawnFlag.leaveDescriptorsOpen},
-      nil,
-      nil,
-      pid,
-      nil
-  ):
-  ]#
-
-
-
-  # recuperation du PID ex si altf4 kill du programme child 
+ # recuperation du PID ex si altf4 kill du programme child 
   if not terminal.spawnSync(
       {},
       envPath,
@@ -171,7 +159,6 @@ proc newApp() =
   terminal.connect("child-exited", exit_terminal)
   terminal.connect("window-title-changed", on_title_changed)
   terminal.connect("resize-window", on_resize_window)
-
 
   window.add(terminal)
   showAll(window)

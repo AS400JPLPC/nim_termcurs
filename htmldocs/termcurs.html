@@ -105,9 +105,9 @@ function main() {
   <li><a class="reference" href="#MNUVH"
     title="MNUVH {.pure.} = enum
   vertical = 0, horizontal"><wbr />MNUVH<span class="attachedType"></span></a></li>
-  <li><a class="reference" href="#Key_Grid"
-    title="Key_Grid {.pure.} = enum
-  PGUp, PGDown, PGHome, PGEnd"><wbr />Key_<wbr />Grid<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#TKey_Grid"
+    title="TKey_Grid {.pure.} = enum
+  PGUp, PGDown, PGHome, PGEnd"><wbr />TKey_<wbr />Grid<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#MNUATRB"
     title="MNUATRB = ref object
   style*: set[Style]
@@ -995,7 +995,7 @@ function main() {
   </ul>
   <ul class="simple nested-toc-section">pageDownGrid
       <li><a class="reference" href="#pageDownGrid%2CGRIDSFL"
-    title="pageDownGrid(this: GRIDSFL): Key_Grid">pageDownGrid,GRIDSFL<span class="attachedType">GRIDSFL</span></a></li>
+    title="pageDownGrid(this: GRIDSFL): TKey_Grid">pageDownGrid,GRIDSFL<span class="attachedType">GRIDSFL</span></a></li>
 
   </ul>
   <ul class="simple nested-toc-section">printMenu
@@ -1055,7 +1055,7 @@ function main() {
   </ul>
   <ul class="simple nested-toc-section">pageUpGrid
       <li><a class="reference" href="#pageUpGrid%2CGRIDSFL"
-    title="pageUpGrid(this: GRIDSFL): Key_Grid">pageUpGrid,GRIDSFL<span class="attachedType">GRIDSFL</span></a></li>
+    title="pageUpGrid(this: GRIDSFL): TKey_Grid">pageUpGrid,GRIDSFL<span class="attachedType">GRIDSFL</span></a></li>
 
   </ul>
   <ul class="simple nested-toc-section">setEdtcar
@@ -1157,8 +1157,8 @@ return len from cellreturn index from grid,namereturn name from grid,rowsreturn 
 
 
 </dd>
-<a id="Key_Grid"></a>
-<dt><pre><a href="termcurs.html#Key_Grid"><span class="Identifier">Key_Grid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">pure</span></span><span class="Other">.}</span></span> <span class="Other">=</span> <span class="Keyword">enum</span>
+<a id="TKey_Grid"></a>
+<dt><pre><a href="termcurs.html#TKey_Grid"><span class="Identifier">TKey_Grid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">pure</span></span><span class="Other">.}</span></span> <span class="Other">=</span> <span class="Keyword">enum</span>
   <span class="Identifier">PGUp</span><span class="Other">,</span> <span class="Identifier">PGDown</span><span class="Other">,</span> <span class="Identifier">PGHome</span><span class="Other">,</span> <span class="Identifier">PGEnd</span></pre></dt>
 <dd>
 
@@ -2739,7 +2739,7 @@ return len from cellreturn index from grid,namereturn name from grid,rowsreturn 
 
 </dd>
 <a id="pageUpGrid,GRIDSFL"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#pageUpGrid%2CGRIDSFL"><span class="Identifier">pageUpGrid</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#Key_Grid"><span class="Identifier">Key_Grid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+<dt><pre><span class="Keyword">proc</span> <a href="#pageUpGrid%2CGRIDSFL"><span class="Identifier">pageUpGrid</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#TKey_Grid"><span class="Identifier">TKey_Grid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
@@ -2747,7 +2747,7 @@ return len from cellreturn index from grid,namereturn name from grid,rowsreturn 
 
 </dd>
 <a id="pageDownGrid,GRIDSFL"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#pageDownGrid%2CGRIDSFL"><span class="Identifier">pageDownGrid</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#Key_Grid"><span class="Identifier">Key_Grid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+<dt><pre><span class="Keyword">proc</span> <a href="#pageDownGrid%2CGRIDSFL"><span class="Identifier">pageDownGrid</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#TKey_Grid"><span class="Identifier">TKey_Grid</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
@@ -2803,7 +2803,7 @@ return len from cellreturn index from grid,namereturn name from grid,rowsreturn 
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-11-01 03:24:56 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-11-04 14:18:04 UTC</small>
       </div>
     </div>
   </div>

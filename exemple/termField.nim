@@ -2,7 +2,7 @@
 import terminal
 import termkey
 import termcurs
-import strformat
+#import strformat
 import tables
 
 
@@ -65,7 +65,7 @@ proc callRefTyp(fld : var FIELD) =
     let (keys, val) = ioGrid(grid,g_pos)
   
     case keys
-      of Key.Enter :
+      of TKey.Enter :
 
         fld.text  = $val[0]
         break
@@ -78,47 +78,47 @@ callQuery["callRefTyp"] = callRefTyp
 
 include ./termFieldEcr.nim
 
-var key : Key = Key.None
+var key : TKey = TKey.None
 var pnlx = new(PANEL)
 var pnl : int = 0
 
-proc beug(nline : int ; text :string ) =
-  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
+#proc beug(nline : int ; text :string ) =
+#  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
 
-InitScreen()
+initScreen(42,132)
 setTerminal() #default color style erase
 
 ecr00()
 printPanel(pnlF0)
 while true:
   key  = getFunc()
-  if key == Key.F12 : break
+  if key == TKey.F12 : break
 
 setTerminal() #default color style erase
 
-key =  Key.F1
+key =  TKey.F1
 while true:
-  if key == Key.F3 :  CloseScren()
-  if key != Key.F1 and key != Key.F2 and key != Key.F9 and key != Key.F15 : key  = getFunc()
+  if key == TKey.F3 :  closeScren()
+  if key != TKey.F1 and key != TKey.F2 and key != TKey.F9 and key != TKey.F15 : key  = getFunc()
  
   case key
-    of Key.F1:
+    of TKey.F1:
       if not isActif(pnlF1) :
         ecr01()
         printPanel(pnlF1)
       pnl = 1
       key = ioPanel(pnlF1)
       
-      if key == Key.PROC :
+      if key == TKey.PROC :
         if getRefType(pnlF1,Index(pnlF1)) == FPROC:
           if isProcess(pnlF1,Index(pnlF1)):
             callQuery[getProcess(pnlF1,Index(pnlF1))](pnlF1.field[Index(pnlF1)])
             restorePanel(pnlF1, grid)
 
-        key = Key.F1
+        key = TKey.F1
         continue
 
-      if key == Key.F6:
+      if key == TKey.F6:
         for i in 0..len(pnlF1.label) - 1 :
           setActif(pnlF1.label[i],true)         # test actif dynamic
           printLabel(pnlF1, pnlF1.label[i])
@@ -127,15 +127,15 @@ while true:
           setActif(pnlF1.field[i],true)         # test actif dynamic
           printField(pnlF1, pnlF1.field[i])
         displayPanel(pnlF1)
-        key = Key.F1
+        key = TKey.F1
 
-    of Key.F2:
+    of TKey.F2:
       ecr02()
       printPanel(pnlF2)
       pnl = 2
       key = ioPanel(pnlF2)
       case key
-        of Key.CtrlV :
+        of TKey.CtrlV :
           if isActif(pnlF1):
             # Field coherence check exemple
             if getName(pnlF1) == getName(pnlF2):
@@ -143,9 +143,9 @@ while true:
               pnlF1.field[Index(pnlF1)].text  = getText(pnlF2,getName(pnlF2))
             restorePanel(pnlF1,pnlF2)
           else : resetPanel(pnlF2)
-          key = Key.F1
+          key = TKey.F1
 
-        of Key.CtrlH :
+        of TKey.CtrlH :
           if isActif(pnlF1):
             # Field coherence check exemple retrived hiden field
             if getName(pnlF1) == getNameH(pnlF1,getIndexH(pnlF1, getName(pnlF1))):
@@ -153,34 +153,34 @@ while true:
               pnlF1.field[Index(pnlF1)].switch = getSwitchH(pnlF1,getName(pnlF1))
             restorePanel(pnlF1,pnlF2)
           else : resetPanel(pnlF2)
-          key = Key.F1
+          key = TKey.F1
 
-        of Key.F12 :
+        of TKey.F12 :
           if isActif(pnlF1) and isActif(pnlF2) :              # if isActif(pnlF0) and isActif(pnlF2)
             restorePanel(pnlF1,pnlF2)                         # restorePanel(pnlF0,pnlF2)
             resetPanel(pnlF2)
             #key=getFunc()
-            key = Key.F1
+            key = TKey.F1
           if not isActif(pnlF1) :
             resetPanel(pnlF2)
-            key = Key.F1
+            key = TKey.F1
 
-        of Key.F9:
-          key = Key.F9
-        of Key.F15 :
-          key = Key.F15
-        else : key = Key.None    # F9 Display Menu
+        of TKey.F9:
+          key = TKey.F9
+        of TKey.F15 :
+          key = TKey.F15
+        else : key = TKey.None    # F9 Display Menu
 
-    of Key.F15:
+    of TKey.F15:
       resetPanel(pnlF1)
       clsPanel(pnlF2)
       resetPanel(pnlF2)
       setTerminal()
-      key = Key.None
+      key = TKey.None
 
-    of Key.F9 :
+    of TKey.F9 :
       if pnl == 0 :
-        key = Key.None
+        key = TKey.None
         continue
       var menuF9= new(MENU)
       if pnl == 1 :
@@ -206,8 +206,8 @@ while true:
               displayField(pnlF1, pnlF1.field[msel-1])
               setActif(pnlF1.button[2],false)
               displayButton(pnlF1)
-          if pnl == 1 : key = Key.F1
-          if pnl == 2 : key = Key.F2
+          if pnl == 1 : key = TKey.F1
+          if pnl == 2 : key = TKey.F2
         of 2 :
           if isActif(pnlF1):
             printMenu(pnlx,mField)
@@ -218,8 +218,8 @@ while true:
               setActif(pnlF1.button[2],true)
               printButton(pnlF1)
               displayField(pnlF1, pnlF1.field[msel-1])
-          if pnl == 1 : key = Key.F1
-          if pnl == 2 : key = Key.F2
+          if pnl == 1 : key = TKey.F1
+          if pnl == 2 : key = TKey.F2
 
         of 3 :
           if isActif(pnlF1):
@@ -230,8 +230,8 @@ while true:
               setActif(pnlF1.field[msel-1],false)
               displayLabel(pnlF1, pnlF1.label[msel-1])
               displayField(pnlF1, pnlF1.field[msel-1])
-          if pnl == 1 : key = Key.F1
-          if pnl == 2 : key = Key.F2
+          if pnl == 1 : key = TKey.F1
+          if pnl == 2 : key = TKey.F2
 
 
         of 4 :
@@ -244,11 +244,11 @@ while true:
               displayLabel(pnlF1, pnlF1.label[msel-1])
               displayField(pnlF1, pnlF1.field[msel-1])
 
-          if pnl == 1 : key = Key.F1
-          if pnl == 2 : key = Key.F2
+          if pnl == 1 : key = TKey.F1
+          if pnl == 2 : key = TKey.F2
 
         of 5 : 
-          key = Key.F3
+          key = TKey.F3
           break
 
         else : discard
@@ -261,8 +261,8 @@ while true:
           setTerminal()
       if pnl == 1 :
         if isActif(menuF9) : restorePanel(pnlx,menuF9)
-      if pnl == 0 : key = Key.None
-      resetPanel(menuF9)
+      if pnl == 0 : key = TKey.None
+      resetMenu(menuF9)
     else: discard
   stdout.flushFile
   stdin.flushFile
