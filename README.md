@@ -57,28 +57,29 @@ It works, but I had to harmonize and add PROC or FUNC
 
 **IMPORT: termkey project**
 
-<u>mise en fonction le 2020-04-15</u><br>  
-  * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br>  
-  * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br>  
-  * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*<br>  
-  * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br><br>  
-  * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u><br>  
-  * Full Change 2020-05-13&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br>  
-  * Full Change 2020-05-14&nbsp;&rarr;&nbsp;Validity check correction<br>  
-  * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector"<br>  
-  * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Change Func QUERY --> FPROC FCALL "queryselector"<br>  
-  * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br>  
-  * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br>  
-  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br>  
-  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br>  
-  * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br>  
-  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   patience and persistence**<br>  
-  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu...<br>  
-  * Full Change 2020-08-26&nbsp;&rarr;&nbsp;Validity check correction and Multiple window definition introduction <br>  
-  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Structuring code & adding different proc for grid<br>  
-  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Update exemple<br>  
-  * Testing.... 2020-09-30&nbsp;&rarr;&nbsp;**panel Label Field Menu Combo Grid this OK**<br>  
-  * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo <br>  
+<u>mise en fonction le 2020-04-15</u><br />  
+  * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br />  
+  * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br />  
+  * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*<br />  
+  * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br />  
+  * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u><br /> 
+  * Full Change 2020-05-13&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br />  
+  * Full Change 2020-05-14&nbsp;&rarr;&nbsp;Validity check correction<br />  
+  * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector"<br />  
+  * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Change Func QUERY --> FPROC FCALL "queryselector"<br />  
+  * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br />  
+  * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br />  
+  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br />  
+  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br />  
+  * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br />  
+  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   patience and persistence**<br />  
+  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu...<br />  
+  * Full Change 2020-08-26&nbsp;&rarr;&nbsp;Validity check correction and Multiple window definition introduction <br />  
+  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Structuring code & adding different proc for grid<br />  
+  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Update exemple<br />  
+  * Testing.... 2020-09-30&nbsp;&rarr;&nbsp;**panel Label Field Menu Combo Grid this OK**<br />  
+  * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo<br />
+  * Full Change 2020-11-04&nbsp;&rarr;&nbsp;homogeneity with termkey<br />  
   
 **Thank you**
 
@@ -179,7 +180,7 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | End                |&nbsp;&rarr;&nbsp;                                                                          |
 | Ctrl-H             |&nbsp;&rarr;&nbsp; Display a help panel specific to the field                                 |
 | Escape             |&nbsp;&rarr;&nbsp; Returns control to ioPanel then redisplays the field without modification  |
-| KEY                |&nbsp;&rarr;&nbsp; Returns control to ioPanel                                               |
+| TKEY               |&nbsp;&rarr;&nbsp; Returns control to ioPanel                                               |
 |                    |                                                                                            |
 | Field-Type         |                                                                                            |
 |                    |                                                                                            |
@@ -276,9 +277,9 @@ proc main()=
   while true:
     let  key = ioPanel(panel01)
     case key
-      of Key.F3:
+      of TKey.F3:
         break
-      of Key.F12:
+      of TKey.F12:
 	# only test 	  
         setText(panel01,P1[vnom],"JPL")
       else : discard
@@ -313,56 +314,62 @@ proc ioPanel(pnl: var PANEL): Key {...}
 
 
 # Procs
+
 proc defCursor(e_curs: Natural = 0) {...}
 
 proc setTerminal(termatr: ZONATRB = scratr) {...}
 
-proc defButton(key: Key; text: string; actif = true): BUTTON {...}
+proc defButton(key: TKey; text: string; actif = true): BUTTON {...}
 
-proc defBox(name: string; posx: Natural; posy: Natural; lines: Natural; cols: Natural;
-           cadre: CADRE; title: string; box_atr: BOXATRB = boxatr; actif: bool = true): BOX {...}
+proc defBox(name: string; posx: Natural; posy: Natural; lines: Natural;
+            cols: Natural; cadre: CADRE; title: string;
+            box_atr: BOXATRB = boxatr; actif: bool = true): BOX {...}
 
 proc printBox(pnl: var PANEL; box: BOX) {...}
 
-proc newMenu(name: string; posx: Natural; posy: Natural; mnuvh: MNUVH; item: seq[string];
-            cadre: CADRE = CADRE.line0; mnu_atr: MNUATRB = mnuatr; actif: bool = true): MENU {...}
+proc newMenu(name: string; posx: Natural; posy: Natural; mnuvh: MNUVH;
+             item: seq[string]; cadre: CADRE = CADRE.line0;
+             mnu_atr: MNUATRB = mnuatr; actif: bool = true): MENU {...}
 
 proc printMenu(pnl: PANEL; mnu: MENU) {...}
 
 proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
-             lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
+              lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
 
 proc defTitle(name: string; posx: Natural; posy: Natural; text: string;
-             ttl_atr: ZONATRB = ttlatr; actif: bool = true): LABEL {...}
+              ttl_atr: ZONATRB = ttlatr; actif: bool = true): LABEL {...}
 
 proc printLabel(pnl: var PANEL; lbl: LABEL) {...}
 
 proc defString(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-              width: Natural; text: string; empty: bool; errmsg: string; help: string;
-              regex: string = ""; fld_atr: ZONATRB = fldatr;
-              protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
+               width: Natural; text: string; empty: bool; errmsg: string;
+               help: string; regex: string = ""; fld_atr: ZONATRB = fldatr;
+               protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
-proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; width: Natural;
-            text: string; empty: bool; errmsg: string; help: string;
-            fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
+proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+             width: Natural; text: string; empty: bool; errmsg: string;
+             help: string; fld_atr: ZONATRB = fldatr;
+             protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
-proc defSwitch(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; switch: bool;
-              empty: bool; errmsg: string; help: string; swt_atr: ZONATRB = swtatr;
-              protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
-
-proc defDate(name: string; posx: Natural; posy: Natural; reftyp: REFTYP; text: string;
-            empty: bool; errmsg: string; help: string; fld_atr: ZONATRB = fldatr;
-            protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
-
-proc defNumeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-               width: Natural; scal: Natural; text: string; empty: bool; errmsg: string;
-               help: string; fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr;
+proc defSwitch(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+               switch: bool; empty: bool; errmsg: string; help: string;
+               swt_atr: ZONATRB = swtatr; protect_atr: ZONATRB = prtatr;
                actif: bool = true): FIELD {...}
 
+proc defDate(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+             text: string; empty: bool; errmsg: string; help: string;
+             fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr;
+             actif: bool = true): FIELD {...}
+
+proc defNumeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+                width: Natural; scal: Natural; text: string; empty: bool;
+                errmsg: string; help: string; fld_atr: ZONATRB = fldatr;
+                protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
+
 proc defTelephone(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-                 width: Natural; text: string; empty: bool; errmsg: string;
-                 help: string; fld_atr: ZONATRB = fldatr;
-                 protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
+                  width: Natural; text: string; empty: bool; errmsg: string;
+                  help: string; fld_atr: ZONATRB = fldatr;
+                  protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
 proc defStringH(name: string; reftyp: REFTYP; text: string): HIDEN {...}
 
@@ -374,12 +381,9 @@ proc Cols(pnl: PANEL): Natural {...}
 
 proc Index(pnl: PANEL): Natural {...}
 
-proc newPanel(name: string; posx, posy, height, width: Natural; button: seq[(BUTTON)];
-             cadre: CADRE = line0; title: string = ""; pnl_atr: ZONATRB = pnlatr): PANEL {...}
-
-proc updPanel(pnl: var PANEL; name: string; posx, posy, height, width: Natural;
-             button: seq[(BUTTON)]; cadre: CADRE = line0; title: string = "";
-             pnl_atr: ZONATRB = pnlatr) {...}
+proc newPanel(name: string; posx, posy, height, width: Natural;
+              button: seq[(BUTTON)]; cadre: CADRE = line0; title: string = "";
+              pnl_atr: ZONATRB = pnlatr): PANEL {...}
 
 proc printField(pnl: var PANEL; fld: FIELD) {...}
 
@@ -557,7 +561,7 @@ proc setMouse(pnl: var PANEL; actif: bool) {...}
 
 proc setProcess(fld: var FIELD; process: string) {...}
 
-proc isPanelKey(pnl: PANEL; e_key: Key): bool {...}
+proc isPanelKey(pnl: PANEL; e_key: TKey): bool {...}
 
 proc isProtect(fld: var FIELD): bool {...}
 
@@ -582,8 +586,8 @@ proc setPageGrid(this: GRIDSFL) {...}
 proc setLastPage(this: GRIDSFL) {...}
 
 proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
-            separator: GridStyle = sepStyle; grid_atr: GRIDATRB = gridatr;
-            actif: bool = true): GRIDSFL {...}
+             separator: GridStyle = sepStyle; grid_atr: GRIDATRB = gridatr;
+             actif: bool = true): GRIDSFL {...}
 
 proc resetGrid(this: GRIDSFL) {...}
 
@@ -593,7 +597,8 @@ proc countRows(this: GRIDSFL): Natural {...}
 
 proc setHeaders(this: GRIDSFL; headers: seq[CELL]) {...}
 
-proc defCell(text: string; long: Natural; reftyp: REFTYP; cell_atr: CELLATRB = cellatr): CELL {...}
+proc defCell(text: string; long: Natural; reftyp: REFTYP;
+             cell_atr: CELLATRB = cellatr): CELL {...}
 
 proc setCellEditCar(cell: var CELL; edtcar: string = "") {...}
 
@@ -639,19 +644,20 @@ proc printGridHeader(this: GRIDSFL) {...}
 
 proc printGridRows(this: GRIDSFL) {...}
 
-proc pageUpGrid(this: GRIDSFL): Key_Grid {...}
+proc pageUpGrid(this: GRIDSFL): TKey_Grid {...}
 
-proc pageDownGrid(this: GRIDSFL): Key_Grid {...}
+proc pageDownGrid(this: GRIDSFL): TKey_Grid {...}
 
-proc ioGrid(this: GRIDSFL; pos: int = -1): (Key, seq[string]) {...}
+proc ioGrid(this: GRIDSFL; pos: int = -1): (TKey, seq[string]) {...}
 
 proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
 
-proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
+proc ioField(pnl: PANEL; fld: var FIELD): (TKey) {...}
 
 proc isValide(pnl: var PANEL): bool {...}
 
-proc ioPanel(pnl: var PANEL): Key {...}
+proc ioPanel(pnl: var PANEL): TKey {...}
 
 
-Made with Nim. Generated: 2020-09-14 12:54:23 UTC
+Made with Nim. Generated: 2020-11-04 14:18:04 UTC
+
