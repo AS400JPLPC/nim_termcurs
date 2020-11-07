@@ -1,8 +1,8 @@
 # nim_Termcurs
 
-# curse TERMINAL inspired 5250/3270 done only with nim
+*** curse TERMINAL inspired 5250/3270 done only with nim***
 
-#  I am not yet posting designer and source generator.it is not operational but written at the base of termcurs
+**  I am not yet posting designer and source generator.it is not operational but written at the base of termcurs**
 
 
 
@@ -37,27 +37,14 @@ img : [GENERATOR-12](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Gene
 img : [GENERATOR-20](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_20.png)
 img : [GENERATOR-30](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_30.png)
 
+<br />
+<br />
+<br />
+<br />
 
-  
-<br>
-<br>
+**IMPORT: termkey project**<br />
 
-# <u>&nbsp;&rarr;&nbsp; IN PROGRESS It is possible that there are changes</u>
-I test on a real data-base to validate the whole.
-It works, but I had to harmonize and add PROC or FUNC
-
-  
-<br>
-<br>
-
-**everything is not perfect please report problems Nim forum **
-
-**in PROGRESS  I prepare to test -> creat simple designer**
-
-
-**IMPORT: termkey project**
-
-<u>mise en fonction le 2020-04-15</u><br />  
+<u>put in function 2020-04-15</u><br />  
   * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br />  
   * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br />  
   * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*<br />  
@@ -78,31 +65,26 @@ It works, but I had to harmonize and add PROC or FUNC
   * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Structuring code & adding different proc for grid<br />  
   * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Update exemple<br />  
   * Testing.... 2020-09-30&nbsp;&rarr;&nbsp;**panel Label Field Menu Combo Grid this OK**<br />  
-  * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo<br />
-  * Full Change 2020-11-04&nbsp;&rarr;&nbsp;homogeneity with termkey<br />  
+  * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo<br />  
+  * Full Change 2020-11-04&nbsp;&rarr;&nbsp;homogeneity with termkey<br />
+ <br />
   
 **Thank you**
 
-  * [ Date](https://rgxdb.com/r/2V9BOC58)  
-  * [ MAIL](https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression) 
-  * [TELEPHONE](https://regexr.com/3c53v)
-  * Thank you to everyone who posted on github their knowledge was precious to me  
-  * To IBM education and their gifts of various books  
-  * [NCURSE](https://invisible-island.net/ncurses/announce.html)  
-  * [illwill](https://github.com/johnnovak/illwill)  
-  * [nim-terminaltables](https://github.com/xmonader/nim-terminaltables)  
+  * [ Date](https://rgxdb.com/r/2V9BOC58)<br />
+  * [ MAIL](https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression)<br />
+  * [TELEPHONE](https://regexr.com/3c53v)<br />
+  * Thank you to everyone who posted on github their knowledge was precious to me<br />
+  * To IBM education and their gifts of various books<br />
+  * [NCURSE](https://invisible-island.net/ncurses/announce.html)<br />
+  * [illwill](https://github.com/johnnovak/illwill)<br />
+  * [nim-terminaltables](https://github.com/xmonader/nim-terminaltables)<br />
 
 
 
 
 
-**Resumes operation of the 5250/3270 or Ncursew (let's keep it modest).**
- 
-
-
-
-
-&rarr;&nbsp; **ioMENU** in / out objects and receives the choice:  
+&rarr;&nbsp; **ioMENU** in / out objects and receives the choice:<br />
 
 
 | Func...........                    |
@@ -116,11 +98,11 @@ It works, but I had to harmonize and add PROC or FUNC
 | selector mouse                     |
 
   
-<br>
-<br>
-&nbsp;&rarr;&nbsp; **ioPANEL**&nbsp;&nbsp;&nbsp;
+<br />
+<br />
+&nbsp;&rarr;&nbsp; **ioPANEL**&nbsp;&nbsp;&nbsp;<br />
 displays all the field labels as well as the function keys (F1 ..). the unfolding this fact according to the order in which you registered in the seq [Field] and not index on lines / cols
-<br>
+<br />
 
 | Func...........| help.                                              |
 |----------------|----------------------------------------------------|
@@ -131,9 +113,9 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | Other KEY      | &nbsp;&rarr;&nbsp; returns to the calling procedure|
 
   
-<br>
-<br>
-&rarr;&nbsp; **ioGRID** Display field type table, with page / line tracking:  
+<br />
+<br />
+&rarr;&nbsp; **ioGRID** Display field type table, with page / line tracking:<br />
 
 | Func...........                    |
 |------------------------------------|
@@ -145,41 +127,40 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | Mouse on service                   |
 
 
-  
-<br>
-<br>
+<br />
+<br />
+<br />
 
 &nbsp;
-&rarr;&nbsp; **USE**:
+&rarr;&nbsp; **USE**:<br />
 
-  * windows: PANEL it is its basic vocation as a frame (html)  
-  * texte: LABEL
-  * buffer: FIELD
-  * funckey: BUTTON
-  * Currently does not control panel output overflows
-  * To use restore you must display a panel in a panel (must be included) same for the Menus
-  * The framing of the labels or fields are relative to the panel
-  * in a PANEL the function keys appear automatically and are included in the Buttons  
+  * windows: PANEL it is its basic vocation as a frame (html)<br />
+  * texte: LABEL<br />
+  * buffer: FIELD<br />
+  * funckey: BUTTON<br />
+  * Currently does not control panel output overflows<br />
+  * To use restore you must display a panel in a panel (must be included) same for the Menus<br />
+  * The framing of the labels or fields are relative to the panelv<br />
+  * in a PANEL the function keys appear automatically and are included in the Buttons<br />
 
-<br>
-<br>
+<br />
 &nbsp;
-&rarr;&nbsp; **ioFIELD**
-<br>
+&rarr;&nbsp; **ioFIELD**<br />
+<br />
 
 | Func...........    | help.                                                                                      |
 |--------------------|--------------------------------------------------------------------------------------------|
-| Enter              |&nbsp;&rarr;&nbsp; valid, next field                                                         |
-| UP..DOWN           |&nbsp;&rarr;&nbsp; valid, next field                                                         |
-| TAB..STAB          |&nbsp;&rarr;&nbsp; valid, next field                                                         |
+| Enter              |&nbsp;&rarr;&nbsp; valid, next field                                                        |
+| UP..DOWN           |&nbsp;&rarr;&nbsp; valid, next field                                                        |
+| TAB..STAB          |&nbsp;&rarr;&nbsp; valid, next field                                                        |
 | Insert             |&nbsp;&rarr;&nbsp;                                                                          |
 | Delete             |&nbsp;&rarr;&nbsp;                                                                          |
 | Left..Rigth        |&nbsp;&rarr;&nbsp;                                                                          |
 | Backspace          |&nbsp;&rarr;&nbsp; Delete                                                                   |
 | Home               |&nbsp;&rarr;&nbsp;                                                                          |
 | End                |&nbsp;&rarr;&nbsp;                                                                          |
-| Ctrl-H             |&nbsp;&rarr;&nbsp; Display a help panel specific to the field                                 |
-| Escape             |&nbsp;&rarr;&nbsp; Returns control to ioPanel then redisplays the field without modification  |
+| Ctrl-H             |&nbsp;&rarr;&nbsp; Display a help panel specific to the field                               |
+| Escape             |&nbsp;&rarr;&nbsp; Returns control to ioPanel then redisplays the field without modification|
 | TKEY               |&nbsp;&rarr;&nbsp; Returns control to ioPanel                                               |
 |                    |                                                                                            |
 | Field-Type         |                                                                                            |
@@ -205,21 +186,22 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | FCALL              |&nbsp;&rarr;&nbsp; Managed by function: Call programme      "queryselector" Key.CALL        |
 
 
-(1) numeric
-"1","2","3","4","5","6","7","8","9","0"
+(1) numeric<br />
+"1","2","3","4","5","6","7","8","9","0"<br />
 
-(2) password
-"~","!","?","@","#","$","£","€","%","^","&","*","-","+","=","(",")","{","}","[","]","<",">"
+(2) password<br />
+"~","!","?","@","#","$","£","€","%","^","&","*","-","+","=","(",")","{","}","[","]","<",">"<br />
 
-(3) punct
-".",":",",","!","?","'","-","(",")","<",">"
+(3) punct<br />
+".",":",",","!","?","'","-","(",")","<",">"<br />
 
-not ";" reserved csv
-<br>
-<br>
-#Usage
-<br>
-<br>
+not ";" reserved csv<br />
+<br />
+<br />
+**Usage**<br />
+<br />
+<br />
+<p><code>
 ```
 import termkey
 import termcurs
@@ -288,15 +270,14 @@ proc main()=
 main()
 closeScren()
 ```
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-# Main procedure
+</code></p>
+<br />
+<br />
+<br />
+<br />
+
+
+** Main procedure**
 
 proc ioGrid(this: GRIDSFL; pos: int = -1): (Key, seq[string]) {...}
 
@@ -307,13 +288,12 @@ proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
 proc isValide(pnl: var PANEL): bool {...}
 
 proc ioPanel(pnl: var PANEL): Key {...}
-<br>
-<br>
-<br>
+<br />
+<br />
+<br />
 
 
-
-# Procs
+** Procs **
 
 proc defCursor(e_curs: Natural = 0) {...}
 
@@ -657,7 +637,8 @@ proc ioField(pnl: PANEL; fld: var FIELD): (TKey) {...}
 proc isValide(pnl: var PANEL): bool {...}
 
 proc ioPanel(pnl: var PANEL): TKey {...}
+<br />
+<br />
 
-
-Made with Nim. Generated: 2020-11-04 14:18:04 UTC
+**Made with Nim. Generated: 2020-11-04 14:18:04 UTC**
 
