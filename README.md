@@ -203,7 +203,7 @@ not ";" reserved csv<br />
 <br />
 
 
-<code>
+```
 import termkey
 import termcurs
 import std/[re]
@@ -270,7 +270,7 @@ proc main()=
 
 main()
 closeScren()
-</code>
+```
 
 
 <br />
