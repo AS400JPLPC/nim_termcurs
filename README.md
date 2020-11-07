@@ -201,8 +201,9 @@ not ";" reserved csv<br />
 **Usage**<br />
 <br />
 <br />
-<p><code>
-```
+
+
+<code>
 import termkey
 import termcurs
 import std/[re]
@@ -269,8 +270,9 @@ proc main()=
 
 main()
 closeScren()
-```
-</code></p>
+</code>
+
+
 <br />
 <br />
 <br />
