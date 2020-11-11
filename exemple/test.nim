@@ -1,28 +1,28 @@
 import termkey
-import terminal , strformat
+import termcurs, strformat
 
 
-initScreen(42,132)
+initTerm(42,132)
 setBackgroundColor(bgBlue)
-eraseScreen()
+eraseTerm()
 var cX,cY:Natural
 var scrollX,scrollY,scrollP,scrollC:Natural
 var bScroll : bool = false
-showCursor()
+onCursor()
 gotoXY(1,1)
 
 while true:
   let (key, chr)  = getTKey()
 
   case key
-    of TKey.Escape: closeScren()
+    of TKey.Escape: closeTerm()
 
     of TKey.F1 : onMouse()
 
     of TKey.F2 : offMouse()
 
     of TKey.F3 :
-        hideCursor() 
+        offCursor() 
         scrollP = 10
         scrollX = 6
         scrollY = 10
@@ -33,9 +33,9 @@ while true:
 
     of TKey.F4 :
       # origine
-      resizeScreen(42,132)  
-      titleScreen("VTE-TERM3270")
-      eraseScreen()
+      resizeTerm(42,132)  
+      titleTerm("VTE-TERM3270")
+      eraseTerm()
     of TKey.F5:
       if bScroll :
         if ( scrollC <= scrollP) : 
@@ -50,7 +50,7 @@ while true:
       bScroll = false
       scrollX = 1
       scrollY = 1
-      showCursor()
+      onCursor()
 
     of TKey.F7 :
       var mask : string
@@ -66,23 +66,23 @@ while true:
 
       gotoXY(1 , 1) 
 
-    of TKey.F8: hideCursor()
+    of TKey.F8: offCursor()
 
-    of TKey.F9: showCursor()
+    of TKey.F9: onCursor()
 
     of TKey.F10:
       setBackgroundColor(bgBlue)
-      resizeScreen(20,80)
+      resizeTerm(20,80)
       setBackgroundColor(bgBlue) 
-      eraseScreen()
-      titleScreen("Test KEYBOARD 20/80")
+      eraseTerm()
+      titleTerm("Test KEYBOARD 20/80")
 
 
     of TKey.F11:
-      resizeScreen(42,132)
+      resizeTerm(42,132)
       setBackgroundColor(bgBlue)  
-      eraseScreen()
-      titleScreen("Test KEYBOARD 42/132")
+      eraseTerm()
+      titleTerm("Test KEYBOARD 42/132")
 
     of TKey.F12 :
       getCursor(cX , cY)
@@ -137,11 +137,11 @@ while true:
       gotoXY(mi.x,mi.y)
 
     of TKey.Char:
-      setCursorXPos(1)
+      gotoXPos(1)
       stdout.write(fmt"char :{RightBlack}{chr} ")
 
     else :
-      setCursorXPos(1)
+      gotoXPos(1)
       stdout.write(fmt"key  :{RightBlack}{key} ")
 
   stdout.flushFile

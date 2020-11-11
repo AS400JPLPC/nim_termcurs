@@ -1,5 +1,4 @@
 
-import terminal
 import termkey
 import termcurs
 #import strformat
@@ -85,7 +84,7 @@ var pnl : int = 0
 #proc beug(nline : int ; text :string ) =
 #  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
 
-initScreen(42,132)
+initTerm(42,132)
 setTerminal() #default color style erase
 
 ecr00()
@@ -98,7 +97,7 @@ setTerminal() #default color style erase
 
 key =  TKey.F1
 while true:
-  if key == TKey.F3 :  closeScren()
+  if key == TKey.F3 :  closeTerm()
   if key != TKey.F1 and key != TKey.F2 and key != TKey.F9 and key != TKey.F15 : key  = getFunc()
  
   case key

@@ -4,7 +4,7 @@
 
 **  I am not yet posting designer and source generator.it is not operational but written at the base of termcurs**
 
-
+** require termkey **
 
 
 doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/htmldocs/termcurs.html)
@@ -67,6 +67,7 @@ img : [GENERATOR-30](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Gene
   * Testing.... 2020-09-30&nbsp;&rarr;&nbsp;**panel Label Field Menu Combo Grid this OK**<br />  
   * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo<br />  
   * Full Change 2020-11-04&nbsp;&rarr;&nbsp;homogeneity with termkey<br />
+  * Full Change 2020-11-10&nbsp;&rarr;&nbsp;enfranchisement Nim:Terminal code cleanup operational with libvte or ex xfce-terminal<br />
  <br />
   
 **Thank you**
@@ -205,71 +206,153 @@ not ";" reserved csv<br />
 
 ```
 import termkey
-import termcurs
-import std/[re]
-type
-  FIELD_panel01 {.pure.}= enum
-    vnom,
-    vprenom,
-    vnele,
-    vdom,
-    vmobil,
-    vbur
-const P1: array[FIELD_panel01, int] = [0,1,2,3,4,5]
-
-# Panel panel01
-
-var panel01= new(PANEL)
-
-# description
-proc dscPanel01() = 
-  panel01 = newPanel("panel01",1,1,42,132,@[defButton(Key.F3,"Exit",true), defButton(Key.F12,"Return",true)],line1)
-
-  # LABEL  -> panel01
-
-  panel01.label.add(defTitle("T02002", 2, 2, "CONTACT"))
-  panel01.label.add(deflabel("L04002", 4, 2, "Nom.......:"))
-  panel01.label.add(deflabel("L06002", 6, 2, "Prénom....:"))
-  panel01.label.add(deflabel("L09002", 9, 2, "Né le.....:"))
-  panel01.label.add(deflabel("L11002", 11, 2, "Téléphone.."))
-  panel01.label.add(deflabel("L12006", 12, 6, "Dom...:"))
-  panel01.label.add(deflabel("L13006", 13, 6, "Mobil.:"))
-  panel01.label.add(deflabel("L14006", 14, 6, "Bur...:"))
-
-  # FIELD -> panel01
-
-  panel01.field.add(defString("vnom", 4, 13, ALPHA_UPPER,30,"", FILL, "Obligatoire", "Nom du contact"))
-  panel01.field.add(defString("vprenom", 6, 13, ALPHA_NUMERIC_UPPER,30,"", EMPTY, "Obligatoire", "Prénom du contact"))
-  panel01.field.add(defDate("vnele", 9, 13, DATE_ISO,"", EMPTY, "", "Date de naissance"))
-  panel01.field.add(defTelephone("vdom", 12, 13, TELEPHONE,15,"", EMPTY, "valeur incorrecte", "Téléphone domicile"))
-  panel01.field.add(defTelephone("vmobil", 13, 13, TELEPHONE,15,"", FILL, "valeur incorrect", "Téléphone Mobile"))
-  panel01.field.add(defTelephone("vbur", 14, 13, TELEPHONE,15,"", EMPTY, "Valeur incorrecte", "Téléphone bureau"))
+import termcurs, strformat
 
 
+initTerm(42,132)
+setBackgroundColor(bgBlue)
+eraseTerm()
+var cX,cY:Natural
+var scrollX,scrollY,scrollP,scrollC:Natural
+var bScroll : bool = false
+onCursor()
+gotoXY(1,1)
 
-dscPanel01()
-proc main()=
-  offCursor()
-  initScreen(Lines(panel01),Cols(panel01),"CONTACT")
+while true:
+  let (key, chr)  = getTKey()
+
+  case key
+    of TKey.Escape: closeTerm()
+
+    of TKey.F1 : onMouse()
+
+    of TKey.F2 : offMouse()
+
+    of TKey.F3 :
+        offCursor() 
+        scrollP = 10
+        scrollX = 6
+        scrollY = 10
+        scrollC = 1
+        bScroll = onScroll(scrollX,scrollP)  # 6 =  start ligne     nbr ligne  par page = 10   
+
+        gotoXY(scrollX,scrollY)
+
+    of TKey.F4 :
+      # origine
+      resizeTerm(42,132)  
+      titleTerm("VTE-TERM3270")
+      eraseTerm()
+    of TKey.F5:
+      if bScroll :
+        if ( scrollC <= scrollP) : 
+          gotoXY(scrollX,scrollY)
+          stdout.write(fmt"{scrollC} ligne ")
+          inc(scrollX)
+          inc(scrollC)
 
 
-  printPanel(panel01)
-  displayPanel(panel01)
+    of TKey.F6 :
+      bScroll = offScroll()
+      bScroll = false
+      scrollX = 1
+      scrollY = 1
+      onCursor()
+
+    of TKey.F7 :
+      var mask : string
+
+      for u in 1..132 :
+        mask = mask & "."
+
+      for i in 1..50 : 
+        gotoXY(i , 1)
+        stdout.write(mask)
+        gotoXY(i , 1)
+        stdout.write(fmt"{i} ")
+
+      gotoXY(1 , 1) 
+
+    of TKey.F8: offCursor()
+
+    of TKey.F9: onCursor()
+
+    of TKey.F10:
+      setBackgroundColor(bgBlue)
+      resizeTerm(20,80)
+      setBackgroundColor(bgBlue) 
+      eraseTerm()
+      titleTerm("Test KEYBOARD 20/80")
 
 
-  while true:
-    let  key = ioPanel(panel01)
-    case key
-      of TKey.F3:
-        break
-      of TKey.F12:
-	# only test 	  
-        setText(panel01,P1[vnom],"JPL")
-      else : discard
+    of TKey.F11:
+      resizeTerm(42,132)
+      setBackgroundColor(bgBlue)  
+      eraseTerm()
+      titleTerm("Test KEYBOARD 42/132")
 
+    of TKey.F12 :
+      getCursor(cX , cY)
+      gotoXY(42 , 1)
+      stdout.write(fmt"CursX > {cX} CursY > {cY}")
+      gotoXY(cX , cY
+      )
+    of TKey.PageUp:
+      if bScroll :
+          upScrool(scrollP)
+          scrollX = 6
+          scrollC = 1
+          # /.../ F5 manuel ;)
 
-main()
-closeScren()
+    of TKey.PageDown:
+      if bScroll :
+        downScrool(scrollP)
+        scrollX = 6
+        scrollC = 1
+        # /.../  F5 manuel ;)
+
+    of TKey.Up:
+        cursorUp()
+
+    of TKey.Down:
+        cursorDown()
+
+    of TKey.Left:
+        cursorBackward()
+
+    of TKey.Right:
+        cursorForward()
+
+    of TKey.Mouse : 
+      let mi = getMouse()
+      if mi.action == MouseButtonAction.mbaPressed:
+
+        # work this first /.../ bla bla 
+        case mi.button
+        of mbLeft:
+          gotoXY(mi.x,mi.y)
+
+        of mbMiddle:
+          gotoXY(mi.x,mi.y)
+        of mbRight:
+          gotoXY(mi.x,mi.y)
+        else: discard
+      elif mi.action == MouseButtonAction.mbaReleased:
+          gotoXY(mi.x,mi.y)
+          
+      stdout.write fmt"CursX > {mi.x} CursY > {mi.y}"
+      gotoXY(mi.x,mi.y)
+
+    of TKey.Char:
+      gotoXPos(1)
+      stdout.write(fmt"char :{RightBlack}{chr} ")
+
+    else :
+      gotoXPos(1)
+      stdout.write(fmt"key  :{RightBlack}{key} ")
+
+  stdout.flushFile
+  stdin.flushFile
 ```
 
 
@@ -279,247 +362,424 @@ closeScren()
 <br />
 
 
-** Main procedure**
-
-proc ioGrid(this: GRIDSFL; pos: int = -1): (Key, seq[string]) {...}
-
-proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
-
-proc ioField(pnl: PANEL; fld: var FIELD): (Key) {...}
-
-proc isValide(pnl: var PANEL): bool {...}
-
-proc ioPanel(pnl: var PANEL): Key {...}
-<br />
-<br />
-<br />
-
-
-** Procs **
-
-proc defCursor(e_curs: Natural = 0) {...}
-
+** Main procedure**<br />
 proc setTerminal(termatr: ZONATRB = scratr) {...}
 
+    Erase and color and style default 
+
 proc defButton(key: TKey; text: string; actif = true): BUTTON {...}
+
+    define BUTTON 
 
 proc defBox(name: string; posx: Natural; posy: Natural; lines: Natural;
             cols: Natural; cadre: CADRE; title: string;
             box_atr: BOXATRB = boxatr; actif: bool = true): BOX {...}
 
+    Define BOX 
+
 proc printBox(pnl: var PANEL; box: BOX) {...}
+
+    assigne BOX to matrice for display 
 
 proc newMenu(name: string; posx: Natural; posy: Natural; mnuvh: MNUVH;
              item: seq[string]; cadre: CADRE = CADRE.line0;
              mnu_atr: MNUATRB = mnuatr; actif: bool = true): MENU {...}
 
+    Define Menu 
+
 proc printMenu(pnl: PANEL; mnu: MENU) {...}
+
+    assigne MENU to matrice for display 
 
 proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
               lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
 
+    Define Label 
+
 proc defTitle(name: string; posx: Natural; posy: Natural; text: string;
               ttl_atr: ZONATRB = ttlatr; actif: bool = true): LABEL {...}
 
+    Define Title 
+
 proc printLabel(pnl: var PANEL; lbl: LABEL) {...}
+
+    assigne LABEL to matrice for display 
 
 proc defString(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                width: Natural; text: string; empty: bool; errmsg: string;
                help: string; regex: string = ""; fld_atr: ZONATRB = fldatr;
                protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
+    Define Field String Standard 
+
 proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
              width: Natural; text: string; empty: bool; errmsg: string;
              help: string; fld_atr: ZONATRB = fldatr;
              protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
+
+    Define Field Mail 
 
 proc defSwitch(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                switch: bool; empty: bool; errmsg: string; help: string;
                swt_atr: ZONATRB = swtatr; protect_atr: ZONATRB = prtatr;
                actif: bool = true): FIELD {...}
 
+    Define Field switch 
+
 proc defDate(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
              text: string; empty: bool; errmsg: string; help: string;
              fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr;
              actif: bool = true): FIELD {...}
+
+    Define Field date ISO 
 
 proc defNumeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                 width: Natural; scal: Natural; text: string; empty: bool;
                 errmsg: string; help: string; fld_atr: ZONATRB = fldatr;
                 protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
+    Define Field Numeric 
+
 proc defTelephone(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                   width: Natural; text: string; empty: bool; errmsg: string;
                   help: string; fld_atr: ZONATRB = fldatr;
                   protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
 
+    Define Field Telephone 
+
 proc defStringH(name: string; reftyp: REFTYP; text: string): HIDEN {...}
+
+    Hiden field 
 
 proc defSwitchH(name: string; reftyp: REFTYP; switch: bool): HIDEN {...}
 
+    Hiden switch 
+
 proc Lines(pnl: PANEL): Natural {...}
+
+    get lines PANEL 
 
 proc Cols(pnl: PANEL): Natural {...}
 
+    get cols PANEL 
+
 proc Index(pnl: PANEL): Natural {...}
+
+    index actived from panel this getField 
 
 proc newPanel(name: string; posx, posy, height, width: Natural;
               button: seq[(BUTTON)]; cadre: CADRE = line0; title: string = "";
               pnl_atr: ZONATRB = pnlatr): PANEL {...}
 
+    Define PANEL 
+
 proc printField(pnl: var PANEL; fld: FIELD) {...}
+
+    assigne FIELD to matrice for display 
 
 proc printButton(pnl: var PANEL; btn_esp: BTNSPACE = btnspc) {...}
 
+    assigne BUTTON matrice for display 
+
 proc displayPanel(pnl: PANEL) {...}
+
+    display matrice PANEL 
 
 proc printPanel(pnl: var PANEL) {...}
 
+    assigne PANEL and all OBJECT to matrice for display 
+
 proc resetPanel(pnl: var PANEL) {...}
+
+    clear object PANEL / box/label/fld/proc 
 
 proc resetMenu(mnu: var MENU) {...}
 
+    clear object MENU 
+
 proc clsLabel(pnl: var PANEL; lbl: LABEL) {...}
+
+    cls Label from Panel 
 
 proc clsField(pnl: var PANEL; fld: FIELD) {...}
 
+    cls Field from Panel 
+
 proc clsPanel(pnl: var PANEL) {...}
+
+    cls Panel 
 
 proc displayLabel(pnl: var PANEL; lbl: LABEL) {...}
 
+    display matrice only LABEL 
+
 proc displayField(pnl: var PANEL; fld: FIELD) {...}
+
+    display matrice only FIELD 
 
 proc displayButton(pnl: var PANEL) {...}
 
+    display matrice only BUTTON 
+
 proc restorePanel(dst: PANEL; src: var PANEL) {...}
+
+    restore the base occupied by panel 
 
 proc restorePanel(dst: PANEL; mnu: MENU) {...}
 
+    restore the base occupied by menu 
+
 proc restorePanel(dst: PANEL; grid: GRIDSFL) {...}
+
+    restore the base occupied by grid 
 
 proc restorePanel(pnl: PANEL; lines, posy: Natural) {...}
 
+    restore the lines occupied by the error message 
+
 proc getPnlName(pnl: PANEL): string {...}
+
+    get name From Panel 
 
 proc getPnlTitle(pnl: PANEL): string {...}
 
+    get Title From Panel 
+
 proc getIndexL(pnl: PANEL; name: string): int {...}
+
+    get index Sequence Label from name 
 
 proc getNameL(pnl: PANEL; index: int): string {...}
 
+    get name label Sequence Field 
+
 proc getPosxL(pnl: PANEL; index: int): int {...}
+
+    get Posx label Sequence Field 
 
 proc getPosyL(pnl: PANEL; index: int): int {...}
 
+    get Posy label Sequence Field 
+
 proc getTextL(pnl: PANEL; index: int): string {...}
+
+    get value label Sequence Label 
 
 proc isTitle(pnl: PANEL; index: int): bool {...}
 
+    test Title label Sequence Label 
+
 proc getTextL(pnl: PANEL; name: string): string {...}
+
+    get value Label Sequence from name 
 
 proc setTextL(pnl: PANEL; name: string; val: string) {...}
 
+    set value Label Sequence from name 
+
 proc setTextL(pnl: PANEL; index: int; val: string) {...}
+
+    set value Label Sequence Label 
 
 proc setTitle(pnl: PANEL; index: int; val: bool) {...}
 
+    set value Label Sequence Label 
+
 proc dltLabel(pnl: PANEL; idx: Natural) {...}
+
+    delete Label from index 
 
 proc clearText(pnl: var PANEL) {...}
 
+    clear value ALL FIELD 
+
 proc getName(pnl: PANEL): string {...}
+
+    get name field from panel this getField 
 
 proc getProcess(pnl: PANEL; index: int): string {...}
 
+    get callVoid Field Sequence Field 
+
 proc getName(pnl: PANEL; index: int): string {...}
+
+    get name Field Sequence Field 
 
 proc getPosx(pnl: PANEL; index: int): int {...}
 
+    get Posx Field Sequence Field 
+
 proc getPosy(pnl: PANEL; index: int): int {...}
+
+    get Posy Field Sequence Field 
 
 proc getRefType(pnl: PANEL; index: int): REFTYP {...}
 
+    get Type Field Sequence Field 
+
 proc getWidth(pnl: PANEL; index: int): int {...}
+
+    get width Field Sequence Field 
 
 proc getScal(pnl: PANEL; index: int): int {...}
 
+    get Scal Field Sequence Field 
+
 proc getEmpty(pnl: PANEL; index: int): bool {...}
+
+    get Empty Field Sequence Field 
 
 proc getErrmsg(pnl: PANEL; index: int): string {...}
 
+    get errmsg Field Sequence Field 
+
 proc getHelp(pnl: PANEL; index: int): string {...}
+
+    get help Field Sequence Field 
 
 proc getEdtcar(pnl: PANEL; index: int): string {...}
 
+    get Edtcar Field Sequence Field 
+
 proc getProtect(pnl: PANEL; index: int): bool {...}
+
+    get Protect Field Sequence Field 
 
 proc getText(pnl: PANEL; index: int): string {...}
 
+    get value Field Sequence Field 
+
 proc getSwitch(pnl: PANEL; index: int): bool {...}
+
+    get value Field Sequence Field 
 
 proc getText(pnl: PANEL; name: string): string {...}
 
+    get value Field from name Field 
+
 proc getSwitch(pnl: PANEL; name: string): bool {...}
+
+    get value switch from name Field 
 
 proc getIndex(pnl: PANEL; name: string): int {...}
 
+    get index Field from name Field 
+
 proc setName(pnl: PANEL; index: int; val: string) {...}
+
+    set name Field Sequence Field 
 
 proc setName(pnl: PANEL; index: int; val: Natural) {...}
 
+    set posx Field Sequence Field 
+
 proc setPosy(pnl: PANEL; index: int; val: Natural) {...}
+
+    set posy Field Sequence Field 
 
 proc setType(pnl: PANEL; index: int; val: REFTYP) {...}
 
+    set Type Field Sequence Field 
+
 proc setWidth(pnl: PANEL; index: int; val: Natural) {...}
+
+    set width Field Sequence Field 
 
 proc setScal(pnl: PANEL; index: int; val: Natural) {...}
 
+    set Scal Field Sequence Field 
+
 proc setEmpty(pnl: PANEL; index: int; val: bool) {...}
+
+    set Empty Field Sequence Field 
 
 proc setErrmsg(pnl: PANEL; index: int; val: string) {...}
 
+    set errmsg Field Sequence Field 
+
 proc setHelp(pnl: PANEL; index: int; val: string) {...}
+
+    set help Field Sequence Field 
 
 proc setEdtcar(pnl: PANEL; index: int; val: string) {...}
 
+    set Edtcar Field Sequence Field 
+
 proc setProtect(pnl: PANEL; index: int; val: bool) {...}
+
+    set protect Field Sequence Field 
 
 proc setText(pnl: PANEL; name: string; val: string) {...}
 
+    set value Field from name Field 
+
 proc setSwitch(pnl: PANEL; name: string; val: bool): bool {...}
+
+    set switch Field from name Field 
 
 proc setText(pnl: PANEL; index: int; val: string) {...}
 
+    set value Field from index Field 
+
 proc setSwitch(pnl: PANEL; index: int; val: bool) {...}
+
+    set switch Field from index Field 
 
 proc dltField(pnl: PANEL; idx: Natural) {...}
 
+    delete Field index Field 
+
 proc isProcess(pnl: PANEL; index: int): bool {...}
+
+    test process index Field 
 
 proc getNameH(hdn: PANEL; index: int): string {...}
 
+    get name Hiden from index 
+
 proc getIndexH(hdn: PANEL; name: string): int {...}
+
+    get index Hiden from name 
 
 proc getTextH(hdn: PANEL; name: string): string {...}
 
+    get value Field Hiden from name 
+
 proc getSwitchH(hdn: PANEL; name: string): bool {...}
+
+    get switch Hiden from name 
 
 proc getTextH(hdn: PANEL; index: int): string {...}
 
+    get value Field Hiden from index 
+
 proc getSwitchH(hdn: PANEL; index: int): bool {...}
+
+    get switch Hiden from index 
 
 proc dltFieldH(hdn: PANEL; idx: Natural) {...}
 
+    delete Field Hiden from indexField 
+
 proc getNbrcar(pnl: PANEL; name: string): int {...}
+
+    get nbrCar Field from name 
 
 proc getReftyp(pnl: PANEL; name: string): REFTYP {...}
 
+    get ref.type Field from name 
+
 proc setColor(lbl: var LABEL; lbl_atr: ZONATRB) {...}
+
+    set attribut label 
 
 proc setColor(fld: var FIELD; fld_atr: ZONATRB) {...}
 
+    set attribut field 
+
 proc setColorProtect(fld: var FIELD; protect_atr: ZONATRB) {...}
+
+    set attribut protect field 
 
 proc setProtect(fld: var FIELD; protect: bool) {...}
 
@@ -544,6 +804,8 @@ proc setMouse(pnl: var PANEL; actif: bool) {...}
 proc setProcess(fld: var FIELD; process: string) {...}
 
 proc isPanelKey(pnl: PANEL; e_key: TKey): bool {...}
+
+    Test if KEYs must be managed by the programmer 
 
 proc isProtect(fld: var FIELD): bool {...}
 
@@ -586,35 +848,67 @@ proc setCellEditCar(cell: var CELL; edtcar: string = "") {...}
 
 proc getcellLen(cell: var CELL): int {...}
 
+    get len from cell 
+
 proc getIndexG(this: GRIDSFL; name: string): int {...}
+
+    get index from grid,name 
 
 proc getrowName(this: GRIDSFL; r: int): string {...}
 
+    get name from grid,rows 
+
 proc getrowPosx(this: GRIDSFL; r: int): int {...}
+
+    get posx from grid,rows 
 
 proc getrowPosy(this: GRIDSFL; r: int): int {...}
 
+    get posy from grid,rows 
+
 proc getrowType(this: GRIDSFL; r: int): REFTYP {...}
+
+    get type from grid,rows 
 
 proc isrowTitle(this: GRIDSFL; r: int): bool {...}
 
+    get isTitle from grid,rows 
+
 proc getrowText(this: GRIDSFL; r: int): string {...}
+
+    get text from grid,rows 
 
 proc getrowWidth(this: GRIDSFL; r: int): int {...}
 
+    get Width from grid,rows 
+
 proc getrowScal(this: GRIDSFL; r: int): int {...}
+
+    get scal from grid,rows 
 
 proc getrowEmpty(this: GRIDSFL; r: int): bool {...}
 
+    get Empty from grid,rows 
+
 proc getrowErrmsg(this: GRIDSFL; r: int): string {...}
+
+    get errmsg from grid,rows 
 
 proc getrowHelp(this: GRIDSFL; r: int): string {...}
 
+    get help from grid,rows 
+
 proc getrowCar(this: GRIDSFL; r: int): string {...}
+
+    get Car from grid,rows 
 
 proc isrowProtect(this: GRIDSFL; r: int): bool {...}
 
+    get isProtect from grid,rows 
+
 proc getrowProcess(this: GRIDSFL; r: int): string {...}
+
+    get Process from grid,rows 
 
 proc addRows(this: GRIDSFL; rows: seq[string]) {...}
 
@@ -638,9 +932,14 @@ proc ioField(pnl: PANEL; fld: var FIELD): (TKey) {...}
 
 proc isValide(pnl: var PANEL): bool {...}
 
+    Contrôle Format Panel full Field 
+
 proc ioPanel(pnl: var PANEL): TKey {...}
+
+
+
 <br />
 <br />
 
-**Made with Nim. Generated: 2020-11-04 14:18:04 UTC**
+**Made with Nim. Generated: 2020-11-11 13:12:21 UTC**
 

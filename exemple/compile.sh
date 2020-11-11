@@ -34,32 +34,56 @@ fi
 #-------------------------------------------------------------------
 # compile
 #-------------------------------------------------------------------
-# force full option gtk
-# debug
-# nim  c --threads:on --passC:-flto --deadCodeElim:on -d:danger   -d:forceGtk   -o:$projet_bin   $projet_src
-# prod
-# nim  c  --verbosity:0 --hints:off --opt:size --threads:on --passc:-flto  --passL:-flto --deadCodeElim:on -d:danger  -d:forceGtk -d:release  -o:$projet_bin   $projet_src
-# --hint[Performance]:off --gc:arc 
-#--passL:-no-pie
 
 if [ "$mode" == "DEBUG" ] ; then
-  if [ "$projet_bin" == "TermVte" ] || [ "$projet_bin" == "contactVte" ] || [ "$projet_bin" == "TermVteGrid" ] || [ "$projet_bin" == "testVte" ] ; then
-    nim  c  -f --gc:arc -d:forceGtk  -d:useMalloc --panics:on --threads:on --deadCodeElim:on --hint[Performance]:off  --app:GUI --passL:-no-pie -o:$projet_bin   $projet_src
+  if [ "$projet_bin" == "contactVte" ] || [ "$projet_bin" == "contactVte" ] || [ "$projet_bin" == "TermVteField" ] || [ "$projet_bin" == "TermVteGrid" ] || [ "$projet_bin" == "TermVteTest" ] ; then
+  	( set -x ; \
+    		nim c -f --gc:orc -d:forceGtk  \
+			-d:useMalloc --deadCodeElim:on --panics:on \
+			--verbosity:1 \
+			--warning[UnusedImport]:on --hint[Performance]:off --warning[Deprecated]:on --warning[EachIdentIsTuple]:on \
+			--threads:on \
+			--passL:-no-pie --app:GUI  \
+			-o:$projet_bin   $projet_src ; \
+	)
   else
-    nim  c  -f --gc:arc -d:useMalloc --deadCodeElim:on --panics:on  --threads:on 	 --hint[Performance]:off   -o:$projet_bin   $projet_src
+	( set -x ; \
+    		nim  c  -f --gc:orc -d:useMalloc --deadCodeElim:on --panics:on \
+			--verbosity:1 \
+			--warning[UnusedImport]:on --hint[Performance]:off  --warning[Deprecated]:on --warning[EachIdentIsTuple]:on \
+			--threads:on \
+			-o:$projet_bin   $projet_src ; \
+	)
   fi
 fi
 
 if [ "$mode" == "PROD" ] ; then
-  if [ "$projet_bin" == "TermVte" ] || [ "$projet_bin" == "contactVte" ]  || [ "$projet_bin" == "TermVteGrid" ] || [ "$projet_bin" == "testVte" ] ; then
-    nim  c -f --verbosity:0 --gc:arc --hints:off -d:forceGtk -d:useMalloc	 --warning[UnusedImport]:off  --deadCodeElim:on  --hint[Performance]:off   --panics:on  --threads:on --opt:size --app:GUI  --passL:-no-pie --passc:-flto -d:release  -o:$projet_bin   $projet_src
+  if [ "$projet_bin" == "Kakoun" ] || [ "$projet_bin" == "contactVte" ] || [ "$projet_bin" == "contactVte" ]  || [ "$projet_bin" == "TermVteField" ] || [ "$projet_bin" == "TermVteGrid" ] || [ "$projet_bin" == "TermVteTest" ] ; then
+  	( set -x ; \
+    		nim  c -f --gc:orc -d:forceGtk -d:useMalloc --deadCodeElim:on  \
+			--verbosity:0 --hints:off  \
+			--threads:on  --app:GUI  \
+			--passL:-no-pie --passc:-flto -d:release \-o:$projet_bin   $projet_src ; \
+	)
   else
-    nim  c -f --gc:arc --verbosity:0 --hints:off 	-d:useMalloc --deadCodeElim:on --hint[Performance]:off   --app:CONSOLE  --panics:on  --threads:on --opt:size  -d:release  -o:$projet_bin   $projet_src
+  	( set -x ; \
+    		nim  c -f --gc:orc -d:useMalloc --deadCodeElim:on \
+			--verbosity:0 --hints:off  \
+			--threads:on \
+			--passc:-flto -d:release  \
+			-o:$projet_bin   $projet_src ; \
+	)
   fi
 fi
 
-if [ "$mode" == "TEST" ] ; then  
-	nim  c -r -f --gc:arc -d:useMalloc --panics:on --threads:on --passL:-no-pie --hint[Performance]:off   -o:$projet_bin   $projet_src
+if [ "$mode" == "TEST" ] ; then
+	( set -x ; \
+		nim  c -r -f --gc:orc -d:useMalloc --panics:on \
+			--hint[Performance]:off  --warning[Deprecated]:on --warning[EachIdentIsTuple]:on \
+			--threads:on \
+			--passL:-no-pie \
+			-o:$projet_bin   $projet_src ; \
+	)
 fi
 #-------------------------------------------------------------------
 # resultat

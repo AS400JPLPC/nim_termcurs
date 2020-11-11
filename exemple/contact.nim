@@ -32,8 +32,8 @@ proc dscWin01() =
 
 
 dscWin01()
-initScreen(30,100)
-titleScreen("CONTACT")
+initTerm(30,100)
+titleTerm("CONTACT")
 printPanel(Win01)
 displayPanel(Win01)
 
@@ -47,4 +47,4 @@ while true:
   else : discard
 
 
-closeScren()
+closeTerm()

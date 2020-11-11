@@ -1,4 +1,3 @@
-import terminal
 import termkey
 import termcurs
 type
@@ -21,7 +20,7 @@ func setID*( line : var int ) : string =
   line += 1
   return $line
 
-initScreen(42,132)
+initTerm(42,132)
 setTerminal() #default color style erase
 
 var pnlF1  = new(PANEL)
@@ -30,7 +29,7 @@ var g_numID : int
 var key : TKey = TKey.F1
 var keyG : TKey_Grid
 while true:
-  if key == TKey.F3 :  closeScren()
+  if key == TKey.F3 :  closeTerm()
 
   case key
   of TKey.F1:
