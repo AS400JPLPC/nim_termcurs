@@ -68,6 +68,7 @@ type
     backbr*: bool
     foregr*: ForegroundColor 
     forebr*: bool
+    styleBar* : set[Style]
     styleCell* : set[Style]
 
   BOXATRB* = ref object
@@ -220,6 +221,7 @@ type
     mnuvh : MNUVH
 
     style : set[Style]
+    styleBar:set[Style]
     styleCell:set[Style]
     backgr: BackgroundColor
     backbr: bool
@@ -327,19 +329,13 @@ scratr.forebr = false
 
 var mnuatr* = new(MNUATRB)
 mnuatr.style  = {styleDim}
-mnuatr.backgr = BackgroundColor.bgWhite
-mnuatr.backbr = true
-mnuatr.foregr = ForegroundColor.fgBlue
+mnuatr.backgr = BackgroundColor.bgBlack
+mnuatr.backbr = false
+mnuatr.foregr = ForegroundColor.fgWhite
 mnuatr.forebr = true
-mnuatr.styleCell  = {styleReverse,styleItalic}
+mnuatr.styleBar  = {styleReverse,styleItalic}
+mnuatr.styleCell = {styleBright}
 
-var mnuatrCadre* = new(MNUATRB)
-mnuatrCadre.style  = {styleDim}
-mnuatrCadre.backgr = BackgroundColor.bgBlack
-mnuatrCadre.backbr = false
-mnuatrCadre.foregr = ForegroundColor.fgWhite
-mnuatrCadre.forebr = true
-mnuatrCadre.styleCell  = {styleReverse,styleItalic}
 
 var boxatr* = new(BOXATRB)
 boxatr.style  = {styleDim}
@@ -634,7 +630,8 @@ proc newMenu*( name:string ; posx:Natural; posy:Natural;
       menu.cols  += 1
 
   menu.style  = mnu_atr.style
-  menu.styleCell  = mnu_atr.styleCell
+  menu.styleBar  = mnu_atr.styleBar
+  menu.styleCell = mnu_atr.styleCell
   menu.backgr = mnu_atr.backgr
   menu.backbr = mnu_atr.backbr
   menu.foregr = mnu_atr.foregr
@@ -721,7 +718,7 @@ proc printMenu*(pnl: PANEL; mnu:MENU) =
         else:
           gotoXY(row + mnu.posx + pnl.posx - 1 , col + mnu.posy + pnl.posy - 1)
           setBackgroundColor(mnu.backgr,mnu.backbr)
-          setForegroundColor(mnu.foregr,mnu.forebr)
+          setForegroundColor(mnu.foregr,false)
           writeStyled(" ",mnu.style)
         stdout.flushFile()
         inc(col)
@@ -2713,9 +2710,9 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
       setBackgroundColor(mnu.backgr,mnu.backbr)
       setForegroundColor(mnu.foregr,mnu.forebr)
       if pos == n :
-        writeStyled(cell,mnu.styleCell)  
+        writeStyled(cell,mnu.styleBar)  
       else :
-        writeStyled(cell,mnu.style)
+        writeStyled(cell,mnu.styleCell)
       inc(n)
       h += runeLen(cell)
     stdout.flushFile()

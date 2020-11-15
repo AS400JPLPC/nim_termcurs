@@ -68,6 +68,7 @@ img : [GENERATOR-30](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Gene
   * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo<br />  
   * Full Change 2020-11-04&nbsp;&rarr;&nbsp;homogeneity with termkey<br />
   * Full Change 2020-11-10&nbsp;&rarr;&nbsp;enfranchisement Nim:Terminal code cleanup operational with libvte or ex xfce-terminal<br />
+  * Full Change 2020-11-15&nbsp;&rarr;&nbsp;correctif define Menu colors  <br />
  <br />
   
 **Thank you**
@@ -937,9 +938,8 @@ proc isValide(pnl: var PANEL): bool {...}
 proc ioPanel(pnl: var PANEL): TKey {...}
 
 
-
 <br />
 <br />
 
-**Made with Nim. Generated: 2020-11-11 13:12:21 UTC**
+**Made with Nim. Generated: 2020-11-15 22:06:19 UTC**
 

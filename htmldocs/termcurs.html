@@ -115,6 +115,7 @@ function main() {
   backbr*: bool
   foregr*: ForegroundColor
   forebr*: bool
+  styleBar*: set[Style]
   styleCell*: set[Style]"><wbr />MNUATRB<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#BOXATRB"
     title="BOXATRB = ref object
@@ -242,6 +243,7 @@ function main() {
   cadre: CADRE
   mnuvh: MNUVH
   style: set[Style]
+  styleBar: set[Style]
   styleCell: set[Style]
   backgr: BackgroundColor
   backbr: bool
@@ -325,8 +327,6 @@ function main() {
     title="scratr = new(ZONATRB)"><wbr />scratr<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#mnuatr"
     title="mnuatr = new(MNUATRB)"><wbr />mnuatr<span class="attachedType"></span></a></li>
-  <li><a class="reference" href="#mnuatrCadre"
-    title="mnuatrCadre = new(MNUATRB)"><wbr />mnuatr<wbr />Cadre<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#boxatr"
     title="boxatr = new(BOXATRB)"><wbr />boxatr<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#lblatr"
@@ -1167,6 +1167,7 @@ function main() {
   <span class="Identifier">backbr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">foregr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
   <span class="Identifier">forebr</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">styleBar</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
   <span class="Identifier">styleCell</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
 </pre></dt>
 <dd>
@@ -1360,6 +1361,7 @@ function main() {
   <span class="Identifier">cadre</span><span class="Other">:</span> <a href="termcurs.html#CADRE"><span class="Identifier">CADRE</span></a>
   <span class="Identifier">mnuvh</span><span class="Other">:</span> <a href="termcurs.html#MNUVH"><span class="Identifier">MNUVH</span></a>
   <span class="Identifier">style</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
+  <span class="Identifier">styleBar</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
   <span class="Identifier">styleCell</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
   <span class="Identifier">backgr</span><span class="Other">:</span> <span class="Identifier">BackgroundColor</span>
   <span class="Identifier">backbr</span><span class="Other">:</span> <span class="Identifier">bool</span>
@@ -1488,13 +1490,6 @@ function main() {
 </dd>
 <a id="mnuatr"></a>
 <dt><pre><a href="termcurs.html#mnuatr"><span class="Identifier">mnuatr</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#MNUATRB"><span class="Identifier">MNUATRB</span></a><span class="Other">)</span></pre></dt>
-<dd>
-
-
-
-</dd>
-<a id="mnuatrCadre"></a>
-<dt><pre><a href="termcurs.html#mnuatrCadre"><span class="Identifier">mnuatrCadre</span></a> <span class="Other">=</span> <span class="Identifier">new</span><span class="Other">(</span><a href="termcurs.html#MNUATRB"><span class="Identifier">MNUATRB</span></a><span class="Other">)</span></pre></dt>
 <dd>
 
 
@@ -2791,7 +2786,7 @@ Contrôle  Format Panel full Field
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-11-11 13:12:21 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-11-15 22:06:19 UTC</small>
       </div>
     </div>
   </div>
