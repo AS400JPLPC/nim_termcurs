@@ -58,7 +58,7 @@ if [ "$mode" == "DEBUG" ] ; then
 fi
 
 if [ "$mode" == "PROD" ] ; then
-  if [ "$projet_bin" == "Kakoun" ] || [ "$projet_bin" == "contactVte" ] || [ "$projet_bin" == "contactVte" ]  || [ "$projet_bin" == "TermVteField" ] || [ "$projet_bin" == "TermVteGrid" ] || [ "$projet_bin" == "TermVteTest" ] ; then
+  if [ "$projet_bin" == "contactVte" ] || [ "$projet_bin" == "contactVte" ]  || [ "$projet_bin" == "TermVteField" ] || [ "$projet_bin" == "TermVteGrid" ] || [ "$projet_bin" == "TermVteTest" ] ; then
   	( set -x ; \
     		nim  c -f --gc:orc -d:forceGtk -d:useMalloc --deadCodeElim:on  \
 			--verbosity:0 --hints:off  \

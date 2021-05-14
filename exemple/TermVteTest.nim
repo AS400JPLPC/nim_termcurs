@@ -80,7 +80,7 @@ proc  init_Terminal() =
     ROW  = 152
     NROW = 42
   if getWidth(scrn) > int32(1920)  :  
-    font_terminal = fmt"{VTEFONT} 18" #  ex: 2560 x1600 => 27"
+    font_terminal = fmt"{VTEFONT} 15" #  ex: 2560 x1600 => 27"
     ROW  = 172
     NROW = 52
 
@@ -120,10 +120,10 @@ proc newApp() =
   window.setDeletable(false)
 
 
-  let envPath = "/home/soleil/NimTerminal/"
+  let envPath = "/home/......./"
 
 
-  let vPROG = "/home/soleil/NimTerminal/test"
+  let vPROG = "/home/......./test"
   var argv: seq[string]
   argv.add(vPROG)
 
