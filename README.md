@@ -35,9 +35,11 @@ img : [GENERATOR-10](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Gene
 img : [GENERATOR-11](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_11.png)
 img : [GENERATOR-12](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_12.png)
 img : [GENERATOR-20](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_20.png)
-img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_30.png)
-img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_301.png)
 img : [GENERATOR-31](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_31.png)
+<br />
+<br />
+img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Code.png)
+img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen.png)
 <br />
 img : [TEST](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
 <br />
@@ -75,7 +77,7 @@ img : [TEST](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
   * Full Change 2021-06-17&nbsp;&rarr;&nbsp;correctif define MENU* and  mnuatr  <br />
   * Full Change 2021-06-17&nbsp;&rarr;&nbsp;add dspMenuItem  and mnuatrCadre <br />
   * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First generator Full source code --> panel Label Field Menu<br />
-  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First TEST.nim view Source-ouput/Source-screen<br />
+  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First TEST.nim view Output_Code/Output_Screen<br />
  <br />
   
 **Thank you**
