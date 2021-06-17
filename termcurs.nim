@@ -43,14 +43,14 @@ type
 # FCALL appel d'une externe  "programe" --> Simulation KEYBOARD CALL
 
 
-  CADRE* {.pure.} = enum 
-    line0,  
-    line1,    
-    line2 
+  CADRE* {.pure.} = enum
+    line0,
+    line1,
+    line2
 
-  MNUVH* {.pure.} = enum 
-    vertical = 0  , 
-    horizontal 
+  MNUVH* {.pure.} = enum
+    vertical = 0  ,
+    horizontal
 
   TKey_Grid* {.pure.} = enum
     PGUp,
@@ -66,7 +66,7 @@ type
     style* : set[Style]
     backgr*: BackgroundColor
     backbr*: bool
-    foregr*: ForegroundColor 
+    foregr*: ForegroundColor
     forebr*: bool
     styleBar* : set[Style]
     styleCell* : set[Style]
@@ -75,38 +75,38 @@ type
     style* : set[Style]
     backgr*: BackgroundColor
     backbr*: bool
-    foregr*: ForegroundColor 
+    foregr*: ForegroundColor
     forebr*: bool
     title_style* : set[Style]
     title_backgr*: BackgroundColor
     title_backbr*: bool
-    title_foregr*: ForegroundColor 
+    title_foregr*: ForegroundColor
     title_forebr*: bool
 
   ZONATRB* = ref object
     style* : set[Style]
     backgr*: BackgroundColor
     backbr*: bool
-    foregr*: ForegroundColor 
+    foregr*: ForegroundColor
     forebr*: bool
 
   GRIDATRB* = ref object
     style* : set[Style]
     backgr*: BackgroundColor
     backbr*: bool
-    foregr*: ForegroundColor 
+    foregr*: ForegroundColor
     forebr*: bool
     title_style* : set[Style]
     title_backgr*: BackgroundColor
     title_backbr*: bool
-    title_foregr*: ForegroundColor 
+    title_foregr*: ForegroundColor
     title_forebr*: bool
 
   CELLATRB* = ref object
     cell_style* : set[Style]
     cell_backgr*: BackgroundColor
     cell_backbr*: bool
-    cell_foregr*: ForegroundColor 
+    cell_foregr*: ForegroundColor
     cell_forebr*: bool
 
 
@@ -123,13 +123,13 @@ type
     style : set[Style]
     backgr: BackgroundColor
     backbr: bool
-    foregr: ForegroundColor 
+    foregr: ForegroundColor
     forebr: bool
 
     pstyle : set[Style]
     pbackgr: BackgroundColor
     pbackbr: bool
-    pforegr: ForegroundColor 
+    pforegr: ForegroundColor
     pforebr: bool
 
 
@@ -158,7 +158,7 @@ type
 
 
 
-  HIDEN* = object             # / field block out 
+  HIDEN* = object             # / field block out
     name: string
     reftyp: REFTYP            # / ALPHA...SWITCH
     text*: string
@@ -233,7 +233,7 @@ type
     actif*: bool
 
   TerminalChar* = object
-    ch: Rune                  # char 
+    ch: Rune                  # char
     bg: BackgroundColor       # color
     bgb: bool                 # brigth
     fg: ForegroundColor       # color
@@ -274,10 +274,10 @@ type
     actif*:    bool
 
 
-  # GRID 
+  # GRID
 
   GridStyle* = object
-    colSeparator*: string 
+    colSeparator*: string
 
 
   CELL* = object
@@ -288,8 +288,8 @@ type
     edtcar: string
     cellatr : CELLATRB
 
-  GRIDSFL* = ref object 
-    name : string 
+  GRIDSFL* = ref object
+    name : string
     posx: Natural
     posy: Natural
     lines: Natural
@@ -308,7 +308,7 @@ type
     buf:seq[TerminalChar]
 
 # var interne
-let sepStyle* = GridStyle( colSeparator:"│")  
+let sepStyle* = GridStyle( colSeparator:"│")
 let noStyle* = GridStyle( colSeparator:" ")
 
 
@@ -329,24 +329,31 @@ scratr.forebr = false
 
 var mnuatr* = new(MNUATRB)
 mnuatr.style  = {styleDim}
-mnuatr.backgr = BackgroundColor.bgBlack
-mnuatr.backbr = false
-mnuatr.foregr = ForegroundColor.fgWhite
+mnuatr.backgr = BackgroundColor.bgWhite
+mnuatr.backbr = true
+mnuatr.foregr = ForegroundColor.fgBlue
 mnuatr.forebr = true
-mnuatr.styleBar  = {styleReverse,styleItalic}
-mnuatr.styleCell = {styleBright}
+mnuatr.styleCell  = {styleReverse,styleItalic}
+
+var mnuatrCadre* = new(MNUATRB)
+mnuatrCadre.style  = {styleDim}
+mnuatrCadre.backgr = BackgroundColor.bgBlack
+mnuatrCadre.backbr = false
+mnuatrCadre.foregr = ForegroundColor.fgWhite
+mnuatrCadre.forebr = true
+mnuatrCadre.styleCell  = {styleReverse,styleItalic}
 
 
 var boxatr* = new(BOXATRB)
 boxatr.style  = {styleDim}
 boxatr.backgr = BackgroundColor.bgBlack
 boxatr.backbr = false
-boxatr.foregr = ForegroundColor.fgRed 
+boxatr.foregr = ForegroundColor.fgRed
 boxatr.forebr = true
 boxatr.title_style = {styleDim}
 boxatr.title_backgr = BackgroundColor.bgWhite
 boxatr.title_backbr = false
-boxatr.title_foregr = ForegroundColor.fgBlack 
+boxatr.title_foregr = ForegroundColor.fgBlack
 boxatr.title_forebr = false
 
 var lblatr* = new(ZONATRB)
@@ -403,7 +410,7 @@ var btnatr* = new(BOXATRB)
 btnatr.style  = {styleDim}
 btnatr.backgr = BackgroundColor.bgBlack
 btnatr.backbr = false
-btnatr.foregr = ForegroundColor.fgRed 
+btnatr.foregr = ForegroundColor.fgRed
 btnatr.forebr = false
 btnatr.title_style = {styleDim,styleItalic,styleUnderscore}
 btnatr.title_backgr = BackgroundColor.bgBlack
@@ -467,9 +474,9 @@ proc defBox*( name:string ; posx:Natural; posy:Natural; lines :Natural; cols:Nat
   box.name  = name
   box.posx  = posx
   box.posy  = posy
-  box.lines = lines 
+  box.lines = lines
   box.cols  = cols
-  
+
   box.cadre = cadre
 
   box.style  = box_atr.style
@@ -524,45 +531,45 @@ proc printBox*(pnl: var PANEL; box:BOX) =
     col = 1
     while col <= box.cols:
       edt = false
-  
+
       if row == 1:
         if col == 1:
           if CADRE.line1 == box.cadre : trait = ACS_UCLEFT
           else: trait = ACS_UCLEFT2
           edt = true
-  
+
         if col == box.cols:
           if CADRE.line1 == box.cadre : trait = ACS_UCRIGHT
           else : trait = ACS_UCRIGHT2
           edt = true
-  
+
         if col > Natural(1) and col < box.cols:
           if CADRE.line1 == box.cadre : trait = ACS_Hlines
           else : trait = ACS_Hline2
           edt = true
-  
+
       elif row == box.lines:
         if col == Natural(1) :
           if CADRE.line1 == box.cadre : trait = ACS_LCLEFT
-          else : trait = ACS_LCLEFT2 
+          else : trait = ACS_LCLEFT2
           edt = true
-  
+
         if col == box.cols:
           if CADRE.line1 == box.cadre : trait = ACS_LCRIGHT
-          else : trait = ACS_LCRIGHT2 
+          else : trait = ACS_LCRIGHT2
           edt = true
-  
+
         if col > Natural(1) and col < box.cols:
           if CADRE.line1 == box.cadre : trait = ACS_Hlines
           else : trait = ACS_Hline2
           edt = true
-  
+
       elif row > Natural(1) and row < box.lines:
         if col == Natural(1) or col == box.cols:
           if CADRE.line1 == box.cadre : trait = ACS_Vlines
           else : trait = ACS_Vline2
           edt = true
-  
+
       if edt:
         npos = box.cols * x
         n =  npos + y
@@ -599,9 +606,10 @@ proc printBox*(pnl: var PANEL; box:BOX) =
 
 
 
+## Define Menu
 proc newMenu*( name:string ; posx:Natural; posy:Natural;
               mnuvh: MNUVH ; item : seq[string] ;cadre :CADRE = CADRE.line0 ; mnu_atr : MNUATRB = mnuatr ;  actif: bool = true) :MENU =
-  ## Define Menu
+
   var menu = new(MENU)
   menu.name  = name
   menu.posx  = posx
@@ -617,6 +625,7 @@ proc newMenu*( name:string ; posx:Natural; posy:Natural;
     if mnuvh == MNUVH.horizontal  : menu.cols +=  runeLen(item[i])
     inc(i)
 
+
   if mnuvh == MNUVH.vertical:
     if menu.cadre == CADRE.line1 or menu.cadre == CADRE.line2 :
       menu.lines = len(item) + 1
@@ -625,13 +634,12 @@ proc newMenu*( name:string ; posx:Natural; posy:Natural;
       menu.lines = len(item) + 1
 
   if mnuvh == MNUVH.horizontal:
-    if menu.cadre == CADRE.line1 or menu.cadre == CADRE.line2 : 
+    if menu.cadre == CADRE.line1 or menu.cadre == CADRE.line2 :
       menu.lines = 2
       menu.cols  += 1
 
   menu.style  = mnu_atr.style
-  menu.styleBar  = mnu_atr.styleBar
-  menu.styleCell = mnu_atr.styleCell
+  menu.styleCell  = mnu_atr.styleCell
   menu.backgr = mnu_atr.backgr
   menu.backbr = mnu_atr.backbr
   menu.foregr = mnu_atr.foregr
@@ -643,11 +651,11 @@ proc newMenu*( name:string ; posx:Natural; posy:Natural;
 
 
 
+##  assigne MENU to matrice for display
 proc printMenu*(pnl: PANEL; mnu:MENU) =
-  ##  assigne MENU to matrice for display
-  var row: Natural 
+  var row: Natural
   var col: Natural
-  if CADRE.line1 == mnu.cadre  or CADRE.line2 == mnu.cadre: 
+  if CADRE.line1 == mnu.cadre  or CADRE.line2 == mnu.cadre:
     let ACS_Hlines     = "─"
     let ACS_Vlines     = "│"
     let ACS_UCLEFT    = "┌"
@@ -670,45 +678,45 @@ proc printMenu*(pnl: PANEL; mnu:MENU) =
       col = 0
       while col <= mnu.cols:
         edt = false
-    
+
         if row == 0:
           if col == 0:
             if CADRE.line1 == mnu.cadre : trait = ACS_UCLEFT
             else: trait = ACS_UCLEFT2
             edt = true
-    
+
           if col == mnu.cols:
             if CADRE.line1 == mnu.cadre : trait = ACS_UCRIGHT
             else : trait = ACS_UCRIGHT2
             edt = true
-    
+
           if col > Natural(0) and col < mnu.cols:
             if CADRE.line1 == mnu.cadre : trait = ACS_Hlines
             else : trait = ACS_Hline2
             edt = true
-    
+
         elif row == mnu.lines:
           if col == Natural(0) :
             if CADRE.line1 == mnu.cadre : trait = ACS_LCLEFT
-            else : trait = ACS_LCLEFT2 
+            else : trait = ACS_LCLEFT2
             edt = true
-    
+
           if col == mnu.cols:
             if CADRE.line1 == mnu.cadre : trait = ACS_LCRIGHT
-            else : trait = ACS_LCRIGHT2 
+            else : trait = ACS_LCRIGHT2
             edt = true
-    
+
           if col > Natural(0) and col < mnu.cols:
             if CADRE.line1 == mnu.cadre : trait = ACS_Hlines
             else : trait = ACS_Hline2
             edt = true
-    
+
         elif row > Natural(0) and row < mnu.lines:
           if col == Natural(0) or col == mnu.cols:
             if CADRE.line1 == mnu.cadre : trait = ACS_Vlines
             else : trait = ACS_Vline2
             edt = true
-    
+
         if edt:
           gotoXY(row + mnu.posx + pnl.posx - 1  , col + mnu.posy + pnl.posy - 1)
 
@@ -718,14 +726,14 @@ proc printMenu*(pnl: PANEL; mnu:MENU) =
         else:
           gotoXY(row + mnu.posx + pnl.posx - 1 , col + mnu.posy + pnl.posy - 1)
           setBackgroundColor(mnu.backgr,mnu.backbr)
-          setForegroundColor(mnu.foregr,false)
+          setForegroundColor(mnu.foregr,mnu.forebr)
           writeStyled(" ",mnu.style)
         stdout.flushFile()
         inc(col)
       inc(row)
 
   else : # no cadre
-    
+
     if mnu.mnuvh == MNUVH.vertical:
       row = 0
       while row <= mnu.lines:
@@ -749,6 +757,41 @@ proc printMenu*(pnl: PANEL; mnu:MENU) =
         inc(col)
 
 
+proc dspMenuItem*(pnl: PANEL; mnu:MENU; npos: Natural = 0)  =
+  var pos : Natural = npos
+  var n , h   : Natural
+
+  printMenu(pnl, mnu)
+
+  onMouse()
+  offCursor()
+  stdout.flushFile()
+  if pos > len(mnu.item) or pos < 0 : pos = 0
+
+  n = 0
+  h = 0
+  for cell in  mnu.item :
+    if mnu.mnuvh == MNUVH.vertical :
+      if mnu.cadre == CADRE.line0 :
+        gotoXY(mnu.posx + pnl.posx  + n - 1 , mnu.posy + pnl.posy - 1)
+      else :
+        gotoXY(mnu.posx + pnl.posx  + n, mnu.posy + pnl.posy)
+
+    if mnu.mnuvh == MNUVH.horizontal :
+      if mnu.cadre == CADRE.line0 :
+        gotoXY(mnu.posx + pnl.posx  - 1 , h  + mnu.posy + pnl.posy - 1)
+      else :
+        gotoXY(mnu.posx + pnl.posx  , h +  mnu.posy + pnl.posy )
+
+    setBackgroundColor(mnu.backgr,mnu.backbr)
+    setForegroundColor(mnu.foregr,mnu.forebr)
+    if pos == n :
+      writeStyled(cell.strip(),mnu.styleCell)
+    else :
+      writeStyled(cell.strip(),mnu.style)
+    inc(n)
+    h += runeLen(cell)
+  stdout.flushFile()
 
 
 
@@ -799,7 +842,7 @@ proc defTitle*(name:string ; posx:Natural; posy:Natural; text: string;
 
 proc printLabel*(pnl: var PANEL, lbl : LABEL ) =
   ## assigne LABEL to matrice for display
-  var npos = pnl.cols * lbl.posx 
+  var npos = pnl.cols * lbl.posx
   var n =  npos + lbl.posy
   for ch in runes(lbl.text):
     if lbl.actif == true :
@@ -1030,21 +1073,21 @@ proc defNumeric*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               actif: bool = true) : FIELD =
   ## Define Field Numeric
   var fld : FIELD
-  
+
   fld.name        = name
   fld.posx        = posx
   fld.posy        = posy
   fld.reftyp      = reftyp      # / ALPHA...SWITCH
   fld.width        = width
   fld.scal        = scal
-  fld.nbrcar      = width + scal 
+  fld.nbrcar      = width + scal
   if scal > 0 : inc(fld.nbrcar)
   fld.text        = text
   fld.empty       = empty
   fld.protect     = false       # / only display
   fld.pading      = true        # / pading blank
   fld.edtcar      = ""          # / edtcar for monnaie		€ $ ¥ ₪ £ or %
-  fld.regex       = ""          # / contrôle 
+  fld.regex       = ""          # / contrôle
 
 
   if fld.reftyp == DIGIT:
@@ -1054,13 +1097,13 @@ proc defNumeric*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
     fld.regex = "^[+-]?[0-9]{1,$1}$" % [$width]
 
 
-  if fld.reftyp == DECIMAL: 
+  if fld.reftyp == DECIMAL:
     if (scal == 0 ) :
         fld.regex = "^[0-9]{1,$1}$" % [$width]
     else :
         fld.regex = "^[0-9]{1,$1}[.]([0-9]{$2,$2})$" % [$width,$scal,$scal]
   elif fld.reftyp == DECIMAL_SIGNED:
-    inc(fld.nbrcar) 
+    inc(fld.nbrcar)
     if (scal == 0 ) :
         fld.regex = "^[+-]?[0-9]{1,$1}$" % [$width]
     else :
@@ -1096,14 +1139,14 @@ proc defTelephone*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
               actif: bool = true) : FIELD =
   ## Define Field Telephone
   var fld : FIELD
-  
+
   fld.name        = name
   fld.posx        = posx
   fld.posy        = posy
   fld.reftyp      = reftyp      # / ALPHA...SWITCH
   fld.width       = width
   fld.scal        = 0
-  fld.nbrcar      = width + 2 
+  fld.nbrcar      = width + 2
   fld.text        = text
   fld.empty       = empty
   fld.protect     = false       # / only display
@@ -1136,7 +1179,7 @@ proc defTelephone*(name:string ; posx:Natural; posy:Natural; reftyp: REFTYP;
 
 proc defStringH*( name:string ; reftyp: REFTYP;text: string;) : HIDEN =
   ## Hiden field
-  var hdn : HIDEN 
+  var hdn : HIDEN
   hdn.name        = name
   hdn.reftyp      = reftyp      # / ALPHA...SWITCH
   hdn.text        = text
@@ -1235,7 +1278,7 @@ proc printField*(pnl: var PANEL, fld : Field) =
     if fld.reftyp == DIGIT_SIGNED or fld.reftyp == DECIMAL_SIGNED:
       if isDigit(char(fld.text[0])):
         e_FIELD = "+" & fld.text
-    
+
   if  fld.pading and fld.reftyp == DIGIT or
       fld.pading and fld.reftyp == DIGIT_SIGNED or
       fld.pading and fld.reftyp == DECIMAL or
@@ -1256,7 +1299,7 @@ proc printField*(pnl: var PANEL, fld : Field) =
   var npos = pnl.cols * fld.posx
   var n =  npos + fld.posy
   for ch in runes(e_FIELD):
-    if fld.actif == true : 
+    if fld.actif == true :
       pnl.buf[n].ch = ch
       if fld.protect :
         pnl.buf[n].bg  = fld.pbackgr
@@ -1343,7 +1386,7 @@ proc printButton*(pnl: var PANEL; btn_esp : BTNSPACE = btnspc )  =
           pnl.buf[n].style =  pnl.style
           pnl.buf[n].on = false
           inc(n)
-        
+
       n += btn_esp.space
 
 
@@ -1473,7 +1516,7 @@ proc clsPanel*(pnl: var PANEL) =
       writeStyled(" ",pnl.style)
       pnl.buf[n].on = false
       inc(n)
-  stdout.flushFile()    
+  stdout.flushFile()
 
 
 
@@ -1484,9 +1527,9 @@ proc clsPanel*(pnl: var PANEL) =
 
 proc displayLabel*(pnl: var PANEL; lbl: Label) =
   ## display matrice only LABEL
-  if not pnl.actif : 
+  if not pnl.actif :
     return
-  if not lbl.actif : 
+  if not lbl.actif :
     clsLabel(pnl, lbl)
   else : printLabel(pnl , lbl)
   var npos :int = pnl.cols * lbl.posx
@@ -1674,7 +1717,7 @@ proc restorePanel*(pnl: PANEL; lines, posy : Natural) =
   stdout.flushFile()
 
 
- 
+
 proc getPnlName*(pnl: PANEL): string  =
   ## get name From Panel
   result = pnl.name
@@ -1960,7 +2003,7 @@ proc isProcess*(pnl: PANEL; index: int): bool  =
 
 
 proc getNameH*(hdn: PANEL,index: int): string =
-  ## get name Hiden from index 
+  ## get name Hiden from index
   result = hdn.hiden[index].name
 
 proc getIndexH*(hdn : PANEL; name: string): int  =
@@ -2003,7 +2046,7 @@ proc dltFieldH*(hdn : PANEL; idx : Natural) =
 
 
 
- 
+
 proc getNbrcar*(pnl: PANEL; name: string): int  =
   ## get nbrCar Field from name
   for i in 0..len(pnl.field)-1 :
@@ -2078,8 +2121,8 @@ proc isPanelKey*(pnl: PANEL; e_key:TKey): bool =
 ##  if on/off  FIELD / LABEL / BOX / MENU / PANEL
 proc isProtect*(fld : var FIELD): bool = return fld.protect
 proc isError*(fld : var FIELD): bool = return fld.err
-proc isActif*(fld : var FIELD)  : bool = return fld.actif 
-proc isActif*(lbl : var LABEL ) : bool = return lbl.actif 
+proc isActif*(fld : var FIELD)  : bool = return fld.actif
+proc isActif*(lbl : var LABEL ) : bool = return lbl.actif
 proc isActif*(box : var BOX)    : bool = return box.actif
 proc isActif*(mnu : var MENU)   : bool = return mnu.actif
 proc isActif*(btn : var BUTTON) : bool = return btn.actif
@@ -2107,13 +2150,13 @@ proc isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## dltRows()
 ## countRows()
 ## resetRows()
-## 
+##
 ## getrowName()
 ## getrowPosx()
 ## getrowPosy()
 ## isrowlTitle()
 ## getrowText()
-## 
+##
 ## GridBox()
 ## printGridHeader()
 ## printGridRows()
@@ -2121,7 +2164,7 @@ proc isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## pageUpGrid()
 ## pageDownGrid()
 ## ioGrid()
-##------------------------------------------------------- 
+##-------------------------------------------------------
 
 proc padingCell(text: string; cell:CELL;) :string =
   var i: Natural = 0
@@ -2138,7 +2181,7 @@ proc padingCell(text: string; cell:CELL;) :string =
   if cell.reftyp == DIGIT_SIGNED or cell.reftyp == DECIMAL_SIGNED:
     if isDigit(char(text[0])):
       e_FIELD = "+" & text
-  
+
   if  cell.reftyp == DIGIT or
       cell.reftyp == DIGIT_SIGNED or
       cell.reftyp == DECIMAL or
@@ -2160,13 +2203,13 @@ proc padingCell(text: string; cell:CELL;) :string =
 
 
 proc calculPosCell(this: GRIDSFL) =
-  var n : Natural = 1 # this.posy = separator "|" 
+  var n : Natural = 1 # this.posy = separator "|"
   var pos : Natural = this.posy - 1
-  
+
   for i in 0..<len(this.headers):
-    if i == 0 : this.headers[i].posy = 1 
-    else : this.headers[i].posy = pos 
-    if this.headers[i].edtcar == "" :pos = this.headers[i].posy + this.headers[i].long  + n  
+    if i == 0 : this.headers[i].posy = 1
+    else : this.headers[i].posy = pos
+    if this.headers[i].edtcar == "" :pos = this.headers[i].posy + this.headers[i].long  + n
     else : pos = this.headers[i].posy + this.headers[i].long  + n  + 1
     this.cols = pos
 
@@ -2175,9 +2218,9 @@ proc calculPosCell(this: GRIDSFL) =
 
 proc setPageGrid*(this :GRIDSFL)=
   this.lignes = len(this.rows)
-  if this.lignes <= this.pagerows  : 
+  if this.lignes <= this.pagerows  :
     this.pages = 1
-  else : 
+  else :
     this.pages = this.lignes.div(int(this.pagerows))
     if  this.lignes.floorMod(int(this.pagerows)) > 0 : this.pages += 1
 
@@ -2217,7 +2260,7 @@ proc resetGrid*(this: GRIDSFL) =
   this.name  = ""
   this.posx  = 0
   this.posy  = 0
-  this.lines = 0 
+  this.lines = 0
   this.cols  = 0
   this.separator = sepStyle
   this.pageRows = 0
@@ -2235,14 +2278,14 @@ proc counColumns*(this:  GRIDSFL): Natural =
   result = this.headers.len
 
 proc countRows*(this : GRIDSFL) : Natural =
-  result = len(this.rows) 
+  result = len(this.rows)
 
 proc setHeaders*(this: GRIDSFL, headers: seq[CELL]) =
   for cell in headers:
     this.headers.add(cell)
   calculPosCell(this)
 
-  # this.lines + 2 = cadre + header    cols + separator  pensez interval 
+  # this.lines + 2 = cadre + header    cols + separator  pensez interval
   this.buf = newSeq[TerminalChar]((this.lines + 2 )*(this.cols + 1))
 
 
@@ -2263,7 +2306,7 @@ proc setCellEditCar*(cell : var CELL; edtcar :string =""; )=
 
 
 
-proc getcellLen*(cell : var CELL): int  = 
+proc getcellLen*(cell : var CELL): int  =
   ## get len from cell
   return cell.long
 
@@ -2382,48 +2425,48 @@ proc GridBox(this:GRIDSFL ;lines , cols : int ;cadre : CADRE) =
     col = 1
     while col <= cols:
       edt = false
-  
+
       if row == 1:
         if col == 1:
           if CADRE.line1 == cadre : trait = ACS_UCLEFT
           else: trait = ACS_UCLEFT2
           edt = true
-  
+
         if col == cols:
           if CADRE.line1 == cadre : trait = ACS_UCRIGHT
           else : trait = ACS_UCRIGHT2
           edt = true
-  
+
         if col > Natural(1) and col < cols:
           if CADRE.line1 == cadre : trait = ACS_Hlines
           else : trait = ACS_Hline2
           edt = true
-  
+
       elif row == lines:
         if col == Natural(1) :
           if CADRE.line1 == cadre : trait = ACS_LCLEFT
-          else : trait = ACS_LCLEFT2 
+          else : trait = ACS_LCLEFT2
           edt = true
-  
+
         if col == cols:
           if CADRE.line1 == cadre : trait = ACS_LCRIGHT
-          else : trait = ACS_LCRIGHT2 
+          else : trait = ACS_LCRIGHT2
           edt = true
-  
+
         if col > Natural(1) and col < cols:
           if CADRE.line1 == cadre : trait = ACS_Hlines
           else : trait = ACS_Hline2
           edt = true
-  
+
       elif row > Natural(1) and row < lines:
         if col == Natural(1) or col == cols:
           if CADRE.line1 == cadre : trait = ACS_Vlines
           else : trait = ACS_Vline2
           edt = true
-  
+
       if edt:
-        if row == 1: 
-          n = col - 1 
+        if row == 1:
+          n = col - 1
         if row > 1 :
           n =  ncols + col - 1
 
@@ -2468,7 +2511,7 @@ proc printGridHeader*(this: GRIDSFL) =
 
   for i in 0..<len(this.headers):
     n = this.cols
-    n =  n + this.headers[i].posy 
+    n =  n + this.headers[i].posy
 
     if this.headers[i].reftyp  == DIGIT or
       this.headers[i].reftyp == DIGIT_SIGNED or
@@ -2477,7 +2520,7 @@ proc printGridHeader*(this: GRIDSFL) =
         buf = $Blan.repeat(this.headers[i].long - runeLen(this.headers[i].text) ) & this.headers[i].text
         if this.headers[i].edtcar != "" : buf = buf  & $Blan
     else : buf = this.headers[i].text & $Blan.repeat(this.headers[i].long - runeLen(this.headers[i].text) )
-    
+
     for ch in runes(buf):
 
       this.buf[n].ch = ch
@@ -2489,7 +2532,7 @@ proc printGridHeader*(this: GRIDSFL) =
       this.buf[n].on = true
       inc(n)
 
-  # this.lines + 2 = cadre + header 
+  # this.lines + 2 = cadre + header
   GridBox(this, this.lines + 2 ,gridlen, line1 )
   for x in 0..this.lines + 1:
     n = this.cols * x
@@ -2513,21 +2556,21 @@ proc printGridRows*(this: GRIDSFL ) =
   else: start = this.pagerows * (this.curspage - 1 )
 
   for r in 0..<this.pagerows:
-    var l = r + start 
+    var l = r + start
     if l < this.lignes  :
       var buf :seq[string] = this.rows[l]
       this.nrow.add(l)
 
       for h in 0..<len(this.headers):
         n = this.cols * (2 + r)
-        n =  n + this.headers[h].posy 
+        n =  n + this.headers[h].posy
         for ch in runes(padingCell(buf[h],this.headers[h])):
           this.buf[n].ch = ch
           this.buf[n].bg  = this.headers[h].cellatr.cell_backgr
           this.buf[n].bgb = this.headers[h].cellatr.cell_backbr
           this.buf[n].fg  = this.headers[h].cellatr.cell_foregr
           this.buf[n].fgb = this.headers[h].cellatr.cell_forebr
-          
+
           if this.cursligne == r  :
             this.buf[n].style = {styleReverse}
           else :
@@ -2553,9 +2596,9 @@ proc setPageGrid(this: GRIDSFL; pos : Natural) =
   var start : int = 0
   if vline > len(this.rows) - 1 :
     vline = 0
-  if this.lignes <= this.pagerows  : 
+  if this.lignes <= this.pagerows  :
     this.pages = 1
-  else : 
+  else :
     this.curspage = vline.div(int(this.pagerows))
     if  vline.floorMod(int(this.pagerows)) > 0 : this.curspage += 1
 
@@ -2563,24 +2606,24 @@ proc setPageGrid(this: GRIDSFL; pos : Natural) =
   if this.curspage == 0 : start = 0
   else: start = this.pagerows * (this.curspage - 1 )
   for r in 0..<this.pagerows:
-    var l = r + start 
-    if l == vline : 
-      this.cursligne = r 
+    var l = r + start
+    if l == vline :
+      this.cursligne = r
       break
 
 
 proc pageUpGrid*(this: GRIDSFL): TKey_Grid =
-  if this.curspage > 0 : 
+  if this.curspage > 0 :
     dec(this.curspage)
     this.cursligne = -1
     printGridHeader(this)
     printGridRows(this)
-  
+
   if this.curspage == 1: return PGHome
   else : return PGUp
 
 proc pageDownGrid*(this: GRIDSFL): TKey_Grid =
-  if this.curspage < this.pages : 
+  if this.curspage < this.pages :
     inc(this.curspage)
     this.cursligne = -1
     printGridHeader(this)
@@ -2608,7 +2651,7 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO F
   var CountLigne = 0
   this.cursligne = 0
   printGridHeader(this)
-  if pos >= 0 : 
+  if pos >= 0 :
     setPageGrid(this,pos)
     CountLigne = this.cursligne
   offCursor()
@@ -2638,7 +2681,7 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO F
     case grid_Key
       of TKey.Escape :
 
-        this.cursligne = -1 
+        this.cursligne = -1
         return (TKey.Escape,buf)
       of TKey.Enter:
         if this.lignes > 0  :
@@ -2648,7 +2691,7 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO F
           return (TKey.Enter,buf)
         else : return (TKey.None,buf)
       of TKey.Up :
-        if CountLigne > 0 : 
+        if CountLigne > 0 :
           dec(CountLigne)
           this.cursligne = CountLigne
       of TKey.Down :
@@ -2657,13 +2700,13 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO F
           this.cursligne = CountLigne
 
       of TKey.PageUp :
-        if this.curspage > 0 : 
+        if this.curspage > 0 :
           dec(this.curspage)
           this.cursligne = 0
           CountLigne = 0
           printGridHeader(this)
       of TKey.PageDown :
-        if this.curspage < this.pages : 
+        if this.curspage < this.pages :
           inc(this.curspage)
           this.cursligne = 0
           CountLigne = 0
@@ -2684,7 +2727,7 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO F
 ##================================================================
 proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
   var pos : Natural = npos
-  var n , h   : Natural 
+  var n , h   : Natural
   onMouse()
   offCursor()
   stdout.flushFile()
@@ -2694,25 +2737,25 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
     n = 0
     h = 0
     for cell in  mnu.item :
-      
+
       if mnu.mnuvh == MNUVH.vertical :
         if mnu.cadre == CADRE.line0 :
           gotoXY(mnu.posx + pnl.posx  + n - 1 , mnu.posy + pnl.posy - 1)
-        else : 
+        else :
           gotoXY(mnu.posx + pnl.posx  + n, mnu.posy + pnl.posy)
-        
+
       if mnu.mnuvh == MNUVH.horizontal :
         if mnu.cadre == CADRE.line0 :
           gotoXY(mnu.posx + pnl.posx  - 1 , h  + mnu.posy + pnl.posy - 1)
-        else : 
+        else :
           gotoXY(mnu.posx + pnl.posx  , h +  mnu.posy + pnl.posy )
 
       setBackgroundColor(mnu.backgr,mnu.backbr)
       setForegroundColor(mnu.foregr,mnu.forebr)
       if pos == n :
-        writeStyled(cell,mnu.styleBar)  
+        writeStyled(cell.strip(),mnu.styleCell)
       else :
-        writeStyled(cell,mnu.styleCell)
+        writeStyled(cell.strip(),mnu.style)
       inc(n)
       h += runeLen(cell)
     stdout.flushFile()
@@ -2736,7 +2779,7 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
       of TKey.Escape:
         result = 0
         if not pnl.mouse : offMouse()
-        break 
+        break
       of TKey.Enter:
         result = pos + 1
         if not pnl.mouse : offMouse()
@@ -2757,7 +2800,7 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
 
 ##======================================================
 ## Input buffer management modeled on 5250/3270
-## inspiration ncurse 
+## inspiration ncurse
 ## application hold principe and new langage
 ## use termkey.nim
 ##======================================================
@@ -2769,7 +2812,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
   var e_posx :Natural = pnl.posx + fld.posx - 1
   var e_posy :Natural = pnl.posy + fld.posy - 1
   var e_curs :Natural = e_posy
-  
+
   var e_FIELD = toRunes(fld.text)
   var e_switch = fld.switch
   let e_reftyp = fld.reftyp
@@ -2821,7 +2864,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
     of DECIMAL, DECIMAL_SIGNED:
       if 0.0 == parseFloat(s_field) : return true
       return false
-    else : 
+    else :
       var i = 0
       var ok = true
       while i < len(v):
@@ -2887,13 +2930,13 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
     setBackgroundColor(msgatr.backgr,msgatr.backbr)
     setForegroundColor(msgatr.foregr,msgatr.forebr)
     gotoXY(e_posx,e_posy)
-    if e_reftyp == PASSWORD: 
+    if e_reftyp == PASSWORD:
       writeStyled(password(e_FIELD),{styleUnderscore})
     else : writeStyled($e_FIELD,{styleUnderscore})
 
 
     var pnlmsg  = new(PANEL)
-    var button: BUTTON 
+    var button: BUTTON
     button.key   = TKey.None
     button.text  = ""
 
@@ -2918,18 +2961,18 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
 
 
 
-  
+
   proc msgHelp(pnl: PANEL ; info:string) =
     # display message Help
     setBackgroundColor(hlpatr.backgr,hlpatr.backbr)
     setForegroundColor(hlpatr.foregr,hlpatr.forebr)
     gotoXY(e_posx,e_posy)
-    if e_reftyp == PASSWORD: 
+    if e_reftyp == PASSWORD:
       writeStyled(password(e_FIELD),{styleUnderscore})
     else : writeStyled($e_FIELD,{styleUnderscore})
 
     var pnlmsg  = new(PANEL)
-    var button: BUTTON 
+    var button: BUTTON
     button.key   = TKey.None
     button.text  = ""
 
@@ -2964,7 +3007,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
 
     gotoXY(e_posx,e_posy)
 
-    if fld.reftyp == PASSWORD: 
+    if fld.reftyp == PASSWORD:
       writeStyled(password(e_FIELD),fld.style)
     else : writeStyled($e_FIELD,fld.style)
 
@@ -2977,13 +3020,13 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
     (e_key,e_str) = getTKey()
 
     # control transfert panel
-    if isfuncKey(e_key) : 
+    if isfuncKey(e_key) :
       result = e_key
       offCursor()
       break
 
     # work key based 5250/3270
-    case e_key 
+    case e_key
 
       of TKey.Escape:
         result = e_key          #release  buffer
@@ -3013,7 +3056,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
           result = TKey.Up
           break
       of TKey.Tab:               # next Field
-        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or 
+        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or
             isEmpty(e_Field,fld) and fld.empty == FILL :
             msgErr(pnl,fld.errmsg)
         else :
@@ -3023,7 +3066,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
           result = TKey.Down
           break
       of TKey.Enter :            # enrg to Field
-        if ( fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) ) or 
+        if ( fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) ) or
             isEmpty(e_Field,fld) and fld.empty == FILL :
             msgErr(pnl,fld.errmsg)
         else :
@@ -3283,7 +3326,7 @@ proc isValide*(pnl:var PANEL): bool =
     of DECIMAL, DECIMAL_SIGNED:
       if 0.0 == parseFloat(s_field) : return true
       return false
-    else : 
+    else :
       var i = 0
       var ok = true
       while i < len(v):
@@ -3296,7 +3339,7 @@ proc isValide*(pnl:var PANEL): bool =
     if pnl.field[n].actif and not pnl.field[n].protect :
       e_FIELD = toRunes(pnl.field[n].text)
 
-      #prepare the switch 
+      #prepare the switch
       if pnl.field[n].reftyp == SWITCH:
         if pnl.field[n].switch == false and pnl.field[n].empty == FILL:
             pnl.index = n
@@ -3320,7 +3363,7 @@ proc isValide*(pnl:var PANEL): bool =
 ## keyboard proction keys are returned to the calling procedure
 ##
 ## only the key CtrlH = Aide / Help for field
-## 
+##
 ## Reserved keys for FIELD management
 ## traditionally  UP, DOWN, TAB, STAB, CtrlA,
 ## ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT
@@ -3346,7 +3389,7 @@ proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
   # check if there are any free field
   func isFieldIO(pnl: PANEL):Natural =
     var n : Natural = len(pnl.field)
-    var nfield: int = len(pnl.field) 
+    var nfield: int = len(pnl.field)
     for i in 0..nfield - 1 :
       if pnl.field[i].protect  or not pnl.field[i].actif: n -= 1
     return n
@@ -3385,11 +3428,11 @@ proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
   while true :
 
     #controls the boundary sequence of the field
-    if CountField == len(pnl.field)-1  and isFieldIO(pnl) > 0 : 
+    if CountField == len(pnl.field)-1  and isFieldIO(pnl) > 0 :
       CountField = isPriorIO(pnl,len(pnl.field)-1)
     if CountField == 0  and isFieldIO(pnl) > 0 :
       CountField = isFirstIO(pnl,0)
-    
+
     if not pnl.field[CountField].protect and pnl.field[CountField].actif:
 
       fld_key = ioField(pnl,pnl.field[CountField])   # work input/output Field
@@ -3397,7 +3440,7 @@ proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
       printField(pnl,pnl.field[CountField])
       displayField(pnl,pnl.field[CountField])
 
-    if isPanelKey(pnl,fld_key) or fld_key == TKey.PROC :                      # this key sav index field return main 
+    if isPanelKey(pnl,fld_key) or fld_key == TKey.PROC :                      # this key sav index field return main
       pnl.index = getIndex(pnl,pnl.field[CountField].name)
       return fld_key
 
@@ -3411,7 +3454,7 @@ proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
           inc(CountField)
           if CountField > fieldNbr(pnl) : CountField = 0
           if pnl.field[CountField].protect :
-            CountField = isFirstIO(pnl,CountField) 
+            CountField = isFirstIO(pnl,CountField)
 
         of TKey.Up :
           if CountField > 0 : dec(CountField)

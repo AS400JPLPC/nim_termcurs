@@ -36,8 +36,9 @@ img : [GENERATOR-11](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Gene
 img : [GENERATOR-12](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_12.png)
 img : [GENERATOR-20](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_20.png)
 img : [GENERATOR-30](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_30.png)
-
+img : [GENERATOR-31](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_31.png)
 <br />
+img : [TEST](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
 <br />
 <br />
 <br />
@@ -69,6 +70,11 @@ img : [GENERATOR-30](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Gene
   * Full Change 2020-11-04&nbsp;&rarr;&nbsp;homogeneity with termkey<br />
   * Full Change 2020-11-10&nbsp;&rarr;&nbsp;enfranchisement Nim:Terminal code cleanup operational with libvte or ex xfce-terminal<br />
   * Full Change 2020-11-15&nbsp;&rarr;&nbsp;correctif define Menu colors  <br />
+  <br />  <br />
+  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;correctif define MENU* and  mnuatr  <br />
+  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;add dspMenuItem  and mnuatrCadre <br />
+  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First generator Full source code --> panel Label Field Menu<br />
+  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First TEST.nim view Image TEST or exemple<br />
  <br />
   
 **Thank you**
@@ -155,12 +161,12 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | Enter              |&nbsp;&rarr;&nbsp; valid, next field                                                        |
 | UP..DOWN           |&nbsp;&rarr;&nbsp; valid, next field                                                        |
 | TAB..STAB          |&nbsp;&rarr;&nbsp; valid, next field                                                        |
-| Insert             |&nbsp;&rarr;&nbsp;                                                                          |
-| Delete             |&nbsp;&rarr;&nbsp;                                                                          |
+| Insert             |&nbsp;&rarr;&nbsp; isnert char field                                                                         |
+| Delete             |&nbsp;&rarr;&nbsp; delete char field                                                                         |
 | Left..Rigth        |&nbsp;&rarr;&nbsp;                                                                          |
 | Backspace          |&nbsp;&rarr;&nbsp; Delete                                                                   |
-| Home               |&nbsp;&rarr;&nbsp;                                                                          |
-| End                |&nbsp;&rarr;&nbsp;                                                                          |
+| Home               |&nbsp;&rarr;&nbsp; First field                                                                         |
+| End                |&nbsp;&rarr;&nbsp; Last field                                                                         |
 | Ctrl-H             |&nbsp;&rarr;&nbsp; Display a help panel specific to the field                               |
 | Escape             |&nbsp;&rarr;&nbsp; Returns control to ioPanel then redisplays the field without modification|
 | TKEY               |&nbsp;&rarr;&nbsp; Returns control to ioPanel                                               |
@@ -386,11 +392,9 @@ proc newMenu(name: string; posx: Natural; posy: Natural; mnuvh: MNUVH;
              item: seq[string]; cadre: CADRE = CADRE.line0;
              mnu_atr: MNUATRB = mnuatr; actif: bool = true): MENU {...}
 
-    Define Menu 
-
 proc printMenu(pnl: PANEL; mnu: MENU) {...}
 
-    assigne MENU to matrice for display 
+proc dspMenuItem(pnl: PANEL; mnu: MENU; npos: Natural = 0) {...}
 
 proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
               lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
@@ -938,8 +942,10 @@ proc isValide(pnl: var PANEL): bool {...}
 proc ioPanel(pnl: var PANEL): TKey {...}
 
 
+
+
 <br />
 <br />
 
-**Made with Nim. Generated: 2020-11-15 22:06:19 UTC**
+*Made with Nim. Generated: 2021-06-17 12:41:00 UTC**
 
