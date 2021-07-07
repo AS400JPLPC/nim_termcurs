@@ -3163,7 +3163,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
                 dec(e_curs)
 
           of ord(TEXT_FREE):
-            if e_count < e_nbrcar and e_str != " " or
+            if e_count < e_nbrcar and e_str != " " and e_str != "\"" or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
               e_FIELD[e_count] = e_str.runeAt(0)
@@ -3240,18 +3240,25 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
                 dec(e_curs)
 
           of ord(DATE_ISO):
-            if (e_count < e_nbrcar and isNumber(e_str)) or e_str == "-":
+            if ( e_count < e_nbrcar and
+              (e_count != 4 and isNumber(e_str)) and
+              (e_count != 7 and isNumber(e_str)) or
+              ( e_str == "-" and e_count == 4) or
+              ( e_str == "-" and e_count == 7) ) :
+
               if statusCursInsert: insert()
               e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
                 dec(e_count)
-                dec(e_curs)
-
 
           of ord(DATE_US), ord(DATE_FR):
-            if (e_count < e_nbrcar and isNumber(e_str)) or e_str == "/":
+            if ( e_count < e_nbrcar and
+              (e_count != 2 and isNumber(e_str)) and
+              (e_count != 5 and isNumber(e_str)) or
+              ( e_str == "/" and e_count == 2) or
+              ( e_str == "/" and e_count == 5)) :
               if statusCursInsert: insert()
               e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)

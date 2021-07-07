@@ -22,24 +22,13 @@ img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.pn
 
 img : [EXEMPLE](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
 img : [SOURCE GENERATED](https://github.com/AS400JPLPC/nim_termcurs/blob/master/source_generated.png)
-
-
-img : [GENERATOR-00](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_00.png)
-img : [GENERATOR-01](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_01.png)
-img : [GENERATOR-02](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_02.png)
-img : [GENERATOR-03](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_03.png)
-img : [GENERATOR-04](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_04.png)
-img : [GENERATOR-05](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_05.png)
-img : [GENERATOR-06](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_06.png)
-img : [GENERATOR-10](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_10.png)
-img : [GENERATOR-11](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_11.png)
-img : [GENERATOR-12](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_12.png)
-img : [GENERATOR-20](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_20.png)
-img : [GENERATOR-31](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Generateur_31.png)
+<br />
+doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/procJson.nim)
 <br />
 <br />
 img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Code.png)
 img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen.png)
+img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen2.png)
 <br />
 img : [TEST](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
 <br />
@@ -78,6 +67,8 @@ img : [TEST](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
   * Full Change 2021-06-17&nbsp;&rarr;&nbsp;add dspMenuItem  and mnuatrCadre <br />
   * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First generator Full source code --> panel Label Field Menu<br />
   * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First TEST.nim view Output_Code/Output_Screen<br />
+ <br />
+  * Full Change 2021-07-07&nbsp;&rarr;&nbsp;** Correctif mineur date check form valide  <br />
  <br />
   
 **Thank you**
