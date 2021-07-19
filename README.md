@@ -23,7 +23,6 @@ img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.pn
 img : [EXEMPLE](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
 img : [SOURCE GENERATED](https://github.com/AS400JPLPC/nim_termcurs/blob/master/source_generated.png)
 <br />
-doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/procJson.nim)
 <br />
 <br />
 img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Code.png)
