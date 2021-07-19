@@ -93,44 +93,25 @@ proc dscFORM01() =
 
   # LABEL  -> FORM01
 
-  FORM01.label.add(defTitle("T02002", 2,
-          2, "CONTACT"))
-  FORM01.label.add(deflabel("L04002", 4,
-          2, "Text_Free........:"))
-  FORM01.label.add(deflabel("L06002", 6,
-          2, "Alpha............:"))
-  FORM01.label.add(deflabel("L08002", 8,
-          2, "Alpha_Upper......:"))
-  FORM01.label.add(deflabel("L10002", 10,
-          2, "Alpha_Numéric....:"))
-  FORM01.label.add(deflabel("L12002", 12,
-          2, "Alpha_Num.Upper..:"))
-  FORM01.label.add(deflabel("L14002", 14,
-          2, "Text_Full........:"))
-  FORM01.label.add(deflabel("L16002", 16,
-          2, "Digit............:"))
-  FORM01.label.add(deflabel("L18002", 18,
-          2, "Digit_Signed.....:"))
-  FORM01.label.add(deflabel("L20002", 20,
-          2, "Décimal..........:"))
-  FORM01.label.add(deflabel("L22002", 22,
-          2, "Décimal_Signed...:"))
-  FORM01.label.add(deflabel("L24002", 24,
-          2, "Date_Iso.........:"))
-  FORM01.label.add(deflabel("L26002", 26,
-          2, "Date_Fr..........:"))
-  FORM01.label.add(deflabel("L28002", 28,
-          2, "Date_Us..........:"))
-  FORM01.label.add(deflabel("L30002", 30,
-          2, "Téléphone........:"))
-  FORM01.label.add(deflabel("L32002", 32,
-          2, "Mail_Iso.........:"))
-  FORM01.label.add(deflabel("L34002", 34,
-          2, "Yes_No...........:"))
-  FORM01.label.add(deflabel("L36002", 36,
-          2, "Switch...........:"))
-  FORM01.label.add(deflabel("L38002", 38,
-          2, "Proc.............:"))
+  FORM01.label.add(defTitle("T02002", 2,  2, "CONTACT"))
+  FORM01.label.add(deflabel("L04002", 4,  2, "Text_Free........:"))
+  FORM01.label.add(deflabel("L06002", 6,  2, "Alpha............:"))
+  FORM01.label.add(deflabel("L08002", 8,  2, "Alpha_Upper......:"))
+  FORM01.label.add(deflabel("L10002", 10, 2, "Alpha_Numéric....:"))
+  FORM01.label.add(deflabel("L12002", 12, 2, "Alpha_Num.Upper..:"))
+  FORM01.label.add(deflabel("L14002", 14, 2, "Text_Full........:"))
+  FORM01.label.add(deflabel("L16002", 16, 2, "Digit............:"))
+  FORM01.label.add(deflabel("L18002", 18, 2, "Digit_Signed.....:"))
+  FORM01.label.add(deflabel("L20002", 20, 2, "Décimal..........:"))
+  FORM01.label.add(deflabel("L22002", 22, 2, "Décimal_Signed...:"))
+  FORM01.label.add(deflabel("L24002", 24, 2, "Date_Iso.........:"))
+  FORM01.label.add(deflabel("L26002", 26, 2, "Date_Fr..........:"))
+  FORM01.label.add(deflabel("L28002", 28, 2, "Date_Us..........:"))
+  FORM01.label.add(deflabel("L30002", 30, 2, "Téléphone........:"))
+  FORM01.label.add(deflabel("L32002", 32, 2, "Mail_Iso.........:"))
+  FORM01.label.add(deflabel("L34002", 34, 2, "Yes_No...........:"))
+  FORM01.label.add(deflabel("L36002", 36, 2, "Switch...........:"))
+  FORM01.label.add(deflabel("L38002", 38, 2, "Proc.............:"))
 
   # FIELD -> FORM01
 
