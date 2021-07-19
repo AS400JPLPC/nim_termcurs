@@ -30,7 +30,7 @@ img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Outp
 img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen.png)
 img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen2.png)
 <br />
-img : [TEST](https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/test.nim)
+doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/test.nim)
 <br />
 <br />
 <br />
