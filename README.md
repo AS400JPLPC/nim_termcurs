@@ -69,6 +69,9 @@ doc : [Source-screen.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/master
   * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First TEST.nim view Output_Code/Output_Screen<br />
  <br />
   * Full Change 2021-07-07&nbsp;&rarr;&nbsp;** Correctif mineur date check form valide  <br />
+  * Full Change 2021-07-24&nbsp;&rarr;&nbsp;** Correctif mineur (insert and nbrRune)  -> cohésion start/end field<br />
+  * Full Change 2021-07-24&nbsp;&rarr;&nbsp;** optimisation and solution import conflict unicode strutils  <br />
+  * Full Change 2021-07-24&nbsp;&rarr;&nbsp;** First generator file Json for designer and restore <br />
  <br />
   
 **Thank you**

@@ -4,12 +4,16 @@
 ##------------------------------------------------------
 
 import termkey
-import strutils , std/[re]  , math
 from strformat import alignString, fmt
-import unicode except strip, align
+from strutils import `%`,isDigit,parseInt,parseEnum,parseBool,parseFloat
+import std/[re]  , math
+import unicode
 
+
+
+#import strutils except strip, align
 #proc beug(nline : int ; text :string ) =
-#  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
+  #gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
 
 const
   EMPTY*:bool = true
@@ -2891,18 +2895,21 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
 
 
   func insert() =
-    if e_count < e_nbrcar :
+    if nbrRune(e_FIELD) < e_nbrcar - 1 :
       var i: Natural = e_count
-      var s_FIELD = e_FIELD
+      let s_FIELD = toRunes($e_FIELD)
       while i < e_nbrcar - 1:
-        e_FIELD[i + 1 ] = s_FIELD[i]
+        if i == e_count : e_FIELD[i] = e_str.runeAt(0)
+        e_FIELD[i+1] = s_FIELD[i]
         inc(i)
+
+
 
 
   func delete() =
     if e_count < e_nbrcar :
       var i: int = e_count
-      var s_FIELD = e_FIELD
+      let s_FIELD = toRunes($e_FIELD)
       while i < e_nbrcar - 1:
         e_FIELD[i] = s_FIELD[i + 1]
         inc(i)
@@ -3126,11 +3133,12 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
             if e_count < e_nbrcar and isAlpha(e_str) or (e_str == "-" and e_count > 0)  or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
-              if fld.reftyp == ALPHA:
-                e_FIELD[e_count] = e_str.runeAt(0)
               else:
-                e_str = e_str.toUpper()
-                e_FIELD[e_count] = e_str.runeAt(0)
+                if fld.reftyp == ALPHA:
+                  e_FIELD[e_count] = e_str.runeAt(0)
+                else:
+                  e_str = e_str.toUpper()
+                  e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -3140,7 +3148,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
           of ord(PASSWORD):
             if e_count < e_nbrcar and (isAlpha(e_str) or isNumber(e_str) or isCarPwd(e_str)) :
               if statusCursInsert: insert()
-              e_FIELD[e_count] = e_str.runeAt(0)
+              else : e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -3151,11 +3159,12 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
             if e_count < e_nbrcar and (isAlpha(e_str) or isNumber(e_str) or e_str == "-") or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
-              if fld.reftyp == ALPHA_NUMERIC:
-                e_FIELD[e_count] = e_str.runeAt(0)
               else:
-                e_str = e_str.toUpper()
-                e_FIELD[e_count] = e_str.runeAt(0)
+                if fld.reftyp == ALPHA_NUMERIC:
+                  e_FIELD[e_count] = e_str.runeAt(0)
+                else:
+                  e_str = e_str.toUpper()
+                  e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -3166,7 +3175,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
             if e_count < e_nbrcar and e_str != " " and e_str != "\"" or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
-              e_FIELD[e_count] = e_str.runeAt(0)
+              else : e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -3177,7 +3186,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
             if e_count < e_nbrcar and (isAlpha(e_str) or isNumber(e_str) or isPunct(e_str)) or
               (isSpace(e_str) and e_count > 0 and e_count < e_nbrcar):
               if statusCursInsert: insert()
-              e_FIELD[e_count] = e_str.runeAt(0)
+              else : e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -3187,7 +3196,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
           of ord(DIGIT):
             if e_count < e_nbrcar and isNumber(e_str):
               if statusCursInsert: insert()
-              e_FIELD[e_count] = e_str.runeAt(0)
+              else : e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -3198,7 +3207,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
             if e_count < e_nbrcar and isNumber(e_str) or
               (e_str == "+" and e_count == 0) or (e_str == "-" and e_count == 0):
               if statusCursInsert and e_count > 0 : insert()
-              e_FIELD[e_count] = e_str.runeAt(0)
+              else : e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -3209,7 +3218,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
             if e_count < e_nbrcar and isNumber(e_str) or
               (e_str == "." and e_count > 0 and e_count < e_nbrcar):
                 if statusCursInsert: insert()
-                e_FIELD[e_count] = e_str.runeAt(0)
+                else : e_FIELD[e_count] = e_str.runeAt(0)
                 inc(e_count)
                 inc(e_curs)
                 if e_count == e_nbrcar:
@@ -3221,7 +3230,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
               (e_str == "." and e_count > 0 and e_count < e_nbrcar) or
               (e_str == "+" and e_count == 0) or (e_str == "-" and e_count == 0):
                 if statusCursInsert and e_count > 0 : insert()
-                e_FIELD[e_count] = e_str.runeAt(0)
+                else : e_FIELD[e_count] = e_str.runeAt(0)
                 inc(e_count)
                 inc(e_curs)
                 if e_count == e_nbrcar:
@@ -3231,8 +3240,9 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
           of ord(TELEPHONE)  :
             if e_count < e_nbrcar :
               if statusCursInsert: insert()
-              e_str = e_str.toUpper()
-              e_FIELD[e_count] = e_str.runeAt(0)
+              else:
+                e_str = e_str.toUpper()
+                e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -3247,11 +3257,12 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
               ( e_str == "-" and e_count == 7) ) :
 
               if statusCursInsert: insert()
-              e_FIELD[e_count] = e_str.runeAt(0)
+              else : e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
                 dec(e_count)
+                dec(e_curs)
 
           of ord(DATE_US), ord(DATE_FR):
             if ( e_count < e_nbrcar and
@@ -3260,7 +3271,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
               ( e_str == "/" and e_count == 2) or
               ( e_str == "/" and e_count == 5)) :
               if statusCursInsert: insert()
-              e_FIELD[e_count] = e_str.runeAt(0)
+              else : e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
@@ -3270,7 +3281,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
           of ord(MAIL_ISO):
             if e_count < e_nbrcar:
               if statusCursInsert: insert()
-              e_FIELD[e_count] = e_str.runeAt(0)
+              else : e_FIELD[e_count] = e_str.runeAt(0)
               inc(e_count)
               inc(e_curs)
               if e_count == e_nbrcar:
