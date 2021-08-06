@@ -30,9 +30,6 @@ img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Outp
 img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen.png)
 img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen2.png)
 <br />
-doc : [Source-screen.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/test.nim)
-<br />
-<br />
 <br />
 
 **IMPORT: termkey project**<br />
@@ -73,7 +70,15 @@ doc : [Source-screen.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/master
   * Full Change 2021-07-24&nbsp;&rarr;&nbsp;** optimisation and solution import conflict unicode strutils  <br />
   * Full Change 2021-07-24&nbsp;&rarr;&nbsp;** First generator file Json for designer and restore <br />
  <br />
+  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** Change work and défine Button defButton() <br />
+  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** text get/set text add générator define Button   <br /> 
+  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add ctrl is true force control panel field   <br /> 
+  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** change work field numéric difference between null and zeros  <br /> 
+  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add setRegex field   exemple:test.nim<br /> 
+ <br />
   
+
+
 **Thank you**
 
   * [ Date](https://rgxdb.com/r/2V9BOC58)<br />
@@ -87,10 +92,9 @@ doc : [Source-screen.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/master
 
 
 
-
+<br />
 
 &rarr;&nbsp; **ioMENU** in / out objects and receives the choice:<br />
-
 
 | Func...........                    |
 |------------------------------------|
@@ -145,7 +149,7 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
   * funckey: BUTTON<br />
   * Currently does not control panel output overflows<br />
   * To use restore you must display a panel in a panel (must be included) same for the Menus<br />
-  * The framing of the labels or fields are relative to the panelv<br />
+  * The framing of the labels or fields are relative to the panel<br />
   * in a PANEL the function keys appear automatically and are included in the Buttons<br />
 
 <br />
@@ -158,12 +162,12 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | Enter              |&nbsp;&rarr;&nbsp; valid, next field                                                        |
 | UP..DOWN           |&nbsp;&rarr;&nbsp; valid, next field                                                        |
 | TAB..STAB          |&nbsp;&rarr;&nbsp; valid, next field                                                        |
-| Insert             |&nbsp;&rarr;&nbsp; isnert char field                                                                         |
-| Delete             |&nbsp;&rarr;&nbsp; delete char field                                                                         |
+| Insert             |&nbsp;&rarr;&nbsp; insert char field                                                        |
+| Delete             |&nbsp;&rarr;&nbsp; delete char field                                                        |
 | Left..Rigth        |&nbsp;&rarr;&nbsp;                                                                          |
 | Backspace          |&nbsp;&rarr;&nbsp; Delete                                                                   |
-| Home               |&nbsp;&rarr;&nbsp; First field                                                                         |
-| End                |&nbsp;&rarr;&nbsp; Last field                                                                         |
+| Home               |&nbsp;&rarr;&nbsp; First field                                                              |
+| End                |&nbsp;&rarr;&nbsp; Last field                                                               |
 | Ctrl-H             |&nbsp;&rarr;&nbsp; Display a help panel specific to the field                               |
 | Escape             |&nbsp;&rarr;&nbsp; Returns control to ioPanel then redisplays the field without modification|
 | TKEY               |&nbsp;&rarr;&nbsp; Returns control to ioPanel                                               |
@@ -206,160 +210,9 @@ not ";" reserved csv<br />
 **Usage**<br />
 <br />
 <br />
-
-
-```
-import termkey
-import termcurs, strformat
-
-
-initTerm(42,132)
-setBackgroundColor(bgBlue)
-eraseTerm()
-var cX,cY:Natural
-var scrollX,scrollY,scrollP,scrollC:Natural
-var bScroll : bool = false
-onCursor()
-gotoXY(1,1)
-
-while true:
-  let (key, chr)  = getTKey()
-
-  case key
-    of TKey.Escape: closeTerm()
-
-    of TKey.F1 : onMouse()
-
-    of TKey.F2 : offMouse()
-
-    of TKey.F3 :
-        offCursor() 
-        scrollP = 10
-        scrollX = 6
-        scrollY = 10
-        scrollC = 1
-        bScroll = onScroll(scrollX,scrollP)  # 6 =  start ligne     nbr ligne  par page = 10   
-
-        gotoXY(scrollX,scrollY)
-
-    of TKey.F4 :
-      # origine
-      resizeTerm(42,132)  
-      titleTerm("VTE-TERM3270")
-      eraseTerm()
-    of TKey.F5:
-      if bScroll :
-        if ( scrollC <= scrollP) : 
-          gotoXY(scrollX,scrollY)
-          stdout.write(fmt"{scrollC} ligne ")
-          inc(scrollX)
-          inc(scrollC)
-
-
-    of TKey.F6 :
-      bScroll = offScroll()
-      bScroll = false
-      scrollX = 1
-      scrollY = 1
-      onCursor()
-
-    of TKey.F7 :
-      var mask : string
-
-      for u in 1..132 :
-        mask = mask & "."
-
-      for i in 1..50 : 
-        gotoXY(i , 1)
-        stdout.write(mask)
-        gotoXY(i , 1)
-        stdout.write(fmt"{i} ")
-
-      gotoXY(1 , 1) 
-
-    of TKey.F8: offCursor()
-
-    of TKey.F9: onCursor()
-
-    of TKey.F10:
-      setBackgroundColor(bgBlue)
-      resizeTerm(20,80)
-      setBackgroundColor(bgBlue) 
-      eraseTerm()
-      titleTerm("Test KEYBOARD 20/80")
-
-
-    of TKey.F11:
-      resizeTerm(42,132)
-      setBackgroundColor(bgBlue)  
-      eraseTerm()
-      titleTerm("Test KEYBOARD 42/132")
-
-    of TKey.F12 :
-      getCursor(cX , cY)
-      gotoXY(42 , 1)
-      stdout.write(fmt"CursX > {cX} CursY > {cY}")
-      gotoXY(cX , cY
-      )
-    of TKey.PageUp:
-      if bScroll :
-          upScrool(scrollP)
-          scrollX = 6
-          scrollC = 1
-          # /.../ F5 manuel ;)
-
-    of TKey.PageDown:
-      if bScroll :
-        downScrool(scrollP)
-        scrollX = 6
-        scrollC = 1
-        # /.../  F5 manuel ;)
-
-    of TKey.Up:
-        cursorUp()
-
-    of TKey.Down:
-        cursorDown()
-
-    of TKey.Left:
-        cursorBackward()
-
-    of TKey.Right:
-        cursorForward()
-
-    of TKey.Mouse : 
-      let mi = getMouse()
-      if mi.action == MouseButtonAction.mbaPressed:
-
-        # work this first /.../ bla bla 
-        case mi.button
-        of mbLeft:
-          gotoXY(mi.x,mi.y)
-
-        of mbMiddle:
-          gotoXY(mi.x,mi.y)
-        of mbRight:
-          gotoXY(mi.x,mi.y)
-        else: discard
-      elif mi.action == MouseButtonAction.mbaReleased:
-          gotoXY(mi.x,mi.y)
-          
-      stdout.write fmt"CursX > {mi.x} CursY > {mi.y}"
-      gotoXY(mi.x,mi.y)
-
-    of TKey.Char:
-      gotoXPos(1)
-      stdout.write(fmt"char :{RightBlack}{chr} ")
-
-    else :
-      gotoXPos(1)
-      stdout.write(fmt"key  :{RightBlack}{key} ")
-
-  stdout.flushFile
-  stdin.flushFile
-```
-
-
+<br />
+doc : [Source-screen.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/test.nim)
+<br />
 <br />
 <br />
 <br />
@@ -371,7 +224,7 @@ proc setTerminal(termatr: ZONATRB = scratr) {...}
 
     Erase and color and style default 
 
-proc defButton(key: TKey; text: string; actif = true): BUTTON {...}
+proc defButton(key: TKey; text: string; ctrl: bool = false; actif: bool = true): BUTTON {...}
 
     define BUTTON 
 
@@ -715,6 +568,8 @@ proc setText(pnl: PANEL; name: string; val: string) {...}
 
     set value Field from name Field 
 
+proc setRegex(pnl: PANEL; name: string; val: string) {...}
+
 proc setSwitch(pnl: PANEL; name: string; val: bool): bool {...}
 
     set switch Field from name Field 
@@ -722,6 +577,8 @@ proc setSwitch(pnl: PANEL; name: string; val: bool): bool {...}
 proc setText(pnl: PANEL; index: int; val: string) {...}
 
     set value Field from index Field 
+
+proc setRegex(pnl: PANEL; index: int; val: string) {...}
 
 proc setSwitch(pnl: PANEL; index: int; val: bool) {...}
 
@@ -797,13 +654,23 @@ proc setActif(box: var BOX; actif: bool) {...}
 
 proc setActif(mnu: var MENU; actif: bool) {...}
 
-proc setActif(btn: var BUTTON; actif: bool) {...}
-
 proc setActif(pnl: var PANEL; actif: bool) {...}
 
 proc setMouse(pnl: var PANEL; actif: bool) {...}
 
 proc setProcess(fld: var FIELD; process: string) {...}
+
+proc setActif(btn: var BUTTON; actif: bool) {...}
+
+proc setCtrl(btn: var BUTTON; ctrl: bool) {...}
+
+proc setText(btn: var BUTTON; val: string) {...}
+
+proc getText(btn: var BUTTON): string {...}
+
+proc getCtrl(btn: var BUTTON): bool {...}
+
+proc getName(btn: var BUTTON): TKey {...}
 
 proc isPanelKey(pnl: PANEL; e_key: TKey): bool {...}
 
@@ -941,8 +808,10 @@ proc ioPanel(pnl: var PANEL): TKey {...}
 
 
 
+
 <br />
 <br />
 
-*Made with Nim. Generated: 2021-06-17 12:41:00 UTC**
+**Made with Nim. Generated: 2021-08-06 12:53:31 UTC**
+
 

@@ -1,6 +1,7 @@
 import termkey
 import termcurs
 import tables
+import json
 
 var callQuery: Table[string, proc(fld : var FIELD)]
 
@@ -8,7 +9,7 @@ var combo  = new(GRIDSFL)
 #===================================================
 proc TblPays(fld : var FIELD) =
   var g_pos : int = -1
-  combo  = newGRID("COMBO01",2,2,10,sepStyle)
+  combo  = newGRID("COMBO01",2,2,10,sepStyle)  # pagup/pagdown = 10   full = 15
 
   var g_type  = defCell("PAYS",19,TEXT_FREE)
 
@@ -89,7 +90,11 @@ var FORM01= new(PANEL)
 
 # description
 proc dscFORM01() =
-  FORM01 = newPanel("FORM01",1,1,42,132,@[defButton(TKey.F3,"F3",true), defButton(TKey.F9,"F9",true), defButton(TKey.F10,"F10",true), defButton(TKey.F12,"F12",true)],line1,"FORM-01")
+  FORM01 = newPanel("FORM01",1,1,42,132,
+  @[defButton(TKey.F3,"Exit"), defButton(TKey.F9,"Add",true), defButton(TKey.F10,"Update"),
+  defButton(TKey.F12,"F12")],line1,"FORM-01")
+
+  setText(FORM01.button[3],"Abord")
 
   # LABEL  -> FORM01
 
@@ -117,7 +122,12 @@ proc dscFORM01() =
 
   FORM01.field.add(defString("Vtextfree", 4, 21, TEXT_FREE,10,"", EMPTY, "",
           ""))
-  FORM01.field.add(defString("Valpha", 6, 21, ALPHA,30,"", FILL, "Obligatoire",
+  setRegex(FORM01,P1[Vtextfree],"^[A-Z]{1,$1}$")
+  setEmpty(FORM01,P1[Vtextfree],false)
+  setErrmsg(FORM01,P1[Vtextfree],"Invalide Field requis")
+  setHelp(FORM01,P1[Vtextfree],"Upercase A-Z")
+
+  FORM01.field.add(defString("Valpha", 6, 21, ALPHA,30,"", FILL, "Requis",
           "Zone Alpha"))
   FORM01.field.add(defString("Vprotect", 6, 54, ALPHA,30,"", EMPTY, "",
           ""))
@@ -128,11 +138,13 @@ proc dscFORM01() =
           ""))
   FORM01.field.add(defString("ValphNumUp", 12, 21, ALPHA_NUMERIC_UPPER,20,"", EMPTY, "",
           ""))
-  FORM01.field.add(defString("VtextFull", 14, 21, TEXT_FULL,30,"cqdf", FILL, "Obligatoire",
+  FORM01.field.add(defString("VtextFull", 14, 21, TEXT_FULL,30,"cqdf", FILL, "Requis",
           "Zone Libre"))
-  FORM01.field.add(defNumeric("Vdigit", 16, 21, DIGIT,10,0,"", EMPTY, "", "Zone digit 0..9"))
+  FORM01.field.add(defNumeric("Vdigit", 16, 21, DIGIT,10,0,"", FILL, "Requis digit(10) ", "Zone digit 0..3"))
+  setRegex(FORM01,P1[Vdigit],"^[0-3]{1,$1}$")
+
   FORM01.field.add(defNumeric("VdigitSign", 18, 21, DIGIT_SIGNED,10,0,"", EMPTY, "", ""))
-  FORM01.field.add(defNumeric("Vdecimal", 20, 21, DECIMAL,10,2,"12345.67", EMPTY, "", "Zone Décimal"))
+  FORM01.field.add(defNumeric("Vdecimal", 20, 21, DECIMAL,10,2,"12345.67", FILL, "Requis decimal(10,2)", "Zone Décimal"))
   setEdtCar(FORM01.field[P1[Vdecimal]], "€")
   FORM01.field.add(defNumeric("VdecmlSign", 22, 21, DECIMAL_SIGNED,10,2,"", EMPTY, "", ""))
   FORM01.field.add(defDate("VdateIso", 24, 21, DATE_ISO,"", EMPTY, "", ""))
@@ -150,6 +162,89 @@ proc dscFORM01() =
 
 
 
+
+  var btn : BUTTON
+  var jsonPanel = %* {"titleTerm": "DESIGNER","panel": [] }
+
+  var jP = 0
+
+  # Json Panel / Button
+  add(jsonPanel["panel"], %* {"name": getPnlName(FORM01), "posx": 1, "posy": 1,
+          "height": 42, "width": 132, "cadre": line1,
+          "title": getPnlTitle(FORM01),
+          "button" :[], "label":[], "field":[]})
+  for i in 0..len(FORM01.button) - 1 :
+    btn = FORM01.button[i]
+    add(jsonPanel["panel"][jP]["button"] , %* {"Tkey": $btn.getName(),"txtKey": btn.getText(), "ctrl": btn.getCtrl(), "actif": btn.actif})
+  #--------------------
+  # Json label
+  for n in 0..len(FORM01.label) - 1:
+    if isTitle(FORM01, n) :
+      add(jsonPanel["panel"][jP]["label"] , %* {"defLabel":"Title", "name" : getNameL(FORM01,n),
+        "posx": getPosxL(FORM01,n), "posy": getPosyL(FORM01,n), "text": getTextL(FORM01,n) })
+    else :
+      add(jsonPanel["panel"][jP]["label"] , %* {"defLabel":"label", "name" : getNameL(FORM01,n),
+        "posx": getPosxL(FORM01,n), "posy": getPosyL(FORM01,n), "text": getTextL(FORM01,n) })
+  #--------------------
+  for n in 0..len(FORM01.field) - 1:
+    case getRefType(FORM01,n)
+    of ALPHA, ALPHA_UPPER,ALPHA_NUMERIC,ALPHA_NUMERIC_UPPER, TEXT_FREE, TEXT_FULL, PASSWORD, YES_NO, FPROC, FCALL:
+      # Json field
+      add(jsonPanel["panel"][jP]["field"] , %* {"defFld":"defString", "name" : getName(FORM01,n),
+            "posx": getPosx(FORM01,n), "posy": getPosy(FORM01,n),
+            "reftype": $getRefType(FORM01,n), "width": getWidth(FORM01,n), "empty": getEmpty(FORM01,n),
+            "errmsg": getErrmsg(FORM01,n), "help": getHelp(FORM01,n),
+            "text":getText(FORM01,n),
+            "EdtCar": getEdtcar(FORM01,n), "Protect" : isProtect(FORM01.field[n]), "Process" : getProcess(FORM01,n) })
+      #--------------------
+    of DIGIT , DIGIT_SIGNED , DECIMAL, DECIMAL_SIGNED  :
+      # Json field numeric
+      add(jsonPanel["panel"][jP]["field"] , %* {"defFld":"defNumeric", "name" : getName(FORM01,n),
+            "posx": getPosx(FORM01,n), "posy": getPosy(FORM01,n),
+            "reftype": $getRefType(FORM01,n), "width": getWidth(FORM01,n), "scal": getScal(FORM01,n),
+            "empty": getEmpty(FORM01,n),
+            "errmsg": getErrmsg(FORM01,n), "help": getHelp(FORM01,n),
+            "text":getText(FORM01,n),
+            "EdtCar": getEdtcar(FORM01,n), "Protect" : isProtect(FORM01.field[n]), "Process" : getProcess(FORM01,n)})
+      #--------------------
+    of TELEPHONE:
+      # Json telephone
+      add(jsonPanel["panel"][jP]["field"] , %* {"defFld":"defTelephone", "name" : getName(FORM01,n),
+            "posx": getPosx(FORM01,n), "posy": getPosy(FORM01,n),
+            "reftype": $getRefType(FORM01,n), "width": getWidth(FORM01,n), "empty": getEmpty(FORM01,n),
+            "errmsg": getErrmsg(FORM01,n), "help": getHelp(FORM01,n),
+            "text":getText(FORM01,n),
+            "EdtCar": getEdtcar(FORM01,n), "Protect" : isProtect(FORM01.field[n]), "Process" : ""})
+    of DATE_ISO, DATE_FR, DATE_US:
+      # Json date
+      add(jsonPanel["panel"][jP]["field"] , %* {"defFld":"defDate", "name" : getName(FORM01,n),
+            "posx": getPosx(FORM01,n), "posy": getPosy(FORM01,n),
+            "reftype": $getRefType(FORM01,n), "empty": getEmpty(FORM01,n),
+            "errmsg": getErrmsg(FORM01,n), "help": getHelp(FORM01,n),
+            "text":getText(FORM01,n),
+            "EdtCar": "", "Protect" : isProtect(FORM01.field[n]), "Process" : ""})
+      #--------------------
+    of MAIL_ISO:
+      # Json mail
+      add(jsonPanel["panel"][jP]["field"] , %* {"defFld":"defMail", "name" : getName(FORM01,n),
+            "posx": getPosx(FORM01,n), "posy": getPosy(FORM01,n),
+            "reftype": $getRefType(FORM01,n), "width": getWidth(FORM01,n), "empty": getEmpty(FORM01,n),
+            "errmsg": getErrmsg(FORM01,n), "help": getHelp(FORM01,n),
+            "text":getText(FORM01,n),
+            "EdtCar": "", "Protect" : isProtect(FORM01.field[n]), "Process" : ""})
+      #-------------------
+    of SWITCH :
+      # Json switch
+      add(jsonPanel["panel"][jP]["field"] , %* {"defFld":"defSwitch", "name" : getName(FORM01,n),
+            "posx": getPosx(FORM01,n), "posy": getPosy(FORM01,n),
+            "reftype": $getRefType(FORM01,n), "switch": false, "empty": getEmpty(FORM01,n),
+            "errmsg": getErrmsg(FORM01,n), "help": getHelp(FORM01,n),
+            "text":"",
+            "EdtCar": "", "Protect" : isProtect(FORM01.field[n]), "Process" : ""})
+      #-------------------
+  let F001 = open("./dspf/prettyFile.dspf", fmWrite)
+  F001.write(pretty(jsonPanel))
+  F001.close()
 
 
 offCursor()

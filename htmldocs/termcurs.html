@@ -230,8 +230,9 @@ function main() {
   actif*: bool">BOX</a></li>
   <li><a class="reference" href="#BUTTON"
     title="BUTTON = object
-  key*: TKey
-  text*: string
+  key: TKey
+  text: string
+  ctrl: bool
   actif*: bool">BUTTON</a></li>
   <li><a class="reference" href="#MENU"
     title="MENU = ref object
@@ -532,6 +533,8 @@ function main() {
     title="setText(pnl: PANEL; name: string; val: string)">setText,<wbr>PANEL,<wbr>string,<wbr>string</a></li>
   <li><a class="reference" href="#setText%2CPANEL%2Cint%2Cstring"
     title="setText(pnl: PANEL; index: int; val: string)">setText,<wbr>PANEL,<wbr>int,<wbr>string</a></li>
+  <li><a class="reference" href="#setText%2CBUTTON%2Cstring"
+    title="setText(btn: var BUTTON; val: string)">setText,<wbr>BUTTON,<wbr>string</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">clsPanel
@@ -560,8 +563,8 @@ function main() {
 
   </ul>
   <ul class="simple nested-toc-section">defButton
-      <li><a class="reference" href="#defButton%2CTKey%2Cstring"
-    title="defButton(key: TKey; text: string; actif = true): BUTTON">defButton,<wbr>TKey,<wbr>string</a></li>
+      <li><a class="reference" href="#defButton%2CTKey%2Cstring%2Cbool%2Cbool"
+    title="defButton(key: TKey; text: string; ctrl: bool = false; actif: bool = true): BUTTON">defButton,<wbr>TKey,<wbr>string,<wbr>bool,<wbr>bool</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getText
@@ -569,6 +572,8 @@ function main() {
     title="getText(pnl: PANEL; index: int): string">getText,<wbr>PANEL,<wbr>int</a></li>
   <li><a class="reference" href="#getText%2CPANEL%2Cstring"
     title="getText(pnl: PANEL; name: string): string">getText,<wbr>PANEL,<wbr>string</a></li>
+  <li><a class="reference" href="#getText%2CBUTTON"
+    title="getText(btn: var BUTTON): string">getText,<wbr>BUTTON</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getSwitch
@@ -635,6 +640,11 @@ function main() {
     title="getPosy(pnl: PANEL; index: int): int">getPosy,<wbr>PANEL,<wbr>int</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">setCtrl
+      <li><a class="reference" href="#setCtrl%2CBUTTON%2Cbool"
+    title="setCtrl(btn: var BUTTON; ctrl: bool)">setCtrl,<wbr>BUTTON,<wbr>bool</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">getPnlTitle
       <li><a class="reference" href="#getPnlTitle%2CPANEL"
     title="getPnlTitle(pnl: PANEL): string">getPnlTitle,<wbr>PANEL</a></li>
@@ -662,6 +672,8 @@ function main() {
     title="getName(pnl: PANEL): string">getName,<wbr>PANEL</a></li>
   <li><a class="reference" href="#getName%2CPANEL%2Cint"
     title="getName(pnl: PANEL; index: int): string">getName,<wbr>PANEL,<wbr>int</a></li>
+  <li><a class="reference" href="#getName%2CBUTTON"
+    title="getName(btn: var BUTTON): TKey">getName,<wbr>BUTTON</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getSwitchH
@@ -820,6 +832,11 @@ function main() {
     title="setError(fld: var FIELD; val: bool)">setError,<wbr>FIELD,<wbr>bool</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">getCtrl
+      <li><a class="reference" href="#getCtrl%2CBUTTON"
+    title="getCtrl(btn: var BUTTON): bool">getCtrl,<wbr>BUTTON</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">isActif
       <li><a class="reference" href="#isActif%2CFIELD"
     title="isActif(fld: var FIELD): bool">isActif,<wbr>FIELD</a></li>
@@ -936,10 +953,10 @@ function main() {
     title="setActif(box: var BOX; actif: bool)">setActif,<wbr>BOX,<wbr>bool</a></li>
   <li><a class="reference" href="#setActif%2CMENU%2Cbool"
     title="setActif(mnu: var MENU; actif: bool)">setActif,<wbr>MENU,<wbr>bool</a></li>
-  <li><a class="reference" href="#setActif%2CBUTTON%2Cbool"
-    title="setActif(btn: var BUTTON; actif: bool)">setActif,<wbr>BUTTON,<wbr>bool</a></li>
   <li><a class="reference" href="#setActif%2CPANEL%2Cbool"
     title="setActif(pnl: var PANEL; actif: bool)">setActif,<wbr>PANEL,<wbr>bool</a></li>
+  <li><a class="reference" href="#setActif%2CBUTTON%2Cbool"
+    title="setActif(btn: var BUTTON; actif: bool)">setActif,<wbr>BUTTON,<wbr>bool</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">defMail
@@ -953,6 +970,13 @@ function main() {
   <ul class="simple nested-toc-section">dltLabel
       <li><a class="reference" href="#dltLabel%2CPANEL%2CNatural"
     title="dltLabel(pnl: PANEL; idx: Natural)">dltLabel,<wbr>PANEL,<wbr>Natural</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">setRegex
+      <li><a class="reference" href="#setRegex%2CPANEL%2Cstring%2Cstring"
+    title="setRegex(pnl: PANEL; name: string; val: string)">setRegex,<wbr>PANEL,<wbr>string,<wbr>string</a></li>
+  <li><a class="reference" href="#setRegex%2CPANEL%2Cint%2Cstring"
+    title="setRegex(pnl: PANEL; index: int; val: string)">setRegex,<wbr>PANEL,<wbr>int,<wbr>string</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getrowWidth
@@ -1128,7 +1152,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">Define Menuassigne MENU to matrice for displayDefine Field MailEnables or disables FIELD / LABEL / BOX / MENU / PANELif on/off  FIELD / LABEL / BOX / MENU / PANEL<h1 id="management-grid-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-pageup-pagedown-automatic-alignment-based-on-the-type-reference"><center>Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type reference</center></h1><h1 id="traiement-des-menus-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-left-right-movement-width-the-wheel-and-validation-width-the-clik"><center>traiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement width the wheel and validation width the clik</center></h1><h1 id="input-buffer-management-modeled-on-5250slash3270-inspiration-ncurse-application-hold-principe-and-new-langage-use-termkeydotnim"><center>Input buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim</center></h1><h1 id="format-management-including-zones-keyboard-proction-keys-are-returned-to-the-calling-procedure-only-the-key-ctrlh-eq-aide-slash-help-for-field-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert-call-attn-proc-predefined-and-customizable-regex-control"><center>Format management including zones keyboard proction keys are returned to the calling procedure  only the key CtrlH = Aide / Help for field  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT CALL , ATTN , PROC predefined and customizable REGEX control</center></h1></p>
+  <p class="module-desc">Define Menuassigne MENU to matrice for displayDefine Field Mailset regex Field Sequence Fieldset regex Field Sequence FieldEnables or disables FIELD / LABEL / BOX / MENU / PANEL / BUTTONBUTTONif on/off  FIELD / LABEL / BOX / MENU / PANEL<h1 id="management-grid-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-pageup-pagedown-automatic-alignment-based-on-the-type-reference"><center>Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type reference</center></h1><h1 id="traiement-des-menus-enter-eq-select-1dotdotn-0-eq-abort-escape-turning-on-the-mouse-up-down-left-right-movement-width-the-wheel-and-validation-width-the-clik"><center>traiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement width the wheel and validation width the clik</center></h1><h1 id="input-buffer-management-modeled-on-5250slash3270-inspiration-ncurse-application-hold-principe-and-new-langage-use-termkeydotnim"><center>Input buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim</center></h1><h1 id="format-management-including-zones-keyboard-proction-keys-are-returned-to-the-calling-procedure-only-the-key-ctrlh-eq-aide-slash-help-for-field-reserved-keys-for-field-management-traditionally-up-down-tab-stab-ctrla-enter-home-end-rigth-left-backspace-delete-insert-call-attn-proc-predefined-and-customizable-regex-control"><center>Format management including zones keyboard proction keys are returned to the calling procedure  only the key CtrlH = Aide / Help for field  Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT CALL , ATTN , PROC predefined and customizable REGEX control</center></h1></p>
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
@@ -1348,8 +1372,9 @@ function main() {
 </dd>
 <a id="BUTTON"></a>
 <dt><pre><a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">key</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">TKey</span>
-  <span class="Identifier">text</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">TKey</span>
+  <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">ctrl</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
@@ -1643,9 +1668,9 @@ function main() {
 Erase and color and style default
 
 </dd>
-<a id="defButton,TKey,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#defButton%2CTKey%2Cstring"><span class="Identifier">defButton</span></a><span class="Other">(</span><span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">TKey</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">actif</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="defButton,TKey,string,bool,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#defButton%2CTKey%2Cstring%2Cbool%2Cbool"><span class="Identifier">defButton</span></a><span class="Other">(</span><span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">TKey</span><span class="Other">;</span> <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">ctrl</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">false</span><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 define BUTTON
@@ -2260,6 +2285,14 @@ set protect Field Sequence Field
 set value Field from name Field
 
 </dd>
+<a id="setRegex,PANEL,string,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setRegex%2CPANEL%2Cstring%2Cstring"><span class="Identifier">setRegex</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="setSwitch,PANEL,string,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#setSwitch%2CPANEL%2Cstring%2Cbool"><span class="Identifier">setSwitch</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -2272,6 +2305,14 @@ set switch Field from name Field
 <dd>
 
 set value Field from index Field
+
+</dd>
+<a id="setRegex,PANEL,int,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setRegex%2CPANEL%2Cint%2Cstring"><span class="Identifier">setRegex</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
 
 </dd>
 <a id="setSwitch,PANEL,int,bool"></a>
@@ -2429,13 +2470,6 @@ set attribut protect field
 
 
 </dd>
-<a id="setActif,BUTTON,bool"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#setActif%2CBUTTON%2Cbool"><span class="Identifier">setActif</span></a><span class="Other">(</span><span class="Identifier">btn</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
-<dd>
-
-
-
-</dd>
 <a id="setActif,PANEL,bool"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#setActif%2CPANEL%2Cbool"><span class="Identifier">setActif</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -2452,6 +2486,48 @@ set attribut protect field
 </dd>
 <a id="setProcess,FIELD,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#setProcess%2CFIELD%2Cstring"><span class="Identifier">setProcess</span></a><span class="Other">(</span><span class="Identifier">fld</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#FIELD"><span class="Identifier">FIELD</span></a><span class="Other">;</span> <span class="Identifier">process</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setActif,BUTTON,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setActif%2CBUTTON%2Cbool"><span class="Identifier">setActif</span></a><span class="Other">(</span><span class="Identifier">btn</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">;</span> <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setCtrl,BUTTON,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setCtrl%2CBUTTON%2Cbool"><span class="Identifier">setCtrl</span></a><span class="Other">(</span><span class="Identifier">btn</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">;</span> <span class="Identifier">ctrl</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="setText,BUTTON,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#setText%2CBUTTON%2Cstring"><span class="Identifier">setText</span></a><span class="Other">(</span><span class="Identifier">btn</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getText,BUTTON"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getText%2CBUTTON"><span class="Identifier">getText</span></a><span class="Other">(</span><span class="Identifier">btn</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getCtrl,BUTTON"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getCtrl%2CBUTTON"><span class="Identifier">getCtrl</span></a><span class="Other">(</span><span class="Identifier">btn</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="getName,BUTTON"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getName%2CBUTTON"><span class="Identifier">getName</span></a><span class="Other">(</span><span class="Identifier">btn</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#BUTTON"><span class="Identifier">BUTTON</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">TKey</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -2783,7 +2859,7 @@ get Process from grid,rows
 
 </dd>
 <a id="isValide,PANEL"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#isValide%2CPANEL"><span class="Identifier">isValide</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RegexError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#isValide%2CPANEL"><span class="Identifier">isValide</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RegexError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Contrôle  Format Panel full Field
@@ -2807,7 +2883,7 @@ Contrôle  Format Panel full Field
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2021-06-17 12:41:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2021-08-06 12:53:31 UTC</small>
       </div>
     </div>
   </div>

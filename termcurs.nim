@@ -209,8 +209,9 @@ type
 
 
   BUTTON* = object
-    key* : TKey
-    text*: string
+    key : TKey
+    text: string
+    ctrl: bool
     actif*: bool
 
 
@@ -460,11 +461,12 @@ proc setTerminal*(termatr : ZONATRB = scratr) =
 
 
 
-proc defButton*(key: TKey; text:string; actif = true): BUTTON =
+proc defButton*(key: TKey; text:string; ctrl:bool = false ; actif:bool = true): BUTTON =
   ## define BUTTON
   var bt:BUTTON
   bt.key = key
   bt.text = text
+  bt.ctrl = ctrl
   bt.actif = actif
   return bt
 
@@ -1975,6 +1977,13 @@ proc setText*(pnl: PANEL; name: string; val : string)=
       pnl.field[i].text = val
       break
 
+## set regex Field Sequence Field
+proc setRegex*(pnl: PANEL; name: string; val : string)=
+  for i in 0..len(pnl.field)-1 :
+    if pnl.field[i].name == name :
+      pnl.field[i].regex = val % [$pnl.field[i].width]
+      break
+
 proc setSwitch*(pnl : PANEL ; name: string; val : bool): bool  =
   ## set switch Field from name Field
   for i in 0..len(pnl.hiden)-1 :
@@ -1985,6 +1994,11 @@ proc setText*(pnl: PANEL; index: int; val : string) =
   ## set value Field from index Field
   if index < 0 or index > len(pnl.field)-1 : return
   pnl.field[index].text = val
+
+## set regex Field Sequence Field
+proc setRegex*(pnl: PANEL; index: int; val : string) =
+  if index < 0 or index > len(pnl.field)-1 : return
+  pnl.field[index].regex = val  % [$pnl.field[index].width]
 
 proc setSwitch*(pnl : PANEL ; index: int; val : bool)  =
   ## set switch Field from index Field
@@ -2094,20 +2108,22 @@ proc setProtect*(fld : var FIELD ; protect : bool)= fld.protect = protect
 proc setEdtCar*(fld : var FIELD ; Car : string)=    fld.edtcar = Car
 proc setError*(fld : var FIELD; val :bool )=        fld.err = val
 
-## Enables or disables FIELD / LABEL / BOX / MENU / PANEL
+## Enables or disables FIELD / LABEL / BOX / MENU / PANEL / BUTTON
 proc setActif*(fld : var FIELD ; actif : bool)= fld.actif = actif
 proc setActif*(lbl : var LABEL ; actif : bool)= lbl.actif = actif
 proc setActif*(box : var BOX ; actif : bool)=   box.actif = actif
 proc setActif*(mnu : var MENU ; actif : bool)=  mnu.actif = actif
-proc setActif*(btn : var BUTTON; actif : bool)= btn.actif = actif
 proc setActif*(pnl : var PANEL ; actif : bool)= pnl.actif = actif
 proc setMouse*(pnl : var PANEL ; actif : bool)= pnl.actif = actif
 proc setProcess*(fld : var FIELD ; process : string)=  fld.process = process
 
-
-
-
-
+## BUTTON
+proc setActif*(btn : var BUTTON; actif : bool) = btn.actif = actif
+proc setCtrl*(btn : var BUTTON; ctrl : bool) = btn.ctrl = ctrl
+proc setText*(btn :var BUTTON; val : string) = btn.text = val
+proc getText*(btn :var BUTTON) : string = result = btn.text
+proc getCtrl*(btn : var BUTTON) : bool = result = btn.ctrl
+proc getName*(btn : var BUTTON) : TKey = result = btn.key
 
 
 proc isPanelKey*(pnl: PANEL; e_key:TKey): bool =
@@ -2863,10 +2879,10 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
     if s_field  == "" : return true
     case fld.reftyp
     of DIGIT , DIGIT_SIGNED:
-      if 0 == parseInt(s_field) : return true
+      if s_field  == "" : return true
       return false
     of DECIMAL, DECIMAL_SIGNED:
-      if 0.0 == parseFloat(s_field) : return true
+      if s_field  == "" : return true
       return false
     else :
       var i = 0
@@ -2879,10 +2895,11 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
 
 
   func nbrRune(s:seq[Rune]): Natural =
-    var i : Natural = len(s)-1
-    while i >= 0:
-        if s[i] != " ".runeAt(0) : return i   # last not blank
-        dec(i)
+    if len(s) > 0:
+      var i : Natural = len(s)-1
+      while i > 0:
+          if s[i] != " ".runeAt(0) : return i   # last not blank
+          dec(i)
     result = 0
 
   func isfuncKey(e_key:TKey): bool =
@@ -3339,10 +3356,10 @@ proc isValide*(pnl:var PANEL): bool =
     if s_field  == "" : return true
     case fld.reftyp
     of DIGIT , DIGIT_SIGNED:
-      if 0 == parseInt(s_field) : return true
+      if s_field == "" : return true
       return false
     of DECIMAL, DECIMAL_SIGNED:
-      if 0.0 == parseFloat(s_field) : return true
+      if s_field == "" : return true
       return false
     else :
       var i = 0
@@ -3404,6 +3421,16 @@ proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
       pnl.index = n
       break
 
+  # check if KEYs force control field
+  func isPanelKeyCtrl(pnl: PANEL; e_key:TKey): bool =
+    var i = 0
+    while i < len(pnl.funcKey):
+      if e_key == pnl.funcKey[i] and pnl.button[i].ctrl : return true
+      inc(i)
+    return false
+
+
+
   # check if there are any free field
   func isFieldIO(pnl: PANEL):Natural =
     var n : Natural = len(pnl.field)
@@ -3411,6 +3438,7 @@ proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
     for i in 0..nfield - 1 :
       if pnl.field[i].protect  or not pnl.field[i].actif: n -= 1
     return n
+
   #search there first available field
   func isFirstIO(pnl: PANEL, idx : Natural):int =
     var i : Natural = idx
@@ -3459,8 +3487,12 @@ proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
       displayField(pnl,pnl.field[CountField])
 
     if isPanelKey(pnl,fld_key) or fld_key == TKey.PROC :                      # this key sav index field return main
-      pnl.index = getIndex(pnl,pnl.field[CountField].name)
-      return fld_key
+      if isPanelKeyCtrl(pnl,fld_key) and not isValide(pnl) :
+        CountField = pnl.index
+        fld_key = TKey.Escape
+      else :
+        pnl.index = getIndex(pnl,pnl.field[CountField].name)
+        return fld_key
 
     if isFieldIO(pnl) == 0 :                          # this full protect only work Key active
       fld_key = getFunc()
