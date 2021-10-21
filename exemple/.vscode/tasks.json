@@ -1,0 +1,137 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Nim-Debug",
+      "type": "shell",
+      "command": "./.vscode/compile.sh DEBUG ${fileBasename}",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Nim-Prod",
+      "type": "shell",
+      "command": "./.vscode/compile.sh PROD ${fileBasename}",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Nim-Test",
+      "type": "shell",
+      "command": "./.vscode/compile.sh TEST ${fileBasename}",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Glade",
+      "type": "shell",
+      "command": "/usr/bin/glade  ${fileBasename}",
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Conv_Glade",
+      "type": "shell",
+      "command": "./.vscode/ConvGlade.sh  ${fileDirname}  ${fileBasename}",
+      "presentation": {
+        "echo": true,
+        "focus": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Conv_Css",
+      "type": "shell",
+      "command": "./.vscode/ConvCss.sh  ${fileDirname}  ${fileBasename}",
+      "presentation": {
+        "echo": true,
+        "focus": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "GREP-GTK-1",
+      "type": "shell",
+      "command": "/usr/bin/xfce4-terminal --title=GREP --hold --geometry 160x20 --zoom=2 -e ./.vscode/grep_gtk.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": true 
+      }
+    },
+    {
+      "label": "GREP-GTK-2",
+      "type": "shell",
+      "command": "/usr/bin/xfce4-terminal --title=GREP --hold --geometry 160x20 --zoom=2 -e ./.vscode/grep_gtk.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": true 
+      }
+    },
+    {
+      "label": "Clear cache Nim",
+      "type": "shell",
+      "command": "rm -Rf $HOME/.cache/nim",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "focus": true 
+      }
+    },
+    {
+        "label": "Clear Cache VSCODE ",
+        "type": "shell",
+        "command": "rm -Rf $HOME/.config/'Code - OSS'/Cache/",
+        "problemMatcher": [],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": true 
+      }
+    },
+    {
+        "label": "Clear CacheData VSCODE ",
+        "type": "shell",
+        "command": "rm -Rf $HOME/.config/'Code - OSS'/CachedData/",
+        "problemMatcher": [],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": true 
+      }
+    },
+    {
+        "label": "Clear log VSCODE ",
+        "type": "shell",
+        "command": "rm -Rf $HOME.config/'Code - OSS'/logs/",
+        "problemMatcher": [],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": true 
+      }
+    }
+  ]
+}

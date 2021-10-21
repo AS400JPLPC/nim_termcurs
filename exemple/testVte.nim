@@ -3,6 +3,7 @@ import gintro/pango
 import gintro/[gtk, glib, gobject, vte]
 import strformat
 
+
 #var cmd: array[2, cstring] = ["/bin/bash".cstring, cast[cstring](0)]
 var pid = 0
 var terminal* : Terminal
@@ -22,7 +23,7 @@ proc app_exit(win: Window) = mainQuit()
 proc exit_terminal(widget: Terminal, status: int) = quit(0)
 
 proc on_title_changed*(widget: vte.Terminal) =
-  window.setTitle( widget.getWindowTitle())
+  window.setTitle( cstring(widget.getWindowTitle()))
   showAll(window)
 
 proc on_resize_window*(widget: vte.Terminal, row : int ; nrow :int) =
@@ -83,9 +84,9 @@ proc  init_Terminal() =
 
   terminal.setSize( ROW, NROW)                          #  size du terminal
 
-  window.setTitle( VTENAME)                             #  titre du terminal de base
+  window.setTitle( cstring(VTENAME))                    #  titre du terminal de base
 
-  terminal.setFont(newFontDescription(font_terminal))   #  font utilisé
+  terminal.setFont(newFontDescription(cstring(font_terminal)))   #  font utilisé
 
   #recommendation scroll/pagination programmation manuel pour apllication spécifique  scroll=0/false
 
@@ -139,7 +140,7 @@ proc newApp() =
  # recuperation du PID ex si altf4 kill du programme child
   if not terminal.spawnSync(
     {},
-    envPath,
+    cstring(envPath),
     argv,
     [],
     {SpawnFlag.searchPathFromEnvp},
