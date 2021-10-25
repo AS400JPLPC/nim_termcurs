@@ -2158,6 +2158,8 @@ proc isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## setPageGrid()
 ## setLastPage()
 ## newGrid()
+## setActif()
+## isActif()
 ## resetGrid()
 ## countColumns()
 ## setHeaders()
@@ -2273,8 +2275,8 @@ proc newGrid*(name:string ; posx:Natural; posy:Natural; pageRows :Natural;
 
   return Ngrid
 
-
-
+proc isActif*(this: GRIDSFL)  : bool = return this.actif
+proc setActif*(this: GRIDSFL; actif : bool) = this.actif = actif
 
 proc resetGrid*(this: GRIDSFL) =
   this.name  = ""
@@ -2311,8 +2313,10 @@ proc setHeaders*(this: GRIDSFL, headers: seq[CELL]) =
 
 
 proc defCell*(text: string; long : Natural;reftyp: REFTYP; cell_atr : CELLATRB = cellatr): CELL =
+
   var cell : CELL
-  cell.long    = long
+  if text.len > long : cell.long = text.len
+  else :  cell.long    = long
   cell.reftyp = reftyp
   cell.text   = text
   cell.edtcar = ""
@@ -2635,21 +2639,21 @@ proc setPageGrid(this: GRIDSFL; pos : Natural) =
 proc pageUpGrid*(this: GRIDSFL): TKey_Grid =
   if this.curspage > 0 :
     dec(this.curspage)
+    if this.curspage == 0 : this.curspage = 1
     this.cursligne = -1
     printGridHeader(this)
     printGridRows(this)
-
-  if this.curspage == 1: return PGHome
+  if this.curspage == 1 : return PGHome
   else : return PGUp
 
 proc pageDownGrid*(this: GRIDSFL): TKey_Grid =
   if this.curspage < this.pages :
     inc(this.curspage)
+    if this.curspage > this.pages : this.curspage = this.pages
     this.cursligne = -1
     printGridHeader(this)
     printGridRows(this)
-
-  if this.curspage == 1: return PGEnd
+  if this.curspage == this.pages: return PGEnd
   else : return PGDown
 
 

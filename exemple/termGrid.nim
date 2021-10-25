@@ -1,12 +1,12 @@
 import termkey
 import termcurs
 type
-  LABEL_FMT1 {.pure.} = enum 
+  LABEL_FMT1 {.pure.} = enum
     Lnom,
     Lanimal,
     Lprix,
     LGrid
-  FIELD_FMT1 {.pure.}= enum 
+  FIELD_FMT1 {.pure.}= enum
     Nom,
     Animal,
     Prix
@@ -20,14 +20,16 @@ func setID*( line : var int ) : string =
   line += 1
   return $line
 
-initTerm(42,132)
+initTerm(30,100)
 setTerminal() #default color style erase
 
 var pnlF1  = new(PANEL)
 var grid  : GRIDSFL
-var g_numID : int 
+var g_numID : int
 var key : TKey = TKey.F1
 var keyG : TKey_Grid
+grid = newGrid("GRID01",10,1,5)
+setActif(grid,false)
 while true:
   if key == TKey.F3 :  closeTerm()
 
@@ -49,19 +51,19 @@ while true:
       pnlF1.label.add(defLabel($Prix, 6, 5, "Prix....:"))
       pnlF1.field.add(defNumeric($Prix, 6, 5+(len(pnlF1.label[P_L1[Lprix]].text)), DECIMAL,5,2,"12.00",FILL, "Animale Obligatoire", "Type Alpha a-Z"))
 
-      pnlF1.label.add(defLabel($Lgrid, 42, 127, ""))
+      pnlF1.label.add(defLabel($Lgrid, 30, 90, ""))
       printPanel(pnlF1)
 
     key = ioPanel(pnlF1)
 
   of TKey.F2:
-    grid = newGrid("GRID01",10,1,5)
+    setActif(grid,true)
     var g_id      = defCell("ID",3,DIGIT)
     var g_name    = defCell("Name",getNbrcar(pnlF1,$Nom),ALPHA)
     var g_animal  = defCell("Fav animal",getNbrcar(pnlF1,$Animal),ALPHA)
     var g_prix    = defCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL)
     setCellEditCar(g_prix,"€")
-    g_numID = - 1 
+    g_numID = - 1
 
 
     setHeaders(grid, @[g_id, g_name, g_animal,g_prix])
@@ -98,7 +100,7 @@ while true:
       var g_animal  = defCell("Fav animal",getNbrcar(pnlF1,$Animal),ALPHA)
       var g_prix    = defCell("Prix",getNbrcar(pnlF1,$Prix),DECIMAL)
       setCellEditCar(g_prix,"€")
-      g_numID = - 1 
+      g_numID = - 1
       setHeaders(grid, @[g_id, g_name, g_animal,g_prix])
       printGridHeader(grid)
 
@@ -106,34 +108,40 @@ while true:
 
 
   of TKey.PageUp :
-    keyG = pageUpGrid(grid)
-    if keyG == TKey_Grid.PGup:
-      pnlF1.label[P_L1[Lgrid]].text = "Prior"
-    else:
-      pnlF1.label[P_L1[Lgrid]].text = "Home "
-    displayLabel(pnlF1,pnlF1.label[P_L1[Lgrid]])
+    if grid.actif:
+      keyG = pageUpGrid(grid)
+      if keyG == TKey_Grid.PGup:
+        pnlF1.label[P_L1[Lgrid]].text = "Prior"
+      else:
+        pnlF1.label[P_L1[Lgrid]].text = "Home "
+      displayLabel(pnlF1,pnlF1.label[P_L1[Lgrid]])
+    key = TKey.F1
 
-    key = TKey.F1 
   of TKey.PageDown :
-    keyG = pageDownGrid(grid)
-    if keyG == TKey_Grid.PGdown:
-      pnlF1.label[P_L1[Lgrid]].text = "Next "
-    else:
-      pnlF1.label[P_L1[Lgrid]].text = "End  "
-    displayLabel(pnlF1,pnlF1.label[P_L1[Lgrid]])
-    key = TKey.F1 
+    if grid.actif:
+      keyG = pageDownGrid(grid)
+      if keyG == TKey_Grid.PGdown:
+        pnlF1.label[P_L1[Lgrid]].text = "Next "
+      else:
+        pnlF1.label[P_L1[Lgrid]].text = "End  "
+      displayLabel(pnlF1,pnlF1.label[P_L1[Lgrid]])
+    key = TKey.F1
 
   of TKey.Ctrlx :
-    let (keys, val) = ioGrid(grid)
-    #gotoXY(40,1) ; echo "99", keys, " val :", $val ; let n99 = getFunc();
-    #gotoXy(40,1) ; echo "                                                                                                 "
-    if keys == TKey.Enter :
-      pnlF1.field[P_F1[Nom]].text = val[1]
-      pnlF1.field[P_F1[Animal]].text = val[2]
-      pnlF1.field[P_F1[Prix]].text = val[3]
-      displayField(pnlF1, pnlF1.field[P_F1[Nom]])
-      displayField(pnlF1, pnlF1.field[P_F1[Animal]])
-      displayField(pnlF1, pnlF1.field[P_F1[Prix]])
-    key = TKey.F1 
+    if grid.actif:
+      let (keys, val) = ioGrid(grid)
+      #gotoXY(40,1) ; echo "99", keys, " val :", $val ; let n99 = getFunc();
+      #gotoXy(40,1) ; echo "                                                                                                 "
+      if keys == TKey.Enter :
+        pnlF1.field[P_F1[Nom]].text = val[1]
+        pnlF1.field[P_F1[Animal]].text = val[2]
+        pnlF1.field[P_F1[Prix]].text = val[3]
+        displayField(pnlF1, pnlF1.field[P_F1[Nom]])
+        displayField(pnlF1, pnlF1.field[P_F1[Animal]])
+        displayField(pnlF1, pnlF1.field[P_F1[Prix]])
+      elif keys == TKey.Escape:
+        printGridHeader(grid)
+        printGridRows(grid)
+    key = TKey.F1
 
   else : discard

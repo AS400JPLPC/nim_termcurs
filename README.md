@@ -2,7 +2,17 @@
 
 *** curse TERMINAL inspired 5250/3270 done only with nim***
 
-**  I am not yet posting designer and source generator.it is not operational but written at the base of termcurs**
+**  I am not yet posting designer and source generator.it is not operational but written at the base of termcurs**<br />
+
+
+** generator **<br />
+&rarr;&nbsp; creat Panel    OK<br />
+&rarr;&nbsp; creat Label    OK<br />
+&rarr;&nbsp; creat Field    OK<br />
+&rarr;&nbsp; creat Grid/Combo curent<br />
+&rarr;&nbsp; creat Menu     OK<br />
+&rarr;&nbsp; creat json     OK<br />
+&rarr;&nbsp; creat save/restor  OK<br />
 
 ** require termkey **
 
@@ -75,6 +85,11 @@ img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Out
   * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add ctrl is true force control panel field   <br /> 
   * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** change work field numéric difference between null and zeros  <br /> 
   * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add setRegex field   exemple:test.nim<br /> 
+ <br />
+  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** change defCell if text.len > long long = text.len<br /> 
+  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** change pageDownGrid if curspage= pages return PGend<br /> 
+  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add setActif() Grid<br /> 
+  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add isActif() Grid<br /> 
  <br />
   
 
