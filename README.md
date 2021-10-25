@@ -19,19 +19,11 @@
 
 doc : [TERMCURS](http://htmlpreview.github.io/?https://github.com/AS400JPLPC/nim_termcurs/blob/master/htmldocs/termcurs.html)
 
-
-
-img : [TERMCURS PRESENTATION](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr00.png)
-
-img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr01.png)
-
-img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr06.png)
-
-img : [TERMCURS](https://github.com/AS400JPLPC/nim_termcurs/blob/master/ecr08.png)
-
-
 img : [EXEMPLE](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
 img : [SOURCE GENERATED](https://github.com/AS400JPLPC/nim_termcurs/blob/master/source_generated.png)
+
+
+doc : [SOURCE](https:https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/termGrid.nim)
 <br />
 <br />
 **Progress of the designer test**<br />
