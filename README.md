@@ -23,7 +23,7 @@ img : [EXEMPLE](https://github.com/AS400JPLPC/nim_termcurs/blob/master/TEST.png)
 img : [SOURCE GENERATED](https://github.com/AS400JPLPC/nim_termcurs/blob/master/source_generated.png)
 
 
-doc : [SOURCE](https:https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/termGrid.nim)
+doc : [SOURCE](https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/termGrid.nim)
 <br />
 <br />
 **Progress of the designer test**<br />
