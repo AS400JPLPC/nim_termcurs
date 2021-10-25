@@ -235,591 +235,611 @@ doc : [Source-screen.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/master
 
 
 ** Main procedure**<br />
-proc setTerminal(termatr: ZONATRB = scratr) {...}
 
-    Erase and color and style default 
 
-proc defButton(key: TKey; text: string; ctrl: bool = false; actif: bool = true): BUTTON {...}
+proc addRows(this: GRIDSFL; rows: seq[string]) {.....}
 
-    define BUTTON 
+proc clearText(pnl: var PANEL) {.....}
+
+    clear value ALL FIELD 
+
+proc clsField(pnl: var PANEL; fld: FIELD) {.....}
+
+    cls Field from Panel 
+
+proc clsLabel(pnl: var PANEL; lbl: LABEL) {.....}
+
+    cls Label from Panel 
+
+proc clsPanel(pnl: var PANEL) {.....}
+
+    cls Panel 
+
+proc Cols(pnl: PANEL): Natural {.....}
+
+    get cols PANEL 
+
+proc counColumns(this: GRIDSFL): Natural {.....}
+
+proc countRows(this: GRIDSFL): Natural {.....}
 
 proc defBox(name: string; posx: Natural; posy: Natural; lines: Natural;
             cols: Natural; cadre: CADRE; title: string;
-            box_atr: BOXATRB = boxatr; actif: bool = true): BOX {...}
+            box_atr: BOXATRB = boxatr; actif: bool = true): BOX {.....}
 
     Define BOX 
 
-proc printBox(pnl: var PANEL; box: BOX) {...}
+proc defButton(key: TKey; text: string; ctrl: bool = false; actif: bool = true): BUTTON {.
+    ....}
 
-    assigne BOX to matrice for display 
+    define BUTTON 
 
-proc newMenu(name: string; posx: Natural; posy: Natural; mnuvh: MNUVH;
-             item: seq[string]; cadre: CADRE = CADRE.line0;
-             mnu_atr: MNUATRB = mnuatr; actif: bool = true): MENU {...}
-
-proc printMenu(pnl: PANEL; mnu: MENU) {...}
-
-proc dspMenuItem(pnl: PANEL; mnu: MENU; npos: Natural = 0) {...}
-
-proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
-              lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {...}
-
-    Define Label 
-
-proc defTitle(name: string; posx: Natural; posy: Natural; text: string;
-              ttl_atr: ZONATRB = ttlatr; actif: bool = true): LABEL {...}
-
-    Define Title 
-
-proc printLabel(pnl: var PANEL; lbl: LABEL) {...}
-
-    assigne LABEL to matrice for display 
-
-proc defString(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-               width: Natural; text: string; empty: bool; errmsg: string;
-               help: string; regex: string = ""; fld_atr: ZONATRB = fldatr;
-               protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
-
-    Define Field String Standard 
-
-proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-             width: Natural; text: string; empty: bool; errmsg: string;
-             help: string; fld_atr: ZONATRB = fldatr;
-             protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
-
-    Define Field Mail 
-
-proc defSwitch(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
-               switch: bool; empty: bool; errmsg: string; help: string;
-               swt_atr: ZONATRB = swtatr; protect_atr: ZONATRB = prtatr;
-               actif: bool = true): FIELD {...}
-
-    Define Field switch 
+proc defCell(text: string; long: Natural; reftyp: REFTYP;
+             cell_atr: CELLATRB = cellatr): CELL {.....}
 
 proc defDate(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
              text: string; empty: bool; errmsg: string; help: string;
              fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr;
-             actif: bool = true): FIELD {...}
+             actif: bool = true): FIELD {.....}
 
     Define Field date ISO 
+
+proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
+              lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {.
+    ....}
+
+    Define Label 
+
+proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+             width: Natural; text: string; empty: bool; errmsg: string;
+             help: string; fld_atr: ZONATRB = fldatr;
+             protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {.
+    ....}
+
+    Define Field Mail 
 
 proc defNumeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                 width: Natural; scal: Natural; text: string; empty: bool;
                 errmsg: string; help: string; fld_atr: ZONATRB = fldatr;
-                protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
+                protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {.
+    ....}
 
     Define Field Numeric 
+
+proc defString(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+               width: Natural; text: string; empty: bool; errmsg: string;
+               help: string; regex: string = ""; fld_atr: ZONATRB = fldatr;
+               protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {.
+    ....}
+
+    Define Field String Standard 
+
+proc defStringH(name: string; reftyp: REFTYP; text: string): HIDEN {.....}
+
+    Hiden field 
+
+proc defSwitch(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
+               switch: bool; empty: bool; errmsg: string; help: string;
+               swt_atr: ZONATRB = swtatr; protect_atr: ZONATRB = prtatr;
+               actif: bool = true): FIELD {.....}
+
+    Define Field switch 
+
+proc defSwitchH(name: string; reftyp: REFTYP; switch: bool): HIDEN {.....}
+
+    Hiden switch 
 
 proc defTelephone(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                   width: Natural; text: string; empty: bool; errmsg: string;
                   help: string; fld_atr: ZONATRB = fldatr;
-                  protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {...}
+                  protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {.
+    ....}
 
     Define Field Telephone 
 
-proc defStringH(name: string; reftyp: REFTYP; text: string): HIDEN {...}
+proc defTitle(name: string; posx: Natural; posy: Natural; text: string;
+              ttl_atr: ZONATRB = ttlatr; actif: bool = true): LABEL {.
+    ....}
 
-    Hiden field 
+    Define Title 
 
-proc defSwitchH(name: string; reftyp: REFTYP; switch: bool): HIDEN {...}
-
-    Hiden switch 
-
-proc Lines(pnl: PANEL): Natural {...}
-
-    get lines PANEL 
-
-proc Cols(pnl: PANEL): Natural {...}
-
-    get cols PANEL 
-
-proc Index(pnl: PANEL): Natural {...}
-
-    index actived from panel this getField 
-
-proc newPanel(name: string; posx, posy, height, width: Natural;
-              button: seq[(BUTTON)]; cadre: CADRE = line0; title: string = "";
-              pnl_atr: ZONATRB = pnlatr): PANEL {...}
-
-    Define PANEL 
-
-proc printField(pnl: var PANEL; fld: FIELD) {...}
-
-    assigne FIELD to matrice for display 
-
-proc printButton(pnl: var PANEL; btn_esp: BTNSPACE = btnspc) {...}
-
-    assigne BUTTON matrice for display 
-
-proc displayPanel(pnl: PANEL) {...}
-
-    display matrice PANEL 
-
-proc printPanel(pnl: var PANEL) {...}
-
-    assigne PANEL and all OBJECT to matrice for display 
-
-proc resetPanel(pnl: var PANEL) {...}
-
-    clear object PANEL / box/label/fld/proc 
-
-proc resetMenu(mnu: var MENU) {...}
-
-    clear object MENU 
-
-proc clsLabel(pnl: var PANEL; lbl: LABEL) {...}
-
-    cls Label from Panel 
-
-proc clsField(pnl: var PANEL; fld: FIELD) {...}
-
-    cls Field from Panel 
-
-proc clsPanel(pnl: var PANEL) {...}
-
-    cls Panel 
-
-proc displayLabel(pnl: var PANEL; lbl: LABEL) {...}
-
-    display matrice only LABEL 
-
-proc displayField(pnl: var PANEL; fld: FIELD) {...}
-
-    display matrice only FIELD 
-
-proc displayButton(pnl: var PANEL) {...}
+proc displayButton(pnl: var PANEL) {.....}
 
     display matrice only BUTTON 
 
-proc restorePanel(dst: PANEL; src: var PANEL) {...}
+proc displayField(pnl: var PANEL; fld: FIELD) {.....}
 
-    restore the base occupied by panel 
+    display matrice only FIELD 
 
-proc restorePanel(dst: PANEL; mnu: MENU) {...}
+proc displayLabel(pnl: var PANEL; lbl: LABEL) {.....}
 
-    restore the base occupied by menu 
+    display matrice only LABEL 
 
-proc restorePanel(dst: PANEL; grid: GRIDSFL) {...}
+proc displayPanel(pnl: PANEL) {.....}
 
-    restore the base occupied by grid 
+    display matrice PANEL 
 
-proc restorePanel(pnl: PANEL; lines, posy: Natural) {...}
-
-    restore the lines occupied by the error message 
-
-proc getPnlName(pnl: PANEL): string {...}
-
-    get name From Panel 
-
-proc getPnlTitle(pnl: PANEL): string {...}
-
-    get Title From Panel 
-
-proc getIndexL(pnl: PANEL; name: string): int {...}
-
-    get index Sequence Label from name 
-
-proc getNameL(pnl: PANEL; index: int): string {...}
-
-    get name label Sequence Field 
-
-proc getPosxL(pnl: PANEL; index: int): int {...}
-
-    get Posx label Sequence Field 
-
-proc getPosyL(pnl: PANEL; index: int): int {...}
-
-    get Posy label Sequence Field 
-
-proc getTextL(pnl: PANEL; index: int): string {...}
-
-    get value label Sequence Label 
-
-proc isTitle(pnl: PANEL; index: int): bool {...}
-
-    test Title label Sequence Label 
-
-proc getTextL(pnl: PANEL; name: string): string {...}
-
-    get value Label Sequence from name 
-
-proc setTextL(pnl: PANEL; name: string; val: string) {...}
-
-    set value Label Sequence from name 
-
-proc setTextL(pnl: PANEL; index: int; val: string) {...}
-
-    set value Label Sequence Label 
-
-proc setTitle(pnl: PANEL; index: int; val: bool) {...}
-
-    set value Label Sequence Label 
-
-proc dltLabel(pnl: PANEL; idx: Natural) {...}
-
-    delete Label from index 
-
-proc clearText(pnl: var PANEL) {...}
-
-    clear value ALL FIELD 
-
-proc getName(pnl: PANEL): string {...}
-
-    get name field from panel this getField 
-
-proc getProcess(pnl: PANEL; index: int): string {...}
-
-    get callVoid Field Sequence Field 
-
-proc getName(pnl: PANEL; index: int): string {...}
-
-    get name Field Sequence Field 
-
-proc getPosx(pnl: PANEL; index: int): int {...}
-
-    get Posx Field Sequence Field 
-
-proc getPosy(pnl: PANEL; index: int): int {...}
-
-    get Posy Field Sequence Field 
-
-proc getRefType(pnl: PANEL; index: int): REFTYP {...}
-
-    get Type Field Sequence Field 
-
-proc getWidth(pnl: PANEL; index: int): int {...}
-
-    get width Field Sequence Field 
-
-proc getScal(pnl: PANEL; index: int): int {...}
-
-    get Scal Field Sequence Field 
-
-proc getEmpty(pnl: PANEL; index: int): bool {...}
-
-    get Empty Field Sequence Field 
-
-proc getErrmsg(pnl: PANEL; index: int): string {...}
-
-    get errmsg Field Sequence Field 
-
-proc getHelp(pnl: PANEL; index: int): string {...}
-
-    get help Field Sequence Field 
-
-proc getEdtcar(pnl: PANEL; index: int): string {...}
-
-    get Edtcar Field Sequence Field 
-
-proc getProtect(pnl: PANEL; index: int): bool {...}
-
-    get Protect Field Sequence Field 
-
-proc getText(pnl: PANEL; index: int): string {...}
-
-    get value Field Sequence Field 
-
-proc getSwitch(pnl: PANEL; index: int): bool {...}
-
-    get value Field Sequence Field 
-
-proc getText(pnl: PANEL; name: string): string {...}
-
-    get value Field from name Field 
-
-proc getSwitch(pnl: PANEL; name: string): bool {...}
-
-    get value switch from name Field 
-
-proc getIndex(pnl: PANEL; name: string): int {...}
-
-    get index Field from name Field 
-
-proc setName(pnl: PANEL; index: int; val: string) {...}
-
-    set name Field Sequence Field 
-
-proc setName(pnl: PANEL; index: int; val: Natural) {...}
-
-    set posx Field Sequence Field 
-
-proc setPosy(pnl: PANEL; index: int; val: Natural) {...}
-
-    set posy Field Sequence Field 
-
-proc setType(pnl: PANEL; index: int; val: REFTYP) {...}
-
-    set Type Field Sequence Field 
-
-proc setWidth(pnl: PANEL; index: int; val: Natural) {...}
-
-    set width Field Sequence Field 
-
-proc setScal(pnl: PANEL; index: int; val: Natural) {...}
-
-    set Scal Field Sequence Field 
-
-proc setEmpty(pnl: PANEL; index: int; val: bool) {...}
-
-    set Empty Field Sequence Field 
-
-proc setErrmsg(pnl: PANEL; index: int; val: string) {...}
-
-    set errmsg Field Sequence Field 
-
-proc setHelp(pnl: PANEL; index: int; val: string) {...}
-
-    set help Field Sequence Field 
-
-proc setEdtcar(pnl: PANEL; index: int; val: string) {...}
-
-    set Edtcar Field Sequence Field 
-
-proc setProtect(pnl: PANEL; index: int; val: bool) {...}
-
-    set protect Field Sequence Field 
-
-proc setText(pnl: PANEL; name: string; val: string) {...}
-
-    set value Field from name Field 
-
-proc setRegex(pnl: PANEL; name: string; val: string) {...}
-
-proc setSwitch(pnl: PANEL; name: string; val: bool): bool {...}
-
-    set switch Field from name Field 
-
-proc setText(pnl: PANEL; index: int; val: string) {...}
-
-    set value Field from index Field 
-
-proc setRegex(pnl: PANEL; index: int; val: string) {...}
-
-proc setSwitch(pnl: PANEL; index: int; val: bool) {...}
-
-    set switch Field from index Field 
-
-proc dltField(pnl: PANEL; idx: Natural) {...}
+proc dltField(pnl: PANEL; idx: Natural) {.....}
 
     delete Field index Field 
 
-proc isProcess(pnl: PANEL; index: int): bool {...}
-
-    test process index Field 
-
-proc getNameH(hdn: PANEL; index: int): string {...}
-
-    get name Hiden from index 
-
-proc getIndexH(hdn: PANEL; name: string): int {...}
-
-    get index Hiden from name 
-
-proc getTextH(hdn: PANEL; name: string): string {...}
-
-    get value Field Hiden from name 
-
-proc getSwitchH(hdn: PANEL; name: string): bool {...}
-
-    get switch Hiden from name 
-
-proc getTextH(hdn: PANEL; index: int): string {...}
-
-    get value Field Hiden from index 
-
-proc getSwitchH(hdn: PANEL; index: int): bool {...}
-
-    get switch Hiden from index 
-
-proc dltFieldH(hdn: PANEL; idx: Natural) {...}
+proc dltFieldH(hdn: PANEL; idx: Natural) {.....}
 
     delete Field Hiden from indexField 
 
-proc getNbrcar(pnl: PANEL; name: string): int {...}
+proc dltLabel(pnl: PANEL; idx: Natural) {.....}
 
-    get nbrCar Field from name 
+    delete Label from index 
 
-proc getReftyp(pnl: PANEL; name: string): REFTYP {...}
+proc dltRows(this: GRIDSFL; idx: Natural) {.....}
 
-    get ref.type Field from name 
+proc dspMenuItem(pnl: PANEL; mnu: MENU; npos: Natural = 0) {.
+    ....}
 
-proc setColor(lbl: var LABEL; lbl_atr: ZONATRB) {...}
-
-    set attribut label 
-
-proc setColor(fld: var FIELD; fld_atr: ZONATRB) {...}
-
-    set attribut field 
-
-proc setColorProtect(fld: var FIELD; protect_atr: ZONATRB) {...}
-
-    set attribut protect field 
-
-proc setProtect(fld: var FIELD; protect: bool) {...}
-
-proc setEdtCar(fld: var FIELD; Car: string) {...}
-
-proc setError(fld: var FIELD; val: bool) {...}
-
-proc setActif(fld: var FIELD; actif: bool) {...}
-
-proc setActif(lbl: var LABEL; actif: bool) {...}
-
-proc setActif(box: var BOX; actif: bool) {...}
-
-proc setActif(mnu: var MENU; actif: bool) {...}
-
-proc setActif(pnl: var PANEL; actif: bool) {...}
-
-proc setMouse(pnl: var PANEL; actif: bool) {...}
-
-proc setProcess(fld: var FIELD; process: string) {...}
-
-proc setActif(btn: var BUTTON; actif: bool) {...}
-
-proc setCtrl(btn: var BUTTON; ctrl: bool) {...}
-
-proc setText(btn: var BUTTON; val: string) {...}
-
-proc getText(btn: var BUTTON): string {...}
-
-proc getCtrl(btn: var BUTTON): bool {...}
-
-proc getName(btn: var BUTTON): TKey {...}
-
-proc isPanelKey(pnl: PANEL; e_key: TKey): bool {...}
-
-    Test if KEYs must be managed by the programmer 
-
-proc isProtect(fld: var FIELD): bool {...}
-
-proc isError(fld: var FIELD): bool {...}
-
-proc isActif(fld: var FIELD): bool {...}
-
-proc isActif(lbl: var LABEL): bool {...}
-
-proc isActif(box: var BOX): bool {...}
-
-proc isActif(mnu: var MENU): bool {...}
-
-proc isActif(btn: var BUTTON): bool {...}
-
-proc isActif(pnl: var PANEL): bool {...}
-
-proc isMouse(pnl: var PANEL): bool {...}
-
-proc setPageGrid(this: GRIDSFL) {...}
-
-proc setLastPage(this: GRIDSFL) {...}
-
-proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
-             separator: GridStyle = sepStyle; grid_atr: GRIDATRB = gridatr;
-             actif: bool = true): GRIDSFL {...}
-
-proc resetGrid(this: GRIDSFL) {...}
-
-proc counColumns(this: GRIDSFL): Natural {...}
-
-proc countRows(this: GRIDSFL): Natural {...}
-
-proc setHeaders(this: GRIDSFL; headers: seq[CELL]) {...}
-
-proc defCell(text: string; long: Natural; reftyp: REFTYP;
-             cell_atr: CELLATRB = cellatr): CELL {...}
-
-proc setCellEditCar(cell: var CELL; edtcar: string = "") {...}
-
-proc getcellLen(cell: var CELL): int {...}
+proc getcellLen(cell: var CELL): int {.....}
 
     get len from cell 
 
-proc getIndexG(this: GRIDSFL; name: string): int {...}
+proc getCtrl(btn: var BUTTON): bool {.....}
+
+proc getEdtcar(pnl: PANEL; index: int): string {.....}
+
+    get Edtcar Field Sequence Field 
+
+proc getEmpty(pnl: PANEL; index: int): bool {.....}
+
+    get Empty Field Sequence Field 
+
+proc getErrmsg(pnl: PANEL; index: int): string {.....}
+
+    get errmsg Field Sequence Field 
+
+proc getHelp(pnl: PANEL; index: int): string {.....}
+
+    get help Field Sequence Field 
+
+proc getIndex(pnl: PANEL; name: string): int {.....}
+
+    get index Field from name Field 
+
+proc getIndexG(this: GRIDSFL; name: string): int {.....}
 
     get index from grid,name 
 
-proc getrowName(this: GRIDSFL; r: int): string {...}
+proc getIndexH(hdn: PANEL; name: string): int {.....}
 
-    get name from grid,rows 
+    get index Hiden from name 
 
-proc getrowPosx(this: GRIDSFL; r: int): int {...}
+proc getIndexL(pnl: PANEL; name: string): int {.....}
 
-    get posx from grid,rows 
+    get index Sequence Label from name 
 
-proc getrowPosy(this: GRIDSFL; r: int): int {...}
+proc getName(btn: var BUTTON): TKey {.....}
 
-    get posy from grid,rows 
+proc getName(pnl: PANEL): string {.....}
 
-proc getrowType(this: GRIDSFL; r: int): REFTYP {...}
+    get name field from panel this getField 
 
-    get type from grid,rows 
+proc getName(pnl: PANEL; index: int): string {.....}
 
-proc isrowTitle(this: GRIDSFL; r: int): bool {...}
+    get name Field Sequence Field 
 
-    get isTitle from grid,rows 
+proc getNameH(hdn: PANEL; index: int): string {.....}
 
-proc getrowText(this: GRIDSFL; r: int): string {...}
+    get name Hiden from index 
 
-    get text from grid,rows 
+proc getNameL(pnl: PANEL; index: int): string {.....}
 
-proc getrowWidth(this: GRIDSFL; r: int): int {...}
+    get name label Sequence Field 
 
-    get Width from grid,rows 
+proc getNbrcar(pnl: PANEL; name: string): int {.....}
 
-proc getrowScal(this: GRIDSFL; r: int): int {...}
+    get nbrCar Field from name 
 
-    get scal from grid,rows 
+proc getPnlName(pnl: PANEL): string {.....}
 
-proc getrowEmpty(this: GRIDSFL; r: int): bool {...}
+    get name From Panel 
 
-    get Empty from grid,rows 
+proc getPnlTitle(pnl: PANEL): string {.....}
 
-proc getrowErrmsg(this: GRIDSFL; r: int): string {...}
+    get Title From Panel 
 
-    get errmsg from grid,rows 
+proc getPosx(pnl: PANEL; index: int): int {.....}
 
-proc getrowHelp(this: GRIDSFL; r: int): string {...}
+    get Posx Field Sequence Field 
 
-    get help from grid,rows 
+proc getPosxL(pnl: PANEL; index: int): int {.....}
 
-proc getrowCar(this: GRIDSFL; r: int): string {...}
+    get Posx label Sequence Field 
+
+proc getPosy(pnl: PANEL; index: int): int {.....}
+
+    get Posy Field Sequence Field 
+
+proc getPosyL(pnl: PANEL; index: int): int {.....}
+
+    get Posy label Sequence Field 
+
+proc getProcess(pnl: PANEL; index: int): string {.....}
+
+    get callVoid Field Sequence Field 
+
+proc getProtect(pnl: PANEL; index: int): bool {.....}
+
+    get Protect Field Sequence Field 
+
+proc getReftyp(pnl: PANEL; name: string): REFTYP {.....}
+
+    get ref.type Field from name 
+
+proc getRefType(pnl: PANEL; index: int): REFTYP {.....}
+
+    get Type Field Sequence Field 
+
+proc getrowCar(this: GRIDSFL; r: int): string {.....}
 
     get Car from grid,rows 
 
-proc isrowProtect(this: GRIDSFL; r: int): bool {...}
+proc getrowEmpty(this: GRIDSFL; r: int): bool {.....}
 
-    get isProtect from grid,rows 
+    get Empty from grid,rows 
 
-proc getrowProcess(this: GRIDSFL; r: int): string {...}
+proc getrowErrmsg(this: GRIDSFL; r: int): string {.....}
+
+    get errmsg from grid,rows 
+
+proc getrowHelp(this: GRIDSFL; r: int): string {.....}
+
+    get help from grid,rows 
+
+proc getrowName(this: GRIDSFL; r: int): string {.....}
+
+    get name from grid,rows 
+
+proc getrowPosx(this: GRIDSFL; r: int): int {.....}
+
+    get posx from grid,rows 
+
+proc getrowPosy(this: GRIDSFL; r: int): int {.....}
+
+    get posy from grid,rows 
+
+proc getrowProcess(this: GRIDSFL; r: int): string {.....}
 
     get Process from grid,rows 
 
-proc addRows(this: GRIDSFL; rows: seq[string]) {...}
+proc getrowScal(this: GRIDSFL; r: int): int {.....}
 
-proc dltRows(this: GRIDSFL; idx: Natural) {...}
+    get scal from grid,rows 
 
-proc resetRows(this: GRIDSFL) {...}
+proc getrowText(this: GRIDSFL; r: int): string {.....}
 
-proc printGridHeader(this: GRIDSFL) {...}
+    get text from grid,rows 
 
-proc printGridRows(this: GRIDSFL) {...}
+proc getrowType(this: GRIDSFL; r: int): REFTYP {.....}
 
-proc pageUpGrid(this: GRIDSFL): TKey_Grid {...}
+    get type from grid,rows 
 
-proc pageDownGrid(this: GRIDSFL): TKey_Grid {...}
+proc getrowWidth(this: GRIDSFL; r: int): int {.....}
 
-proc ioGrid(this: GRIDSFL; pos: int = -1): (TKey, seq[string]) {...}
+    get Width from grid,rows 
 
-proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {...}
+proc getScal(pnl: PANEL; index: int): int {.....}
 
-proc ioField(pnl: PANEL; fld: var FIELD): (TKey) {...}
+    get Scal Field Sequence Field 
 
-proc isValide(pnl: var PANEL): bool {...}
+proc getSwitch(pnl: PANEL; index: int): bool {.....}
+
+    get value Field Sequence Field 
+
+proc getSwitch(pnl: PANEL; name: string): bool {.....}
+
+    get value switch from name Field 
+
+proc getSwitchH(hdn: PANEL; index: int): bool {.....}
+
+    get switch Hiden from index 
+
+proc getSwitchH(hdn: PANEL; name: string): bool {.....}
+
+    get switch Hiden from name 
+
+proc getText(btn: var BUTTON): string {.....}
+
+proc getText(pnl: PANEL; index: int): string {.....}
+
+    get value Field Sequence Field 
+
+proc getText(pnl: PANEL; name: string): string {.....}
+
+    get value Field from name Field 
+
+proc getTextH(hdn: PANEL; index: int): string {.....}
+
+    get value Field Hiden from index 
+
+proc getTextH(hdn: PANEL; name: string): string {.....}
+
+    get value Field Hiden from name 
+
+proc getTextL(pnl: PANEL; index: int): string {.....}
+
+    get value label Sequence Label 
+
+proc getTextL(pnl: PANEL; name: string): string {.....}
+
+    get value Label Sequence from name 
+
+proc getWidth(pnl: PANEL; index: int): int {.....}
+
+    get width Field Sequence Field 
+
+proc Index(pnl: PANEL): Natural {.....}
+
+    index actived from panel this getField 
+
+proc ioField(pnl: PANEL; fld: var FIELD): (TKey) {.
+    ....}
+
+proc ioGrid(this: GRIDSFL; pos: int = -1): (TKey, seq[string]) {.
+    ....}
+
+proc ioMenu(pnl: PANEL; mnu: MENU; npos: Natural): MENU.selMenu {.
+    ....}
+
+proc ioPanel(pnl: var PANEL): TKey {.....}
+
+proc isActif(box: var BOX): bool {.....}
+
+proc isActif(btn: var BUTTON): bool {.....}
+
+proc isActif(fld: var FIELD): bool {.....}
+
+proc isActif(lbl: var LABEL): bool {.....}
+
+proc isActif(mnu: var MENU): bool {.....}
+
+proc isActif(pnl: var PANEL): bool {.....}
+
+proc isActif(this: GRIDSFL): bool {.....}
+
+proc isError(fld: var FIELD): bool {.....}
+
+proc isMouse(pnl: var PANEL): bool {.....}
+
+proc isPanelKey(pnl: PANEL; e_key: TKey): bool {.....}
+
+    Test if KEYs must be managed by the programmer 
+
+proc isProcess(pnl: PANEL; index: int): bool {.....}
+
+    test process index Field 
+
+proc isProtect(fld: var FIELD): bool {.....}
+
+proc isrowProtect(this: GRIDSFL; r: int): bool {.....}
+
+    get isProtect from grid,rows 
+
+proc isrowTitle(this: GRIDSFL; r: int): bool {.....}
+
+    get isTitle from grid,rows 
+
+proc isTitle(pnl: PANEL; index: int): bool {.....}
+
+    test Title label Sequence Label 
+
+proc isValide(pnl: var PANEL): bool {.....}
 
     Contrôle Format Panel full Field 
 
-proc ioPanel(pnl: var PANEL): TKey {...}
+proc Lines(pnl: PANEL): Natural {.....}
 
+    get lines PANEL 
+
+proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
+             separator: GridStyle = sepStyle; grid_atr: GRIDATRB = gridatr;
+             actif: bool = true): GRIDSFL {.....}
+
+proc newMenu(name: string; posx: Natural; posy: Natural; mnuvh: MNUVH;
+             item: seq[string]; cadre: CADRE = CADRE.line0;
+             mnu_atr: MNUATRB = mnuatr; actif: bool = true): MENU {.....}
+
+proc newPanel(name: string; posx, posy, height, width: Natural;
+              button: seq[(BUTTON)]; cadre: CADRE = line0; title: string = "";
+              pnl_atr: ZONATRB = pnlatr): PANEL {.....}
+
+    Define PANEL 
+
+proc pageDownGrid(this: GRIDSFL): TKey_Grid {.....}
+
+proc pageUpGrid(this: GRIDSFL): TKey_Grid {.....}
+
+proc printBox(pnl: var PANEL; box: BOX) {.....}
+
+    assigne BOX to matrice for display 
+
+proc printButton(pnl: var PANEL; btn_esp: BTNSPACE = btnspc) {.....}
+
+    assigne BUTTON matrice for display 
+
+proc printField(pnl: var PANEL; fld: FIELD) {.....}
+
+    assigne FIELD to matrice for display 
+
+proc printGridHeader(this: GRIDSFL) {.....}
+
+proc printGridRows(this: GRIDSFL) {.....}
+
+proc printLabel(pnl: var PANEL; lbl: LABEL) {.....}
+
+    assigne LABEL to matrice for display 
+
+proc printMenu(pnl: PANEL; mnu: MENU) {.....}
+
+proc printPanel(pnl: var PANEL) {.....}
+
+    assigne PANEL and all OBJECT to matrice for display 
+
+proc resetGrid(this: GRIDSFL) {.....}
+
+proc resetMenu(mnu: var MENU) {.....}
+
+    clear object MENU 
+
+proc resetPanel(pnl: var PANEL) {.....}
+
+    clear object PANEL / box/label/fld/proc 
+
+proc resetRows(this: GRIDSFL) {.....}
+
+proc restorePanel(dst: PANEL; grid: GRIDSFL) {.....}
+
+    restore the base occupied by grid 
+
+proc restorePanel(dst: PANEL; mnu: MENU) {.....}
+
+    restore the base occupied by menu 
+
+proc restorePanel(dst: PANEL; src: var PANEL) {.....}
+
+    restore the base occupied by panel 
+
+proc restorePanel(pnl: PANEL; lines, posy: Natural) {.
+    ....}
+
+    restore the lines occupied by the error message 
+
+proc setActif(box: var BOX; actif: bool) {.....}
+
+proc setActif(btn: var BUTTON; actif: bool) {.....}
+
+proc setActif(fld: var FIELD; actif: bool) {.....}
+
+proc setActif(lbl: var LABEL; actif: bool) {.....}
+
+proc setActif(mnu: var MENU; actif: bool) {.....}
+
+proc setActif(pnl: var PANEL; actif: bool) {.....}
+
+proc setActif(this: GRIDSFL; actif: bool) {.....}
+
+proc setCellEditCar(cell: var CELL; edtcar: string = "") {.....}
+
+proc setColor(fld: var FIELD; fld_atr: ZONATRB) {.....}
+
+    set attribut field 
+
+proc setColor(lbl: var LABEL; lbl_atr: ZONATRB) {.....}
+
+    set attribut label 
+
+proc setColorProtect(fld: var FIELD; protect_atr: ZONATRB) {.....}
+
+    set attribut protect field 
+
+proc setCtrl(btn: var BUTTON; ctrl: bool) {.....}
+
+proc setEdtCar(fld: var FIELD; Car: string) {.....}
+
+proc setEdtcar(pnl: PANEL; index: int; val: string) {.....}
+
+    set Edtcar Field Sequence Field 
+
+proc setEmpty(pnl: PANEL; index: int; val: bool) {.....}
+
+    set Empty Field Sequence Field 
+
+proc setErrmsg(pnl: PANEL; index: int; val: string) {.....}
+
+    set errmsg Field Sequence Field 
+
+proc setError(fld: var FIELD; val: bool) {.....}
+
+proc setHeaders(this: GRIDSFL; headers: seq[CELL]) {.....}
+
+proc setHelp(pnl: PANEL; index: int; val: string) {.....}
+
+    set help Field Sequence Field 
+
+proc setLastPage(this: GRIDSFL) {.....}
+
+proc setMouse(pnl: var PANEL; actif: bool) {.....}
+
+proc setName(pnl: PANEL; index: int; val: Natural) {.....}
+
+    set posx Field Sequence Field 
+
+proc setName(pnl: PANEL; index: int; val: string) {.....}
+
+    set name Field Sequence Field 
+
+proc setPageGrid(this: GRIDSFL) {.....}
+
+proc setPosy(pnl: PANEL; index: int; val: Natural) {.....}
+
+    set posy Field Sequence Field 
+
+proc setProcess(fld: var FIELD; process: string) {.....}
+
+proc setProtect(fld: var FIELD; protect: bool) {.....}
+
+proc setProtect(pnl: PANEL; index: int; val: bool) {.....}
+
+    set protect Field Sequence Field 
+
+proc setRegex(pnl: PANEL; index: int; val: string) {.....}
+
+proc setRegex(pnl: PANEL; name: string; val: string) {.....}
+
+proc setScal(pnl: PANEL; index: int; val: Natural) {.....}
+
+    set Scal Field Sequence Field 
+
+proc setSwitch(pnl: PANEL; index: int; val: bool) {.....}
+
+    set switch Field from index Field 
+
+proc setSwitch(pnl: PANEL; name: string; val: bool): bool {.....}
+
+    set switch Field from name Field 
+
+proc setTerminal(termatr: ZONATRB = scratr) {.....}
+
+    Erase and color and style default 
+
+proc setText(btn: var BUTTON; val: string) {.....}
+
+proc setText(pnl: PANEL; index: int; val: string) {.....}
+
+    set value Field from index Field 
+
+proc setText(pnl: PANEL; name: string; val: string) {.....}
+
+    set value Field from name Field 
+
+proc setTextL(pnl: PANEL; index: int; val: string) {.....}
+
+    set value Label Sequence Label 
+
+proc setTextL(pnl: PANEL; name: string; val: string) {.....}
+
+    set value Label Sequence from name 
+
+proc setTitle(pnl: PANEL; index: int; val: bool) {.....}
+
+    set value Label Sequence Label 
+
+proc setType(pnl: PANEL; index: int; val: REFTYP) {.....}
+
+    set Type Field Sequence Field 
+
+proc setWidth(pnl: PANEL; index: int; val: Natural) {.....}
+
+    set width Field Sequence Field 
+
+
+Made with Nim. Generated: 2021-10-25 21:17:48 UTC
 
 
 
@@ -827,6 +847,7 @@ proc ioPanel(pnl: var PANEL): TKey {...}
 <br />
 <br />
 
-**Made with Nim. Generated: 2021-08-06 12:53:31 UTC**
+
+Made with Nim. Generated: 2021-10-25 21:17:48 UTC
 
 

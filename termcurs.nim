@@ -1,7 +1,7 @@
-##------------------------------------------------------
+#------------------------------------------------------
 ## TERMCURS
 ## curse TERMINAL inspired 5250/3270 done only width nim
-##------------------------------------------------------
+#------------------------------------------------------
 
 import termkey
 from strformat import alignString, fmt
@@ -2150,9 +2150,9 @@ proc isActif*(pnl : var PANEL)  : bool = return pnl.actif
 proc isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 
 
-##-------------------------------------------------------
+#-------------------------------------------------------
 ## management grid
-## ----------------
+# ----------------
 ## PadingField()
 ## calculPosCell()
 ## setPageGrid()
@@ -2186,7 +2186,7 @@ proc isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## pageUpGrid()
 ## pageDownGrid()
 ## ioGrid()
-##-------------------------------------------------------
+#-------------------------------------------------------
 
 proc padingCell(text: string; cell:CELL;) :string =
   var i: Natural = 0
@@ -2661,12 +2661,12 @@ proc pageDownGrid*(this: GRIDSFL): TKey_Grid =
 
 
 
-##================================================================
+#----------------------------------------------------------------
 ## Management GRID enter = select  1..n 0 = abort (Escape)
 ## Turning on the mouse
 ## UP DOWn PageUP PageDown
 ## Automatic alignment based on the type reference
-##================================================================
+#----------------------------------------------------------------
 
 proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO Format
   var buf :seq[string]
@@ -2743,12 +2743,12 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO F
 
 
 
-##================================================================
+#----------------------------------------------------------------
 ## traiement des menus enter = select  1..n 0 = abort (Escape)
 ## Turning on the mouse
 ## UP DOWN LEFT RIGHT
 ## movement width the wheel and validation width the clik
-##================================================================
+#----------------------------------------------------------------
 proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
   var pos : Natural = npos
   var n , h   : Natural
@@ -2822,12 +2822,12 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
 
 
 
-##======================================================
+#----------------------------------------------------==
 ## Input buffer management modeled on 5250/3270
 ## inspiration ncurse
 ## application hold principe and new langage
 ## use termkey.nim
-##======================================================
+#----------------------------------------------------==
 proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
 
   if fld.protect : return TKey.Enter
@@ -2946,12 +2946,12 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
         inc(i)
     return buf
 
-  #================================================================
+  #----------------------------------------------------------------
   # Definition of the panel (window) on a lines
   # Message display
   # to exit press the Escape key
   # restoration of the original panel lines
-  #================================================================
+  #----------------------------------------------------------------
 
   proc msgErr(pnl: PANEL ; info:string) =
 
@@ -3397,7 +3397,7 @@ proc isValide*(pnl:var PANEL): bool =
 
 
 
-##------------------------------------------------------
+#------------------------------------------------------
 ## Format management including zones
 ## keyboard proction keys are returned to the calling procedure
 ##
@@ -3408,7 +3408,7 @@ proc isValide*(pnl:var PANEL): bool =
 ## ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT
 ## CALL , ATTN , PROC
 ## predefined and customizable REGEX control
-##------------------------------------------------------
+#------------------------------------------------------
 
 proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
   if not pnl.actif : return TKey.None
