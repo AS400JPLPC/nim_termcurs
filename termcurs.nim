@@ -180,7 +180,7 @@ type
     forebr: bool
     text*: string
     title: bool
-    actif*: bool
+    actif: bool
 
 
   BOX* = object
@@ -204,7 +204,7 @@ type
     titleforegr: ForegroundColor
     titleforebr: bool
     titlestyle:  set[Style]
-    actif*: bool
+    actif: bool
 
 
 
@@ -212,7 +212,7 @@ type
     key : TKey
     text: string
     ctrl: bool
-    actif*: bool
+    actif: bool
 
 
   MENU* = ref object
@@ -235,7 +235,7 @@ type
 
     item: seq[string]
     selMenu : Natural
-    actif*: bool
+    actif: bool
 
   TerminalChar* = object
     ch: Rune                  # char
@@ -276,7 +276,7 @@ type
 
     buf:seq[TerminalChar]
 
-    actif*:    bool
+    actif:    bool
 
 
   # GRID
@@ -305,7 +305,7 @@ type
     headers: seq[CELL]
     separator: GridStyle
     gridatr : GRIDATRB
-    actif*: bool
+    actif: bool
     lignes: int
     pages: int
     cursligne:int
@@ -1981,7 +1981,7 @@ proc setText*(pnl: PANEL; name: string; val : string)=
 proc setRegex*(pnl: PANEL; name: string; val : string)=
   for i in 0..len(pnl.field)-1 :
     if pnl.field[i].name == name :
-      pnl.field[i].regex = val % [$pnl.field[i].width]
+      pnl.field[i].regex = val
       break
 
 proc setSwitch*(pnl : PANEL ; name: string; val : bool): bool  =
@@ -1998,7 +1998,7 @@ proc setText*(pnl: PANEL; index: int; val : string) =
 ## set regex Field Sequence Field
 proc setRegex*(pnl: PANEL; index: int; val : string) =
   if index < 0 or index > len(pnl.field)-1 : return
-  pnl.field[index].regex = val  % [$pnl.field[index].width]
+  pnl.field[index].regex = val
 
 proc setSwitch*(pnl : PANEL ; index: int; val : bool)  =
   ## set switch Field from index Field

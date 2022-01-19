@@ -9,7 +9,7 @@
 &rarr;&nbsp; creat Panel    OK<br />
 &rarr;&nbsp; creat Label    OK<br />
 &rarr;&nbsp; creat Field    OK<br />
-&rarr;&nbsp; creat Grid/Combo curent<br />
+&rarr;&nbsp; creat Grid/Combo curent   80%<br />
 &rarr;&nbsp; creat Menu     OK<br />
 &rarr;&nbsp; creat json     OK<br />
 &rarr;&nbsp; creat save/restor  OK<br />
@@ -82,6 +82,8 @@ img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Out
   * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** change pageDownGrid if curspage= pages return PGend<br /> 
   * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add setActif() Grid<br /> 
   * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add isActif() Grid<br /> 
+ <br />
+  * Full Change 2022-01-19&nbsp;&rarr;&nbsp;correctif setRegex for field <br />
  <br />
   
 
