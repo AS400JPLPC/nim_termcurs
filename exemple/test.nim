@@ -122,7 +122,7 @@ proc dscFORM01() =
 
   FORM01.field.add(defString("Vtextfree", 4, 21, TEXT_FREE,10,"", EMPTY, "",
           ""))
-  setRegex(FORM01,P1[Vtextfree],"^[A-Z]{1,$1}$")
+  setRegex(FORM01,P1[Vtextfree],"^[$]")
   setEmpty(FORM01,P1[Vtextfree],false)
   setErrmsg(FORM01,P1[Vtextfree],"Invalide Field requis")
   setHelp(FORM01,P1[Vtextfree],"Upercase A-Z")
@@ -141,7 +141,7 @@ proc dscFORM01() =
   FORM01.field.add(defString("VtextFull", 14, 21, TEXT_FULL,30,"cqdf", FILL, "Requis",
           "Zone Libre"))
   FORM01.field.add(defNumeric("Vdigit", 16, 21, DIGIT,10,0,"", FILL, "Requis digit(10) ", "Zone digit 0..3"))
-  setRegex(FORM01,P1[Vdigit],"^[0-3]{1,$1}$")
+  setRegex(FORM01,P1[Vdigit],"^[0-3]{1,}$")
 
   FORM01.field.add(defNumeric("VdigitSign", 18, 21, DIGIT_SIGNED,10,0,"", EMPTY, "", ""))
   FORM01.field.add(defNumeric("Vdecimal", 20, 21, DECIMAL,10,2,"12345.67", FILL, "Requis decimal(10,2)", "Zone Décimal"))
@@ -164,7 +164,7 @@ proc dscFORM01() =
 
 
   var btn : BUTTON
-  var jsonPanel = %* {"titleTerm": "DESIGNER","panel": [] }
+  var jsonPanel = %* {"titleTerm": "DESIGNER" ,"fileTerm": "prettyFile.dspf","panel": [] }
 
   var jP = 0
 
@@ -175,7 +175,7 @@ proc dscFORM01() =
           "button" :[], "label":[], "field":[]})
   for i in 0..len(FORM01.button) - 1 :
     btn = FORM01.button[i]
-    add(jsonPanel["panel"][jP]["button"] , %* {"Tkey": $btn.getName(),"txtKey": btn.getText(), "ctrl": btn.getCtrl(), "actif": btn.actif})
+    add(jsonPanel["panel"][jP]["button"] , %* {"Tkey": $btn.getName(),"txtKey": btn.getText(), "ctrl": btn.getCtrl(), "actif": btn.isActif})
   #--------------------
   # Json label
   for n in 0..len(FORM01.label) - 1:

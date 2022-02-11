@@ -4,12 +4,13 @@
 
 **  I am not yet posting designer and source generator.it is not operational but written at the base of termcurs**<br />
 
+** In the meantime you can test with the nim_Termvte repository**<br /> 
 
 ** generator **<br />
 &rarr;&nbsp; creat Panel    OK<br />
 &rarr;&nbsp; creat Label    OK<br />
 &rarr;&nbsp; creat Field    OK<br />
-&rarr;&nbsp; creat Grid/Combo curent   80%<br />
+&rarr;&nbsp; creat Grid/Combo curent   85%<br />
 &rarr;&nbsp; creat Menu     OK<br />
 &rarr;&nbsp; creat json     OK<br />
 &rarr;&nbsp; creat save/restor  OK<br />
@@ -84,6 +85,9 @@ img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Out
   * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add isActif() Grid<br /> 
  <br />
   * Full Change 2022-01-19&nbsp;&rarr;&nbsp;correctif setRegex for field <br />
+ <br />
+ <br />
+  * Full Change 2022-02-11&nbsp;&rarr;&nbsp;use for test repository nim_Termvte <br />
  <br />
   
 
