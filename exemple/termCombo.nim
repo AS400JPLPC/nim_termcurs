@@ -5,8 +5,8 @@ import termcurs
 import tables
 
 
-proc beug(nline : int ; text :string ) =
-  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
+#proc beug(nline : int ; text :string ) =
+  #gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
 
 var callQuery: Table[string, proc(fld : var FIELD)]
 
@@ -14,7 +14,7 @@ var combo  = new(GRIDSFL)
 #===================================================
 proc TblPays(fld : var FIELD) =
   var g_pos : int = -1
-  combo  = newGRID("COMBO01",2,100,20,sepStyle)
+  combo  = newGRID("COMBO01",2,30,5,sepStyle)
 
   var g_type  = defCell("PAYS",19,TEXT_FREE)
 
@@ -145,11 +145,13 @@ proc toRefType(TextType: string ;):REFTYP =
 
 var jsonPanel= parseFile ("./dspf/prettyFile.dspf" )
 
-echo $jsonPanel["panel"][0]["button"]
+#echo $jsonPanel["panel"][0]["button"]
 
-echo len(jsonPanel["panel"][0]["button"])-1
+#echo len(jsonPanel["panel"][0]["button"])-1
 
+#var fileTerm : string  = jsonPanel["fileTerm"].getStr()
 
+#echo fileTerm
 #quit()
 
 # Panel TEST
@@ -169,7 +171,7 @@ proc dscTEST(t:int) =
     buttonVal.add(@[bton])
 
 
-  beug(370,"Panel")
+  #beug(370,"Panel")
 
   TEST = newPanel( jsonPanel["panel"][t]["name"].getStr(),
                   jsonPanel["panel"][t]["posx"].getInt(),
@@ -193,12 +195,12 @@ proc dscTEST(t:int) =
                       jsonPanel["panel"][t]["label"][n]["posx"].getInt() ,
                       jsonPanel["panel"][t]["label"][n]["posy"].getInt() ,
                       jsonPanel["panel"][t]["label"][n]["text"].getStr()))
-    beug(384,jsonPanel["panel"][t]["label"][n]["name"].getStr())
+    #beug(384,jsonPanel["panel"][t]["label"][n]["name"].getStr())
 
   # FIELD -> TEST
   for n in 0..len(jsonPanel["panel"][t]["field"])-1:
-    beug(388,jsonPanel["panel"][t]["field"][n]["name"].getStr())
-    echo toRefType(jsonPanel["panel"][t]["field"][n]["reftype"].getStr())
+    #beug(388,jsonPanel["panel"][t]["field"][n]["name"].getStr())
+    #echo toRefType(jsonPanel["panel"][t]["field"][n]["reftype"].getStr())
 
 
     case jsonPanel["panel"][t]["field"][n]["defFld"].getStr() :
@@ -298,6 +300,7 @@ proc dscTEST(t:int) =
     if jsonPanel["panel"][t]["field"][n]["Process"].getStr() != "" :
       setProcess(TEST.field[getIndex(TEST,jsonPanel["panel"][t]["field"][n]["name"].getStr())],
       jsonPanel["panel"][t]["field"][n]["Process"].getStr() )
+
 
 
 

@@ -1,5 +1,6 @@
 {
   "titleTerm": "DESIGNER",
+  "fileTerm": "prettyFile.dspf",
   "panel": [
     {
       "name": "FORM01",
@@ -12,25 +13,25 @@
       "button": [
         {
           "Tkey": "F3",
-          "txtKey": "Exit",
+          "txtKey": "F3",
           "ctrl": false,
           "actif": true
         },
         {
           "Tkey": "F9",
-          "txtKey": "Add",
+          "txtKey": "F9",
           "ctrl": true,
           "actif": true
         },
         {
           "Tkey": "F10",
-          "txtKey": "Update",
-          "ctrl": false,
+          "txtKey": "F10",
+          "ctrl": true,
           "actif": true
         },
         {
           "Tkey": "F12",
-          "txtKey": "Abord",
+          "txtKey": "F12",
           "ctrl": false,
           "actif": true
         }
@@ -271,7 +272,7 @@
           "empty": false,
           "errmsg": "Requis",
           "help": "Zone Libre",
-          "text": "cqdf",
+          "text": "",
           "EdtCar": "",
           "Protect": false,
           "Process": ""
@@ -319,7 +320,7 @@
           "empty": false,
           "errmsg": "Requis decimal(10,2)",
           "help": "Zone Décimal",
-          "text": "12345.67",
+          "text": "",
           "EdtCar": "€",
           "Protect": false,
           "Process": ""
@@ -363,7 +364,7 @@
           "empty": true,
           "errmsg": "",
           "help": "",
-          "text": "12/10/1951",
+          "text": "",
           "EdtCar": "",
           "Protect": false,
           "Process": ""
@@ -422,7 +423,7 @@
           "empty": true,
           "errmsg": "",
           "help": "",
-          "text": "Y",
+          "text": "",
           "EdtCar": "",
           "Protect": false,
           "Process": ""
@@ -452,12 +453,13 @@
           "empty": true,
           "errmsg": "",
           "help": "Name query table Pays",
-          "text": "CHINE",
+          "text": "",
           "EdtCar": "",
           "Protect": false,
           "Process": "TblPays"
         }
       ]
     }
-  ]
+  ],
+  "menu": []
 }

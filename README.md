@@ -29,9 +29,12 @@ doc : [SOURCE](https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/te
 <br />
 **Progress of the designer test**<br />
 <br />
-img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Code.png)
-img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen.png)
-img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen2.png)
+img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Code.png)  
+
+img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen.png)  
+
+img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen2.png)  
+
 <br />
 <br />
 
@@ -90,6 +93,10 @@ img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Out
   * Full Change 2022-02-11&nbsp;&rarr;&nbsp;use for test repository nim_Termvte <br />
  <br />
   
+
+ <br />
+  * Full Change 2022-02-15&nbsp;&rarr;&nbsp;use exemple combo and json ok <br />
+ <br />
 
 
 **Thank you**
