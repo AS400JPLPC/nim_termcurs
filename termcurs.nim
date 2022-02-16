@@ -1535,9 +1535,9 @@ proc displayLabel*(pnl: var PANEL; lbl: Label) =
   ## display matrice only LABEL
   if not pnl.actif :
     return
-  if not lbl.actif :
-    clsLabel(pnl, lbl)
+  if not lbl.actif : clsLabel(pnl, lbl)
   else : printLabel(pnl , lbl)
+
   var npos :int = pnl.cols * lbl.posx
   var n =  npos + lbl.posy
   for y in 0..<runeLen(lbl.text):
@@ -2173,11 +2173,11 @@ proc isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## countRows()
 ## resetRows()
 ##
-## getrowName()
-## getrowPosx()
-## getrowPosy()
-## isrowlTitle()
-## getrowText()
+## getHeadersName()
+## getHeadersPosy()
+## getHeadersType()
+## getHeadersCar()
+
 ##
 ## GridBox()
 ## printGridHeader()
@@ -2335,13 +2335,32 @@ proc getcellLen*(cell : var CELL): int  =
   return cell.long
 
 
-proc getIndexG*(this: GRIDSFL; name: string): int  =
-  ## get index from grid,name
+proc getIndexG*(this: GRIDSFL, name: string, idx : Natural = 0): int  =
   for i in 0..len(this.rows)-1:
-    if this.rows[i][0] == name : return i
+    if this.rows[i][idx] == name : return i
   return - 1
 
 
+
+## return name from grid,headers
+proc getHeadersName*(this : GRIDSFL,r :int) : string =
+  result = this.headers[r].text
+## return posy from grid,headers
+proc getHeadersPosy*(this : GRIDSFL,r :int) : int =
+  result = this.headers[r].posy
+## return type from grid,headers
+proc getHeadersType*(this : GRIDSFL,r :int) : REFTYP =
+  result = this.headers[r].reftyp
+## return Car from grid,headers
+proc getHeadersCar*(this : GRIDSFL,r :int) : string =
+  result = $this.headers[r].edtcar
+
+
+
+
+##----------------------------------------------------
+## ONLY for generator label or field
+##----------------------------------------------------
 proc getrowName*(this : GRIDSFL,r :int) : string =
   ## get name from grid,rows
   result = this.rows[r][1]
@@ -2398,6 +2417,11 @@ proc getrowProcess*(this : GRIDSFL,r :int) : string =
   ## get Process from grid,rows
   result = this.rows[r][12]
 
+
+
+
+
+
 proc addRows*(this: GRIDSFL; rows:seq[string]) =
   this.rows.add(@(rows))
   setPageGrid(this)
@@ -2407,7 +2431,6 @@ proc dltRows*(this: GRIDSFL; idx : Natural) =
     if n >= idx and n < len(this.rows) - 1 : this.rows[n] = this.rows[n+1]
   this.rows.del(len(this.rows) - 1 )
   setPageGrid(this)
-
 
 proc resetRows*(this: GRIDSFL;) =
   this.rows = newSeq[seq[string]]()
@@ -2645,6 +2668,8 @@ proc pageUpGrid*(this: GRIDSFL): TKey_Grid =
     printGridRows(this)
   if this.curspage == 1 : return PGHome
   else : return PGUp
+
+
 
 proc pageDownGrid*(this: GRIDSFL): TKey_Grid =
   if this.curspage < this.pages :

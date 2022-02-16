@@ -6,7 +6,7 @@ import tables
 
 
 #proc beug(nline : int ; text :string ) =
-  #gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
+  #gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc() 
 
 var callQuery: Table[string, proc(fld : var FIELD)]
 

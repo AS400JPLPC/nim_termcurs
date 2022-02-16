@@ -10,7 +10,7 @@
 &rarr;&nbsp; creat Panel    OK<br />
 &rarr;&nbsp; creat Label    OK<br />
 &rarr;&nbsp; creat Field    OK<br />
-&rarr;&nbsp; creat Grid/Combo curent   85%<br />
+&rarr;&nbsp; creat Grid/Combo curent   85%  and  ---> testing  in out<br />
 &rarr;&nbsp; creat Menu     OK<br />
 &rarr;&nbsp; creat json     OK<br />
 &rarr;&nbsp; creat save/restor  OK<br />
@@ -36,12 +36,12 @@ img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Out
 img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen2.png)  
 
 <br />
-<br />
+<br />git config pull.rebase true
 
 **IMPORT: termkey project**<br />
 
 <u>put in function 2020-04-15</u><br />  
-  * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br />  
+  * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br />  git config pull.rebase true
   * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br />  
   * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*<br />  
   * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br />  
@@ -95,9 +95,20 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
   
 
  <br />
-  * Full Change 2022-02-15&nbsp;&rarr;&nbsp;use exemple combo and json ok <br />
+  * Full Change 2022-02-15&nbsp;&rarr;&nbsp;use exemple combo and json ok  <br />
  <br />
 
+
+
+ <br />
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;**change getIndexG()  add positioning GRID return index rows ok ** <br />
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersName() for Grid  <br />
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersPosy() for Grid  <br />
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersType() for Grid  <br />
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersCar() for Grid  <br />
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add testing button check field to json retrived generator exactly fonction to code <br />
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;**change programme "termGrid.nim" format coding and example and testing for generator normalisation**  <br />
+<br />
 
 **Thank you**
 
@@ -223,15 +234,15 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 
 (3) punct<br />
 ".",":",",","!","?","'","-","(",")","<",">"<br />
-
 not ";" reserved csv<br />
+
 <br />
 <br />
 **Usage**<br />
 <br />
 <br />
 <br />
-doc : [Source-screen.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/test.nim)
+doc : [Source-exemple-GRID.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/termGrid.nim)
 <br />
 <br />
 <br />
@@ -241,6 +252,7 @@ doc : [Source-screen.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/master
 
 ** Main procedure**<br />
 
+Procs
 
 proc addRows(this: GRIDSFL; rows: seq[string]) {.....}
 
@@ -399,6 +411,14 @@ proc getErrmsg(pnl: PANEL; index: int): string {.....}
 
     get errmsg Field Sequence Field 
 
+proc getHeadersCar(this: GRIDSFL; r: int): string {.....}
+
+proc getHeadersName(this: GRIDSFL; r: int): string {.....}
+
+proc getHeadersPosy(this: GRIDSFL; r: int): int {.....}
+
+proc getHeadersType(this: GRIDSFL; r: int): REFTYP {.....}
+
 proc getHelp(pnl: PANEL; index: int): string {.....}
 
     get help Field Sequence Field 
@@ -407,9 +427,7 @@ proc getIndex(pnl: PANEL; name: string): int {.....}
 
     get index Field from name Field 
 
-proc getIndexG(this: GRIDSFL; name: string): int {.....}
-
-    get index from grid,name 
+proc getIndexG(this: GRIDSFL; name: string; idx: Natural = 0): int {.....}
 
 proc getIndexH(hdn: PANEL; name: string): int {.....}
 
@@ -844,15 +862,9 @@ proc setWidth(pnl: PANEL; index: int; val: Natural) {.....}
     set width Field Sequence Field 
 
 
-Made with Nim. Generated: 2021-10-25 21:17:48 UTC
-
-
-
-
 <br />
 <br />
 
-
-Made with Nim. Generated: 2021-10-25 21:17:48 UTC
+Made with Nim. Generated: 2022-02-16 15:15:32 UTC
 
 

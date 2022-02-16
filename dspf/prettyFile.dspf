@@ -176,7 +176,7 @@
           "defFld": "defString",
           "name": "Vtextfree",
           "posx": 4,
-          "posy": 21,
+          "posy": 21,git config pull.rebase true
           "reftype": "TEXT_FREE",
           "width": 10,
           "empty": false,
@@ -461,5 +461,5 @@
       ]
     }
   ],
-  "menu": []
+  "menu": [] 
 }

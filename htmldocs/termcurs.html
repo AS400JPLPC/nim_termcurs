@@ -120,7 +120,7 @@ window.addEventListener('DOMContentLoaded', main);
   titleforegr: ForegroundColor
   titleforebr: bool
   titlestyle: set[Style]
-  actif*: bool">BOX</a></li>
+  actif: bool">BOX</a></li>
   <li><a class="reference" href="#BOXATRB"
     title="BOXATRB = ref object
   style*: set[Style]
@@ -141,7 +141,7 @@ window.addEventListener('DOMContentLoaded', main);
   key: TKey
   text: string
   ctrl: bool
-  actif*: bool">BUTTON</a></li>
+  actif: bool">BUTTON</a></li>
   <li><a class="reference" href="#CADRE"
     title="CADRE {.pure.} = enum
   line0, line1, line2">CADRE</a></li>
@@ -216,7 +216,7 @@ window.addEventListener('DOMContentLoaded', main);
   headers: seq[CELL]
   separator: GridStyle
   gridatr: GRIDATRB
-  actif*: bool
+  actif: bool
   lignes: int
   pages: int
   cursligne: int
@@ -243,7 +243,7 @@ window.addEventListener('DOMContentLoaded', main);
   forebr: bool
   text*: string
   title: bool
-  actif*: bool">LABEL</a></li>
+  actif: bool">LABEL</a></li>
   <li><a class="reference" href="#MENU"
     title="MENU = ref object
   name: string
@@ -262,7 +262,7 @@ window.addEventListener('DOMContentLoaded', main);
   forebr: bool
   item: seq[string]
   selMenu: Natural
-  actif*: bool">MENU</a></li>
+  actif: bool">MENU</a></li>
   <li><a class="reference" href="#MNUATRB"
     title="MNUATRB = ref object
   style*: set[Style]
@@ -298,7 +298,7 @@ window.addEventListener('DOMContentLoaded', main);
   funcKey: seq[TKey]
   mouse: bool
   buf: seq[TerminalChar]
-  actif*: bool">PANEL</a></li>
+  actif: bool">PANEL</a></li>
   <li><a class="reference" href="#REFTYP"
     title="REFTYP {.pure.} = enum
   TEXT_FREE, ALPHA, ALPHA_UPPER, ALPHA_NUMERIC, ALPHA_NUMERIC_UPPER, TEXT_FULL,
@@ -608,6 +608,26 @@ window.addEventListener('DOMContentLoaded', main);
     title="getErrmsg(pnl: PANEL; index: int): string">getErrmsg(pnl: PANEL; index: int): string</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">getHeadersCar
+      <li><a class="reference" href="#getHeadersCar%2CGRIDSFL%2Cint"
+    title="getHeadersCar(this: GRIDSFL; r: int): string">getHeadersCar(this: GRIDSFL; r: int): string</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">getHeadersName
+      <li><a class="reference" href="#getHeadersName%2CGRIDSFL%2Cint"
+    title="getHeadersName(this: GRIDSFL; r: int): string">getHeadersName(this: GRIDSFL; r: int): string</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">getHeadersPosy
+      <li><a class="reference" href="#getHeadersPosy%2CGRIDSFL%2Cint"
+    title="getHeadersPosy(this: GRIDSFL; r: int): int">getHeadersPosy(this: GRIDSFL; r: int): int</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">getHeadersType
+      <li><a class="reference" href="#getHeadersType%2CGRIDSFL%2Cint"
+    title="getHeadersType(this: GRIDSFL; r: int): REFTYP">getHeadersType(this: GRIDSFL; r: int): REFTYP</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">getHelp
       <li><a class="reference" href="#getHelp%2CPANEL%2Cint"
     title="getHelp(pnl: PANEL; index: int): string">getHelp(pnl: PANEL; index: int): string</a></li>
@@ -619,8 +639,8 @@ window.addEventListener('DOMContentLoaded', main);
 
   </ul>
   <ul class="simple nested-toc-section">getIndexG
-      <li><a class="reference" href="#getIndexG%2CGRIDSFL%2Cstring"
-    title="getIndexG(this: GRIDSFL; name: string): int">getIndexG(this: GRIDSFL; name: string): int</a></li>
+      <li><a class="reference" href="#getIndexG%2CGRIDSFL%2Cstring%2CNatural"
+    title="getIndexG(this: GRIDSFL; name: string; idx: Natural = 0): int">getIndexG(this: GRIDSFL; name: string; idx: Natural = 0): int</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getIndexH
@@ -1194,9 +1214,8 @@ window.addEventListener('DOMContentLoaded', main);
   <div id="tocRoot"></div>
   
   <p class="module-desc">TERMCURS curse TERMINAL inspired 5250/3270 done only width nimDefine Menuassigne MENU to matrice for displayDefine Field Mailset regex Field Sequence Fieldset regex Field Sequence FieldEnables or disables FIELD / LABEL / BOX / MENU / PANEL / BUTTONBUTTONif on/off  FIELD / LABEL / BOX / MENU / PANELmanagement grid<p>PadingField() calculPosCell() setPageGrid() setLastPage() newGrid() setActif() isActif() resetGrid() countColumns() setHeaders() defCell() setCellEditCar() getcellLen() getcellName() getIndexG() addRows() dltRows() countRows() resetRows()</p>
-<p>getrowName() getrowPosx() getrowPosy() isrowlTitle() getrowText()</p>
-<p>GridBox() printGridHeader() printGridRows() setPageGrid() pageUpGrid() pageDownGrid() ioGrid()</p>
-Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type referencetraiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement width the wheel and validation width the clikInput buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim<p>Format management including zones keyboard proction keys are returned to the calling procedure</p>
+<p>getHeadersName() getHeadersPosy() getHeadersType() getHeadersCar()</p>
+GridBox() printGridHeader() printGridRows() setPageGrid() pageUpGrid() pageDownGrid() ioGrid()return name from grid,headersreturn posy from grid,headersreturn type from grid,headersreturn Car from grid,headers<h1 id="only-for-generator-label-or-field"><center>ONLY for generator label or field</center></h1>Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type referencetraiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement width the wheel and validation width the clikInput buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim<p>Format management including zones keyboard proction keys are returned to the calling procedure</p>
 <p>only the key CtrlH = Aide / Help for field</p>
 <p>Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT CALL , ATTN , PROC predefined and customizable REGEX control</p>
 </p>
@@ -1222,7 +1241,7 @@ Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP 
   <span class="Identifier">titleforegr</span><span class="Other">:</span> <span class="Identifier">ForegroundColor</span>
   <span class="Identifier">titleforebr</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">titlestyle</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">Style</span><span class="Other">]</span>
-  <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
 
@@ -1264,7 +1283,7 @@ Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP 
   <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">TKey</span>
   <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">ctrl</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
 
@@ -1380,7 +1399,7 @@ Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP 
   <span class="Identifier">headers</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#CELL"><span class="Identifier">CELL</span></a><span class="Other">]</span>
   <span class="Identifier">separator</span><span class="Other">:</span> <a href="termcurs.html#GridStyle"><span class="Identifier">GridStyle</span></a>
   <span class="Identifier">gridatr</span><span class="Other">:</span> <a href="termcurs.html#GRIDATRB"><span class="Identifier">GRIDATRB</span></a>
-  <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">lignes</span><span class="Other">:</span> <span class="Identifier">int</span>
   <span class="Identifier">pages</span><span class="Other">:</span> <span class="Identifier">int</span>
   <span class="Identifier">cursligne</span><span class="Other">:</span> <span class="Identifier">int</span>
@@ -1428,7 +1447,7 @@ Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP 
   <span class="Identifier">forebr</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">text</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">title</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
 
@@ -1454,7 +1473,7 @@ Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP 
   <span class="Identifier">forebr</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">item</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span>
   <span class="Identifier">selMenu</span><span class="Other">:</span> <span class="Identifier">Natural</span>
-  <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
 
@@ -1510,7 +1529,7 @@ Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP 
   <span class="Identifier">funcKey</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">TKey</span><span class="Other">]</span>
   <span class="Identifier">mouse</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">buf</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="termcurs.html#TerminalChar"><span class="Identifier">TerminalChar</span></a><span class="Other">]</span>
-  <span class="Identifier">actif</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
+  <span class="Identifier">actif</span><span class="Other">:</span> <span class="Identifier">bool</span>
 </pre></dt>
 <dd>
 
@@ -2067,6 +2086,38 @@ get errmsg Field Sequence Field
 
 </dd>
 </div>
+<div id="getHeadersCar,GRIDSFL,int">
+<dt><pre><span class="Keyword">proc</span> <a href="#getHeadersCar%2CGRIDSFL%2Cint"><span class="Identifier">getHeadersCar</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">;</span> <span class="Identifier">r</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="getHeadersName,GRIDSFL,int">
+<dt><pre><span class="Keyword">proc</span> <a href="#getHeadersName%2CGRIDSFL%2Cint"><span class="Identifier">getHeadersName</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">;</span> <span class="Identifier">r</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="getHeadersPosy,GRIDSFL,int">
+<dt><pre><span class="Keyword">proc</span> <a href="#getHeadersPosy%2CGRIDSFL%2Cint"><span class="Identifier">getHeadersPosy</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">;</span> <span class="Identifier">r</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="getHeadersType,GRIDSFL,int">
+<dt><pre><span class="Keyword">proc</span> <a href="#getHeadersType%2CGRIDSFL%2Cint"><span class="Identifier">getHeadersType</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">;</span> <span class="Identifier">r</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
 <div id="getHelp,PANEL,int">
 <dt><pre><span class="Keyword">proc</span> <a href="#getHelp%2CPANEL%2Cint"><span class="Identifier">getHelp</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
@@ -2083,11 +2134,12 @@ get index Field from name Field
 
 </dd>
 </div>
-<div id="getIndexG,GRIDSFL,string">
-<dt><pre><span class="Keyword">proc</span> <a href="#getIndexG%2CGRIDSFL%2Cstring"><span class="Identifier">getIndexG</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<div id="getIndexG,GRIDSFL,string,Natural">
+<dt><pre><span class="Keyword">proc</span> <a href="#getIndexG%2CGRIDSFL%2Cstring%2CNatural"><span class="Identifier">getIndexG</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">idx</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-get index from grid,name
+
 
 </dd>
 </div>
@@ -3027,8 +3079,7 @@ set protect Field Sequence Field
 </dd>
 </div>
 <div id="setRegex,PANEL,int,string">
-<dt><pre><span class="Keyword">proc</span> <a href="#setRegex%2CPANEL%2Cint%2Cstring"><span class="Identifier">setRegex</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#setRegex%2CPANEL%2Cint%2Cstring"><span class="Identifier">setRegex</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
@@ -3036,8 +3087,7 @@ set protect Field Sequence Field
 </dd>
 </div>
 <div id="setRegex,PANEL,string,string">
-<dt><pre><span class="Keyword">proc</span> <a href="#setRegex%2CPANEL%2Cstring%2Cstring"><span class="Identifier">setRegex</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#setRegex%2CPANEL%2Cstring%2Cstring"><span class="Identifier">setRegex</span></a><span class="Other">(</span><span class="Identifier">pnl</span><span class="Other">:</span> <a href="termcurs.html#PANEL"><span class="Identifier">PANEL</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
@@ -3151,7 +3201,7 @@ set width Field Sequence Field
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2021-10-25 21:17:48 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-02-16 15:15:32 UTC</small>
       </div>
     </div>
   </div>
