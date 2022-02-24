@@ -446,6 +446,10 @@ window.addEventListener('DOMContentLoaded', main);
     title="defCell(text: string; long: Natural; reftyp: REFTYP;
         cell_atr: CELLATRB = cellatr): CELL">defCell(text: string; long: Natural; reftyp: REFTYP;
         cell_atr: CELLATRB = cellatr): CELL</a></li>
+  <li><a class="reference" href="#defCell%2Cstring%2CNatural%2CREFTYP%2Cstring"
+    title="defCell(text: string; long: Natural; reftyp: REFTYP;
+        cell_ForegroundColor: string): CELL">defCell(text: string; long: Natural; reftyp: REFTYP;
+        cell_ForegroundColor: string): CELL</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">defDate
@@ -770,6 +774,11 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">getrowScal
       <li><a class="reference" href="#getrowScal%2CGRIDSFL%2Cint"
     title="getrowScal(this: GRIDSFL; r: int): int">getrowScal(this: GRIDSFL; r: int): int</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">getRowsText
+      <li><a class="reference" href="#getRowsText%2CGRIDSFL%2Cint%2Cint"
+    title="getRowsText(this: GRIDSFL; r: int; i: int): string">getRowsText(this: GRIDSFL; r: int; i: int): string</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getrowText
@@ -1215,7 +1224,9 @@ window.addEventListener('DOMContentLoaded', main);
   
   <p class="module-desc">TERMCURS curse TERMINAL inspired 5250/3270 done only width nimDefine Menuassigne MENU to matrice for displayDefine Field Mailset regex Field Sequence Fieldset regex Field Sequence FieldEnables or disables FIELD / LABEL / BOX / MENU / PANEL / BUTTONBUTTONif on/off  FIELD / LABEL / BOX / MENU / PANELmanagement grid<p>PadingField() calculPosCell() setPageGrid() setLastPage() newGrid() setActif() isActif() resetGrid() countColumns() setHeaders() defCell() setCellEditCar() getcellLen() getcellName() getIndexG() addRows() dltRows() countRows() resetRows()</p>
 <p>getHeadersName() getHeadersPosy() getHeadersType() getHeadersCar()</p>
-GridBox() printGridHeader() printGridRows() setPageGrid() pageUpGrid() pageDownGrid() ioGrid()return name from grid,headersreturn posy from grid,headersreturn type from grid,headersreturn Car from grid,headers<h1 id="only-for-generator-label-or-field"><center>ONLY for generator label or field</center></h1>Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type referencetraiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement width the wheel and validation width the clikInput buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim<p>Format management including zones keyboard proction keys are returned to the calling procedure</p>
+<p>getRowsText()</p>
+<p>GridBox() printGridHeader() printGridRows() setPageGrid() pageUpGrid() pageDownGrid() ioGrid()</p>
+return name from grid,headersreturn posy from grid,headersreturn type from grid,headersreturn Car from grid,headers<h1 id="only-for-generator-label-or-field"><center>ONLY for generator label or field</center></h1>Management GRID enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWn PageUP PageDown Automatic alignment based on the type referencetraiement des menus enter = select  1..n 0 = abort (Escape) Turning on the mouse UP DOWN LEFT RIGHT movement width the wheel and validation width the clikInput buffer management modeled on 5250/3270 inspiration ncurse application hold principe and new langage use termkey.nim<p>Format management including zones keyboard proction keys are returned to the calling procedure</p>
 <p>only the key CtrlH = Aide / Help for field</p>
 <p>Reserved keys for FIELD management traditionally  UP, DOWN, TAB, STAB, CtrlA, ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT CALL , ATTN , PROC predefined and customizable REGEX control</p>
 </p>
@@ -1861,6 +1872,15 @@ define BUTTON
 
 </dd>
 </div>
+<div id="defCell,string,Natural,REFTYP,string">
+<dt><pre><span class="Keyword">proc</span> <a href="#defCell%2Cstring%2CNatural%2CREFTYP%2Cstring"><span class="Identifier">defCell</span></a><span class="Other">(</span><span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">long</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
+             <span class="Identifier">cell_ForegroundColor</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="termcurs.html#CELL"><span class="Identifier">CELL</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
 <div id="defDate,string,Natural,Natural,REFTYP,string,bool,string,string,ZONATRB,ZONATRB,bool">
 <dt><pre><span class="Keyword">proc</span> <a href="#defDate%2Cstring%2CNatural%2CNatural%2CREFTYP%2Cstring%2Cbool%2Cstring%2Cstring%2CZONATRB%2CZONATRB%2Cbool"><span class="Identifier">defDate</span></a><span class="Other">(</span><span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">posx</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">posy</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">;</span> <span class="Identifier">reftyp</span><span class="Other">:</span> <a href="termcurs.html#REFTYP"><span class="Identifier">REFTYP</span></a><span class="Other">;</span>
              <span class="Identifier">text</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">empty</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">errmsg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">help</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
@@ -2356,6 +2376,14 @@ get Process from grid,rows
 <dd>
 
 get scal from grid,rows
+
+</dd>
+</div>
+<div id="getRowsText,GRIDSFL,int,int">
+<dt><pre><span class="Keyword">proc</span> <a href="#getRowsText%2CGRIDSFL%2Cint%2Cint"><span class="Identifier">getRowsText</span></a><span class="Other">(</span><span class="Identifier">this</span><span class="Other">:</span> <a href="termcurs.html#GRIDSFL"><span class="Identifier">GRIDSFL</span></a><span class="Other">;</span> <span class="Identifier">r</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">i</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+get text from grid,rows
 
 </dd>
 </div>
@@ -3201,7 +3229,7 @@ set width Field Sequence Field
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-02-16 15:15:32 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-02-24 00:13:48 UTC</small>
       </div>
     </div>
   </div>

@@ -2177,7 +2177,8 @@ proc isMouse*(pnl : var PANEL)  : bool = return pnl.mouse
 ## getHeadersPosy()
 ## getHeadersType()
 ## getHeadersCar()
-
+##
+## getRowsText()
 ##
 ## GridBox()
 ## printGridHeader()
@@ -2324,6 +2325,40 @@ proc defCell*(text: string; long : Natural;reftyp: REFTYP; cell_atr : CELLATRB =
   cell.cellatr = cell_atr
   return cell
 
+proc defCell*(text: string; long : Natural;reftyp: REFTYP; cell_ForegroundColor : string): CELL =
+  var cell : CELL
+
+  ## return color
+  func toRefColor(TextColor: string ;):CELLATRB =
+    var cellcolor = new(CELLATRB)
+    cellcolor.cell_style = {styleDim,styleItalic}
+    cellcolor.cell_backgr = BackgroundColor.bgblack
+    cellcolor.cell_backbr = false
+    cellcolor.cell_forebr = true
+
+    case TextColor
+      of "Black"            : cellcolor.cell_foregr = ForegroundColor.fgBlack
+      of "Red"              : cellcolor.cell_foregr = ForegroundColor.fgRed
+      of "Green"            : cellcolor.cell_foregr = ForegroundColor.fgGreen
+      of "Yellow"           : cellcolor.cell_foregr = ForegroundColor.fgYellow
+      of "Blue"             : cellcolor.cell_foregr = ForegroundColor.fgBlue
+      of "Magenta"          : cellcolor.cell_foregr = ForegroundColor.fgMagenta
+      of "Cyan"             : cellcolor.cell_foregr = ForegroundColor.fgCyan
+      of "White"            : cellcolor.cell_foregr = ForegroundColor.fgWhite
+      else : cellcolor.cell_foregr = ForegroundColor.fgCyan
+    result = cellcolor
+
+
+
+  if text.len > long : cell.long = text.len
+  else :  cell.long    = long
+  cell.reftyp = reftyp
+  cell.text   = text
+  cell.edtcar = ""
+  cell.posy   = 0
+  cell.cellatr = toRefColor(cell_ForegroundColor)
+  return cell
+
 proc setCellEditCar*(cell : var CELL; edtcar :string =""; )=
   cell.edtcar = edtcar
 
@@ -2357,6 +2392,10 @@ proc getHeadersCar*(this : GRIDSFL,r :int) : string =
 
 
 
+
+proc getRowsText*(this : GRIDSFL;r :int, i:int ) : string =
+  ## get text from grid,rows
+  result = this.rows[r][i]
 
 ##----------------------------------------------------
 ## ONLY for generator label or field
@@ -2416,7 +2455,6 @@ proc isrowProtect*(this : GRIDSFL; r :int) : bool =
 proc getrowProcess*(this : GRIDSFL,r :int) : string =
   ## get Process from grid,rows
   result = this.rows[r][12]
-
 
 
 

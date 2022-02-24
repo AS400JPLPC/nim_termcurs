@@ -89,17 +89,10 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
  <br />
   * Full Change 2022-01-19&nbsp;&rarr;&nbsp;correctif setRegex for field <br />
  <br />
- <br />
   * Full Change 2022-02-11&nbsp;&rarr;&nbsp;use for test repository nim_Termvte <br />
- <br />
-  
-
  <br />
   * Full Change 2022-02-15&nbsp;&rarr;&nbsp;use exemple combo and json ok  <br />
  <br />
-
-
-
  <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;**change getIndexG()  add positioning GRID return index rows ok ** <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersName() for Grid  <br />
@@ -109,7 +102,12 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add testing button check field to json retrived generator exactly fonction to code <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;**change programme "termGrid.nim" format coding and example and testing for generator normalisation**  <br />
 <br />
-
+<br />
+  * Full Change 2022-02-24&nbsp;&rarr;&nbsp;add getRowsText(Grid,row,colunm) for Grid  <br />
+  * Full Change 2022-02-24&nbsp;&rarr;&nbsp;add defCell(....,string color)  for Grid  <br />
+  * Full Change 2022-02-24&nbsp;&rarr;&nbsp;testing generation from designer Combo / multipanel to code source Ok  <br />
+  * Full Change 2022-02-24&nbsp;&rarr;&nbsp;testing code formatting  code source Ok  <br />
+<br />
 **Thank you**
 
   * [ Date](https://rgxdb.com/r/2V9BOC58)<br />
@@ -120,9 +118,6 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
   * [NCURSE](https://invisible-island.net/ncurses/announce.html)<br />
   * [illwill](https://github.com/johnnovak/illwill)<br />
   * [nim-terminaltables](https://github.com/xmonader/nim-terminaltables)<br />
-
-
-
 <br />
 
 &rarr;&nbsp; **ioMENU** in / out objects and receives the choice:<br />
@@ -254,6 +249,7 @@ doc : [Source-exemple-GRID.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/
 
 Procs
 
+
 proc addRows(this: GRIDSFL; rows: seq[string]) {.....}
 
 proc clearText(pnl: var PANEL) {.....}
@@ -293,6 +289,9 @@ proc defButton(key: TKey; text: string; ctrl: bool = false; actif: bool = true):
 
 proc defCell(text: string; long: Natural; reftyp: REFTYP;
              cell_atr: CELLATRB = cellatr): CELL {.....}
+
+proc defCell(text: string; long: Natural; reftyp: REFTYP;
+             cell_ForegroundColor: string): CELL {.....}
 
 proc defDate(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
              text: string; empty: bool; errmsg: string; help: string;
@@ -534,6 +533,10 @@ proc getrowProcess(this: GRIDSFL; r: int): string {.....}
 proc getrowScal(this: GRIDSFL; r: int): int {.....}
 
     get scal from grid,rows 
+
+proc getRowsText(this: GRIDSFL; r: int; i: int): string {.....}
+
+    get text from grid,rows 
 
 proc getrowText(this: GRIDSFL; r: int): string {.....}
 
@@ -865,6 +868,6 @@ proc setWidth(pnl: PANEL; index: int; val: Natural) {.....}
 <br />
 <br />
 
-Made with Nim. Generated: 2022-02-16 15:15:32 UTC
+Made with Nim. Generated: 2022-02-24 00:13:48 UTC
 
 
