@@ -10,7 +10,7 @@
 &rarr;&nbsp; creat Panel    OK<br />
 &rarr;&nbsp; creat Label    OK<br />
 &rarr;&nbsp; creat Field    OK<br />
-&rarr;&nbsp; creat Grid/Combo curent   85%  and  ---> testing  in out<br />
+&rarr;&nbsp; creat Grid/Combo curent   90%  and  ---> testing  in out<br />
 &rarr;&nbsp; creat Menu     OK<br />
 &rarr;&nbsp; creat json     OK<br />
 &rarr;&nbsp; creat save/restor  OK<br />
@@ -94,13 +94,13 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
   * Full Change 2022-02-15&nbsp;&rarr;&nbsp;use exemple combo and json ok  <br />
  <br />
  <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;**change getIndexG()  add positioning GRID return index rows ok ** <br />
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;** change getIndexG() add positioning GRID return index rows ok ** <br />  
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersName() for Grid  <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersPosy() for Grid  <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersType() for Grid  <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersCar() for Grid  <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add testing button check field to json retrived generator exactly fonction to code <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;**change programme "termGrid.nim" format coding and example and testing for generator normalisation**  <br />
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;** change programme "termGrid.nim" format coding and example and testing for generator normalisation**  <br />  
 <br />
 <br />
   * Full Change 2022-02-24&nbsp;&rarr;&nbsp;add getRowsText(Grid,row,colunm) for Grid  <br />
@@ -108,6 +108,22 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
   * Full Change 2022-02-24&nbsp;&rarr;&nbsp;testing generation from designer Combo / multipanel to code source Ok  <br />
   * Full Change 2022-02-24&nbsp;&rarr;&nbsp;testing code formatting  code source Ok  <br />
 <br />
+<br />
+<br />
+  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;**change ioField "termcurs.nim"**<br />  
+  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;add func for proc ioField : isPanelKeyCtrl<br />
+  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;add contrôl proc ioField : ex: defButton(TKey.F9,"add",true)] = controle field ---- defButton(TKey.F3,"add",false)] not contrôl field<br />
+<br />
+<br />
+  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;**Testing Designer TermSDA**<br />  
+  * Full Change 2022-02-03&nbsp;&rarr;&nbsp;**Validation termcurs**<br />  
+  * Full Change 2022-02-03&nbsp;&rarr;&nbsp;Generation of JSON grid/combo   <br />
+  * Full Change 2022-02-03&nbsp;&rarr;&nbsp;reengineering JSON to Designer <br />
+<br />
+
+
+
+
 **Thank you**
 
   * [ Date](https://rgxdb.com/r/2V9BOC58)<br />

@@ -2977,6 +2977,13 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
       inc(i)
     return ok
 
+  # check if KEYs force control field
+  func isPanelKeyCtrl(pnl: PANEL; e_key:TKey): bool =
+    var i = 0
+    while i < len(pnl.funcKey):
+      if e_key == pnl.funcKey[i] and pnl.button[i].ctrl : return true
+      inc(i)
+    return false
 
   func insert() =
     if nbrRune(e_FIELD) < e_nbrcar - 1 :
@@ -3110,11 +3117,23 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
     # read keyboard
     (e_key,e_str) = getTKey()
 
+
     # control transfert panel
     if isfuncKey(e_key) :
-      result = e_key
-      offCursor()
-      break
+      if isPanelKeyCtrl(pnl,e_key) :
+        if fld.regex != "" and false == match(strip($e_FIELD,trailing = true) ,re(fld.regex)) and not isEmpty(e_Field,fld) or
+            isEmpty(e_Field,fld) and fld.empty == FILL :
+            msgErr(pnl,fld.errmsg)
+            continue
+        else :
+          fld.text  = $e_FIELD
+          result = e_key
+          offCursor()
+          break
+      else:
+        result = e_key
+        offCursor()
+        break
 
     # work key based 5250/3270
     case e_key
