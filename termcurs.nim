@@ -3127,6 +3127,7 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
             continue
         else :
           fld.text  = $e_FIELD
+          fld.text = fld.text.strip(trailing = true)
           result = e_key
           offCursor()
           break

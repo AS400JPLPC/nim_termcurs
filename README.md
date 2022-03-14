@@ -4,16 +4,21 @@
 
 **  I am not yet posting designer and source generator.it is not operational but written at the base of termcurs**<br />
 
-** In the meantime you can test with the nim_Termvte repository**<br /> 
+** In the meantime you can test with the nim_Termvte repository**<br />
 
 ** generator **<br />
 &rarr;&nbsp; creat Panel    OK<br />
 &rarr;&nbsp; creat Label    OK<br />
 &rarr;&nbsp; creat Field    OK<br />
-&rarr;&nbsp; creat Grid/Combo curent   90%  and  ---> testing  in out<br />
+&rarr;&nbsp; creat Grid/Combo OK<br />
 &rarr;&nbsp; creat Menu     OK<br />
 &rarr;&nbsp; creat json     OK<br />
 &rarr;&nbsp; creat save/restor  OK<br />
+** generator  is operational  **<br />
+&rarr;&nbsp; doc 0% documentation is required for use  <br />
+&rarr;&nbsp; final stage publication   <br />
+
+
 
 ** require termkey **
 
@@ -29,39 +34,39 @@ doc : [SOURCE](https://github.com/AS400JPLPC/nim_termcurs/blob/master/exemple/te
 <br />
 **Progress of the designer test**<br />
 <br />
-img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Code.png)  
+img : [Source-ouput](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Code.png)
 
-img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen.png)  
+img : [Source-screen](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen.png)
 
-img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen2.png)  
+img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/master/Output_Screen2.png)
 
 <br />
 <br />git config pull.rebase true
 
 **IMPORT: termkey project**<br />
 
-<u>put in function 2020-04-15</u><br />  
+<u>put in function 2020-04-15</u><br />
   * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br />  git config pull.rebase true
-  * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br />  
-  * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*<br />  
-  * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br />  
-  * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u><br /> 
-  * Full Change 2020-05-13&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br />  
-  * Full Change 2020-05-14&nbsp;&rarr;&nbsp;Validity check correction<br />  
-  * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector"<br />  
-  * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Change Func QUERY --> FPROC FCALL "queryselector"<br />  
-  * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br />  
-  * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br />  
-  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br />  
-  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br />  
-  * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br />  
-  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   patience and persistence**<br />  
-  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu...<br />  
-  * Full Change 2020-08-26&nbsp;&rarr;&nbsp;Validity check correction and Multiple window definition introduction <br />  
-  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Structuring code & adding different proc for grid<br />  
-  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Update exemple<br />  
-  * Testing.... 2020-09-30&nbsp;&rarr;&nbsp;**panel Label Field Menu Combo Grid this OK**<br />  
-  * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo<br />  
+  * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br />
+  * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*<br />
+  * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br />
+  * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u><br />
+  * Full Change 2020-05-13&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br />
+  * Full Change 2020-05-14&nbsp;&rarr;&nbsp;Validity check correction<br />
+  * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector"<br />
+  * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Change Func QUERY --> FPROC FCALL "queryselector"<br />
+  * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br />
+  * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br />
+  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br />
+  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br />
+  * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br />
+  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   patience and persistence**<br />
+  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu...<br />
+  * Full Change 2020-08-26&nbsp;&rarr;&nbsp;Validity check correction and Multiple window definition introduction <br />
+  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Structuring code & adding different proc for grid<br />
+  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Update exemple<br />
+  * Testing.... 2020-09-30&nbsp;&rarr;&nbsp;**panel Label Field Menu Combo Grid this OK**<br />
+  * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo<br />
   * Full Change 2020-11-04&nbsp;&rarr;&nbsp;homogeneity with termkey<br />
   * Full Change 2020-11-10&nbsp;&rarr;&nbsp;enfranchisement Nim:Terminal code cleanup operational with libvte or ex xfce-terminal<br />
   * Full Change 2020-11-15&nbsp;&rarr;&nbsp;correctif define Menu colors  <br />
@@ -77,15 +82,15 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
   * Full Change 2021-07-24&nbsp;&rarr;&nbsp;** First generator file Json for designer and restore <br />
  <br />
   * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** Change work and défine Button defButton() <br />
-  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** text get/set text add générator define Button   <br /> 
-  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add ctrl is true force control panel field   <br /> 
-  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** change work field numéric difference between null and zeros  <br /> 
-  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add setRegex field   exemple:test.nim<br /> 
+  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** text get/set text add générator define Button   <br />
+  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add ctrl is true force control panel field   <br />
+  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** change work field numéric difference between null and zeros  <br />
+  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add setRegex field   exemple:test.nim<br />
  <br />
-  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** change defCell if text.len > long long = text.len<br /> 
-  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** change pageDownGrid if curspage= pages return PGend<br /> 
-  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add setActif() Grid<br /> 
-  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add isActif() Grid<br /> 
+  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** change defCell if text.len > long long = text.len<br />
+  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** change pageDownGrid if curspage= pages return PGend<br />
+  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add setActif() Grid<br />
+  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add isActif() Grid<br />
  <br />
   * Full Change 2022-01-19&nbsp;&rarr;&nbsp;correctif setRegex for field <br />
  <br />
@@ -94,13 +99,13 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
   * Full Change 2022-02-15&nbsp;&rarr;&nbsp;use exemple combo and json ok  <br />
  <br />
  <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;** change getIndexG() add positioning GRID return index rows ok ** <br />  
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;** change getIndexG() add positioning GRID return index rows ok ** <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersName() for Grid  <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersPosy() for Grid  <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersType() for Grid  <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersCar() for Grid  <br />
   * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add testing button check field to json retrived generator exactly fonction to code <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;** change programme "termGrid.nim" format coding and example and testing for generator normalisation**  <br />  
+  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;** change programme "termGrid.nim" format coding and example and testing for generator normalisation**  <br />
 <br />
 <br />
   * Full Change 2022-02-24&nbsp;&rarr;&nbsp;add getRowsText(Grid,row,colunm) for Grid  <br />
@@ -110,19 +115,20 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
 <br />
 <br />
 <br />
-  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;**change ioField "termcurs.nim"**<br />  
+  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;**change ioField "termcurs.nim"**<br />
   * Full Change 2022-03-03&nbsp;&rarr;&nbsp;add func for proc ioField : isPanelKeyCtrl<br />
   * Full Change 2022-03-03&nbsp;&rarr;&nbsp;add contrôl proc ioField : ex: defButton(TKey.F9,"add",true)] = controle field ---- defButton(TKey.F3,"add",false)] not contrôl field<br />
 <br />
 <br />
-  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;**Testing Designer TermSDA**<br />  
-  * Full Change 2022-02-03&nbsp;&rarr;&nbsp;**Validation termcurs**<br />  
+  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;**Testing Designer TermSDA**<br />
+  * Full Change 2022-02-03&nbsp;&rarr;&nbsp;**Validation termcurs**<br />
   * Full Change 2022-02-03&nbsp;&rarr;&nbsp;Generation of JSON grid/combo   <br />
   * Full Change 2022-02-03&nbsp;&rarr;&nbsp;reengineering JSON to Designer <br />
 <br />
-
-
-
+  * Full Change 2022-03-14&nbsp;&rarr;&nbsp;**change ioField "termcurs.nim"**<br />
+  * Full Change 2022-03-14&nbsp;&rarr;&nbsp;Control transfert panel  fld.text = fld.text.strip(trailing = true)<br />
+  * Full Change 2022-03-14&nbsp;&rarr;&nbsp;**Testing Designer TermSDA**<br />
+  * Full Change 2022-03-14&nbsp;&rarr;&nbsp;**Générate source OK**<br />
 
 **Thank you**
 
@@ -148,7 +154,7 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
 | UP&nbsp; DOWN&nbsp; Left&nbsp; RIGHT |
 | selector mouse                     |
 
-  
+
 <br />
 <br />
 &nbsp;&rarr;&nbsp; **ioPANEL**&nbsp;&nbsp;&nbsp;<br />
@@ -163,7 +169,7 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
 | Escape         | &nbsp;&rarr;&nbsp; return field                    |
 | Other KEY      | &nbsp;&rarr;&nbsp; returns to the calling procedure|
 
-  
+
 <br />
 <br />
 &rarr;&nbsp; **ioGRID** Display field type table, with page / line tracking:<br />
@@ -266,27 +272,28 @@ doc : [Source-exemple-GRID.nim](https://github.com/AS400JPLPC/nim_termcurs/blob/
 Procs
 
 
+
 proc addRows(this: GRIDSFL; rows: seq[string]) {.....}
 
 proc clearText(pnl: var PANEL) {.....}
 
-    clear value ALL FIELD 
+    clear value ALL FIELD
 
 proc clsField(pnl: var PANEL; fld: FIELD) {.....}
 
-    cls Field from Panel 
+    cls Field from Panel
 
 proc clsLabel(pnl: var PANEL; lbl: LABEL) {.....}
 
-    cls Label from Panel 
+    cls Label from Panel
 
 proc clsPanel(pnl: var PANEL) {.....}
 
-    cls Panel 
+    cls Panel
 
 proc Cols(pnl: PANEL): Natural {.....}
 
-    get cols PANEL 
+    get cols PANEL
 
 proc counColumns(this: GRIDSFL): Natural {.....}
 
@@ -296,12 +303,12 @@ proc defBox(name: string; posx: Natural; posy: Natural; lines: Natural;
             cols: Natural; cadre: CADRE; title: string;
             box_atr: BOXATRB = boxatr; actif: bool = true): BOX {.....}
 
-    Define BOX 
+    Define BOX
 
 proc defButton(key: TKey; text: string; ctrl: bool = false; actif: bool = true): BUTTON {.
     ....}
 
-    define BUTTON 
+    define BUTTON
 
 proc defCell(text: string; long: Natural; reftyp: REFTYP;
              cell_atr: CELLATRB = cellatr): CELL {.....}
@@ -314,13 +321,13 @@ proc defDate(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
              fld_atr: ZONATRB = fldatr; protect_atr: ZONATRB = prtatr;
              actif: bool = true): FIELD {.....}
 
-    Define Field date ISO 
+    Define Field date ISO
 
 proc defLabel(name: string; posx: Natural; posy: Natural; text: string;
               lbl_atr: ZONATRB = lblatr; actif: bool = true): LABEL {.
     ....}
 
-    Define Label 
+    Define Label
 
 proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
              width: Natural; text: string; empty: bool; errmsg: string;
@@ -328,7 +335,7 @@ proc defMail(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
              protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {.
     ....}
 
-    Define Field Mail 
+    Define Field Mail
 
 proc defNumeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                 width: Natural; scal: Natural; text: string; empty: bool;
@@ -336,7 +343,7 @@ proc defNumeric(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                 protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {.
     ....}
 
-    Define Field Numeric 
+    Define Field Numeric
 
 proc defString(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                width: Natural; text: string; empty: bool; errmsg: string;
@@ -344,22 +351,22 @@ proc defString(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {.
     ....}
 
-    Define Field String Standard 
+    Define Field String Standard
 
 proc defStringH(name: string; reftyp: REFTYP; text: string): HIDEN {.....}
 
-    Hiden field 
+    Hiden field
 
 proc defSwitch(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                switch: bool; empty: bool; errmsg: string; help: string;
                swt_atr: ZONATRB = swtatr; protect_atr: ZONATRB = prtatr;
                actif: bool = true): FIELD {.....}
 
-    Define Field switch 
+    Define Field switch
 
 proc defSwitchH(name: string; reftyp: REFTYP; switch: bool): HIDEN {.....}
 
-    Hiden switch 
+    Hiden switch
 
 proc defTelephone(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                   width: Natural; text: string; empty: bool; errmsg: string;
@@ -367,41 +374,41 @@ proc defTelephone(name: string; posx: Natural; posy: Natural; reftyp: REFTYP;
                   protect_atr: ZONATRB = prtatr; actif: bool = true): FIELD {.
     ....}
 
-    Define Field Telephone 
+    Define Field Telephone
 
 proc defTitle(name: string; posx: Natural; posy: Natural; text: string;
               ttl_atr: ZONATRB = ttlatr; actif: bool = true): LABEL {.
     ....}
 
-    Define Title 
+    Define Title
 
 proc displayButton(pnl: var PANEL) {.....}
 
-    display matrice only BUTTON 
+    display matrice only BUTTON
 
 proc displayField(pnl: var PANEL; fld: FIELD) {.....}
 
-    display matrice only FIELD 
+    display matrice only FIELD
 
 proc displayLabel(pnl: var PANEL; lbl: LABEL) {.....}
 
-    display matrice only LABEL 
+    display matrice only LABEL
 
 proc displayPanel(pnl: PANEL) {.....}
 
-    display matrice PANEL 
+    display matrice PANEL
 
 proc dltField(pnl: PANEL; idx: Natural) {.....}
 
-    delete Field index Field 
+    delete Field index Field
 
 proc dltFieldH(hdn: PANEL; idx: Natural) {.....}
 
-    delete Field Hiden from indexField 
+    delete Field Hiden from indexField
 
 proc dltLabel(pnl: PANEL; idx: Natural) {.....}
 
-    delete Label from index 
+    delete Label from index
 
 proc dltRows(this: GRIDSFL; idx: Natural) {.....}
 
@@ -410,21 +417,21 @@ proc dspMenuItem(pnl: PANEL; mnu: MENU; npos: Natural = 0) {.
 
 proc getcellLen(cell: var CELL): int {.....}
 
-    get len from cell 
+    get len from cell
 
 proc getCtrl(btn: var BUTTON): bool {.....}
 
 proc getEdtcar(pnl: PANEL; index: int): string {.....}
 
-    get Edtcar Field Sequence Field 
+    get Edtcar Field Sequence Field
 
 proc getEmpty(pnl: PANEL; index: int): bool {.....}
 
-    get Empty Field Sequence Field 
+    get Empty Field Sequence Field
 
 proc getErrmsg(pnl: PANEL; index: int): string {.....}
 
-    get errmsg Field Sequence Field 
+    get errmsg Field Sequence Field
 
 proc getHeadersCar(this: GRIDSFL; r: int): string {.....}
 
@@ -436,189 +443,189 @@ proc getHeadersType(this: GRIDSFL; r: int): REFTYP {.....}
 
 proc getHelp(pnl: PANEL; index: int): string {.....}
 
-    get help Field Sequence Field 
+    get help Field Sequence Field
 
 proc getIndex(pnl: PANEL; name: string): int {.....}
 
-    get index Field from name Field 
+    get index Field from name Field
 
 proc getIndexG(this: GRIDSFL; name: string; idx: Natural = 0): int {.....}
 
 proc getIndexH(hdn: PANEL; name: string): int {.....}
 
-    get index Hiden from name 
+    get index Hiden from name
 
 proc getIndexL(pnl: PANEL; name: string): int {.....}
 
-    get index Sequence Label from name 
+    get index Sequence Label from name
 
 proc getName(btn: var BUTTON): TKey {.....}
 
 proc getName(pnl: PANEL): string {.....}
 
-    get name field from panel this getField 
+    get name field from panel this getField
 
 proc getName(pnl: PANEL; index: int): string {.....}
 
-    get name Field Sequence Field 
+    get name Field Sequence Field
 
 proc getNameH(hdn: PANEL; index: int): string {.....}
 
-    get name Hiden from index 
+    get name Hiden from index
 
 proc getNameL(pnl: PANEL; index: int): string {.....}
 
-    get name label Sequence Field 
+    get name label Sequence Field
 
 proc getNbrcar(pnl: PANEL; name: string): int {.....}
 
-    get nbrCar Field from name 
+    get nbrCar Field from name
 
 proc getPnlName(pnl: PANEL): string {.....}
 
-    get name From Panel 
+    get name From Panel
 
 proc getPnlTitle(pnl: PANEL): string {.....}
 
-    get Title From Panel 
+    get Title From Panel
 
 proc getPosx(pnl: PANEL; index: int): int {.....}
 
-    get Posx Field Sequence Field 
+    get Posx Field Sequence Field
 
 proc getPosxL(pnl: PANEL; index: int): int {.....}
 
-    get Posx label Sequence Field 
+    get Posx label Sequence Field
 
 proc getPosy(pnl: PANEL; index: int): int {.....}
 
-    get Posy Field Sequence Field 
+    get Posy Field Sequence Field
 
 proc getPosyL(pnl: PANEL; index: int): int {.....}
 
-    get Posy label Sequence Field 
+    get Posy label Sequence Field
 
 proc getProcess(pnl: PANEL; index: int): string {.....}
 
-    get callVoid Field Sequence Field 
+    get callVoid Field Sequence Field
 
 proc getProtect(pnl: PANEL; index: int): bool {.....}
 
-    get Protect Field Sequence Field 
+    get Protect Field Sequence Field
 
 proc getReftyp(pnl: PANEL; name: string): REFTYP {.....}
 
-    get ref.type Field from name 
+    get ref.type Field from name
 
 proc getRefType(pnl: PANEL; index: int): REFTYP {.....}
 
-    get Type Field Sequence Field 
+    get Type Field Sequence Field
 
 proc getrowCar(this: GRIDSFL; r: int): string {.....}
 
-    get Car from grid,rows 
+    get Car from grid,rows
 
 proc getrowEmpty(this: GRIDSFL; r: int): bool {.....}
 
-    get Empty from grid,rows 
+    get Empty from grid,rows
 
 proc getrowErrmsg(this: GRIDSFL; r: int): string {.....}
 
-    get errmsg from grid,rows 
+    get errmsg from grid,rows
 
 proc getrowHelp(this: GRIDSFL; r: int): string {.....}
 
-    get help from grid,rows 
+    get help from grid,rows
 
 proc getrowName(this: GRIDSFL; r: int): string {.....}
 
-    get name from grid,rows 
+    get name from grid,rows
 
 proc getrowPosx(this: GRIDSFL; r: int): int {.....}
 
-    get posx from grid,rows 
+    get posx from grid,rows
 
 proc getrowPosy(this: GRIDSFL; r: int): int {.....}
 
-    get posy from grid,rows 
+    get posy from grid,rows
 
 proc getrowProcess(this: GRIDSFL; r: int): string {.....}
 
-    get Process from grid,rows 
+    get Process from grid,rows
 
 proc getrowScal(this: GRIDSFL; r: int): int {.....}
 
-    get scal from grid,rows 
+    get scal from grid,rows
 
 proc getRowsText(this: GRIDSFL; r: int; i: int): string {.....}
 
-    get text from grid,rows 
+    get text from grid,rows
 
 proc getrowText(this: GRIDSFL; r: int): string {.....}
 
-    get text from grid,rows 
+    get text from grid,rows
 
 proc getrowType(this: GRIDSFL; r: int): REFTYP {.....}
 
-    get type from grid,rows 
+    get type from grid,rows
 
 proc getrowWidth(this: GRIDSFL; r: int): int {.....}
 
-    get Width from grid,rows 
+    get Width from grid,rows
 
 proc getScal(pnl: PANEL; index: int): int {.....}
 
-    get Scal Field Sequence Field 
+    get Scal Field Sequence Field
 
 proc getSwitch(pnl: PANEL; index: int): bool {.....}
 
-    get value Field Sequence Field 
+    get value Field Sequence Field
 
 proc getSwitch(pnl: PANEL; name: string): bool {.....}
 
-    get value switch from name Field 
+    get value switch from name Field
 
 proc getSwitchH(hdn: PANEL; index: int): bool {.....}
 
-    get switch Hiden from index 
+    get switch Hiden from index
 
 proc getSwitchH(hdn: PANEL; name: string): bool {.....}
 
-    get switch Hiden from name 
+    get switch Hiden from name
 
 proc getText(btn: var BUTTON): string {.....}
 
 proc getText(pnl: PANEL; index: int): string {.....}
 
-    get value Field Sequence Field 
+    get value Field Sequence Field
 
 proc getText(pnl: PANEL; name: string): string {.....}
 
-    get value Field from name Field 
+    get value Field from name Field
 
 proc getTextH(hdn: PANEL; index: int): string {.....}
 
-    get value Field Hiden from index 
+    get value Field Hiden from index
 
 proc getTextH(hdn: PANEL; name: string): string {.....}
 
-    get value Field Hiden from name 
+    get value Field Hiden from name
 
 proc getTextL(pnl: PANEL; index: int): string {.....}
 
-    get value label Sequence Label 
+    get value label Sequence Label
 
 proc getTextL(pnl: PANEL; name: string): string {.....}
 
-    get value Label Sequence from name 
+    get value Label Sequence from name
 
 proc getWidth(pnl: PANEL; index: int): int {.....}
 
-    get width Field Sequence Field 
+    get width Field Sequence Field
 
 proc Index(pnl: PANEL): Natural {.....}
 
-    index actived from panel this getField 
+    index actived from panel this getField
 
 proc ioField(pnl: PANEL; fld: var FIELD): (TKey) {.
     ....}
@@ -651,33 +658,33 @@ proc isMouse(pnl: var PANEL): bool {.....}
 
 proc isPanelKey(pnl: PANEL; e_key: TKey): bool {.....}
 
-    Test if KEYs must be managed by the programmer 
+    Test if KEYs must be managed by the programmer
 
 proc isProcess(pnl: PANEL; index: int): bool {.....}
 
-    test process index Field 
+    test process index Field
 
 proc isProtect(fld: var FIELD): bool {.....}
 
 proc isrowProtect(this: GRIDSFL; r: int): bool {.....}
 
-    get isProtect from grid,rows 
+    get isProtect from grid,rows
 
 proc isrowTitle(this: GRIDSFL; r: int): bool {.....}
 
-    get isTitle from grid,rows 
+    get isTitle from grid,rows
 
 proc isTitle(pnl: PANEL; index: int): bool {.....}
 
-    test Title label Sequence Label 
+    test Title label Sequence Label
 
 proc isValide(pnl: var PANEL): bool {.....}
 
-    Contrôle Format Panel full Field 
+    Contrôle Format Panel full Field
 
 proc Lines(pnl: PANEL): Natural {.....}
 
-    get lines PANEL 
+    get lines PANEL
 
 proc newGrid(name: string; posx: Natural; posy: Natural; pageRows: Natural;
              separator: GridStyle = sepStyle; grid_atr: GRIDATRB = gridatr;
@@ -691,7 +698,7 @@ proc newPanel(name: string; posx, posy, height, width: Natural;
               button: seq[(BUTTON)]; cadre: CADRE = line0; title: string = "";
               pnl_atr: ZONATRB = pnlatr): PANEL {.....}
 
-    Define PANEL 
+    Define PANEL
 
 proc pageDownGrid(this: GRIDSFL): TKey_Grid {.....}
 
@@ -699,15 +706,15 @@ proc pageUpGrid(this: GRIDSFL): TKey_Grid {.....}
 
 proc printBox(pnl: var PANEL; box: BOX) {.....}
 
-    assigne BOX to matrice for display 
+    assigne BOX to matrice for display
 
 proc printButton(pnl: var PANEL; btn_esp: BTNSPACE = btnspc) {.....}
 
-    assigne BUTTON matrice for display 
+    assigne BUTTON matrice for display
 
 proc printField(pnl: var PANEL; fld: FIELD) {.....}
 
-    assigne FIELD to matrice for display 
+    assigne FIELD to matrice for display
 
 proc printGridHeader(this: GRIDSFL) {.....}
 
@@ -715,42 +722,42 @@ proc printGridRows(this: GRIDSFL) {.....}
 
 proc printLabel(pnl: var PANEL; lbl: LABEL) {.....}
 
-    assigne LABEL to matrice for display 
+    assigne LABEL to matrice for display
 
 proc printMenu(pnl: PANEL; mnu: MENU) {.....}
 
 proc printPanel(pnl: var PANEL) {.....}
 
-    assigne PANEL and all OBJECT to matrice for display 
+    assigne PANEL and all OBJECT to matrice for display
 
 proc resetGrid(this: GRIDSFL) {.....}
 
 proc resetMenu(mnu: var MENU) {.....}
 
-    clear object MENU 
+    clear object MENU
 
 proc resetPanel(pnl: var PANEL) {.....}
 
-    clear object PANEL / box/label/fld/proc 
+    clear object PANEL / box/label/fld/proc
 
 proc resetRows(this: GRIDSFL) {.....}
 
 proc restorePanel(dst: PANEL; grid: GRIDSFL) {.....}
 
-    restore the base occupied by grid 
+    restore the base occupied by grid
 
 proc restorePanel(dst: PANEL; mnu: MENU) {.....}
 
-    restore the base occupied by menu 
+    restore the base occupied by menu
 
 proc restorePanel(dst: PANEL; src: var PANEL) {.....}
 
-    restore the base occupied by panel 
+    restore the base occupied by panel
 
 proc restorePanel(pnl: PANEL; lines, posy: Natural) {.
     ....}
 
-    restore the lines occupied by the error message 
+    restore the lines occupied by the error message
 
 proc setActif(box: var BOX; actif: bool) {.....}
 
@@ -770,15 +777,15 @@ proc setCellEditCar(cell: var CELL; edtcar: string = "") {.....}
 
 proc setColor(fld: var FIELD; fld_atr: ZONATRB) {.....}
 
-    set attribut field 
+    set attribut field
 
 proc setColor(lbl: var LABEL; lbl_atr: ZONATRB) {.....}
 
-    set attribut label 
+    set attribut label
 
 proc setColorProtect(fld: var FIELD; protect_atr: ZONATRB) {.....}
 
-    set attribut protect field 
+    set attribut protect field
 
 proc setCtrl(btn: var BUTTON; ctrl: bool) {.....}
 
@@ -786,15 +793,15 @@ proc setEdtCar(fld: var FIELD; Car: string) {.....}
 
 proc setEdtcar(pnl: PANEL; index: int; val: string) {.....}
 
-    set Edtcar Field Sequence Field 
+    set Edtcar Field Sequence Field
 
 proc setEmpty(pnl: PANEL; index: int; val: bool) {.....}
 
-    set Empty Field Sequence Field 
+    set Empty Field Sequence Field
 
 proc setErrmsg(pnl: PANEL; index: int; val: string) {.....}
 
-    set errmsg Field Sequence Field 
+    set errmsg Field Sequence Field
 
 proc setError(fld: var FIELD; val: bool) {.....}
 
@@ -802,7 +809,7 @@ proc setHeaders(this: GRIDSFL; headers: seq[CELL]) {.....}
 
 proc setHelp(pnl: PANEL; index: int; val: string) {.....}
 
-    set help Field Sequence Field 
+    set help Field Sequence Field
 
 proc setLastPage(this: GRIDSFL) {.....}
 
@@ -810,17 +817,17 @@ proc setMouse(pnl: var PANEL; actif: bool) {.....}
 
 proc setName(pnl: PANEL; index: int; val: Natural) {.....}
 
-    set posx Field Sequence Field 
+    set posx Field Sequence Field
 
 proc setName(pnl: PANEL; index: int; val: string) {.....}
 
-    set name Field Sequence Field 
+    set name Field Sequence Field
 
 proc setPageGrid(this: GRIDSFL) {.....}
 
 proc setPosy(pnl: PANEL; index: int; val: Natural) {.....}
 
-    set posy Field Sequence Field 
+    set posy Field Sequence Field
 
 proc setProcess(fld: var FIELD; process: string) {.....}
 
@@ -828,7 +835,7 @@ proc setProtect(fld: var FIELD; protect: bool) {.....}
 
 proc setProtect(pnl: PANEL; index: int; val: bool) {.....}
 
-    set protect Field Sequence Field 
+    set protect Field Sequence Field
 
 proc setRegex(pnl: PANEL; index: int; val: string) {.....}
 
@@ -836,54 +843,55 @@ proc setRegex(pnl: PANEL; name: string; val: string) {.....}
 
 proc setScal(pnl: PANEL; index: int; val: Natural) {.....}
 
-    set Scal Field Sequence Field 
+    set Scal Field Sequence Field
 
 proc setSwitch(pnl: PANEL; index: int; val: bool) {.....}
 
-    set switch Field from index Field 
+    set switch Field from index Field
 
 proc setSwitch(pnl: PANEL; name: string; val: bool): bool {.....}
 
-    set switch Field from name Field 
+    set switch Field from name Field
 
 proc setTerminal(termatr: ZONATRB = scratr) {.....}
 
-    Erase and color and style default 
+    Erase and color and style default
 
 proc setText(btn: var BUTTON; val: string) {.....}
 
 proc setText(pnl: PANEL; index: int; val: string) {.....}
 
-    set value Field from index Field 
+    set value Field from index Field
 
 proc setText(pnl: PANEL; name: string; val: string) {.....}
 
-    set value Field from name Field 
+    set value Field from name Field
 
 proc setTextL(pnl: PANEL; index: int; val: string) {.....}
 
-    set value Label Sequence Label 
+    set value Label Sequence Label
 
 proc setTextL(pnl: PANEL; name: string; val: string) {.....}
 
-    set value Label Sequence from name 
+    set value Label Sequence from name
 
 proc setTitle(pnl: PANEL; index: int; val: bool) {.....}
 
-    set value Label Sequence Label 
+    set value Label Sequence Label
 
 proc setType(pnl: PANEL; index: int; val: REFTYP) {.....}
 
-    set Type Field Sequence Field 
+    set Type Field Sequence Field
 
 proc setWidth(pnl: PANEL; index: int; val: Natural) {.....}
 
-    set width Field Sequence Field 
+    set width Field Sequence Field
+
 
 
 <br />
 <br />
 
-Made with Nim. Generated: 2022-02-24 00:13:48 UTC
+Made with Nim. Generated: 2022-03-03 01:52:37 UTC
 
 
