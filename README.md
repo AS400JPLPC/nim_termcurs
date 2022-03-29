@@ -6,17 +6,6 @@
 
 ** In the meantime you can test with the nim_Termvte repository**<br />
 
-** generator **<br />
-&rarr;&nbsp; creat Panel    OK<br />
-&rarr;&nbsp; creat Label    OK<br />
-&rarr;&nbsp; creat Field    OK<br />
-&rarr;&nbsp; creat Grid/Combo OK<br />
-&rarr;&nbsp; creat Menu     OK<br />
-&rarr;&nbsp; creat json     OK<br />
-&rarr;&nbsp; creat save/restor  OK<br />
-** generator  is operational  **<br />
-&rarr;&nbsp; doc 0% documentation is required for use  <br />
-&rarr;&nbsp; final stage publication   <br />
 
 
 
@@ -46,88 +35,6 @@ img : [exemple-Combo/Field](https://github.com/AS400JPLPC/nim_termcurs/blob/mast
 **IMPORT: termkey project**<br />
 
 <u>put in function 2020-04-15</u><br />
-  * add 2020-04-15 :22:15 &nbsp;&rarr;&nbsp; menu horizontal<br />  git config pull.rebase true
-  * corrective 2020-04-25 &nbsp;&rarr;&nbsp; field APLHA include "-"<br />
-  * 2020-05-02 *&nbsp;&nbsp;&nbsp;&rarr;&nbsp;<u>**add support GRID**</u>*<br />
-  * Full Change 2020-05-02&nbsp;&rarr;&nbsp;Fundamental change Harmonization add proc and func ...<br />
-  * &nbsp;&nbsp;&nbsp;&rarr;&nbsp; <u> ***IMPORTANT change:***</u><br />
-  * Full Change 2020-05-13&nbsp;&rarr;&nbsp;Progress Designer and Termcurs...<br />
-  * Full Change 2020-05-14&nbsp;&rarr;&nbsp;Validity check correction<br />
-  * Full Change 2020-05-15&nbsp;&rarr;&nbsp;Validity check Grid add QUERY "queryselector"<br />
-  * Full Change 2020-05-19&nbsp;&rarr;&nbsp;Change Func QUERY --> FPROC FCALL "queryselector"<br />
-  * Full Change 2020-05-20&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE**<br />
-  * Full Change 2020-05-25&nbsp;&rarr;&nbsp;**Validate GENERATOR SOURCE   not product **<br />
-  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   not product ** &nbsp;&rarr;&nbsp; Possibility to modify the PANEL. Ergonomics improvement<br />
-  * Full Change 2020-06-02&nbsp;&rarr;&nbsp;add color Cell grid<br />
-  * Full Change 2020-06-10&nbsp;&rarr;&nbsp;add access FIELD LABEL Regularization of the Mouse function for menus and combos .... I need to improve the visual grid<br />
-  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;**TESTING GENERATOR SOURCE   patience and persistence**<br />
-  * Full Change 2020-06-22&nbsp;&rarr;&nbsp;continue not finish :  genereted --> Menu...<br />
-  * Full Change 2020-08-26&nbsp;&rarr;&nbsp;Validity check correction and Multiple window definition introduction <br />
-  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Structuring code & adding different proc for grid<br />
-  * Full Change 2020-09-14&nbsp;&rarr;&nbsp;Update exemple<br />
-  * Testing.... 2020-09-30&nbsp;&rarr;&nbsp;**panel Label Field Menu Combo Grid this OK**<br />
-  * Générator.. 2020-09-30&nbsp;&rarr;&nbsp;panel Label Field Menu this OK --- testing Combo<br />
-  * Full Change 2020-11-04&nbsp;&rarr;&nbsp;homogeneity with termkey<br />
-  * Full Change 2020-11-10&nbsp;&rarr;&nbsp;enfranchisement Nim:Terminal code cleanup operational with libvte or ex xfce-terminal<br />
-  * Full Change 2020-11-15&nbsp;&rarr;&nbsp;correctif define Menu colors  <br />
-  <br />  <br />
-  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;correctif define MENU* and  mnuatr  <br />
-  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;add dspMenuItem  and mnuatrCadre <br />
-  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First generator Full source code --> panel Label Field Menu<br />
-  * Full Change 2021-06-17&nbsp;&rarr;&nbsp;** First TEST.nim view Output_Code/Output_Screen<br />
- <br />
-  * Full Change 2021-07-07&nbsp;&rarr;&nbsp;** Correctif mineur date check form valide  <br />
-  * Full Change 2021-07-24&nbsp;&rarr;&nbsp;** Correctif mineur (insert and nbrRune)  -> cohésion start/end field<br />
-  * Full Change 2021-07-24&nbsp;&rarr;&nbsp;** optimisation and solution import conflict unicode strutils  <br />
-  * Full Change 2021-07-24&nbsp;&rarr;&nbsp;** First generator file Json for designer and restore <br />
- <br />
-  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** Change work and défine Button defButton() <br />
-  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** text get/set text add générator define Button   <br />
-  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add ctrl is true force control panel field   <br />
-  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** change work field numéric difference between null and zeros  <br />
-  * Full Change 2021-08-06&nbsp;&rarr;&nbsp;** add setRegex field   exemple:test.nim<br />
- <br />
-  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** change defCell if text.len > long long = text.len<br />
-  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** change pageDownGrid if curspage= pages return PGend<br />
-  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add setActif() Grid<br />
-  * Full Change 2021-10-25&nbsp;&rarr;&nbsp;** add isActif() Grid<br />
- <br />
-  * Full Change 2022-01-19&nbsp;&rarr;&nbsp;correctif setRegex for field <br />
- <br />
-  * Full Change 2022-02-11&nbsp;&rarr;&nbsp;use for test repository nim_Termvte <br />
- <br />
-  * Full Change 2022-02-15&nbsp;&rarr;&nbsp;use exemple combo and json ok  <br />
- <br />
- <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;** change getIndexG() add positioning GRID return index rows ok ** <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersName() for Grid  <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersPosy() for Grid  <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersType() for Grid  <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add getHeadersCar() for Grid  <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;add testing button check field to json retrived generator exactly fonction to code <br />
-  * Full Change 2022-02-16&nbsp;&rarr;&nbsp;** change programme "termGrid.nim" format coding and example and testing for generator normalisation**  <br />
-<br />
-<br />
-  * Full Change 2022-02-24&nbsp;&rarr;&nbsp;add getRowsText(Grid,row,colunm) for Grid  <br />
-  * Full Change 2022-02-24&nbsp;&rarr;&nbsp;add defCell(....,string color)  for Grid  <br />
-  * Full Change 2022-02-24&nbsp;&rarr;&nbsp;testing generation from designer Combo / multipanel to code source Ok  <br />
-  * Full Change 2022-02-24&nbsp;&rarr;&nbsp;testing code formatting  code source Ok  <br />
-<br />
-<br />
-<br />
-  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;**change ioField "termcurs.nim"**<br />
-  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;add func for proc ioField : isPanelKeyCtrl<br />
-  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;add contrôl proc ioField : ex: defButton(TKey.F9,"add",true)] = controle field ---- defButton(TKey.F3,"add",false)] not contrôl field<br />
-<br />
-<br />
-  * Full Change 2022-03-03&nbsp;&rarr;&nbsp;**Testing Designer TermSDA**<br />
-  * Full Change 2022-02-03&nbsp;&rarr;&nbsp;**Validation termcurs**<br />
-  * Full Change 2022-02-03&nbsp;&rarr;&nbsp;Generation of JSON grid/combo   <br />
-  * Full Change 2022-02-03&nbsp;&rarr;&nbsp;reengineering JSON to Designer <br />
-<br />
-  * Full Change 2022-03-14&nbsp;&rarr;&nbsp;**change ioField "termcurs.nim"**<br />
-  * Full Change 2022-03-14&nbsp;&rarr;&nbsp;Control transfert panel  fld.text = fld.text.strip(trailing = true)<br />
-  * Full Change 2022-03-14&nbsp;&rarr;&nbsp;**Testing Designer TermSDA**<br />
   * Full Change 2022-03-14&nbsp;&rarr;&nbsp;**Générate source OK**<br />
 
 **Thank you**
@@ -195,6 +102,8 @@ displays all the field labels as well as the function keys (F1 ..). the unfoldin
   * texte: LABEL<br />
   * buffer: FIELD<br />
   * funckey: BUTTON<br />
+  * funckey: MENU<br />
+  * funckey: GRID<br />
   * Currently does not control panel output overflows<br />
   * To use restore you must display a panel in a panel (must be included) same for the Menus<br />
   * The framing of the labels or fields are relative to the panel<br />
