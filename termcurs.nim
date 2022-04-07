@@ -2131,7 +2131,7 @@ proc isPanelKey*(pnl: PANEL; e_key:TKey): bool =
   var i = 0
   var ok :bool = false
   while i < len(pnl.funcKey):
-    if e_key == pnl.funcKey[i] : ok = true
+    if e_key == pnl.funcKey[i] and pnl.button[i].actif == true : ok = true
     inc(i)
   return ok
 
@@ -2245,7 +2245,7 @@ proc setPageGrid*(this :GRIDSFL)=
     this.pages = 1
   else :
     this.pages = this.lignes.div(int(this.pagerows))
-    if  this.lignes.floorMod(int(this.pagerows)) > 0 : this.pages += 1
+    if  this.lignes.floorMod(int(this.pagerows-1)) > 0 : this.pages += 1
 
 
 proc setLastPage*(this :GRIDSFL)=
@@ -2676,7 +2676,7 @@ proc printGridRows*(this: GRIDSFL ) =
 
 
 
-proc setPageGrid(this: GRIDSFL; pos : Natural) =
+proc setPageGrid*(this: GRIDSFL; pos : Natural) =
   var vline = pos
   var start : int = 0
   if vline > len(this.rows) - 1 :
@@ -2685,7 +2685,7 @@ proc setPageGrid(this: GRIDSFL; pos : Natural) =
     this.pages = 1
   else :
     this.curspage = vline.div(int(this.pagerows))
-    if  vline.floorMod(int(this.pagerows)) > 0 : this.curspage += 1
+    if  vline.floorMod(int(this.pagerows-1)) > 0 : this.curspage += 1
 
 
   if this.curspage == 0 : start = 0
@@ -3512,7 +3512,7 @@ proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
   func isPanelKeyCtrl(pnl: PANEL; e_key:TKey): bool =
     var i = 0
     while i < len(pnl.funcKey):
-      if e_key == pnl.funcKey[i] and pnl.button[i].ctrl : return true
+      if e_key == pnl.funcKey[i] and pnl.button[i].ctrl   : return true
       inc(i)
     return false
 

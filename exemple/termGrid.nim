@@ -65,7 +65,7 @@ proc defGrid() =
 
 proc main() =
   initTerm(30,100)
-  setTerminal()
+
   defForms()
   defGrid()
 
@@ -89,8 +89,8 @@ proc main() =
     of TKey.F2:
       resetRows(grid)
       g_numID = - 1
-      addRows(grid, @[setID(g_numID), "Adam", "Cat, Aigle","50.00"])
-      addRows(grid, @[setID(g_numID), "Eve" , "Cat, Papillon","50.00"])
+      addRows(grid, @[setID(g_numID), "Adam", "Aigle","50.00"])
+      addRows(grid, @[setID(g_numID), "Eve" , "Papillon","50.00"])
       addRows(grid, @[setID(g_numID), "Roger", "Singe","50.00"])
       addRows(grid, @[setID(g_numID), "Ginette" , "Chien","50.00"])
       addRows(grid, @[setID(g_numID), "Maurice", "Dauphin","50.00"])

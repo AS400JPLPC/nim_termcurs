@@ -62,7 +62,7 @@ proc callRefTyp(fld : var FIELD) =
 
   while true :
     let (keys, val) = ioGrid(grid,g_pos)
-  
+
     case keys
       of TKey.Enter :
 
@@ -99,7 +99,7 @@ key =  TKey.F1
 while true:
   if key == TKey.F3 :  closeTerm()
   if key != TKey.F1 and key != TKey.F2 and key != TKey.F9 and key != TKey.F15 : key  = getFunc()
- 
+
   case key
     of TKey.F1:
       if not isActif(pnlF1) :
@@ -107,7 +107,7 @@ while true:
         printPanel(pnlF1)
       pnl = 1
       key = ioPanel(pnlF1)
-      
+
       if key == TKey.PROC :
         if getRefType(pnlF1,Index(pnlF1)) == FPROC:
           if isProcess(pnlF1,Index(pnlF1)):
@@ -193,7 +193,7 @@ while true:
       printMenu(pnlx,menuF9)
       var sel :Natural = 0
       var msel :Natural = 0
-      sel = ioMenu(pnlx,menuF9 , sel) 
+      sel = ioMenu(pnlx,menuF9 , sel)
       case sel
         of 1 :
           if isActif(pnlF1):
@@ -246,13 +246,13 @@ while true:
           if pnl == 1 : key = TKey.F1
           if pnl == 2 : key = TKey.F2
 
-        of 5 : 
+        of 5 :
           key = TKey.F3
           break
 
         else : discard
 
-      if pnl == 2 : 
+      if pnl == 2 :
         if isActif(pnlF1) :
           setTerminal()
           printPanel(pnlF1)

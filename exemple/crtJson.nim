@@ -3,10 +3,12 @@ import json
 import termkey
 import termcurs
 import tables
+#import strformat
+#import unicode
+#import std/[re]
 
-
-#proc beug(nline : int ; text :string ) =
-  #gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
+proc beug(nline : int ; text :string ) =
+  gotoXY(40, 1); echo "ligne>", nline, " :" , text ; let lcurs = getFunc()
 
 var callQuery: Table[string, proc(fld : var FIELD)]
 
@@ -14,7 +16,7 @@ var combo  = new(GRIDSFL)
 #===================================================
 proc TblPays(fld : var FIELD) =
   var g_pos : int = -1
-  combo  = newGRID("COMBO01",2,30,5,sepStyle)
+  combo  = newGRID("COMBO01",2,100,20,sepStyle)
 
   var g_type  = defCell("PAYS",19,TEXT_FREE)
 
@@ -33,7 +35,7 @@ proc TblPays(fld : var FIELD) =
   addRows(combo, @["CHINE"])
   addRows(combo, @["CORE-SUD"])
   addRows(combo, @["JAPON"])
-
+  printGridHeader(combo)
 
   case fld.text
     of "FRANCE"     : g_pos = 0
@@ -78,35 +80,36 @@ callQuery["TblPays"] = TblPays
 
 
 ## return BUTTON
-proc toButton(Textkey: string ; text:string; ctrl:bool; actif: bool): BUTTON =
+proc toButton(Textkey: string ; text:string; actif = true): BUTTON =
   var bt:BUTTON
   case Textkey:
-    of "F1"  : bt = defButton(TKey.F1,text,ctrl,actif)
-    of "F2"  : bt = defButton(TKey.F2,text,ctrl,actif)
-    of "F3"  : bt = defButton(TKey.F3,text,ctrl,actif)
-    of "F4"  : bt = defButton(TKey.F4,text,ctrl,actif)
-    of "F5"  : bt = defButton(TKey.F5,text,ctrl,actif)
-    of "F6"  : bt = defButton(TKey.F6,text,ctrl,actif)
-    of "F7"  : bt = defButton(TKey.F7,text,ctrl,actif)
-    of "F8"  : bt = defButton(TKey.F8,text,ctrl,actif)
-    of "F9"  : bt = defButton(TKey.F9,text,ctrl,actif)
-    of "F10"  : bt = defButton(TKey.F10,text,ctrl,actif)
-    of "F11"  : bt = defButton(TKey.F11,text,ctrl,actif)
-    of "F12"  : bt = defButton(TKey.F12,text,ctrl,actif)
-    of "F13"  : bt = defButton(TKey.F13,text,ctrl,actif)
-    of "F14"  : bt = defButton(TKey.F14,text,ctrl,actif)
-    of "F15"  : bt = defButton(TKey.F15,text,ctrl,actif)
-    of "F16"  : bt = defButton(TKey.F16,text,ctrl,actif)
-    of "F17"  : bt = defButton(TKey.F17,text,ctrl,actif)
-    of "F18"  : bt = defButton(TKey.F18,text,ctrl,actif)
-    of "F19"  : bt = defButton(TKey.F19,text,ctrl,actif)
-    of "F20"  : bt = defButton(TKey.F20,text,ctrl,actif)
-    of "F21"  : bt = defButton(TKey.F21,text,ctrl,actif)
-    of "F22"  : bt = defButton(TKey.F22,text,ctrl,actif)
-    of "F23"  : bt = defButton(TKey.F23,text,ctrl,actif)
-    of "F24"  : bt = defButton(TKey.F24,text,ctrl,actif)
+    of "F1"  : bt.key = TKey.F1
+    of "F2"  : bt.key = TKey.F2
+    of "F3"  : bt.key = TKey.F3
+    of "F4"  : bt.key = TKey.F4
+    of "F5"  : bt.key = TKey.F5
+    of "F6"  : bt.key = TKey.F6
+    of "F7"  : bt.key = TKey.F7
+    of "F8"  : bt.key = TKey.F8
+    of "F9"  : bt.key = TKey.F9
+    of "F10"  : bt.key = TKey.F10
+    of "F11"  : bt.key = TKey.F11
+    of "F12"  : bt.key = TKey.F12
+    of "F13"  : bt.key = TKey.F13
+    of "F14"  : bt.key = TKey.F14
+    of "F15"  : bt.key = TKey.F15
+    of "F16"  : bt.key = TKey.F16
+    of "F17"  : bt.key = TKey.F17
+    of "F18"  : bt.key = TKey.F18
+    of "F19"  : bt.key = TKey.F19
+    of "F20"  : bt.key = TKey.F20
+    of "F21"  : bt.key = TKey.F21
+    of "F22"  : bt.key = TKey.F22
+    of "F23"  : bt.key = TKey.F23
+    of "F24"  : bt.key = TKey.F24
     else : discard
-
+  bt.text = text
+  bt.actif = actif
   return bt
 
 
@@ -143,15 +146,278 @@ proc toRefType(TextType: string ;):REFTYP =
       else : result = TEXT_FREE
 
 
-var jsonPanel= parseFile ("./dspf/prettyFile.dspf" )
 
-#echo $jsonPanel["panel"][0]["button"]
 
-#echo len(jsonPanel["panel"][0]["button"])-1
+var jsonPanel = %* {
+  "titleTerm": "DESIGNER",
+  "panel": [
+    {
+      "name": "TEST",
+      "posx": 1,
+      "posy": 1,
+      "height": 42,
+      "width": 132,
+      "cadre": "line1",
+      "title": "TEST-Panel",
+      "button": [
+        {
+          "Tkey": "F3",
+          "txtKey": "Exit",
+          "actif": true
+        },
+        {
+          "Tkey": "F9",
+          "txtKey": "Add",
+          "actif": true
+        },
+        {
+          "Tkey": "F10",
+          "txtKey": "Update",
+          "actif": true
+        },
+        {
+          "Tkey": "F12",
+          "txtKey": "Return",
+          "actif": true
+        }
+      ],
+      "label": [
+        {
+          "defLabel": "Title",
+          "name": "T02002",
+          "posx": 2,
+          "posy": 2,
+          "text": "CONTACT"
+        },
+        {
+          "defLabel": "label",
+          "name": "L05002",
+          "posx": 5,
+          "posy": 2,
+          "text": "String.....:"
+        },
+        {
+          "defLabel": "label",
+          "name": "L07002",
+          "posx": 7,
+          "posy": 2,
+          "text": "Mail.......:"
+        },
+        {
+          "defLabel": "label",
+          "name": "L09002",
+          "posx": 9,
+          "posy": 2,
+          "text": "Switch.....:"
+        },
+        {
+          "defLabel": "label",
+          "name": "L11002",
+          "posx": 11,
+          "posy": 2,
+          "text": "Date.......:"
+        },
+        {
+          "defLabel": "label",
+          "name": "L13002",
+          "posx": 13,
+          "posy": 2,
+          "text": "Numérique..:"
+        },
+        {
+          "defLabel": "label",
+          "name": "L15002",
+          "posx": 15,
+          "posy": 2,
+          "text": "Téléphone..:"
+        },
+        {
+          "defLabel": "label",
+          "name": "L17002",
+          "posx": 17,
+          "posy": 2,
+          "text": "Fonc-proc..:"
+        }
+      ],
+      "field": [
+        {
+          "defFld": "defString",
+          "name": "vString",
+          "posx": 5,
+          "posy": 14,
+          "reftype": "ALPHA_UPPER",
+          "width": 30,
+          "empty": false,
+          "errmsg": "Invalide",
+          "help": "Le Nom est obligatoire",
+          "text": "",
+          "EdtCar": "",
+          "Protect": false,
+          "Process": ""
+        },j
+          "defFld": "defMail",
+          "name": "vMail",
+          "posx": 7,
+          "posy": 14,
+          "reftype": "MAIL_ISO",
+          "width": 99,
+          "empty": false,
+          "text": "",
+          "errmsg": "Obligatoire",
+          "help": "Votre adresse mail",
+          "EdtCar": "",
+          "Protect": false,
+          "Process": ""
+        },
+        {
+          "defFld": "defSwitch",
+          "name": "vSWITCH",
+          "posx": 9,
+          "posy": 14,
+          "reftype": "SWITCH",
+          "switch": false,
+          "empty": true,
+          "errmsg": "",j
+        },
+        {
+          "defFld": "defDate",
+          "name": "vDATE",
+          "posx": 11,
+          "posy": 14,
+          "reftype": "DATE_FR",
+          "empty": false,
+          "text": "",
+          "errmsg": "Obligatoire",
+          "help": "Date FR ex: 1951-12-10",
+          "EdtCar": "",
+          "Protect": false,
+          "Process": ""
+        },
+        {
+          "defFld": "defNumeric",
+          "name": "vNUMERIC",
+          "posx": 13,
+          "posy": 14,
+          "reftype": "DECIMAL",
+          "width": 15,
+          "scal": 2,
+          "empty": false,
+          "text": "",
+          "errmsg": "Obligatoire",
+          "help": "Decimal ex: 500.25",
+          "EdtCar": "",
+          "Protect": false,
+          "Process": ""
+        },
+        {
+          "defFld": "defTelephone",
+          "name": "vTELEPHONE",
+          "posx": 15,
+          "posy": 14,
+          "reftype": "TELEPHONE",
+          "width": 12,
+          "empty": true,
+          "text": "",
+          "errmsg": "",
+          "help": "Format (033)123456789",
+          "EdtCar": "",
+          "Protect": false,
+          "Process": ""
+        },
+        {
+          "defFld": "defFproc",
+          "name": "vFPROC",
+          "posx": 17,
+          "posy": 14,
+          "reftype": "FPROC",
+          "width": 20,
+          "empty": false,
+          "text": "",
+          "errmsg": "obligatoire",
+          "help": "appel procedure ex: table pays",
+          "EdtCar": "",
+          "Protect": false,
+          "Process": "TblPays"
+        }
+      ]
+    }
+  ]
+}
+echo $jsonPanel["panel"][0]["button"]
 
-#var fileTerm : string  = jsonPanel["fileTerm"].getStr()
+echo len(jsonPanel["panel"][0]["button"])-1
+#[
+var jsonPanel = %* {
+  "titleTerm": "DESIGNER",
+  "panel": [] }
 
-#echo fileTerm
+var Tj =0 # premier panel ect...
+add(jsonPanel["panel"], %* {"name": "TEST", "posx": 1, "posy": 1, "height": 42, "width": 132, "cadre": line1,
+            "title": "TEST-Panel",
+            "button" :[], "label":[], "field":[]})
+
+
+
+add(jsonPanel["panel"][Tj]["button"] , %* {"Tkey": $TKey.F3,"txtKey": "Exit","actif": true})
+add(jsonPanel["panel"][Tj]["button"] , %* {"Tkey": $TKey.F9,"txtKey": "Add","actif": true })
+add(jsonPanel["panel"][Tj]["button"] , %* {"Tkey": $TKey.F10,"txtKey": "Update","actif": true})
+add(jsonPanel["panel"][Tj]["button"] , %* {"Tkey": $TKey.F12,"txtKey": "Return","actif": true })
+
+
+add(jsonPanel["panel"][Tj]["label"] , %* {"defLabel":"Title", "name" : "T02002", "posx": 2, "posy": 2, "text": "CONTACT" })
+add(jsonPanel["panel"][Tj]["label"] , %* {"defLabel":"label", "name" : "L05002", "posx": 5, "posy": 2, "text": "String.....:" })
+add(jsonPanel["panel"][Tj]["label"] , %* {"defLabel":"label", "name" : "L07002", "posx": 7,  "posy": 2, "text": "Mail.......:"})
+add(jsonPanel["panel"][Tj]["label"] , %* {"defLabel":"label", "name" : "L09002", "posx": 9,  "posy": 2, "text": "Switch.....:"})
+add(jsonPanel["panel"][Tj]["label"] , %* {"defLabel":"label", "name" : "L11002", "posx": 11, "posy": 2, "text": "Date.......:"})
+add(jsonPanel["panel"][Tj]["label"] , %* {"defLabel":"label", "name" : "L13002", "posx": 13, "posy": 2, "text": "Numérique..:"})
+add(jsonPanel["panel"][Tj]["label"] , %* {"defLabel":"label", "name" : "L15002", "posx": 15, "posy": 2, "text": "Téléphone..:"})
+add(jsonPanel["panel"][Tj]["label"] , %* {"defLabel":"label", "name" : "L17002", "posx": 17, "posy": 2, "text": "Fonc-proc..:"})
+
+
+add(jsonPanel["panel"][Tj]["field"] , %* {"defFld":"defString", "name" : "vString", "posx": 5, "posy": 14,
+                "reftype": $ALPHA_UPPER, "width": 30, "empty": FILL,
+                "errmsg": "Invalide", "help": "Le Nom est obligatoire",
+                "text":"",
+                "EdtCar": "", "Protect" : false, "Process" : ""})
+
+add(jsonPanel["panel"][Tj]["field"] , %* {"defFld":"defMail",   "name" : "vMail", "posx": 7, "posy": 14,
+                "reftype": $MAIL_ISO, "width": 99, "empty": FILL,
+                "text":"",
+                "errmsg": "Obligatoire", "help": "Votre adresse mail",
+                "EdtCar": "", "Protect" : false, "Process" : ""})
+
+add(jsonPanel["panel"][Tj]["field"] , %* {"defFld":"defSwitch", "name" : "vSWITCH", "posx": 9, "posy": 14,
+                "reftype": $SWITCH,"switch": false, "empty": EMPTY,
+                "errmsg": "", "help": "",
+                "EdtCar": "", "Protect" : false, "Process" : ""})
+
+add(jsonPanel["panel"][Tj]["field"] , %* {"defFld":"defDate", "name" : "vDATE", "posx": 11, "posy": 14,
+                "reftype": $DATE_FR, "empty": FILL,
+                "text":"",
+                "errmsg": "Obligatoire", "help": "Date FR ex: 1951-12-10",
+                "EdtCar": "", "Protect" : false, "Process" : ""})
+
+add(jsonPanel["panel"][Tj]["field"] , %* {"defFld":"defNumeric", "name" : "vNUMERIC", "posx": 13, "posy": 14,
+                "reftype": $DECIMAL, "width": 15, "scal": 2, "empty": FILL,
+                "text":"",
+                "errmsg": "Obligatoire", "help": "Decimal ex: 500.25",
+                "EdtCar": "", "Protect" : false, "Process" : ""})
+
+add(jsonPanel["panel"][Tj]["field"] , %* {"defFld":"defTelephone", "name" : "vTELEPHONE", "posx": 15, "posy": 14,
+                "reftype": $TELEPHONE, "width": 12, "empty": EMPTY,
+                "text":"",
+                "errmsg": "", "help": "Format (033)123456789",
+                "EdtCar": "", "Protect" : false, "Process" : ""})
+
+add(jsonPanel["panel"][Tj]["field"] , %* {"defFld":"defFproc", "name" : "vFPROC", "posx": 17, "posy": 14,
+                "reftype": $FPROC, "width": 20, "empty": FILL,
+                "text":"",
+                "errmsg": "obligatoire", "help": "appel procedure ex: table pays",
+                "EdtCar": "", "Protect" : false, "Process" : ""})
+
+]#
+
+
 #quit()
 
 # Panel TEST
@@ -165,13 +431,11 @@ proc dscTEST(t:int) =
   var buttonVal  = newseq[BUTTON]()
   for n in 0..len(jsonPanel["panel"][t]["button"])-1:
     var bton = toButton(jsonPanel["panel"][t]["button"][n]["Tkey"].getStr() ,
-                            jsonPanel["panel"][t]["button"][n]["txtKey"].getStr() ,
-                            jsonPanel["panel"][t]["button"][n]["ctrl"].getBool() ,
-                            jsonPanel["panel"][t]["button"][n]["actif"].getBool())
+                        jsonPanel["panel"][t]["button"][n]["txtKey"].getStr() , jsonPanel["panel"][t]["button"][n]["actif"].getBool())
     buttonVal.add(@[bton])
 
 
-  #beug(370,"Panel")
+  beug(370,"Panel")
 
   TEST = newPanel( jsonPanel["panel"][t]["name"].getStr(),
                   jsonPanel["panel"][t]["posx"].getInt(),
@@ -195,12 +459,12 @@ proc dscTEST(t:int) =
                       jsonPanel["panel"][t]["label"][n]["posx"].getInt() ,
                       jsonPanel["panel"][t]["label"][n]["posy"].getInt() ,
                       jsonPanel["panel"][t]["label"][n]["text"].getStr()))
-    #beug(384,jsonPanel["panel"][t]["label"][n]["name"].getStr())
+    beug(384,jsonPanel["panel"][t]["label"][n]["name"].getStr())
 
   # FIELD -> TEST
   for n in 0..len(jsonPanel["panel"][t]["field"])-1:
-    #beug(388,jsonPanel["panel"][t]["field"][n]["name"].getStr())
-    #echo toRefType(jsonPanel["panel"][t]["field"][n]["reftype"].getStr())
+    beug(388,jsonPanel["panel"][t]["field"][n]["name"].getStr())
+    echo toRefType(jsonPanel["panel"][t]["field"][n]["reftype"].getStr())
 
 
     case jsonPanel["panel"][t]["field"][n]["defFld"].getStr() :
@@ -303,15 +567,27 @@ proc dscTEST(t:int) =
 
 
 
+#[
+let F001 = open("prettyFile.text", fmWrite)
+F001.write(pretty(jsonPanel))
+F001.close()
 
-# exemple out Json
-let F002 = open("jsonPanel.dspf", fmWrite)
+let F002 = open("jsonPanel.text", fmWrite)
 F002.write($jsonPanel)
 F002.close()
 
 #quit()
 
 
+# MENU -> TEST
+var MH00 = new(MENU)
+if hasKey(jsonPanel["panel"][0], "field") == true:
+  MH00 = newMenu("MH00", 32, 13, horizontal, @["File ", "Print ", "exit"], line1)
+
+var MVPRINT = new(MENU)
+if hasKey(jsonPanel["panel"][t], "field") == true:
+  MVPRINT = newMenu("MVPRINT", 34, 19, vertical, @["Contact", "exit"], line1)
+]#
 
 offCursor()
 initTerm()
@@ -320,6 +596,13 @@ dscTEST(0)
 printPanel(TEST)
 displayPanel(TEST)
 
+#[
+if hasKey(jsonPanel["panel"], "menu") == true:
+  # ONLY -> TEST
+  dspMenuItem(TEST,MH00,0)
+  dspMenuItem(TEST,MVPRINT,0)
+  let nTest = ioMenu(TEST,MVPRINT,0)
+]#
 while true:
  let  key = ioPanel(TEST)
 
