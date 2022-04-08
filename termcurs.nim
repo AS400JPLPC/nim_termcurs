@@ -2731,7 +2731,7 @@ proc pageDownGrid*(this: GRIDSFL): TKey_Grid =
 ## Automatic alignment based on the type reference
 #----------------------------------------------------------------
 
-proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO Format
+proc ioGrid*(this: GRIDSFL; pos: int = -1 ): (TKey , seq[string])=        # IO Format
   var buf :seq[string]
   if not this.actif : return (TKey.None, buf)
   var grid_key:TKey = TKey.None
@@ -2777,11 +2777,11 @@ proc ioGrid*(this: GRIDSFL, pos: int = -1 ): (TKey , seq[string])=        # IO F
           offMouse()
           return (TKey.Enter,buf)
         else : return (TKey.None,buf)
-      of TKey.Up :
+      of TKey.Up , TKey.CtrlUp , TKey.CtrlLeft:
         if CountLigne > 0 :
           dec(CountLigne)
           this.cursligne = CountLigne
-      of TKey.Down :
+      of TKey.Down , TKey.CtrlDown , TKey.CtrlRight:
         if CountLigne < len(this.nrow) - 1  :
           inc(CountLigne)
           this.cursligne = CountLigne
@@ -2891,7 +2891,7 @@ proc ioMenu*(pnl: PANEL; mnu:MENU; npos: Natural) : MENU.selMenu =
 ## application hold principe and new langage
 ## use termkey.nim
 #----------------------------------------------------==
-proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
+proc ioField*(pnl : PANEL ; fld : var FIELD; fmt : bool = false) : (TKey )=
 
   if fld.protect : return TKey.Enter
   var e_key:TKey
@@ -3114,8 +3114,47 @@ proc ioField*(pnl : PANEL ; fld : var FIELD) : (TKey )=
     if statusCursInsert: defCursor(cBlinkBar) else: defCursor(cnoBlink) # CHANGE CURSOR FORM BAR/BLOCK
 
     onCursor()
+    if fmt : onMouse()
     # read keyboard
     (e_key,e_str) = getTKey()
+
+    # grid--------
+    if fmt == true :
+      case e_key
+        of TKey.Mouse :
+          let gridMouse = getMouse()
+          if gridMouse.action == MouseButtonAction.mbaPressed:
+            if gridMouse.scroll and gridMouse.scrollDir == ScrollDirection.sdUp   :
+              result = TKey.CtrlUp
+              offCursor()
+              break
+          if gridMouse.scroll and gridMouse.scrollDir == ScrollDirection.sdDown :
+              result = TKey.CtrlDown
+              offCursor()
+              break
+          if gridMouse.button ==  MouseButton.mbLeft or
+             gridMouse.button ==  MouseButton.mbRight :
+              result = TKey.Mouse
+              offCursor()
+              break
+        of TKey.CtrlUp , TKey.CtrlLeft :
+          result = e_key
+          offCursor()
+          break
+        of TKey.CtrlDown , TKey.CtrlRight :
+          result = e_key
+          offCursor()
+          break
+        of TKey.PageUp :
+          result = e_key
+          offCursor()
+          break
+        of TKey.PageDown :
+          result = e_key
+          offCursor()
+          break
+        else : discard
+    # end grid----
 
 
     # control transfert panel
@@ -3585,6 +3624,207 @@ proc ioPanel*(pnl:var PANEL): TKey =                       # IO Format
       fld_key = getFunc()
     else :
       case fld_Key
+        of TKey.Escape :                               # we replay & resume the basic value
+          continue
+        of TKey.Enter:
+          inc(CountField)
+          if CountField > fieldNbr(pnl) : CountField = 0
+          if pnl.field[CountField].protect :
+            CountField = isFirstIO(pnl,CountField)
+
+        of TKey.Up :
+          if CountField > 0 : dec(CountField)
+          elif CountField == 0 :  CountField = len(pnl.field)-1
+          if pnl.field[CountField].protect  :
+            CountField = isPriorIO(pnl,CountField )
+
+        of TKey.Down:
+          inc(CountField)
+          if CountField > fieldNbr(pnl) : CountField = 0
+          if pnl.field[CountField].protect :
+            CountField = isFirstIO(pnl,CountField)
+        else :discard
+
+
+
+
+
+#------------------------------------------------------
+## Format management including zones
+## keyboard proction keys are returned to the calling procedure
+##
+## only the key CtrlH = Aide / Help for field
+##
+## Reserved keys for FIELD management
+## traditionally  UP, DOWN, TAB, STAB, CtrlA,
+## ENTER, HOME, END, RIGTH, LEFt, BACKSPACE, DELETE, INSERT
+## CALL , ATTN , PROC
+## predefined and customizable REGEX control
+##
+## grid
+## Paging
+## Ctrl UP Down Right Left  activate line cursor
+## Click Mouse select to line
+## select enable select ligne and return valu seq field GRID
+#------------------------------------------------------
+
+proc ioFMT*(pnl:var PANEL; grid : var  GRIDSFL; select : bool = false;  pos: int = -1  ): (TKey , seq[string])=  # IO Format
+  var buf :seq[string]
+  if not pnl.actif : return (TKey.None, buf)
+  if not grid.actif : return (TKey.None, buf)
+
+  var CountField = pnl.index
+  var fld_key:TKey = TKey.Enter
+  var index = getIndex(pnl,pnl.field[CountField].name)
+
+
+
+  # grid--------
+  var CountLigne = 0
+  grid.cursligne = 0
+  printGridHeader(grid)
+  if pos >= 0 :
+    setPageGrid(grid,pos)
+    CountLigne = grid.cursligne
+  # end grid----
+
+
+
+  # check error
+  for n in 0..len(pnl.field) - 1:
+    if  pnl.field[n].err :
+      index = n
+      CountField = n
+      pnl.index = n
+      break
+
+  # check if KEYs force control field
+  func isPanelKeyCtrl(pnl: PANEL; e_key:TKey): bool =
+    var i = 0
+    while i < len(pnl.funcKey):
+      if e_key == pnl.funcKey[i] and pnl.button[i].ctrl   : return true
+      inc(i)
+    return false
+
+
+
+  # check if there are any free field
+  func isFieldIO(pnl: PANEL):Natural =
+    var n : Natural = len(pnl.field)
+    var nfield: int = len(pnl.field)
+    for i in 0..nfield - 1 :
+      if pnl.field[i].protect  or not pnl.field[i].actif: n -= 1
+    return n
+
+  #search there first available field
+  func isFirstIO(pnl: PANEL, idx : Natural):int =
+    var i : Natural = idx
+    while i < len(pnl.field)-1  :
+      if pnl.field[i].actif:
+        if not pnl.field[i].protect : break
+      inc(i)
+    return i
+  #search there last available field
+  func isPriorIO(pnl: PANEL, idx : Natural):int =
+    var i : int = idx
+    while i >= 0 :
+      if pnl.field[i].actif :
+        if not pnl.field[i].protect : break
+      dec(i)
+    if i < 0 : return 0
+    return i
+
+  func fieldNbr(pnl :var PANEL) :int =
+    var nbr = -1
+    for n in 0..len(pnl.field) - 1:
+      if  isActif(pnl.field[n]) :
+        if not  isProtect(pnl.field[n]) :  nbr = n
+    return nbr
+
+
+
+  #displays width framing the field
+  if not pnl.field[CountField].protect and pnl.field[index].actif :
+    printField(pnl,pnl.field[index])
+    displayField(pnl,pnl.field[index])
+
+
+  printGridRows(grid)
+  while true :
+    # grid--------
+    buf = newseq[string]()
+    # end grid----
+
+
+    #controls the boundary sequence of the field
+    if CountField == len(pnl.field)-1  and isFieldIO(pnl) > 0 :
+      CountField = isPriorIO(pnl,len(pnl.field)-1)
+    if CountField == 0  and isFieldIO(pnl) > 0 :
+      CountField = isFirstIO(pnl,0)
+
+    if not pnl.field[CountField].protect and pnl.field[CountField].actif:
+
+      fld_key = ioField(pnl,pnl.field[CountField], true)   # work input/output Field
+
+      printField(pnl,pnl.field[CountField])
+      displayField(pnl,pnl.field[CountField])
+
+    if isPanelKey(pnl,fld_key) or fld_key == TKey.PROC :                      # this key sav index field return main
+      if isPanelKeyCtrl(pnl,fld_key) and not isValide(pnl) :
+        CountField = pnl.index
+        fld_key = TKey.Escape
+      else :
+        pnl.index = getIndex(pnl,pnl.field[CountField].name)
+        return (fld_key, buf)
+
+    if isFieldIO(pnl) == 0 :                          # this full protect only work Key active
+      fld_key = getFunc()
+    else :
+      case fld_Key
+
+        # grid--------
+        of TKey.Mouse :
+          if grid.lignes > 0  :
+            grid.cursligne = -1
+            buf = grid.rows[grid.nrow[CountLigne]]
+            offMouse()
+            return (TKey.Mouse,buf)
+          else : return (TKey.Mouse,buf)
+
+        of TKey.CtrlUp , TKey.CtrlLeft:
+          if CountLigne > 0 :
+            dec(CountLigne)
+            grid.cursligne = CountLigne
+            printGridRows(grid)
+            continue
+
+        of TKey.CtrlDown , TKey.CtrlRight:
+          if CountLigne < len(grid.nrow) - 1  :
+            inc(CountLigne)
+            grid.cursligne = CountLigne
+            printGridRows(grid)
+            continue
+
+        of TKey.PageUp :
+          if grid.curspage > 0 :
+            dec(grid.curspage)
+            grid.cursligne = 0
+            CountLigne = 0
+            printGridHeader(grid)
+            printGridRows(grid)
+            continue
+
+        of TKey.PageDown :
+          if grid.curspage < grid.pages :
+            inc(grid.curspage)
+            grid.cursligne = 0
+            CountLigne = 0
+            printGridHeader(grid)
+            printGridRows(grid)
+            continue
+        # end grid----
+
+
         of TKey.Escape :                               # we replay & resume the basic value
           continue
         of TKey.Enter:
