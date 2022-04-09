@@ -1442,6 +1442,10 @@ proc printPanel*(pnl: var PANEL)=
 
 
 
+proc poster*(pnl: var PANEL)=
+  printPanel(pnl)
+  displayPanel(pnl)
+
 
 proc resetPanel*(pnl: var PANEL)=
   ## clear object PANEL / box/label/fld/proc
@@ -1811,6 +1815,10 @@ proc getName*(pnl: PANEL): string =
   ## get name field from panel this getField
   result = pnl.field[pnl.index].name
 
+proc setIndex*(pnl: PANEL, pos : int) =
+  ## pos = index field
+  if pos >= 0  and pos < len(pnl.field) :
+    pnl.index = pos
 
 
 
